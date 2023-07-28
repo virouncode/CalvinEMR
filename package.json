@@ -1,0 +1,11 @@
+{
+  "name": "calvinemr",
+  "version": "1.0.0",
+  "description": "REACT + NODE Calvin EMR",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
