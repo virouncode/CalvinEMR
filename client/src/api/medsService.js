@@ -1,5 +1,6 @@
 const base_URL_DPD = "https://dpd-hc-sc-apicast-production.api.canada.ca/v1";
 var _ = require("lodash");
+
 export const getActiveIngredients = async (drugCode, abortController) => {
   const init = {
     method: "GET",
