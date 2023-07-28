@@ -1,0 +1,77 @@
+.demographics {
+    &-card {
+        font-size: 0.8rem;
+        width: 80%;
+        margin: 20px auto;
+        border: 1px solid $blue;
+        border-radius: 4px; 
+        &-header{
+            display:flex;
+            justify-content: space-between;
+            background: $blue;
+            padding : 10px;
+            align-items: center;
+            h1 {
+                font-size:1.2rem;
+                font-weight:bold;
+            }
+            &-btns {
+                display: flex;
+                justify-content: space-between;
+                width: 18%;
+            }
+        }
+        &-form {
+            margin:10px;
+            display:flex;
+            justify-content:space-between;
+            &-content {
+                width:70%; 
+                &-err {
+                    color: $red;
+                    font-style: italic;
+                }
+                &-errpost {
+                    background: $red;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    border-radius: 4px;
+                }
+                label{
+                    font-weight: bold;
+                    display: inline-block;
+                    min-width: 150px;
+                }
+                input, select {
+                    width: 160px;
+                }
+            }
+            &-img {
+                display: flex;
+                flex-direction: column;
+                width: 200px;
+                height: 300px;
+                overflow:hidden;
+                margin-right:10px;
+                img{
+                    align-self: flex-start;
+                    height: 90%;
+                    width: auto;
+                }
+                input[type="file"] {
+                    &::-webkit-file-upload-button {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        &-sign {
+            padding: 0 5px;
+            text-align: right;
+            font-size: 0.6rem;
+            margin-bottom: 10px;
+        }
+    }
+    
+    
+}

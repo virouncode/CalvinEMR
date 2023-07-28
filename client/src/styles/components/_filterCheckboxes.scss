@@ -1,0 +1,26 @@
+.filter-checkboxes { 
+    padding: 5px;
+    &-section{
+        margin-bottom:10px;
+    }
+    ul {
+        display:flex;
+        flex-direction: column;
+        li {
+            font-size : 0.7rem;
+            font-weight : normal;
+            margin-bottom : 2px;
+            display :flex;
+            .filter-checkbox{
+                width:auto;
+                margin-right : 5px;
+            }
+            .filter-category-label{
+                font-weight: bold;
+                font-size: 0.8rem;
+            }
+        }
+    }
+}
+
+

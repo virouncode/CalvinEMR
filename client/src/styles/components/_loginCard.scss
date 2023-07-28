@@ -1,0 +1,88 @@
+.login-card{ 
+    @include alignChidren("space-between");
+    border : solid 2px $blue;
+    border-radius: 20px;
+    width : 60%;
+    height : 80%;
+    overflow: hidden;
+    .login-carousel {
+        background-color: $blue;    
+        height:100%;
+        width:50%;
+        padding : 20px;
+        h1 {
+            font-size: 1rem;
+            font-family: "Rubik", Arial, Helvetica, sans-serif;
+        }
+    }
+    .login-container {
+        height:100%;
+        width:50%;
+        background : $white;
+        @include childCenter;
+        .login-content {
+            width:50%;
+            .login-title {
+                font-size: 1rem;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .login-errmsg {
+                color : red;
+                padding: 5px 0;
+                margin-bottom: 5px;
+
+                font-size: 0.8rem;
+            }
+            .login-signup {
+                font-size: 0.7rem;
+                text-align: end;
+                margin: 5px 0;
+                padding : 0;
+            }
+            .login-refresh {
+                font-size: 0.7rem;
+                text-align: end;
+                margin-bottom: 5px;
+                padding : 0;
+            }
+            .login-form {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width:100%;
+                &-row-radio {
+                    margin-bottom: 10px;
+                    display: flex;
+                    &-item {
+                        display: flex;
+                        align-items: center;
+                        margin-right: 20px;
+                        input{
+                            width:10px;
+                            margin: 0;
+                            margin-right: 5px;
+                        }
+                    }
+                }
+            }
+            label{
+                font-size: 0.8rem;
+                color:$black;
+                font-weight: normal;
+            }
+            input {
+                font-size: 0.8rem;
+                width:100%;
+                margin:10px 0;
+                padding: 5px;
+            }
+            button {
+                font-size: 0.9rem;
+                font-family: "Roboto";
+                padding: 5px 5px;
+                margin:10px 0;
+            }
+        }
+    }  
+}

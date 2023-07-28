@@ -22,6 +22,8 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "nodemon": "^3.0.1"
+    "body-parser": "^1.20.2",
+    "nodemon": "^3.0.1",
+    "twilio": "^4.14.1"
   }
 }

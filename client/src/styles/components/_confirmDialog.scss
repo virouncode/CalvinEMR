@@ -1,0 +1,35 @@
+.confirm {
+    &-dialog {
+        border: solid 2px $blue;
+        border-radius: 4px;
+        width: 400px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform:translateY(-50%);
+        margin-left: -200px;
+        background: $white;
+        overflow: hidden;
+        
+        // top: 300px;
+        // left: 530px;
+        &-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: $blue;
+            padding: 10px;
+        }
+        &-btn-container {
+            display: flex;
+            justify-content: space-between;
+            width: 50%;
+            margin: 0 auto;
+            padding:5px 0 15px;
+            button {
+                width : 80px;
+            }
+        }
+    }
+    
+}

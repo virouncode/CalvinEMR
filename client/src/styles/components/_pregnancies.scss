@@ -1,0 +1,66 @@
+.pregnancies {
+    &-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+    &-err {
+        background:$red;
+        padding: 10px;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+        border-radius: 4px;
+    }
+    &-table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        border: solid 1px $black;
+        font-size: 0.8rem;
+        margin: 0 auto;
+        thead {
+            background-color: $blue;
+            border: solid 1px $black;
+        }
+        th {
+            min-width: 70px;
+            padding: 2px 5px;
+            border: solid 1px $black;
+            text-decoration: underline;
+            cursor: pointer;
+            
+        }
+
+    }
+    &-btn-container {
+        display: flex;
+        justify-content: space-between;
+        width: 22%;
+        margin: 20px auto 0;
+    }
+    &-event, &-form {
+        td {
+            text-align: center;
+            border: solid 1px $black;
+            padding: 2px 5px;
+            max-width: 380px;
+        }
+        select {
+            width: 180px;
+        }
+        &-input1 {
+            width:100px;
+        }
+        &-input2 {
+            width:120px;
+        }
+        &-input3 {
+            width:50px;
+        }
+        &-btn-container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+    }
+}

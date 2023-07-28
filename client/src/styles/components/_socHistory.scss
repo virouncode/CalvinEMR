@@ -1,0 +1,37 @@
+.sochistory {
+    &-card {
+        font-size: 0.8rem;
+        width: 80%;
+        margin: 20px auto;
+        border: 1px solid $blue;
+        border-radius: 4px;
+        &-header{
+            display:flex;
+            justify-content: space-between;
+            background-color: $blue;
+            padding: 10px;
+            align-items: center;
+            h1 {
+               font-size: 1.2rem;
+               font-weight: bold;
+
+            }
+            &-btns {
+                display:flex;
+                justify-content: space-between;
+                width: 18%;
+            }
+        }
+        &-form {
+            margin: 10px 0;
+            label {
+                font-weight: bold;
+                display: inline-block;
+                min-width: 150px;
+            }
+            input {
+                min-width: 30px;
+            }
+        }
+    }
+}

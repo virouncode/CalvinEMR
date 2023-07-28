@@ -1,0 +1,61 @@
+.signup-patient {
+    &-form {
+        padding : 20px;
+        width : 55%;
+        margin:0 auto;
+        display: flex;
+        justify-content: space-between;
+        &-column {
+            width:45%;
+        }
+        &-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        label {
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        input {
+            width: 200px;
+        }
+        input[type="file"] {
+            width: 200px;
+            padding:0;
+            &::-webkit-file-upload-button {
+                cursor: pointer;
+            }
+        }
+        select {
+            width:200px;
+        }
+        &-row-submit {
+            text-align: end;
+            margin-top: 20px;
+            input[type="submit"]{
+                width: 100px;
+            }
+        }
+    }
+    &-confirm {
+        padding : 20px;
+        width : 30%;
+        font-size: 0.9rem;
+        margin:0 auto;
+        border-radius: 4px;
+        text-align: center;
+        color: forestgreen;
+        background-color: rgba(34, 139, 34, 0.4);
+    }
+    &-err {
+        padding : 20px;
+        font-size: 0.9rem;
+        width : 30%;
+        margin:0 auto;
+        color : red;
+        background-color:rgba(255, 0, 0, 0.403);
+        border-radius: 4px;
+        text-align: center;
+    }
+}

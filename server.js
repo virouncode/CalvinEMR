@@ -2,11 +2,18 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const path = require("path");
+const twilio = require("twilio")(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
+const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use(express.static("client/build"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //API TEST
 app.get("/api/viroun", (_, res) => {
@@ -15,6 +22,22 @@ app.get("/api/viroun", (_, res) => {
   });
 });
 //Autres adresses API ici
+app.post("/api/twilio/messages", (req, res) => {
+  res.header("Content-Type", "application/json");
+  twilio.messages
+    .create({
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: req.body.to,
+      body: req.body.body,
+    })
+    .then(() => {
+      res.send(JSON.stringify({ success: true }));
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send(JSON.stringify({ success: false }));
+    });
+});
 //*********************/
 
 //Dans les autres cas on renvoie la single page app

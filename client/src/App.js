@@ -1,28 +1,46 @@
-import logo from "./logo.svg";
-import "./App.css";
-import React, { useState } from "react";
+//Librairies
+import React from "react";
+import RequireAuth from "./components/Presentation/RequireAuth";
+import { Routes, Route } from "react-router-dom";
+//Pages Components
+import LoginPage from "./pages/LoginPage";
+import CalendarPage from "./pages/CalendarPage";
+import SearchPatientPage from "./pages/SearchPatientPage";
+import PatientRecordPage from "./pages/PatientRecordPage";
+import Layout from "./components/Presentation/Layout";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
+import MissingPage from "./pages/MissingPage";
+import Layout2 from "./components/Presentation/Layout2";
+import SignupPageStaff from "./pages/SignupPageStaff";
+import SignupPagePatient from "./pages/SignupPagePatient";
+import MyAccountPage from "./pages/MyAccountPage";
 
-function App() {
-  const [msg, setMsg] = useState();
-  const handleClick = async () => {
-    const response = await fetch("/api/viroun");
-    const json = await response.json();
-    console.log(json);
-    setMsg(json.msg);
-  };
-
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button onClick={handleClick}>Dis Bonjour</button>
-        <p>{msg}</p>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout2 />}>
+        {/* public routes */}
+        <Route path="login" element={<LoginPage />} />
+        {/* catch all */}
+        <Route path="*" element={<MissingPage />} />
+      </Route>
+      <Route path="/" element={<Layout />}>
+        {/* public routes */}
+        <Route path="unauthorized" element={<UnauthorizedPage />} />
+        {/* protected routes */}
+        <Route element={<RequireAuth allowedAccesses={["Admin", "User"]} />}>
+          <Route index element={<CalendarPage />} />
+          <Route path="search-patient" element={<SearchPatientPage />} />
+          <Route path="patient-record/:id" element={<PatientRecordPage />} />
+          <Route path="signup-patient" element={<SignupPagePatient />} />
+          <Route path="my-account" element={<MyAccountPage />} />
+        </Route>
+        <Route element={<RequireAuth allowedAccesses={["Admin"]} />}>
+          <Route path="signup-staff" element={<SignupPageStaff />} />
+        </Route>
+      </Route>
+    </Routes>
   );
-}
+};
 
 export default App;

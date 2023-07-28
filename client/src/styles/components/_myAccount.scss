@@ -1,0 +1,93 @@
+.myaccount-section {
+    &-err {
+        padding : 20px;
+        width : 30%;
+        margin:0 auto;
+        color : red;
+        text-align: center;
+    }
+    &-confirm {
+        padding : 20px;
+        width : 30%;
+        margin:0 auto;
+        text-align: center;
+        color: forestgreen;
+    }
+    &-btns {
+        width : 50%;
+        margin:0 auto;
+        display: flex;
+        justify-content: center;
+        button {
+            margin-left: 10px;
+        }
+    }
+    &-form {
+        font-size: 0.85rem;
+        padding : 20px;
+        width : 55%;
+        margin:0 auto;
+        display: flex;
+        justify-content: space-between;
+        &-column {
+            width:45%;
+            
+        }
+        &-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            p {
+                padding:0;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            &-image {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+        }
+        label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            min-width: 170px;
+        }
+        input {
+            width: 200px;
+        }
+        input[type="file"] {
+            width: 200px;
+            padding:0;
+            &::-webkit-file-upload-button {
+                cursor: pointer;
+            }
+        }
+        select {
+            width:200px;
+        }
+        &-row-submit {
+            text-align: end;
+            margin-top: 20px;
+            input[type="submit"]{
+                width: 100px;
+            }
+        }
+        
+    }
+    &-confirm {
+        padding : 20px;
+        width : 30%;
+        margin:0 auto;
+        text-align: center;
+        color: forestgreen;
+    }
+    &-err {
+        padding : 20px;
+        width : 30%;
+        margin:0 auto;
+        color : red;
+        text-align: center;
+    }
+}

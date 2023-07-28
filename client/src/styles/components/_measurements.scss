@@ -1,0 +1,59 @@
+.measurements {
+    &-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+    &-err {
+        background: $red;
+        padding: 10px;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+        border-radius: 4px;
+    }
+    &-btn-container {
+        display: flex;
+        justify-content: space-between;
+        width:18%;
+        margin: 20px auto 0;
+    }
+    &-table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        border: solid 1px black;
+        font-size: 0.8rem;
+        margin: 0 auto;
+        thead {
+            background-color: $blue;
+            border: solid 1px $black;
+        }
+        th {
+            min-width: 80px;
+            padding: 2px 5px;
+            border: solid 1px $black;
+            text-decoration: underline;
+            cursor:pointer;
+        }
+        &-nofilter {
+            text-decoration: none;
+            cursor: default;
+        }
+    }
+    &-event, &-form {
+        td {
+            text-align: center;
+            border: solid 1px $black;
+            padding: 2px 5px;
+            word-wrap: break-word;
+            max-width: 380px;
+            input {
+                width:60px;
+            }
+        }
+        &-btn-container {
+            display: flex;
+            justify-content: space-around;
+        }
+    }
+}

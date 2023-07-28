@@ -1,0 +1,125 @@
+.prescription {
+  font-family: "Roboto", sans-serif;
+  &-page {
+    width: 21cm;
+    height: 29.7cm;
+    display: flex;
+    align-items: center;
+  }
+  &-container {
+    width: 90%;
+    margin: 0 auto;
+    border: solid 1px $black;
+    height: 93%;
+    display: flex;
+    flex-direction: column;
+  }
+  &-header {
+    background: $blue;
+    print-color-adjust: exact;
+    display: flex;
+    height: 10%;
+    justify-content: space-between;
+    border-bottom: solid 1px $black;
+  }
+  &-logo {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    &-img {
+      background: url(../../assets/img/logo.png) center/cover;
+      height: 60px;
+      width: 220px;
+    }
+  }
+  &-doctor-infos {
+    font-size: 0.75rem;
+    text-align: end;
+    width: 50%;
+    border-left: solid 2px $black;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    p {
+      padding: 0;
+    }
+  }
+  &-subheader {
+    display: flex;
+    height: 4%;
+    justify-content: space-between;
+    border-bottom: solid 1px $black;
+    align-items: center;
+  }
+  &-date {
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  &-patient-infos {
+    font-size: 0.9rem;
+    font-weight: bold;
+    width: 50%;
+    padding: 5px 10px;
+    p {
+      padding: 0;
+    }
+  }
+  &-body {
+    height: 76%;
+    &-title {
+      font-weight: bold;
+      font-size: 1.3rem;
+      text-align: center;
+      margin: 20px 0;
+    }
+    &-content {
+      padding: 5px 10px;
+      font-size: 0.9rem;
+    }
+  }
+  &-sign {
+    height: 10%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 0.8rem;
+    border-top: solid 1px $black;
+    &-image {
+      img {
+        height: 100%;
+      }
+    }
+  }
+  &-add {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9rem;
+    width: 90%;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: flex-start;
+    label {
+      margin-right: 20px;
+    }
+    textarea {
+      width: 65%;
+      height: 200px;
+    }
+  }
+  &-actions {
+    width: 90%;
+    margin: 20px auto 0;
+    display: flex;
+    align-items: center;
+    button {
+      margin-right: 10px;
+    }
+  }
+}
+@media print {
+  .prescription-actions,
+  .prescription-add {
+    display: none !important;
+  }
+}

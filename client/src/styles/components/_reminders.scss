@@ -1,0 +1,63 @@
+.reminders {
+    &-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+    &-err {
+        background:$red;
+        padding: 10px;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+        border-radius: 4px;
+    }
+    &-table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        border: solid 1px $black;
+        font-size: 0.8rem;
+        margin: 0 auto;
+        thead {
+            background-color: $blue;
+            border: solid 1px $black;
+        }
+        th {
+            min-width: 50px;
+            padding: 2px 5px;
+            border: solid 1px $black;
+            text-decoration: underline;
+            cursor: pointer;
+            
+        }
+    }
+    &-btn-container {
+        display: flex;
+        justify-content: space-between;
+        width: 23%;
+        margin: 20px auto 0;
+    }
+    &-item, &-form {
+        &--notactive {
+            background-color: $grey;
+        }
+        td {
+            text-align: center;
+            border: solid 1px $black;
+            padding: 2px 5px;
+            word-wrap: break-word;
+            max-width:370px;
+        }
+        input {
+            min-width:360px;
+        }
+        input[type="submit"]{
+            min-width: auto;
+        }
+        &-btn-container {
+            display: flex;
+            justify-content: space-around;
+        }
+    }
+
+}
