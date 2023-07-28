@@ -23,7 +23,6 @@ const MyAccountForm = () => {
             Authorization: `Bearer ${auth.authToken}`,
           },
         });
-        console.log(response.data);
         setFormDatas(response.data);
         setTempFormDatas(response.data);
       } catch (err) {

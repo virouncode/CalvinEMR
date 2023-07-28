@@ -22,7 +22,6 @@ const Invitation = ({
   staffGuestsInfos,
   settings,
 }) => {
-  console.log(staffInfos);
   //HOOKS
   const { auth } = useAuth();
   const [message, setMessage] = useState(

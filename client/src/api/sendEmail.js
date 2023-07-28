@@ -18,7 +18,6 @@ export const sendEmail = async (
     message: message,
     sign: sign,
   };
-  console.log(process.env.REACT_APP_EMAILJS_SERVICE_ID);
 
   try {
     const result = await emailjs.send(
