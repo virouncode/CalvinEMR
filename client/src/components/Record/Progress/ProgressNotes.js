@@ -35,8 +35,6 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
     setCheckedNotes(allNotesIds);
   };
 
-  console.log(auth.settings.progress_notes_order);
-
   return (
     <section className="progress-notes">
       <ProgressNotesHeader
