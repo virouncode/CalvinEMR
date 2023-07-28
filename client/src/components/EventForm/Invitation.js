@@ -126,7 +126,7 @@ const Invitation = ({
     for (const patientInfos of patientsGuestsInfos) {
       try {
         await sendEmail(
-          "virounk@gmail.com",
+          "virirak@gmail.com",
           patientInfos.full_name,
           subject,
           intro,
@@ -143,11 +143,42 @@ const Invitation = ({
           containerId: "A",
         });
       }
+      fetch("/api/twilio/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: "+16474447761", //to be changed to patientInfos.cell_phone
+          body: `
+Hello ${patientInfos.full_name},
+          
+${intro}
+          
+${infosToSend}
+          
+${message}
+          
+Best wishes,
+Powered by Calvin EMR`,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            console.log(data);
+          } else {
+            console.log("error");
+            toast.error(`Couldn't send the sms invitation : $(err.text)`, {
+              containerId: "A",
+            });
+          }
+        });
     }
     for (const staffInfos of staffGuestsInfos) {
       try {
         await sendEmail(
-          "virounk@gmail.com",
+          "virirak@gmail.com",
           staffInfos.full_name,
           subject,
           intro,
@@ -156,47 +187,46 @@ const Invitation = ({
           `Best wishes, \nPowered by Calvin EMR`
         );
         toast.success(
-          `Invitation successfully sent to ${staffInfos.full_name}`,
+          `Invitation email successfully sent to ${staffInfos.full_name}`,
           { containerId: "A" }
         );
       } catch (err) {
-        toast.error(`Couldn't send the invitation : $(err.text)`, {
+        toast.error(`Couldn't send the invitation email : $(err.text)`, {
           containerId: "A",
         });
       }
+      fetch("/api/twilio/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: "+16474447761", //to be changed to staffInfos.cell_phone
+          body: `
+Hello ${staffInfos.full_name},
+          
+${intro}
+          
+${infosToSend}
+          
+${message}
+          
+Best wishes,
+Powered by Calvin EMR`,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            console.log(data);
+          } else {
+            console.log("error");
+            toast.error(`Couldn't send the sms invitation : $(err.text)`, {
+              containerId: "A",
+            });
+          }
+        });
     }
-
-    fetch("/api/twilio/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: "+33683267962",
-        body: `${intro}\n\n${infosToSend}\n\n${message}\n\nBest wishes,\nPowered by Calvin EMR`,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          console.log(data);
-          // this.setState({
-          //   error: false,
-          //   submitting: false,
-          //   message: {
-          //     to: '',
-          //     body: ''
-          //   }
-          // });
-        } else {
-          console.log("error");
-          console.log(data);
-          // this.setState({
-          //   error: true,
-          //   submitting: false
-          // });
-        }
-      });
   };
   const handleSendAndSave = async (e) => {
     e.preventDefault();
@@ -273,7 +303,7 @@ const Invitation = ({
             <label>
               Appointment Infos (read only,{" "}
               <span style={{ color: "red" }}>
-                please be shure you provided a video call link, see "My Account"
+                please be sure you provided a video call link, see "My Account"
                 section
               </span>
               ):

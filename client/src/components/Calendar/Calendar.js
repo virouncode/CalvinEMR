@@ -232,7 +232,7 @@ const Calendar = ({ timelineVisible }) => {
               textOverflow: "clip",
             }}
           >
-            {event.extendedProps.reason ?? "New Event"}
+            {event.extendedProps.reason ?? "Appointment"}
           </span>
           <i className="fa-solid fa-trash" onClick={handleDeleteEvent}></i>
         </div>
@@ -317,7 +317,7 @@ const Calendar = ({ timelineVisible }) => {
                 }}
               >
                 {event.allDay ? "All Day" : info.timeText} -{" "}
-                {event.extendedProps.reason ?? "New Event"}
+                {event.extendedProps.reason ?? "Appointment"}
               </p>
               <i className="fa-solid fa-trash" onClick={handleDeleteEvent}></i>
             </div>
@@ -356,7 +356,7 @@ const Calendar = ({ timelineVisible }) => {
               {event.allDay ? "All Day" : info.timeText}
               <span style={{ marginLeft: "10px" }}>
                 <strong>Reason: </strong>
-                {event.extendedProps.reason ?? "New Event"}
+                {event.extendedProps.reason ?? "Appointment"}
               </span>
               {guestsCaption && (
                 <span>
@@ -392,7 +392,7 @@ const Calendar = ({ timelineVisible }) => {
                 }}
               >
                 <strong>Reason: </strong>
-                {event.extendedProps.reason ?? "New Event"}
+                {event.extendedProps.reason ?? "Appointment"}
               </p>
               <i
                 className="fa-solid fa-trash"
@@ -454,7 +454,7 @@ const Calendar = ({ timelineVisible }) => {
         duration: info.allDay
           ? 1440
           : Math.floor((endDate - startDate) / (1000 * 60)),
-        reason: "New Event",
+        reason: "Appointment",
         status: "Scheduled",
       },
       color: isSecretary() ? "#bfbfbf" : "#41A7F5",

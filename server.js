@@ -15,13 +15,7 @@ app.use(express.static("client/build"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-//API TEST
-app.get("/api/viroun", (_, res) => {
-  res.send({
-    msg: "Hello Viroun",
-  });
-});
-//Autres adresses API ici
+//***************** Endpoint TWILIO ******************//
 app.post("/api/twilio/messages", (req, res) => {
   res.header("Content-Type", "application/json");
   twilio.messages
@@ -38,7 +32,7 @@ app.post("/api/twilio/messages", (req, res) => {
       res.send(JSON.stringify({ success: false }));
     });
 });
-//*********************/
+//****************************************************//
 
 //Dans les autres cas on renvoie la single page app
 app.get("/*", (_, res) => {

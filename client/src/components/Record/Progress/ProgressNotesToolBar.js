@@ -82,6 +82,7 @@ const ProgressNotesToolBar = ({
         <input type="text" value={search} onChange={handleChange}></input>
       </div>
       <div className="progress-notes-toolbar-order">
+        <p>Most recent on:</p>
         <div className="progress-notes-toolbar-order-radio-item">
           <input
             type="radio"

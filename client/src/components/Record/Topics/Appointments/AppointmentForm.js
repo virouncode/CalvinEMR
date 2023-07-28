@@ -44,7 +44,7 @@ const AppointmentForm = ({
     duration: 0,
     all_day: false,
     status: "Scheduled",
-    reason: "New Event",
+    reason: "Appointment",
     staff_guests: [],
     patients_guests: [{ patients_id: patientId }],
     room: "To be determined",
