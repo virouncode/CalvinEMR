@@ -34,7 +34,7 @@ const PatientRecord = () => {
   };
 
   return patientInfos ? (
-    <main className="patient-display">
+    <>
       <div className="patient-header">
         <p></p>
         <h1>Patient Medical Record</h1>
@@ -66,7 +66,7 @@ const PatientRecord = () => {
           allContentsVisible={allContentsVisible}
         />
       </div>
-    </main>
+    </>
   ) : (
     <div
       style={{

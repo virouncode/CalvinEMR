@@ -137,6 +137,9 @@
                     outline:solid 2px $blue;
                 }
             }
+            p {
+                white-space: pre;
+            }
         }
         &-body-container {
             max-height: 0; 

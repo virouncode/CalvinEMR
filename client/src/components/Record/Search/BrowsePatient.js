@@ -66,14 +66,14 @@ const BrowsePatient = () => {
     setPatientsInfos(sortedPatientsInfos);
   };
   return (
-    <main className="browse-patient">
+    <>
       <PatientSearchForm setSearch={setSearch} search={search} />
       <PatientSearchResult
         search={search}
         patientsInfos={patientsInfos}
         handleSort={handleSort}
       />
-    </main>
+    </>
   );
 };
 

@@ -2,7 +2,11 @@ import React from "react";
 import BrowsePatient from "../components/Record/Search/BrowsePatient";
 
 const SearchPatientPage = () => {
-  return <BrowsePatient />;
+  return (
+    <main className="browse-patient">
+      <BrowsePatient />
+    </main>
+  );
 };
 
 export default SearchPatientPage;

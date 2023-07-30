@@ -1,0 +1,94 @@
+.messages {
+    margin-top: 40px;
+    &-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width : 98%;
+        margin: 0 auto;
+        &-leftbar {
+            width : 10%;
+            // border: solid 1px $black;
+            min-height: 80vh; 
+            background: rgb(238, 238, 238);
+            ul {
+                font-size: 0.9rem;
+            }
+            &-category {
+                padding: 4px 10px;
+                width: 100%;
+                cursor: pointer;
+                &:hover {
+                    background: rgb(115, 248, 190);
+                }
+                &--active {
+                    font-weight: bold;
+                    background: rgb(115, 248, 190);
+                }
+            }
+        }
+        &-box {
+            width: 90%;
+            border: solid 1px $black;
+        }
+    }
+    &-toolbar {
+        width : 98%;
+        margin: 0 auto;
+        height: 40px;
+        position: sticky;
+        display: flex;
+        align-items: center;
+        background: $blue;
+        border-radius: 4px 4px 0 0;
+        &-title {
+            width: 15%;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        input {
+            width: 60%;
+            font-size: 0.9rem;
+        }
+    }
+}
+
+.discussion-thumbnail {
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 30px;
+    &-checkbox {
+        width: 3%;
+    }
+    &-persons {
+        width: 20%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-right: 10px;
+    }
+    &-thumbnail {
+        width: 47%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-right: 20px;
+    }
+    &-patient {
+        width: 15%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;
+        &-link {
+            text-decoration: underline;
+        }
+    }
+    &-date {
+        width: 15%;
+        text-align: center;
+    }
+}

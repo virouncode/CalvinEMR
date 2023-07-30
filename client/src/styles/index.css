@@ -11819,6 +11819,9 @@ readers do not read off random characters that represent icons */
 .progress-notes-card-body-edit:focus {
   outline: solid 2px #94bae8;
 }
+.progress-notes-card-body p {
+  white-space: pre;
+}
 .progress-notes-card-body-container {
   max-height: 0;
   transition: 0.3s;
@@ -13549,5 +13552,99 @@ readers do not read off random characters that represent icons */
   width: 30%;
   margin: 0 auto;
   color: red;
+  text-align: center;
+}
+
+.messages {
+  margin-top: 40px;
+}
+.messages-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 98%;
+  margin: 0 auto;
+}
+.messages-section-leftbar {
+  width: 10%;
+  min-height: 80vh;
+  background: rgb(238, 238, 238);
+}
+.messages-section-leftbar ul {
+  font-size: 0.9rem;
+}
+.messages-section-leftbar-category {
+  padding: 4px 10px;
+  width: 100%;
+  cursor: pointer;
+}
+.messages-section-leftbar-category:hover {
+  background: rgb(115, 248, 190);
+}
+.messages-section-leftbar-category--active {
+  font-weight: bold;
+  background: rgb(115, 248, 190);
+}
+.messages-section-box {
+  width: 90%;
+  border: solid 1px #21201e;
+}
+.messages-toolbar {
+  width: 98%;
+  margin: 0 auto;
+  height: 40px;
+  position: sticky;
+  display: flex;
+  align-items: center;
+  background: #94bae8;
+  border-radius: 4px 4px 0 0;
+}
+.messages-toolbar-title {
+  width: 15%;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.messages-toolbar input {
+  width: 60%;
+  font-size: 0.9rem;
+}
+
+.discussion-thumbnail {
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 30px;
+}
+.discussion-thumbnail-checkbox {
+  width: 3%;
+}
+.discussion-thumbnail-persons {
+  width: 20%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: 10px;
+}
+.discussion-thumbnail-thumbnail {
+  width: 47%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: 20px;
+}
+.discussion-thumbnail-patient {
+  width: 15%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.discussion-thumbnail-patient-link {
+  text-decoration: underline;
+}
+.discussion-thumbnail-date {
+  width: 15%;
   text-align: center;
 }/*# sourceMappingURL=index.css.map */

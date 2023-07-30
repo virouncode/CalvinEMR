@@ -14,6 +14,7 @@ import Layout2 from "./components/Presentation/Layout2";
 import SignupPageStaff from "./pages/SignupPageStaff";
 import SignupPagePatient from "./pages/SignupPagePatient";
 import MyAccountPage from "./pages/MyAccountPage";
+import MessagesPage from "./pages/MessagesPage";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="patient-record/:id" element={<PatientRecordPage />} />
           <Route path="signup-patient" element={<SignupPagePatient />} />
           <Route path="my-account" element={<MyAccountPage />} />
+          <Route path="messages" element={<MessagesPage />} />
         </Route>
         <Route element={<RequireAuth allowedAccesses={["Admin"]} />}>
           <Route path="signup-staff" element={<SignupPageStaff />} />
