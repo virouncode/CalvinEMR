@@ -35,6 +35,10 @@ import AppointmentsPU from "../Popups/AppointmentsPU";
 import MeasurementsPU from "../Popups/MeasurementsPU";
 import PatientTopicHeader from "./PatientTopicHeader";
 import NewWindow from "react-new-window";
+import RelationshipsContent from "../Topics/Relationships/RelationshipsContent";
+import RelationshipsPU from "../Popups/RelationshipsPU";
+import MessagesContent from "../Topics/MessagesAboutPatient/MessagesContent";
+import MessagesPU from "../Popups/MessagesPU";
 
 const PatientTopic = ({
   backgroundColor,
@@ -61,7 +65,7 @@ const PatientTopic = ({
 
   const handleTriangleClick = (e) => {
     e.target.classList.toggle("triangle--active");
-    if (topic === "MEASUREMENTS" || topic === "APPOINTMENTS") {
+    if (topic === "MEASUREMENTS" || topic === "MESSAGES") {
       contentRef.current.classList.toggle(
         `patient-topic-content-${side}-bottom--active`
       );
@@ -99,7 +103,7 @@ const PatientTopic = ({
       <div
         className={
           allContentsVisible
-            ? topic === "MEASUREMENTS" || topic === "APPOINTMENTS"
+            ? topic === "MEASUREMENTS" || topic === "MESSAGES"
               ? `patient-topic-content-${side} patient-topic-content-${side}-bottom--active`
               : `patient-topic-content-${side} patient-topic-content-${side}--active`
             : `patient-topic-content-${side}`
@@ -194,6 +198,40 @@ const PatientTopic = ({
             onUnload={() => setPopUpVisible(false)}
           >
             <FamHistoryPU
+              patientId={patientId}
+              datas={datas}
+              setDatas={setDatas}
+              setPopUpVisible={setPopUpVisible}
+            />
+          </NewWindow>
+        )}
+        {/*******************/}
+
+        {/* RELATIONSHIPS */}
+        {topic === "RELATIONSHIPS" && (
+          <RelationshipsContent
+            patientId={patientId}
+            datas={datas}
+            setDatas={setDatas}
+          />
+        )}
+        {topic === "RELATIONSHIPS" && popUpVisible && (
+          <NewWindow
+            title="Patient Relationships"
+            features={{
+              toolbar: "no",
+              scrollbars: "no",
+              menubar: "no",
+              status: "no",
+              directories: "no",
+              width: 800,
+              height: 600,
+              left: 320,
+              top: 200,
+            }}
+            onUnload={() => setPopUpVisible(false)}
+          >
+            <RelationshipsPU
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
@@ -642,6 +680,39 @@ const PatientTopic = ({
             <AppointmentsPU
               patientId={patientId}
               patientInfos={patientInfos}
+              datas={datas}
+              setDatas={setDatas}
+              setPopUpVisible={setPopUpVisible}
+            />
+          </NewWindow>
+        )}
+        {/*******************/}
+        {/* MESSAGES */}
+        {topic === "MESSAGES" && (
+          <MessagesContent
+            patientId={patientId}
+            datas={datas}
+            setDatas={setDatas}
+          />
+        )}
+        {topic === "MESSAGES" && popUpVisible && (
+          <NewWindow
+            title="Messages about patient"
+            features={{
+              toolbar: "no",
+              scrollbars: "no",
+              menubar: "no",
+              status: "no",
+              directories: "no",
+              width: 800,
+              height: 600,
+              left: 320,
+              top: 200,
+            }}
+            onUnload={() => setPopUpVisible(false)}
+          >
+            <MessagesPU
+              patientId={patientId}
               datas={datas}
               setDatas={setDatas}
               setPopUpVisible={setPopUpVisible}

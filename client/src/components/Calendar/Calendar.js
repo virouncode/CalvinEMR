@@ -234,7 +234,7 @@ const Calendar = ({ timelineVisible }) => {
           >
             {event.extendedProps.reason ?? "Appointment"}
           </span>
-          <i className="fa-solid fa-trash" onClick={handleDeleteEvent}></i>
+          <i className="fa-solid fa-" onClick={handleDeleteEvent}></i>
         </div>
       );
     } else {

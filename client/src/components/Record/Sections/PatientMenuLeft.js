@@ -39,6 +39,14 @@ const PatientMenuLeft = ({
       />
       <PatientTopic
         textColor="#FEFEFE"
+        backgroundColor="#01ba95"
+        topic="RELATIONSHIPS"
+        patientId={patientId}
+        allContentsVisible={allContentsVisible}
+        side="left"
+      />
+      <PatientTopic
+        textColor="#FEFEFE"
         backgroundColor="#2c8c99"
         topic="SOCIAL HISTORY"
         patientId={patientId}

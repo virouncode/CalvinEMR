@@ -32,7 +32,7 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
       />
       <PatientTopic
         textColor="#FEFEFE"
-        backgroundColor="#2c8c99"
+        backgroundColor="#01ba95"
         topic="ALLERGIES"
         patientId={patientId}
         allContentsVisible={allContentsVisible}
@@ -40,7 +40,7 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
       />
       <PatientTopic
         textColor="#FEFEFE"
-        backgroundColor="#ef0b00"
+        backgroundColor="#2c8c99"
         topic="ONGOING CONCERNS"
         patientId={patientId}
         allContentsVisible={allContentsVisible}
@@ -48,7 +48,7 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
       />
       <PatientTopic
         textColor="#FEFEFE"
-        backgroundColor="#931621"
+        backgroundColor="#ef0b00"
         topic="DOCUMENTS"
         patientId={patientId}
         allContentsVisible={allContentsVisible}
@@ -56,7 +56,7 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
       />
       <PatientTopic
         textColor="#FEFEFE"
-        backgroundColor="#28464b"
+        backgroundColor="#931621"
         topic="VACCINES"
         patientId={patientId}
         allContentsVisible={allContentsVisible}
@@ -65,8 +65,17 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
       />
       <PatientTopic
         textColor="#FEFEFE"
-        backgroundColor="#21201e"
+        backgroundColor="#28464b"
         topic="APPOINTMENTS"
+        patientId={patientId}
+        patientInfos={patientInfos}
+        allContentsVisible={allContentsVisible}
+        side="right"
+      />
+      <PatientTopic
+        textColor="#FEFEFE"
+        backgroundColor="#21201e"
+        topic="MESSAGES"
         patientId={patientId}
         patientInfos={patientInfos}
         allContentsVisible={allContentsVisible}

@@ -10499,7 +10499,7 @@ readers do not read off random characters that represent icons */
   background: #94bae8;
   display: grid;
   grid-template-columns: 25% 50% 25%;
-  border-bottom: solid 1px #21201e;
+  border-bottom: solid 0.5px grey;
   justify-content: space-around;
   align-items: center;
   padding: 10px 15px;
@@ -11684,7 +11684,7 @@ readers do not read off random characters that represent icons */
 
 .progress-notes {
   font-size: 0.85rem;
-  border: solid 1px #21201e;
+  border: solid 0.5px grey;
   border-radius: 2px;
 }
 .progress-notes-header {
@@ -11697,13 +11697,13 @@ readers do not read off random characters that represent icons */
   justify-content: space-between;
   align-items: center;
   background-color: #94bae8;
-  border-bottom: solid 1px #21201e;
+  border-bottom: solid 0.5px grey;
 }
 .progress-notes-title i {
   cursor: pointer;
 }
 .progress-notes-toolbar {
-  border-bottom: solid 1px #21201e;
+  border-bottom: solid 1px grey;
   margin-bottom: -1px;
   padding: 5px;
   display: flex;
@@ -11741,7 +11741,7 @@ readers do not read off random characters that represent icons */
   max-height: 200vh;
 }
 .progress-notes-card {
-  border: solid 1px #21201e;
+  border: solid 0.5px grey;
   margin: 4px;
   border-radius: 4px;
   overflow: hidden;
@@ -11779,12 +11779,6 @@ readers do not read off random characters that represent icons */
 }
 .progress-notes-card-header-btns {
   margin-left: 5px;
-}
-.progress-notes-card-header-btns button {
-  padding: 3px 15px;
-  border-radius: 4px;
-  border: solid 1px #21201e;
-  cursor: pointer;
 }
 .progress-notes-card-header-check {
   margin-right: 5px;
@@ -11840,7 +11834,7 @@ readers do not read off random characters that represent icons */
   cursor: pointer;
 }
 .progress-notes-card-print {
-  border: solid 1px #21201e;
+  border: solid 0.5px grey;
   margin: 4px;
   border-radius: 4px;
   overflow: hidden;
@@ -11858,7 +11852,7 @@ readers do not read off random characters that represent icons */
   align-items: center;
 }
 .progress-notes-form {
-  border: solid 1px #21201e;
+  border: solid 0.5px grey;
   margin: 4px;
   border-radius: 4px;
   overflow: hidden;
@@ -11917,7 +11911,7 @@ readers do not read off random characters that represent icons */
   width: 95%;
   border: none;
   border-radius: 3px;
-  outline: solid 1px #21201e;
+  outline: solid 0.5px grey;
   height: 300px;
   margin: 0 auto;
   padding: 10px;
@@ -11927,7 +11921,7 @@ readers do not read off random characters that represent icons */
   padding: 15px;
 }
 .progress-notes-attachments-card {
-  border: solid 1px #21201e;
+  border: solid 0.5px grey;
   width: 20%;
   margin: 0 5px;
 }
@@ -11964,8 +11958,8 @@ readers do not read off random characters that represent icons */
   justify-content: space-between;
   align-items: center;
   padding: 5px;
-  border-right: solid 1px #21201e;
-  border-left: solid 1px #21201e;
+  border-right: solid 0.5px grey;
+  border-left: solid 0.5px grey;
   margin-right: -1px;
 }
 .patient-topic-title-left i {
@@ -11977,8 +11971,8 @@ readers do not read off random characters that represent icons */
   justify-content: space-between;
   align-items: center;
   padding: 5px;
-  border-right: solid 1px #21201e;
-  border-left: solid 1px #21201e;
+  border-right: solid 0.5px grey;
+  border-left: solid 0.5px grey;
   margin-left: -1px;
 }
 .patient-topic-title-right i {
@@ -11994,14 +11988,14 @@ readers do not read off random characters that represent icons */
 }
 .patient-topic-content-left--active {
   max-height: 400px;
-  border-left: solid 1px #21201e;
-  border-right: solid 1px #21201e;
+  border-left: solid 0.5px grey;
+  border-right: solid 0.5px grey;
 }
 .patient-topic-content-left-bottom--active {
   max-height: 400px;
-  border-left: solid 1px #21201e;
-  border-right: solid 1px #21201e;
-  border-bottom: solid 1px #21201e;
+  border-left: solid 0.5px grey;
+  border-right: solid 0.5px grey;
+  border-bottom: solid 0.5px grey;
 }
 .patient-topic-content-left .patient-soc-history-content, .patient-topic-content-left .patient-measurements-content {
   padding: 5px;
@@ -12069,43 +12063,43 @@ readers do not read off random characters that represent icons */
 }
 .patient-topic-content-right--active {
   max-height: 400px;
-  border-left: solid 1px #21201e;
-  border-right: solid 1px #21201e;
+  border-left: solid 0.5px grey;
+  border-right: solid 0.5px grey;
 }
 .patient-topic-content-right-bottom--active {
   max-height: 400px;
-  border-left: solid 1px #21201e;
-  border-right: solid 1px #21201e;
-  border-bottom: solid 1px #21201e;
+  border-left: solid 0.5px grey;
+  border-right: solid 0.5px grey;
+  border-bottom: solid 0.5px grey;
 }
-.patient-topic-content-right .patient-doctors-content, .patient-topic-content-right .patient-reminders-content, .patient-topic-content-right .patient-pregnancies-content, .patient-topic-content-right .patient-allergies-content, .patient-topic-content-right .patient-concerns-content, .patient-topic-content-right .patient-documents-content, .patient-topic-content-right .patient-appointments-content, .patient-topic-content-right .patient-vaccines-content {
+.patient-topic-content-right .patient-doctors-content, .patient-topic-content-right .patient-reminders-content, .patient-topic-content-right .patient-pregnancies-content, .patient-topic-content-right .patient-allergies-content, .patient-topic-content-right .patient-concerns-content, .patient-topic-content-right .patient-documents-content, .patient-topic-content-right .patient-appointments-content, .patient-topic-content-right .patient-vaccines-content, .patient-topic-content-right .patient-messages-content {
   padding: 5px;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
-.patient-topic-content-right .patient-doctors-content-event ul, .patient-topic-content-right .patient-reminders-content-event ul, .patient-topic-content-right .patient-pregnancies-content-event ul, .patient-topic-content-right .patient-allergies-content-event ul, .patient-topic-content-right .patient-concerns-content-event ul, .patient-topic-content-right .patient-documents-content-event ul, .patient-topic-content-right .patient-appointments-content-event ul, .patient-topic-content-right .patient-vaccines-content-event ul {
+.patient-topic-content-right .patient-doctors-content-event ul, .patient-topic-content-right .patient-reminders-content-event ul, .patient-topic-content-right .patient-pregnancies-content-event ul, .patient-topic-content-right .patient-allergies-content-event ul, .patient-topic-content-right .patient-concerns-content-event ul, .patient-topic-content-right .patient-documents-content-event ul, .patient-topic-content-right .patient-appointments-content-event ul, .patient-topic-content-right .patient-vaccines-content-event ul, .patient-topic-content-right .patient-messages-content-event ul {
   margin-bottom: 5px;
 }
-.patient-topic-content-right .patient-doctors-content-event ul li, .patient-topic-content-right .patient-reminders-content-event ul li, .patient-topic-content-right .patient-pregnancies-content-event ul li, .patient-topic-content-right .patient-allergies-content-event ul li, .patient-topic-content-right .patient-concerns-content-event ul li, .patient-topic-content-right .patient-documents-content-event ul li, .patient-topic-content-right .patient-appointments-content-event ul li, .patient-topic-content-right .patient-vaccines-content-event ul li {
+.patient-topic-content-right .patient-doctors-content-event ul li, .patient-topic-content-right .patient-reminders-content-event ul li, .patient-topic-content-right .patient-pregnancies-content-event ul li, .patient-topic-content-right .patient-allergies-content-event ul li, .patient-topic-content-right .patient-concerns-content-event ul li, .patient-topic-content-right .patient-documents-content-event ul li, .patient-topic-content-right .patient-appointments-content-event ul li, .patient-topic-content-right .patient-vaccines-content-event ul li, .patient-topic-content-right .patient-messages-content-event ul li {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
 }
-.patient-topic-content-right .patient-doctors-content-event ul li label, .patient-topic-content-right .patient-reminders-content-event ul li label, .patient-topic-content-right .patient-pregnancies-content-event ul li label, .patient-topic-content-right .patient-allergies-content-event ul li label, .patient-topic-content-right .patient-concerns-content-event ul li label, .patient-topic-content-right .patient-documents-content-event ul li label, .patient-topic-content-right .patient-appointments-content-event ul li label, .patient-topic-content-right .patient-vaccines-content-event ul li label {
+.patient-topic-content-right .patient-doctors-content-event ul li label, .patient-topic-content-right .patient-reminders-content-event ul li label, .patient-topic-content-right .patient-pregnancies-content-event ul li label, .patient-topic-content-right .patient-allergies-content-event ul li label, .patient-topic-content-right .patient-concerns-content-event ul li label, .patient-topic-content-right .patient-documents-content-event ul li label, .patient-topic-content-right .patient-appointments-content-event ul li label, .patient-topic-content-right .patient-vaccines-content-event ul li label, .patient-topic-content-right .patient-messages-content-event ul li label {
   font-weight: bold;
   margin-right: 5px;
 }
-.patient-topic-content-right .patient-doctors-content-event ul li p, .patient-topic-content-right .patient-reminders-content-event ul li p, .patient-topic-content-right .patient-pregnancies-content-event ul li p, .patient-topic-content-right .patient-allergies-content-event ul li p, .patient-topic-content-right .patient-concerns-content-event ul li p, .patient-topic-content-right .patient-documents-content-event ul li p, .patient-topic-content-right .patient-appointments-content-event ul li p, .patient-topic-content-right .patient-vaccines-content-event ul li p {
+.patient-topic-content-right .patient-doctors-content-event ul li p, .patient-topic-content-right .patient-reminders-content-event ul li p, .patient-topic-content-right .patient-pregnancies-content-event ul li p, .patient-topic-content-right .patient-allergies-content-event ul li p, .patient-topic-content-right .patient-concerns-content-event ul li p, .patient-topic-content-right .patient-documents-content-event ul li p, .patient-topic-content-right .patient-appointments-content-event ul li p, .patient-topic-content-right .patient-vaccines-content-event ul li p, .patient-topic-content-right .patient-messages-content-event ul li p {
   word-break: break-all;
   text-align: justify;
 }
-.patient-topic-content-right .patient-doctors-content-event-link, .patient-topic-content-right .patient-reminders-content-event-link, .patient-topic-content-right .patient-pregnancies-content-event-link, .patient-topic-content-right .patient-allergies-content-event-link, .patient-topic-content-right .patient-concerns-content-event-link, .patient-topic-content-right .patient-documents-content-event-link, .patient-topic-content-right .patient-appointments-content-event-link, .patient-topic-content-right .patient-vaccines-content-event-link {
+.patient-topic-content-right .patient-doctors-content-event-link, .patient-topic-content-right .patient-reminders-content-event-link, .patient-topic-content-right .patient-pregnancies-content-event-link, .patient-topic-content-right .patient-allergies-content-event-link, .patient-topic-content-right .patient-concerns-content-event-link, .patient-topic-content-right .patient-documents-content-event-link, .patient-topic-content-right .patient-appointments-content-event-link, .patient-topic-content-right .patient-vaccines-content-event-link, .patient-topic-content-right .patient-messages-content-event-link {
   cursor: pointer;
   text-decoration: underline;
   color: rgba(0, 0, 255, 0.469);
 }
-.patient-topic-content-right .patient-doctors-content-event-link:hover, .patient-topic-content-right .patient-reminders-content-event-link:hover, .patient-topic-content-right .patient-pregnancies-content-event-link:hover, .patient-topic-content-right .patient-allergies-content-event-link:hover, .patient-topic-content-right .patient-concerns-content-event-link:hover, .patient-topic-content-right .patient-documents-content-event-link:hover, .patient-topic-content-right .patient-appointments-content-event-link:hover, .patient-topic-content-right .patient-vaccines-content-event-link:hover {
+.patient-topic-content-right .patient-doctors-content-event-link:hover, .patient-topic-content-right .patient-reminders-content-event-link:hover, .patient-topic-content-right .patient-pregnancies-content-event-link:hover, .patient-topic-content-right .patient-allergies-content-event-link:hover, .patient-topic-content-right .patient-concerns-content-event-link:hover, .patient-topic-content-right .patient-documents-content-event-link:hover, .patient-topic-content-right .patient-appointments-content-event-link:hover, .patient-topic-content-right .patient-vaccines-content-event-link:hover, .patient-topic-content-right .patient-messages-content-event-link:hover {
   color: blue;
 }
 
@@ -13587,7 +13581,6 @@ readers do not read off random characters that represent icons */
 }
 .messages-section-box {
   width: 90%;
-  border: solid 1px #21201e;
 }
 .messages-toolbar {
   width: 98%;
@@ -13600,7 +13593,7 @@ readers do not read off random characters that represent icons */
   border-radius: 4px 4px 0 0;
 }
 .messages-toolbar-title {
-  width: 15%;
+  width: 10%;
   font-size: 1.2rem;
   font-weight: bold;
 }
@@ -13608,27 +13601,45 @@ readers do not read off random characters that represent icons */
   width: 60%;
   font-size: 0.9rem;
 }
+.messages-toolbar-magnifying {
+  width: 5%;
+}
+.messages-toolbar-btns {
+  width: 25%;
+  display: flex;
+  justify-content: flex-end;
+}
+.messages-toolbar-btns button {
+  margin-right: 10px;
+}
 
 .discussion-thumbnail {
-  cursor: pointer;
   font-size: 0.8rem;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 30px;
+  height: 35px;
+  border-bottom: solid 0.5px grey;
 }
 .discussion-thumbnail-checkbox {
   width: 3%;
 }
+.discussion-thumbnail-link {
+  width: 67%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .discussion-thumbnail-persons {
-  width: 20%;
+  width: 30%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-right: 10px;
 }
-.discussion-thumbnail-thumbnail {
-  width: 47%;
+.discussion-thumbnail-sample {
+  width: 65%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -13647,4 +13658,225 @@ readers do not read off random characters that represent icons */
 .discussion-thumbnail-date {
   width: 15%;
   text-align: center;
+}
+
+.discussion-detail-toolbar {
+  padding: 5px;
+  border-bottom: solid 0.5px grey;
+  display: flex;
+  align-items: center;
+  position: sticky;
+}
+.discussion-detail-toolbar-arrow {
+  width: 7%;
+}
+.discussion-detail-toolbar-subject {
+  font-size: 0.9rem;
+  width: 70%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.discussion-detail-btns {
+  padding: 20px;
+}
+.discussion-detail-btns button {
+  margin-right: 10px;
+}
+
+.message {
+  padding: 20px;
+  border-bottom: solid 0.5px rgb(204, 204, 204);
+}
+.message-title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+.message-title-author {
+  font-weight: bold;
+}
+.message-title-date {
+  width: 28%;
+  text-align: right;
+}
+.message-subtitle {
+  font-size: 0.6rem;
+}
+.message-body {
+  padding: 20px 20px 0;
+  font-size: 0.8rem;
+  white-space: pre;
+}
+
+.reply-form {
+  min-height: 250px;
+  border: solid 0.3px grey;
+  border-radius: 4px;
+  padding: 0 10px;
+  margin: 20px auto;
+  width: 90%;
+  font-size: 0.8rem;
+}
+.reply-form-title {
+  border-bottom: solid 0.3px grey;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.reply-form-title p {
+  padding: 0;
+}
+.reply-form-body {
+  display: flex;
+  justify-content: center;
+  height: 80%;
+  padding: 10px 0;
+}
+.reply-form-btns {
+  border-top: solid 0.3px grey;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.reply-form-btns button {
+  margin-right: 10px;
+}
+.reply-form textarea {
+  border: none;
+  outline: none;
+  padding: 5px 0;
+  width: 95%;
+  min-height: 200px;
+}
+
+.new-message {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 5px;
+}
+.new-message-contacts {
+  width: 24%;
+  border: solid 0.3px grey;
+  border-radius: 4px;
+  margin: 20px auto;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+}
+.new-message-form {
+  min-height: 250px;
+  border: solid 0.3px grey;
+  border-radius: 4px;
+  padding: 0 10px;
+  margin: 20px auto;
+  width: 50%;
+  font-size: 0.8rem;
+}
+.new-message-form-recipients {
+  border-bottom: solid 0.3px grey;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+.new-message-form-recipients input {
+  outline: none;
+  width: 90%;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.new-message-form-object {
+  border-bottom: solid 0.3px grey;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+.new-message-form-object input {
+  outline: none;
+  width: 92%;
+}
+.new-message-form-patient {
+  border-bottom: solid 0.3px grey;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+.new-message-form-patient input {
+  outline: none;
+  width: 80%;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.new-message-form-body {
+  width: 95%;
+  display: flex;
+  justify-content: center;
+}
+.new-message-form-body textarea {
+  border: none;
+  outline: none;
+  padding: 20px;
+  width: 95%;
+  min-height: 300px;
+}
+.new-message-form-btns {
+  border-top: solid 0.3px grey;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.new-message-form-btns button {
+  margin-right: 10px;
+}
+.new-message-patients {
+  width: 24%;
+  border: solid 0.3px grey;
+  border-radius: 4px;
+  margin: 20px auto;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+}
+
+.contacts-title {
+  margin-bottom: 10px;
+}
+.contacts-list-item {
+  font-size: 0.7rem;
+}
+
+.contacts-category-overview {
+  display: flex;
+  align-items: center;
+}
+.contacts-category-overview i {
+  margin-right: 5px;
+}
+.contacts-category-overview input[type=checkbox] {
+  margin-right: 5px;
+}
+
+.contacts-list {
+  padding: 5px 0 0 30px;
+}
+.contacts-list-item {
+  display: flex;
+  align-items: center;
+}
+.contacts-list-item input[type=checkbox] {
+  margin-right: 5px;
+}
+
+.patients-title {
+  margin-bottom: 10px;
+}
+.patients-list-item {
+  display: flex;
+  align-items: center;
+}
+.patients-list-item input[type=checkbox] {
+  margin-right: 5px;
 }/*# sourceMappingURL=index.css.map */

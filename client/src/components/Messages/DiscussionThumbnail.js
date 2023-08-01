@@ -5,25 +5,16 @@ import formatName from "../../utils/formatName";
 import { NavLink } from "react-router-dom";
 import { toLocalDateAndTime } from "../../utils/formatDates";
 
-const DiscussionThumbnail = ({ discussion, messages }) => {
+const DiscussionThumbnail = ({
+  discussion,
+  messages,
+  setCurrentDiscussionId,
+  staffInfos,
+  setMessages,
+}) => {
   const { auth } = useAuth();
-  const [staffInfos, setStaffInfos] = useState(null);
   const [patient, setPatient] = useState({});
-  console.log("discussion-thumbnail", discussion);
-  console.log("messages", messages);
-
-  useEffect(() => {
-    const fetchStaffInfos = async () => {
-      const response = await axios.get("/staff", {
-        headers: {
-          Authorization: `Bearer ${auth?.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      setStaffInfos(response?.data);
-    };
-    fetchStaffInfos();
-  }, [auth?.authToken]);
+  console.log("render discussion thumbnail");
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -36,23 +27,82 @@ const DiscussionThumbnail = ({ discussion, messages }) => {
           },
         }
       );
-      console.log("patient", response.data);
       setPatient(response.data);
     };
     fetchPatient();
   }, [auth?.authToken, discussion.related_patient_id]);
 
+  const handleDiscussionClick = async (e) => {
+    setCurrentDiscussionId(discussion.id);
+    //all messages read by userId
+    for (let message of messages) {
+      if (!message.read_by_ids.includes(auth.userId)) {
+        //create message to update
+        const newMessage = {
+          ...message,
+          read_by_ids: [...message.read_by_ids, auth.userId],
+        };
+        await axios.put(`/messages/${message.id}`, newMessage, {
+          headers: {
+            Authorization: `Bearer ${auth?.authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+      }
+    }
+    //update messages
+    const response = await axios.get(`/messages?staff_id=${auth.userId}`, {
+      headers: {
+        Authorization: `Bearer ${auth?.authToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    setMessages(response.data);
+  };
+
+  const THUMBNAIL_STYLE = {
+    fontWeight: messages.slice(-1)[0].read_by_ids.includes(auth.userId)
+      ? "normal"
+      : "bold",
+  };
+
   return (
     staffInfos && (
-      <div className="discussion-thumbnail">
+      <div className="discussion-thumbnail" style={THUMBNAIL_STYLE}>
         <input className="discussion-thumbnail-checkbox" type="checkbox" />
-        <div className="discussion-thumbnail-persons">
-          {formatName(
-            staffInfos.find(({ id }) => id === messages[0].from_id).full_name
-          )}
-        </div>
-        <div className="discussion-thumbnail-thumbnail">
-          <span>{discussion.subject}</span> - {messages.slice(-1)[0].body}
+        <div
+          onClick={handleDiscussionClick}
+          className="discussion-thumbnail-link"
+        >
+          <div className="discussion-thumbnail-persons">
+            {staffInfos.find(({ id }) => id === messages[0].from_id).title ===
+            "Doctor"
+              ? "Dr. "
+              : ""}
+            {formatName(
+              staffInfos.find(({ id }) => id === messages[0].from_id).full_name
+            )}
+            ,{" "}
+            {discussion.staff_ids
+              .filter(
+                (staff_id) =>
+                  staff_id !== auth.userId && staff_id !== messages[0].from_id
+              )
+              .map(
+                (staff_id) =>
+                  (staffInfos.find(({ id }) => id === staff_id).title ===
+                  "Doctor"
+                    ? "Dr. "
+                    : "") +
+                  formatName(
+                    staffInfos.find(({ id }) => id === staff_id).full_name
+                  )
+              )
+              .join(" ,")}
+          </div>
+          <div className="discussion-thumbnail-sample">
+            <span>{discussion.subject}</span> - {messages.slice(-1)[0].body}
+          </div>
         </div>
         <div className="discussion-thumbnail-patient">
           <NavLink
