@@ -8,9 +8,11 @@ import useAuth from "../../hooks/useAuth";
 const Messages = () => {
   const { auth } = useAuth();
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("Inbox");
+  const [section, setSection] = useState("Inbox");
   const [newVisible, setNewVisible] = useState(false);
   const [staffInfos, setStaffInfos] = useState(null);
+  const [discussionsSelectedIds, setDiscussionsSelectedIds] = useState([]);
+  const [currentDiscussionId, setCurrentDiscussionId] = useState(0);
 
   useEffect(() => {
     const fetchStaffInfos = async () => {
@@ -32,15 +34,28 @@ const Messages = () => {
         setSearch={setSearch}
         newVisible={newVisible}
         setNewVisible={setNewVisible}
+        section={section}
+        setSection={setSection}
+        discussionsSelectedIds={discussionsSelectedIds}
+        setDiscussionsSelectedIds={setDiscussionsSelectedIds}
       />
       <div className="messages-section">
-        <MessagesLeftBar category={category} setCategory={setCategory} />
+        <MessagesLeftBar
+          section={section}
+          setSection={setSection}
+          setCurrentDiscussionId={setCurrentDiscussionId}
+        />
         <MessagesBox
-          category={category}
+          section={section}
           search={search}
           newVisible={newVisible}
           staffInfos={staffInfos}
           setNewVisible={setNewVisible}
+          setSection={setSection}
+          discussionsSelectedIds={discussionsSelectedIds}
+          setDiscussionsSelectedIds={setDiscussionsSelectedIds}
+          currentDiscussionId={currentDiscussionId}
+          setCurrentDiscussionId={setCurrentDiscussionId}
         />
       </div>
     </div>

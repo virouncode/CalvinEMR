@@ -65,6 +65,23 @@ const LoginForm = () => {
           },
         });
 
+        const response4 = await axios.get(`/messages?staff_id=${userId}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+
+        const unreadMessagesNbr = response4.data.reduce(
+          (accumulator, currentValue) => {
+            if (!currentValue.read_by_ids.includes(userId)) {
+              return accumulator + 1;
+            } else {
+              return accumulator;
+            }
+          },
+          0
+        );
+
         const settings = response3?.data;
         setAuth({
           email,
@@ -78,6 +95,7 @@ const LoginForm = () => {
           sign,
           cell_phone,
           settings,
+          unreadMessagesNbr,
         });
         setEmail("");
         setPassword("");

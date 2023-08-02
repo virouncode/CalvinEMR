@@ -6,12 +6,14 @@ import Patients from "./Patients";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
 import { toast } from "react-toastify";
+import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
 
 const NewMessage = ({
   staffInfos,
   setNewVisible,
   setMessages,
   setDiscussions,
+  section,
 }) => {
   const { auth } = useAuth();
   const [recipientsIds, setRecipientsIds] = useState([]);
@@ -116,9 +118,11 @@ const NewMessage = ({
     //create a discussion
     const discussion = {
       subject: subject,
-      staff_ids: recipientsIds.includes(auth.userId)
+      author_id: auth.userId,
+      participants_ids: recipientsIds.includes(auth.userId)
         ? recipientsIds
         : [...recipientsIds, auth.userId],
+      last_replier_id: 0,
       related_patient_id: patientId,
       deleted_by_ids: [],
       date_created: Date.parse(new Date()),
@@ -169,7 +173,12 @@ const NewMessage = ({
           "Content-Type": "application/json",
         },
       });
-      setDiscussions(response2.data);
+      const newDiscussions = filterAndSortDiscussions(
+        section,
+        response2.data,
+        auth.userId
+      );
+      setDiscussions(newDiscussions);
       setMessages(response3.data);
       setNewVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });

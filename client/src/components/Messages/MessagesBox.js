@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import DiscussionDetail from "./DiscussionDetail";
@@ -6,33 +6,53 @@ import DiscussionsOverview from "./DiscussionsOverview";
 import NewMessage from "./NewMessage";
 import NewWindow from "react-new-window";
 import { CircularProgress } from "@mui/material";
+import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
 
 const MessagesBox = ({
-  category,
+  section,
   search,
   newVisible,
   setNewVisible,
   staffInfos,
+  setSection,
+  setDiscussionsSelectedIds,
+  discussionsSelectedIds,
+  currentDiscussionId,
+  setCurrentDiscussionId,
 }) => {
-  const { auth } = useAuth();
+  const { setAuth, auth } = useAuth();
   const [discussions, setDiscussions] = useState(null);
   const [messages, setMessages] = useState(null);
-  const [currentDiscussionId, setCurrentDiscussionId] = useState(0);
-  console.log("render messagebox");
+  // const loading = useRef(false);
+
+  console.log("render");
+
+  //Voir en fonction de section
   useEffect(() => {
     const fetchMessages = async () => {
+      console.log("fetchMessages");
       const response = await axios.get(`/messages?staff_id=${auth.userId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth?.authToken}`,
         },
       });
-      console.log("message from mssagesBox", response.data);
       setMessages(
         response.data.sort(
           (a, b) => new Date(a.date_created) - new Date(b.date_created)
         )
       );
+      const unreadMessagesNbr = response.data.reduce(
+        (accumulator, currentValue) => {
+          if (!currentValue.read_by_ids.includes(auth.userId)) {
+            return accumulator + 1;
+          } else {
+            return accumulator;
+          }
+        },
+        0
+      );
+      setAuth({ ...auth, unreadMessagesNbr: unreadMessagesNbr });
     };
     fetchMessages();
   }, [auth.userId, auth.authToken]);
@@ -45,41 +65,66 @@ const MessagesBox = ({
           Authorization: `Bearer ${auth?.authToken}`,
         },
       });
-      setDiscussions(
-        response.data.sort(
-          (a, b) => new Date(b.date_updated) - new Date(a.date_updated)
-        )
+      const newDiscussions = filterAndSortDiscussions(
+        section,
+        response.data,
+        auth.userId
       );
+      setDiscussions(newDiscussions);
     };
     fetchDiscussions();
-  }, [auth?.authToken, auth.userId]);
+    return () => setDiscussions(null);
+  }, [auth?.authToken, auth.userId, section]);
 
-  return discussions && messages ? (
+  const emptySectionMessages = (sectionName) => {
+    switch (sectionName) {
+      case "Inbox":
+        return "No inbox messages";
+      case "Sent messages":
+        return "No sent messages";
+      case "Deleted messages":
+        return "No deleted messages";
+      default:
+        break;
+    }
+  };
+
+  return (
     <>
       <div className="messages-section-box">
-        {messages.length !== 0 ? (
-          currentDiscussionId === 0 ? (
-            <DiscussionsOverview
-              discussions={discussions}
-              messages={messages}
-              setCurrentDiscussionId={setCurrentDiscussionId}
-              staffInfos={staffInfos}
-              setMessages={setMessages}
-            />
+        {discussions && messages ? (
+          discussions?.length !== 0 ? (
+            currentDiscussionId === 0 ? (
+              <DiscussionsOverview
+                discussions={discussions}
+                messages={messages}
+                setCurrentDiscussionId={setCurrentDiscussionId}
+                staffInfos={staffInfos}
+                setMessages={setMessages}
+                setDiscussionsSelectedIds={setDiscussionsSelectedIds}
+                discussionsSelectedIds={discussionsSelectedIds}
+                section={section}
+                setDiscussions={setDiscussions}
+              />
+            ) : (
+              <DiscussionDetail
+                messages={messages}
+                setMessages={setMessages}
+                setCurrentDiscussionId={setCurrentDiscussionId}
+                discussion={discussions.find(
+                  ({ id }) => id === currentDiscussionId
+                )}
+                staffInfos={staffInfos}
+                setDiscussions={setDiscussions}
+                setSection={setSection}
+                section={section}
+              />
+            )
           ) : (
-            <DiscussionDetail
-              messages={messages}
-              setMessages={setMessages}
-              setCurrentDiscussionId={setCurrentDiscussionId}
-              discussion={discussions.find(
-                ({ id }) => id === currentDiscussionId
-              )}
-              staffInfos={staffInfos}
-              setDiscussions={setDiscussions}
-            />
+            <p>{emptySectionMessages(section)}</p>
           )
         ) : (
-          <p>You don't have any messages</p>
+          <CircularProgress />
         )}
       </div>
       {newVisible && (
@@ -103,12 +148,11 @@ const MessagesBox = ({
             setNewVisible={setNewVisible}
             setDiscussions={setDiscussions}
             setMessages={setMessages}
+            section={section}
           />
         </NewWindow>
       )}
     </>
-  ) : (
-    <CircularProgress />
   );
 };
 

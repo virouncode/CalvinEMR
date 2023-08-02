@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import Message from "./Message";
 import ReplyForm from "./ReplyForm";
+import axios from "../../api/xano";
+import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
+import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
 
 const DiscussionDetail = ({
   setCurrentDiscussionId,
@@ -9,16 +13,56 @@ const DiscussionDetail = ({
   setMessages,
   staffInfos,
   setDiscussions,
+  setSection,
+  section,
 }) => {
   const [replyVisible, setReplyVisible] = useState(false);
   const [transferVisible, setTransferVisible] = useState(false);
   const [allPersons, setAllPersons] = useState(false);
+  const { auth } = useAuth();
 
   const handleClickBack = (e) => {
     setCurrentDiscussionId(0);
   };
 
-  const handleDeleteDiscussion = (e) => {};
+  const handleDeleteDiscussion = async (e) => {
+    try {
+      await axios.put(
+        `/discussions/${discussion.id}`,
+        {
+          ...discussion,
+          deleted_by_ids: [...discussion.deleted_by_ids, auth.userId],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        }
+      );
+      const response2 = await axios.get(
+        `/discussions?staff_id=${auth.userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const newDiscussions = filterAndSortDiscussions(
+        section,
+        response2.data,
+        auth.userId
+      );
+      setDiscussions(newDiscussions);
+      setSection("Inbox");
+      setCurrentDiscussionId(0);
+      toast.success("Discussion deleted successfully", { containerId: "A" });
+    } catch (err) {
+      console.log(err);
+      toast.error("Couldn't delete discussion", { containerId: "A" });
+    }
+  };
 
   const handleClickReply = (e) => {
     setReplyVisible(true);
@@ -44,11 +88,13 @@ const DiscussionDetail = ({
         <div className="discussion-detail-toolbar-subject">
           {discussion.subject}
         </div>
-        <i
-          className="fa-solid fa-trash  discussion-detail-toolbar-trash"
-          style={{ cursor: "pointer" }}
-          onClick={handleDeleteDiscussion}
-        ></i>
+        {section !== "Deleted messages" && (
+          <i
+            className="fa-solid fa-trash  discussion-detail-toolbar-trash"
+            style={{ cursor: "pointer" }}
+            onClick={handleDeleteDiscussion}
+          ></i>
+        )}
       </div>
       <div className="discussion-detail-content">
         {messages
@@ -77,24 +123,26 @@ const DiscussionDetail = ({
           allPersons={allPersons}
           discussion={discussion}
           staffInfos={staffInfos}
-          messages={messages}
           setMessages={setMessages}
           setDiscussions={setDiscussions}
+          section={section}
         />
       )}
-      <div className="discussion-detail-btns">
-        <button onClick={handleClickReply} disabled={replyVisible}>
-          Reply
-        </button>
-        {discussion.staff_ids.length >= 3 && (
-          <button onClick={handleClickReplyAll} disabled={replyVisible}>
-            Reply all
+      {section !== "Deleted messages" && (
+        <div className="discussion-detail-btns">
+          <button onClick={handleClickReply} disabled={replyVisible}>
+            Reply
           </button>
-        )}
-        <button onClick={handleClickTransfer} disabled={replyVisible}>
-          Transfer
-        </button>
-      </div>
+          {discussion.participants_ids.length >= 3 && (
+            <button onClick={handleClickReplyAll} disabled={replyVisible}>
+              Reply all
+            </button>
+          )}
+          <button onClick={handleClickTransfer} disabled={replyVisible}>
+            Transfer
+          </button>
+        </div>
+      )}
     </>
   );
 };

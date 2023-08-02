@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const handleLogout = () => {
     setAuth({});
   };
@@ -58,7 +58,8 @@ const Header = () => {
               to="messages"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
             >
-              Messages
+              {"Messages" +
+                (auth.unreadMessagesNbr ? ` (${auth.unreadMessagesNbr})` : "")}
             </NavLink>
           </li>
           <li>

@@ -7,8 +7,11 @@ const DiscussionsOverview = ({
   setCurrentDiscussionId,
   staffInfos,
   setMessages,
+  setDiscussionsSelectedIds,
+  discussionsSelectedIds,
+  section,
+  setDiscussions,
 }) => {
-  console.log("render discussion overview");
   return discussions.map((discussion) => (
     <DiscussionThumbnail
       discussion={discussion}
@@ -19,6 +22,10 @@ const DiscussionsOverview = ({
       setMessages={setMessages}
       setCurrentDiscussionId={setCurrentDiscussionId}
       staffInfos={staffInfos}
+      setDiscussionsSelectedIds={setDiscussionsSelectedIds}
+      discussionsSelectedIds={discussionsSelectedIds}
+      section={section}
+      setDiscussions={setDiscussions}
     />
   ));
 };

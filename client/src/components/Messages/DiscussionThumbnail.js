@@ -4,17 +4,22 @@ import useAuth from "../../hooks/useAuth";
 import formatName from "../../utils/formatName";
 import { NavLink } from "react-router-dom";
 import { toLocalDateAndTime } from "../../utils/formatDates";
+import { toast } from "react-toastify";
+import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
 
 const DiscussionThumbnail = ({
   discussion,
+  setDiscussions,
   messages,
   setCurrentDiscussionId,
   staffInfos,
   setMessages,
+  setDiscussionsSelectedIds,
+  discussionsSelectedIds,
+  section,
 }) => {
-  const { auth } = useAuth();
+  const { setAuth, auth } = useAuth();
   const [patient, setPatient] = useState({});
-  console.log("render discussion thumbnail");
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -29,10 +34,14 @@ const DiscussionThumbnail = ({
       );
       setPatient(response.data);
     };
-    fetchPatient();
+    discussion.related_patient_id && fetchPatient();
   }, [auth?.authToken, discussion.related_patient_id]);
 
   const handleDiscussionClick = async (e) => {
+    if (auth.unreadMessagesNbr !== 0) {
+      const newUnreadMessagesNbr = auth.unreadMessagesNbr - 1;
+      setAuth({ ...auth, unreadMessagesNbr: newUnreadMessagesNbr });
+    }
     setCurrentDiscussionId(discussion.id);
     //all messages read by userId
     for (let message of messages) {
@@ -66,27 +75,89 @@ const DiscussionThumbnail = ({
       : "bold",
   };
 
+  const handleCheckDiscussion = (e) => {
+    const checked = e.target.checked;
+    const id = e.target.id;
+    if (checked) {
+      if (!discussionsSelectedIds.includes(id)) {
+        setDiscussionsSelectedIds([...discussionsSelectedIds, id]);
+      }
+    } else {
+      let discussionsSelectedUpdated = [...discussionsSelectedIds];
+      discussionsSelectedUpdated = discussionsSelectedUpdated.filter(
+        (discussionId) => discussionId !== id
+      );
+      setDiscussionsSelectedIds(discussionsSelectedUpdated);
+    }
+  };
+
+  const isDiscussionSelected = (id) => discussionsSelectedIds.includes(id);
+
+  const handleDeleteDiscussion = async (e) => {
+    try {
+      await axios.put(
+        `/discussions/${discussion.id}`,
+        {
+          ...discussion,
+          deleted_by_ids: [...discussion.deleted_by_ids, auth.userId],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        }
+      );
+      const response2 = await axios.get(
+        `/discussions?staff_id=${auth.userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const newDiscussions = filterAndSortDiscussions(
+        section,
+        response2.data,
+        auth.userId
+      );
+      setDiscussions(newDiscussions);
+      toast.success("Discussion deleted successfully", { containerId: "A" });
+    } catch (err) {
+      console.log(err);
+      toast.error("Couldn't delete discussion", { containerId: "A" });
+    }
+  };
+
   return (
     staffInfos && (
       <div className="discussion-thumbnail" style={THUMBNAIL_STYLE}>
-        <input className="discussion-thumbnail-checkbox" type="checkbox" />
+        <input
+          className="discussion-thumbnail-checkbox"
+          type="checkbox"
+          id={discussion.id}
+          value={isDiscussionSelected(discussion.id)}
+          onChange={handleCheckDiscussion}
+        />
         <div
           onClick={handleDiscussionClick}
           className="discussion-thumbnail-link"
         >
           <div className="discussion-thumbnail-persons">
-            {staffInfos.find(({ id }) => id === messages[0].from_id).title ===
+            {staffInfos.find(({ id }) => id === discussion.author_id).title ===
             "Doctor"
               ? "Dr. "
               : ""}
             {formatName(
-              staffInfos.find(({ id }) => id === messages[0].from_id).full_name
+              staffInfos.find(({ id }) => id === discussion.author_id).full_name
             )}
             ,{" "}
-            {discussion.staff_ids
+            {discussion.participants_ids
               .filter(
                 (staff_id) =>
-                  staff_id !== auth.userId && staff_id !== messages[0].from_id
+                  staff_id !== discussion.author_id &&
+                  staff_id !== discussion.last_replier_id
               )
               .map(
                 (staff_id) =>
@@ -99,6 +170,16 @@ const DiscussionThumbnail = ({
                   )
               )
               .join(" ,")}
+            ,{" "}
+            {discussion.last_replier_id !== 0 &&
+              (staffInfos.find(({ id }) => id === discussion.last_replier_id)
+                .title === "Doctor"
+                ? "Dr. "
+                : "") +
+                formatName(
+                  staffInfos.find(({ id }) => id === discussion.last_replier_id)
+                    .full_name
+                )}
           </div>
           <div className="discussion-thumbnail-sample">
             <span>{discussion.subject}</span> - {messages.slice(-1)[0].body}
@@ -113,8 +194,15 @@ const DiscussionThumbnail = ({
           </NavLink>
         </div>
         <div className="discussion-thumbnail-date">
-          {toLocalDateAndTime(messages.slice(-1)[0].date_created)}
+          {toLocalDateAndTime(discussion.date_updated)}
         </div>
+        {section !== "Deleted messages" && (
+          <i
+            className="fa-solid fa-trash  discussion-detail-toolbar-trash"
+            style={{ cursor: "pointer" }}
+            onClick={handleDeleteDiscussion}
+          ></i>
+        )}
       </div>
     )
   );

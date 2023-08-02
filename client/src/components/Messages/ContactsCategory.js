@@ -11,7 +11,6 @@ const ContactsCategory = ({
 }) => {
   const [listVisible, setListVisible] = useState(false);
   const handleClick = (e) => {
-    console.log("click");
     setListVisible((v) => !v);
   };
   return (

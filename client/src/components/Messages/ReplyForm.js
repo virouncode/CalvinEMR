@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import formatName from "../../utils/formatName";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
 import { toast } from "react-toastify";
+import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
 
 const ReplyForm = ({
   setReplyVisible,
   allPersons,
   discussion,
   staffInfos,
-  messages,
   setMessages,
   setDiscussions,
+  section,
 }) => {
   const { auth } = useAuth();
-  const [lastAuthorId, setLastAuthor] = useState(discussion.staff_ids[0]);
   const [body, setBody] = useState("");
-
-  useEffect(() => {
-    let i = -1;
-    while (messages.slice(i)[0].from_id === auth.userId) {
-      i--;
-    }
-    setLastAuthor(messages.slice(i)[0].from_id);
-  }, [auth.userId, messages]);
 
   const handleCancel = (e) => {
     setReplyVisible(false);
@@ -32,8 +24,10 @@ const ReplyForm = ({
     const datas = {
       from_id: auth.userId,
       to_ids: allPersons
-        ? discussion.staff_ids.filter((staff_id) => staff_id !== auth.userId)
-        : lastAuthorId,
+        ? discussion.participants_ids.filter(
+            (staff_id) => staff_id !== auth.userId
+          )
+        : [discussion.last_replier_id || discussion.author_id],
       read_by_ids: [auth.userId],
       date_created: Date.parse(new Date()),
       body: body,
@@ -52,16 +46,21 @@ const ReplyForm = ({
           Authorization: `Bearer ${auth?.authToken}`,
         },
       });
-      setMessages(
-        response.data.sort(
-          (a, b) => new Date(a.date_created) - new Date(b.date_created)
-        )
+      //discussion update
+      await axios.put(
+        `/discussions/${discussion.id}`,
+        {
+          ...discussion,
+          last_replier_id: auth.userId,
+          date_updated: Date.parse(new Date()),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth?.authToken}`,
+          },
+        }
       );
-      //Change date of discussion update
-      await axios.put(`/discussions/${discussion.id}`, {
-        ...discussion,
-        date_updated: Date.parse(new Date()),
-      });
       const response2 = await axios.get(
         `/discussions?staff_id=${auth.userId}`,
         {
@@ -71,7 +70,17 @@ const ReplyForm = ({
           },
         }
       );
-      setDiscussions(response2.data);
+      const newDiscussions = filterAndSortDiscussions(
+        section,
+        response2.data,
+        auth.userId
+      );
+      setDiscussions(newDiscussions);
+      setMessages(
+        response.data.sort(
+          (a, b) => new Date(a.date_created) - new Date(b.date_created)
+        )
+      );
       setReplyVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
@@ -90,7 +99,7 @@ const ReplyForm = ({
         <p>
           To :{" "}
           {allPersons
-            ? discussion.staff_ids
+            ? discussion.participants_ids
                 .filter((staff_id) => staff_id !== auth.userId)
                 .map(
                   (staff_id) =>
@@ -106,13 +115,18 @@ const ReplyForm = ({
                 )
                 .join(", ")
             : `${
-                staffInfos.find(({ id }) => id === lastAuthorId).title ===
-                "Doctor"
+                staffInfos.find(
+                  ({ id }) =>
+                    id === (discussion.last_replier_id || discussion.author_id)
+                ).title === "Doctor"
                   ? "Dr. "
                   : ""
               }` +
               formatName(
-                staffInfos.find(({ id }) => id === lastAuthorId).full_name
+                staffInfos.find(
+                  ({ id }) =>
+                    id === (discussion.last_replier_id || discussion.author_id)
+                ).full_name
               )}
         </p>
       </div>

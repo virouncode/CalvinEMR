@@ -16,7 +16,7 @@ const Message = ({ message, author, authorTitle, discussion, staffInfos }) => {
       </div>
       <div className="message-subtitle">
         to:{" "}
-        {discussion.staff_ids
+        {discussion.participants_ids
           .filter((staff_id) => staff_id !== message.from_id)
           .map(
             (staff_id) =>

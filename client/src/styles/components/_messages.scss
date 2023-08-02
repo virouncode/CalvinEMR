@@ -29,6 +29,11 @@
         }
         &-box {
             width: 90%;
+            p {
+                margin-top: 20px;
+                font-size: 0.9rem;
+                text-align: center;
+            }
             // border: solid 1px $black;
         }
     }

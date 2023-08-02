@@ -1,14 +1,44 @@
 import React from "react";
+import useAuth from "../../hooks/useAuth";
 
-const MessagesLeftBar = () => {
+const MessagesLeftBar = ({ section, setSection, setCurrentDiscussionId }) => {
+  const handleClickSection = (e) => {
+    const name = e.target.id;
+    setSection(name);
+    setCurrentDiscussionId(0);
+  };
+  const isActive = (id) =>
+    section === id
+      ? "messages-section-leftbar-category messages-section-leftbar-category--active"
+      : "messages-section-leftbar-category";
+
+  const { auth } = useAuth();
+
   return (
     <div className="messages-section-leftbar">
       <ul>
-        <li className="messages-section-leftbar-category messages-section-leftbar-category--active">
-          Inbox
+        <li
+          className={isActive("Inbox")}
+          id="Inbox"
+          onClick={handleClickSection}
+        >
+          {"Inbox" +
+            (auth.unreadMessagesNbr ? ` (${auth.unreadMessagesNbr})` : "")}
         </li>
-        <li className="messages-section-leftbar-category">Sent messages</li>
-        <li className="messages-section-leftbar-category">Deleted messages</li>
+        <li
+          className={isActive("Sent messages")}
+          id="Sent messages"
+          onClick={handleClickSection}
+        >
+          Sent messages
+        </li>
+        <li
+          className={isActive("Deleted messages")}
+          id="Deleted messages"
+          onClick={handleClickSection}
+        >
+          Deleted messages
+        </li>
       </ul>
     </div>
   );
