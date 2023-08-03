@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 
 const FamHistoryEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -47,15 +47,15 @@ const FamHistoryEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
       await putPatientRecord(
         "/family_history",
         event.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
         await getPatientRecord(
           "/family_history",
           event.patient_id,
-          auth?.authToken
+          auth.authToken
         )
       );
       editCounter.current -= 1;
@@ -78,12 +78,12 @@ const FamHistoryEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/family_history", event.id, auth?.authToken);
+      await deletePatientRecord("/family_history", event.id, auth.authToken);
       setDatas(
         await getPatientRecord(
           "/family_history",
           event.patient_id,
-          auth?.authToken
+          auth.authToken
         )
       );
     }

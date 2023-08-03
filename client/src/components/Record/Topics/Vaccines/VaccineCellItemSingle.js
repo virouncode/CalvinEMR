@@ -19,7 +19,7 @@ const VaccineCellItemSingle = ({
   setEditable,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formVisible, setFormVisible] = useState(false);
   const [scrollPosition, setScrollPosition] = useState([0, 0]);
 
@@ -49,12 +49,12 @@ const VaccineCellItemSingle = ({
         newDatas[name][age] = {
           vaccine_date: null,
           date_created: Date.parse(new Date()),
-          created_by_id: auth.userId,
+          created_by_id: user.id,
         };
         await putPatientRecord(
           "/vaccines",
           datas.id,
-          auth.userId,
+          user.id,
           auth.authToken,
           newDatas
         );

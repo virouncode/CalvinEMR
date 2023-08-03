@@ -16,7 +16,7 @@ const DocumentForm = ({
   setAlertVisible,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -38,15 +38,8 @@ const DocumentForm = ({
       return;
     }
     try {
-      await postPatientRecord(
-        "/documents",
-        auth?.userId,
-        auth?.authToken,
-        formDatas
-      );
-      setDatas(
-        await getPatientRecord("/documents", patientId, auth?.authToken)
-      );
+      await postPatientRecord("/documents", user.id, auth.authToken, formDatas);
+      setDatas(await getPatientRecord("/documents", patientId, auth.authToken));
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
@@ -73,7 +66,7 @@ const DocumentForm = ({
         },
         {
           headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
           },
         }
       );

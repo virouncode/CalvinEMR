@@ -22,57 +22,29 @@ const MessagesBox = ({
   transferVisible,
   setTransferVisible,
 }) => {
-  const { setAuth, auth } = useAuth();
+  const { auth, user, setUser } = useAuth();
   const [discussions, setDiscussions] = useState(null);
 
   useEffect(() => {
     const fetchDiscussions = async () => {
-      const response = await axios.get(`/discussions?staff_id=${auth.userId}`, {
+      const response = await axios.get(`/discussions?staff_id=${user.id}`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       });
       //En fonction de la section on filtre les discussions
       const newDiscussions = filterAndSortDiscussions(
         section,
         response.data,
-        auth.userId
+        user.id
       );
       setDiscussions(newDiscussions);
-
-      //unread messages
-      let unreadMsgNbr = 0;
-      for (let discussion of response.data) {
-        const discussionMessages = (
-          await axios.post(
-            `/messages_selected`,
-            { messages_ids: discussion.messages_ids },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${auth?.authToken}`,
-              },
-            }
-          )
-        ).data;
-        if (
-          discussionMessages.find(
-            (message) =>
-              !message.read_by_ids.includes(auth.userId) &&
-              (message.to_ids.includes(auth.userId) ||
-                message.transferred_to_ids.includes(auth.userId))
-          )
-        ) {
-          unreadMsgNbr++;
-        }
-      }
-      setAuth({ ...auth, unreadMessagesNbr: unreadMsgNbr });
     };
     fetchDiscussions();
     return () => setDiscussions(null);
     //eslint-disable-next-line
-  }, [auth?.authToken, auth.userId, section]);
+  }, [auth.authToken, user.id, section]);
 
   const emptySectionMessages = (sectionName) => {
     switch (sectionName) {

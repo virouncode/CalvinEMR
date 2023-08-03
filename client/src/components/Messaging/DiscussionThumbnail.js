@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
-import formatName from "../../utils/formatName";
 import { NavLink } from "react-router-dom";
 import { toLocalDateAndTime } from "../../utils/formatDates";
 import { toast } from "react-toastify";
@@ -18,7 +17,7 @@ const DiscussionThumbnail = ({
   discussionsSelectedIds,
   section,
 }) => {
-  const { setAuth, auth } = useAuth();
+  const { auth, user, setUser } = useAuth();
   const [patient, setPatient] = useState({});
   const [discussionMsgs, setDiscussionMsgs] = useState(null);
 
@@ -30,7 +29,7 @@ const DiscussionThumbnail = ({
           { messages_ids: discussion.messages_ids },
           {
             headers: {
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -40,15 +39,15 @@ const DiscussionThumbnail = ({
         allDiscussionMsgs
           .filter(
             (message) =>
-              message.to_ids.includes(auth.userId) ||
-              message.from_id === auth.userId ||
-              message.transferred_to_ids.includes(auth.userId)
+              message.to_ids.includes(user.id) ||
+              message.from_id === user.id ||
+              message.transferred_to_ids.includes(user.id)
           )
           .sort((a, b) => a.date_created - b.date_created)
       );
     };
     fetchDiscussionMsgs();
-  }, [auth?.authToken, auth.userId, discussion.messages_ids]);
+  }, [auth.authToken, user.id, discussion.messages_ids]);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -56,7 +55,7 @@ const DiscussionThumbnail = ({
         `patients/${discussion.related_patient_id}`,
         {
           headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
             "Content-Type": "application/json",
           },
         }
@@ -64,42 +63,42 @@ const DiscussionThumbnail = ({
       setPatient(response.data);
     };
     discussion.related_patient_id && fetchPatient();
-  }, [auth?.authToken, discussion.related_patient_id]);
+  }, [auth.authToken, discussion.related_patient_id]);
 
   const handleDiscussionClick = async (e) => {
     //Remove one from the unread messages nbr counter
-    if (auth.unreadMessagesNbr !== 0) {
-      const newUnreadMessagesNbr = auth.unreadMessagesNbr - 1;
-      setAuth({ ...auth, unreadMessagesNbr: newUnreadMessagesNbr });
+    if (user.unreadMessagesNbr !== 0) {
+      const newUnreadMessagesNbr = user.unreadMessagesNbr - 1;
+      setUser({ ...user, unreadMessagesNbr: newUnreadMessagesNbr });
     }
     setCurrentDiscussionId(discussion.id); //pour afficher les details de la discussion
 
     for (let message of discussionMsgs) {
-      if (!message.read_by_ids.includes(auth.userId)) {
+      if (!message.read_by_ids.includes(user.id)) {
         //create and replace message with read by user id
         const newMessage = {
           ...message,
-          read_by_ids: [...message.read_by_ids, auth.userId],
+          read_by_ids: [...message.read_by_ids, user.id],
         };
         await axios.put(`/messages/${message.id}`, newMessage, {
           headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
             "Content-Type": "application/json",
           },
         });
       }
     }
     // //update discussions
-    // const response = await axios.get(`/discussions?staff_id=${auth.userId}`, {
+    // const response = await axios.get(`/discussions?staff_id=${user.id}`, {
     //   headers: {
-    //     Authorization: `Bearer ${auth?.authToken}`,
+    //     Authorization: `Bearer ${auth.authToken}`,
     //     "Content-Type": "application/json",
     //   },
     // });
     // const newDiscussions = filterAndSortDiscussions(
     //   section,
     //   response.data,
-    //   auth.userId
+    //   user.id
     // );
     // setDiscussions(newDiscussions);
   };
@@ -107,8 +106,8 @@ const DiscussionThumbnail = ({
   const THUMBNAIL_STYLE = {
     fontWeight: discussionMsgs?.find(
       (message) =>
-        !message.read_by_ids.includes(auth.userId) &&
-        message.to_ids.includes(auth.userId)
+        !message.read_by_ids.includes(user.id) &&
+        message.to_ids.includes(user.id)
     )
       ? "bold"
       : "normal",
@@ -138,7 +137,7 @@ const DiscussionThumbnail = ({
         `/discussions/${discussion.id}`,
         {
           ...discussion,
-          deleted_by_ids: [...discussion.deleted_by_ids, auth.userId],
+          deleted_by_ids: [...discussion.deleted_by_ids, user.id],
         },
         {
           headers: {
@@ -147,19 +146,16 @@ const DiscussionThumbnail = ({
           },
         }
       );
-      const response2 = await axios.get(
-        `/discussions?staff_id=${auth.userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response2 = await axios.get(`/discussions?staff_id=${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       const newDiscussions = filterAndSortDiscussions(
         section,
         response2.data,
-        auth.userId
+        user.id
       );
       setDiscussions(newDiscussions);
       toast.success("Discussion deleted successfully", { containerId: "A" });

@@ -22,7 +22,7 @@ const MedicationEvent = ({
   setMedsRx,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -33,13 +33,9 @@ const MedicationEvent = ({
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/medications", event.id, auth?.authToken);
+      await deletePatientRecord("/medications", event.id, auth.authToken);
       setDatas(
-        await getPatientRecord(
-          "/medications",
-          event.patient_id,
-          auth?.authToken
-        )
+        await getPatientRecord("/medications", event.patient_id, auth.authToken)
       );
     }
   };
@@ -69,16 +65,12 @@ const MedicationEvent = ({
       await putPatientRecord(
         "/medications",
         event.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord(
-          "/medications",
-          event.patient_id,
-          auth?.authToken
-        )
+        await getPatientRecord("/medications", event.patient_id, auth.authToken)
       );
       editCounter.current -= 1;
       setEditVisible(false);
@@ -237,7 +229,7 @@ const MedicationEvent = ({
         <td>
           <em>{toLocalDate(eventInfos.date_created)}</em>
         </td>
-        {auth?.title === "Doctor" && (
+        {user.title === "Doctor" && (
           <td>
             <div className="medications-event-btn-container">
               {!editVisible ? (

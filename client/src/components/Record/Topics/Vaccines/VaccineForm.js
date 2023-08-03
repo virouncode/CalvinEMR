@@ -14,7 +14,7 @@ const VaccineForm = ({
   setDatas,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState(datas);
   //STYLE
   const FORM_STYLE = {
@@ -44,7 +44,7 @@ const VaccineForm = ({
       await putPatientRecord(
         "/vaccines",
         formDatas.id,
-        auth.userId,
+        user.id,
         auth.authToken,
         formDatas
       );
@@ -67,7 +67,7 @@ const VaccineForm = ({
         [age]: {
           vaccine_date: value,
           date_created: Date.parse(new Date()),
-          created_by_id: auth.userId,
+          created_by_id: user.id,
         },
       },
     });

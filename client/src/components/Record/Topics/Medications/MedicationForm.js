@@ -16,7 +16,7 @@ const MedicationForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [allergies, setAllergies] = useState([]);
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
@@ -36,13 +36,13 @@ const MedicationForm = ({
         const allergiesResults = await getPatientRecord(
           "/allergies",
           patientId,
-          auth?.authToken
+          auth.authToken
         );
         setAllergies(allergiesResults);
       } catch (err) {}
     };
     fetchAllergies();
-  }, [auth?.authToken, patientId]);
+  }, [auth.authToken, patientId]);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -64,12 +64,12 @@ const MedicationForm = ({
     try {
       await postPatientRecord(
         "/medications",
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord("/medications", patientId, auth?.authToken)
+        await getPatientRecord("/medications", patientId, auth.authToken)
       );
       editCounter.current -= 1;
       setAddVisible(false);

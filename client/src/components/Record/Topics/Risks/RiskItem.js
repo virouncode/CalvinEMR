@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 
 const RiskItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -38,16 +38,12 @@ const RiskItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
       await putPatientRecord(
         "/risk_factors",
         item.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord(
-          "/risk_factors",
-          item.patient_id,
-          auth?.authToken
-        )
+        await getPatientRecord("/risk_factors", item.patient_id, auth.authToken)
       );
       editCounter.current -= 1;
       setEditVisible(false);
@@ -71,13 +67,9 @@ const RiskItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/risk_factors", item.id, auth?.authToken);
+      await deletePatientRecord("/risk_factors", item.id, auth.authToken);
       setDatas(
-        await getPatientRecord(
-          "/risk_factors",
-          item.patient_id,
-          auth?.authToken
-        )
+        await getPatientRecord("/risk_factors", item.patient_id, auth.authToken)
       );
     }
   };

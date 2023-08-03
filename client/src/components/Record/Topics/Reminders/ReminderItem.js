@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 
 const ReminderItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -41,12 +41,12 @@ const ReminderItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
       await putPatientRecord(
         "/reminders",
         item.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord("/reminders", item.patient_id, auth?.authToken)
+        await getPatientRecord("/reminders", item.patient_id, auth.authToken)
       );
       editCounter.current -= 1;
       setEditVisible(false);
@@ -70,9 +70,9 @@ const ReminderItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/reminders", item.id, auth?.authToken);
+      await deletePatientRecord("/reminders", item.id, auth.authToken);
       setDatas(
-        await getPatientRecord("/reminders", item.patient_id, auth?.authToken)
+        await getPatientRecord("/reminders", item.patient_id, auth.authToken)
       );
     }
   };

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
 import VaccineCell from "./VaccineCell";
 
 const VaccineItem = ({
@@ -20,8 +19,6 @@ const VaccineItem = ({
   setAlertVisible,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
-  const [itemInfos, setItemInfos] = useState(item);
 
   return (
     <tr className="vaccines-item">

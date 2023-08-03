@@ -19,7 +19,7 @@ const MedicationsPU = ({
   patientInfos,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { user } = useAuth();
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState(false);
@@ -99,7 +99,7 @@ const MedicationsPU = ({
                 <th onClick={() => handleSort("duration")}>Duration</th>
                 <th onClick={() => handleSort("created_by_id")}>Created By</th>
                 <th onClick={() => handleSort("date_created")}>Created On</th>
-                {auth?.title === "Doctor" && (
+                {user.title === "Doctor" && (
                   <th style={{ textDecoration: "none", cursor: "default" }}>
                     Action
                   </th>
@@ -191,7 +191,7 @@ const MedicationsPU = ({
                     ))}
             </tbody>
           </table>
-          {auth?.title === "Doctor" && (
+          {user.title === "Doctor" && (
             <div className="medications-btn-container">
               <button onClick={handleAdd} disabled={addVisible}>
                 Add Medication To Profile

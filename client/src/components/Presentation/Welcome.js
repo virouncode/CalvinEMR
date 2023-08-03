@@ -6,7 +6,7 @@ import useAuth from "../../hooks/useAuth";
 const Welcome = () => {
   //=================== STATES =======================//
   const [helloMessage, setHelloMessage] = useState("");
-  const { auth } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const displayHello = () => {
@@ -29,14 +29,14 @@ const Welcome = () => {
   }, [setHelloMessage]);
 
   return (
-    auth?.userId && (
+    user.id && (
       <div className="welcome">
         <h2>New Life Fertility Center</h2>
         <div>
           {helloMessage}
           {", "}
-          {auth?.title === "Doctor" && "Dr. "}
-          {auth?.userName}
+          {user.title === "Doctor" && "Dr. "}
+          {user.name}
         </div>
       </div>
     )

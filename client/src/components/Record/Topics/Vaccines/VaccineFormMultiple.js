@@ -14,13 +14,13 @@ const VaccineFormMultiple = ({
   setDatas,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState(datas);
   useEffect(() => {
     formDatas[name][age].push({
       vaccine_date: "",
       date_created: null,
-      created_by_id: auth.userId,
+      created_by_id: user.id,
     }); // eslint-disable-next-line
   }, []);
 
@@ -61,7 +61,7 @@ const VaccineFormMultiple = ({
       await putPatientRecord(
         "/vaccines",
         formDatas.id,
-        auth.userId,
+        user.id,
         auth.authToken,
         formDatas
       );
@@ -81,7 +81,7 @@ const VaccineFormMultiple = ({
     array[array.length - 1] = {
       vaccine_date: Date.parse(value),
       date_created: Date.parse(new Date()),
-      created_by_id: auth.userId,
+      created_by_id: user.id,
     };
     setFormDatas({
       ...formDatas,

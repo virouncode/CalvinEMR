@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 const ConcernItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -31,12 +31,12 @@ const ConcernItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/ongoing_concerns", item.id, auth?.authToken);
+      await deletePatientRecord("/ongoing_concerns", item.id, auth.authToken);
       setDatas(
         await getPatientRecord(
           "/ongoing_concerns",
           item.patient_id,
-          auth?.authToken
+          auth.authToken
         )
       );
     }
@@ -60,15 +60,15 @@ const ConcernItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
       await putPatientRecord(
         "/ongoing_concerns",
         item.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
         await getPatientRecord(
           "/ongoing_concerns",
           item.patient_id,
-          auth?.authToken
+          auth.authToken
         )
       );
       editCounter.current -= 1;

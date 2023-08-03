@@ -47,7 +47,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
   const [formDatas, setFormDatas] = useState(patientInfos);
   const valid = useRef(Array(23).fill(true));
   const datas = useRef({});
-  const { auth } = useAuth();
+  const { auth, user, clinic, setClinic } = useAuth();
 
   const handleChange = (e) => {
     let value = e.target.value;
@@ -140,7 +140,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
           },
         }
       );
@@ -177,27 +177,31 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
             datas.current.last_name)
         : (datas.current.full_name =
             datas.current.first_name + " " + datas.current.last_name);
-      // delete datas.current.assigned_md_name;
-      // delete datas.current.assigned_resident_name;
-      // delete datas.current.assigned_student_name;
-      // delete datas.current.assigned_nurse_name;
-      // delete datas.current.assigned_midwife_name;
       try {
         await putPatientRecord(
           "/patients",
           patientInfos.id,
-          auth?.userId,
-          auth?.authToken,
+          user.id,
+          auth.authToken,
           datas.current
         );
         const response = await axios.get(`/patients/${patientInfos.id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
           },
         });
         setPatientInfos(response.data);
         setEditVisible(false);
+
+        //update patientsInfos
+        const response2 = await axios.get("/patients", {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        setClinic({ ...clinic, patientsInfos: response2.data });
         toast.success("Saved successfully", { containerId: "B" });
       } catch (err) {
         toast.error("Unable to save, please contact admin", {
@@ -536,7 +540,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                       handleChange={handleChange}
                       name="assigned_md_id"
                       id="19"
-                      staffInfos={auth?.staffInfos}
+                      staffInfos={clinic.staffInfos}
                     />
                   ) : (
                     patientInfos.assigned_md_name?.full_name
@@ -550,7 +554,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                       handleChange={handleChange}
                       name="assigned_resident_id"
                       id="20"
-                      staffInfos={auth?.staffInfos}
+                      staffInfos={clinic.staffInfos}
                     />
                   ) : (
                     patientInfos.assigned_resident_name?.full_name
@@ -564,7 +568,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                       handleChange={handleChange}
                       name="assigned_student_id"
                       id="21"
-                      staffInfos={auth?.staffInfos}
+                      staffInfos={clinic.staffInfos}
                     />
                   ) : (
                     patientInfos.assigned_student_name?.full_name
@@ -578,7 +582,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                       handleChange={handleChange}
                       name="assigned_nurse_id"
                       id="22"
-                      staffInfos={auth?.staffInfos}
+                      staffInfos={clinic.staffInfos}
                     />
                   ) : (
                     patientInfos.assigned_nurse_name?.full_name
@@ -592,7 +596,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                       handleChange={handleChange}
                       name="assigned_midwife_id"
                       id="23"
-                      staffInfos={auth?.staffInfos}
+                      staffInfos={clinic.staffInfos}
                     />
                   ) : (
                     patientInfos.assigned_midwife_name?.full_name

@@ -24,6 +24,8 @@ import { rooms } from "../../utils/rooms";
 import formatName from "../../utils/formatName";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
+import { staffIdToName } from "../../utils/staffIdToName";
+import { staffIdToTitle } from "../../utils/staffIdToTitle";
 
 //Require
 var _ = require("lodash");
@@ -31,7 +33,7 @@ var _ = require("lodash");
 //MY COMPONENT
 const Calendar = ({ timelineVisible }) => {
   //====================== HOOKS =======================//
-  const { auth, setAuth } = useAuth();
+  const { clinic, auth, user } = useAuth();
   const [
     events,
     setEvents,
@@ -41,11 +43,8 @@ const Calendar = ({ timelineVisible }) => {
     loadingEvents,
     axiosFetchEvents,
   ] = useAxiosEvents();
-  const [staffInfos, setStaffInfos] = useState(null);
-  const [patientsInfos, setPatientsInfos] = useState([]);
-  const [hostsIds, setHostsIds] = useState([]);
-  const [settings, setSettings] = useState(auth?.settings);
 
+  const [hostsIds, setHostsIds] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
   const [formTop, setFormTop] = useState(0);
   const [formLeft, setFormLeft] = useState(0);
@@ -79,71 +78,41 @@ const Calendar = ({ timelineVisible }) => {
   }, [events]);
 
   useEffect(() => {
-    const fetchStaffInfos = async () => {
-      try {
-        const response = await axios.get("/staff", {
-          headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        setStaffInfos(response?.data);
-        setAuth({ ...auth, staffInfos: response?.data });
-        auth?.title === "Secretary"
-          ? setHostsIds([0, ...response?.data.map(({ id }) => id)])
-          : setHostsIds([auth?.userId]);
-      } catch (err) {}
-    };
-    fetchStaffInfos();
+    user.title === "Secretary"
+      ? setHostsIds([0, ...clinic.staffInfos.map(({ id }) => id)])
+      : setHostsIds([user.id]);
+  }, [clinic.staffInfos, user.id, user.title]);
+
+  useEffect(() => {
+    axiosFetchEvents(
+      hostsIds,
+      rangeStart,
+      rangeEnd,
+      auth.authToken,
+      clinic.staffInfos,
+      user.title === "Secretary",
+      user.id
+    );
     //eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    const fetchPatientsInfos = async () => {
-      try {
-        const response = await axios.get("/patients", {
-          headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        setPatientsInfos(response?.data);
-      } catch (err) {}
-    };
-    fetchPatientsInfos();
-  }, [auth?.authToken]);
-
-  useEffect(() => {
-    staffInfos &&
-      axiosFetchEvents(
-        hostsIds,
-        rangeStart,
-        rangeEnd,
-        auth?.authToken,
-        staffInfos,
-        auth?.title === "Secretary",
-        auth?.userId
-      );
-    // eslint-disable-next-line
   }, [
-    auth?.title,
-    auth?.authToken,
-    auth?.userId,
+    user.title,
+    auth.authToken,
+    user.id,
     hostsIds,
     rangeEnd,
     rangeStart,
-    staffInfos,
+    clinic.staffInfos,
   ]);
 
   const isSecretary = useCallback(() => {
-    return auth?.title === "Secretary" ? true : false;
-  }, [auth?.title]);
+    return user.title === "Secretary" ? true : false;
+  }, [user.title]);
 
   useEffect(() => {
     const handleDelete = async (e) => {
       if (
         currentEvent.current &&
-        (currentEvent.current.extendedProps.host === auth?.userId ||
+        (currentEvent.current.extendedProps.host === user.id ||
           isSecretary()) &&
         (e.key === "Backspace" || e.key === "Delete") &&
         !formVisible
@@ -160,7 +129,7 @@ const Calendar = ({ timelineVisible }) => {
           newEvents.splice(indexOfEventToRemove, 1);
           try {
             await axios.delete(`/appointments/${currentEvent.current.id}`, {
-              headers: { Authorization: `Bearer ${auth?.authToken}` },
+              headers: { Authorization: `Bearer ${auth.authToken}` },
             });
             toast.success("Deleted Successfully", { containerId: "A" });
             setEvents(newEvents);
@@ -176,14 +145,7 @@ const Calendar = ({ timelineVisible }) => {
     return () => {
       document.removeEventListener("keydown", handleDelete);
     };
-  }, [
-    auth?.authToken,
-    auth?.userId,
-    events,
-    formVisible,
-    isSecretary,
-    setEvents,
-  ]);
+  }, [auth.authToken, user.id, events, formVisible, isSecretary, setEvents]);
 
   //====================== EVENTS HANDLERS ==========================//
   const handleDeleteEvent = async (e) => {
@@ -199,7 +161,7 @@ const Calendar = ({ timelineVisible }) => {
       newEvents.splice(indexOfEventToRemove, 1);
       try {
         await axios.delete(`/appointments/${currentEvent.current.id}`, {
-          headers: { Authorization: `Bearer ${auth?.authToken}` },
+          headers: { Authorization: `Bearer ${auth.authToken}` },
         });
         toast.success("Deleted Successfully", { containerId: "A" });
         setEvents(newEvents);
@@ -280,13 +242,13 @@ const Calendar = ({ timelineVisible }) => {
       }
 
       const hostName = event.extendedProps.host
-        ? staffInfos.find(({ id }) => id === event.extendedProps.host).full_name
+        ? staffIdToName(clinic.staffInfos, event.extendedProps.host)
         : "";
 
       const hostNameShort = formatName(hostName);
 
       let hostCaption = event.extendedProps.host
-        ? staffInfos.find(({ id }) => id === event.extendedProps.host).title
+        ? staffIdToTitle(clinic.staffInfos, event.extendedProps.host)
         : "";
       if (hostCaption === "Doctor") {
         hostCaption = "Doctor: ";
@@ -450,7 +412,7 @@ const Calendar = ({ timelineVisible }) => {
       end: info.allDay ? endAllDay : new Date(endDate),
       allDay: info.allDay,
       extendedProps: {
-        host: isSecretary() ? 0 : auth?.userId,
+        host: isSecretary() ? 0 : user.id,
         duration: info.allDay
           ? 1440
           : Math.floor((endDate - startDate) / (1000 * 60)),
@@ -466,7 +428,7 @@ const Calendar = ({ timelineVisible }) => {
         0,
         startDate,
         endDate,
-        auth?.authToken
+        auth.authToken
       );
       if (
         info.resource.title === "To be determined" ||
@@ -492,7 +454,7 @@ const Calendar = ({ timelineVisible }) => {
           status: newEvent.extendedProps.status,
           reason: newEvent.extendedProps.reason,
           room: newEvent.extendedProps.room,
-          created_by_id: auth?.userId,
+          created_by_id: user.id,
           date_created: Date.parse(new Date()),
         };
 
@@ -500,7 +462,7 @@ const Calendar = ({ timelineVisible }) => {
           const response = await axios.post("/appointments", datas, {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
             },
           });
           toast.success("Saved Successfully", { containerId: "A" });
@@ -508,10 +470,10 @@ const Calendar = ({ timelineVisible }) => {
             hostsIds,
             rangeStart,
             rangeEnd,
-            auth?.authToken,
-            staffInfos,
-            auth?.title === "Secretary",
-            auth?.userId
+            auth.authToken,
+            clinic.staffInfos,
+            user.title === "Secretary",
+            user.id
           );
           lastCurrentId.current = response.data.id.toString();
         } catch (err) {}
@@ -532,7 +494,7 @@ const Calendar = ({ timelineVisible }) => {
         status: newEvent.extendedProps.status,
         reason: newEvent.extendedProps.reason,
         room: newEvent.extendedProps.room,
-        created_by_id: auth?.userId,
+        created_by_id: user.id,
         date_created: Date.parse(new Date()),
       };
       try {
@@ -542,7 +504,7 @@ const Calendar = ({ timelineVisible }) => {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
             },
           }
         );
@@ -551,10 +513,10 @@ const Calendar = ({ timelineVisible }) => {
           hostsIds,
           rangeStart,
           rangeEnd,
-          auth?.authToken,
-          staffInfos,
-          auth?.title === "Secretary",
-          auth?.userId
+          auth.authToken,
+          clinic.staffInfos,
+          user.title === "Secretary",
+          user.id
         );
         lastCurrentId.current = response.data.id.toString();
       } catch (err) {}
@@ -586,7 +548,7 @@ const Calendar = ({ timelineVisible }) => {
       parseInt(event.id),
       startDate,
       endDate,
-      auth?.authToken
+      auth.authToken
     );
     const startAllDay = event.start.setHours(0, 0, 0, 0);
     const endAllDay = event.end.setHours(0, 0, 0, 0);
@@ -602,7 +564,7 @@ const Calendar = ({ timelineVisible }) => {
       patients_guests: event.extendedProps.patientsGuestsIds,
       status: event.extendedProps.status,
       reason: event.extendedProps.reason,
-      created_by_id: auth?.userId,
+      created_by_id: user.id,
       date_created: Date.parse(new Date()),
     };
 
@@ -620,7 +582,7 @@ const Calendar = ({ timelineVisible }) => {
           await axios.put(`/appointments/${event.id}`, datas, {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
             },
           });
           toast.success("Saved Successfully", { containerId: "A" });
@@ -628,10 +590,10 @@ const Calendar = ({ timelineVisible }) => {
             hostsIds,
             rangeStart,
             rangeEnd,
-            auth?.authToken,
-            staffInfos,
-            auth?.title === "Secretary",
-            auth?.userId
+            auth.authToken,
+            clinic.staffInfos,
+            user.title === "Secretary",
+            user.id
           );
         } catch (err) {}
       } else {
@@ -656,7 +618,7 @@ const Calendar = ({ timelineVisible }) => {
           await axios.put(`/appointments/${event.id}`, datas, {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
             },
           });
           toast.success("Saved Successfully", { containerId: "A" });
@@ -664,10 +626,10 @@ const Calendar = ({ timelineVisible }) => {
             hostsIds,
             rangeStart,
             rangeEnd,
-            auth?.authToken,
-            staffInfos,
-            auth?.title === "Secretary",
-            auth?.userId
+            auth.authToken,
+            clinic.staffInfos,
+            user.title === "Secretary",
+            user.id
           );
         } catch (err) {}
       } else {
@@ -699,7 +661,7 @@ const Calendar = ({ timelineVisible }) => {
       parseInt(event.id),
       startDate,
       endDate,
-      auth?.authToken
+      auth.authToken
     );
     const startAllDay = event.start.setHours(0, 0, 0, 0);
     const endAllDay = event.end.setHours(0, 0, 0, 0);
@@ -725,14 +687,14 @@ const Calendar = ({ timelineVisible }) => {
         status: event.extendedProps.status,
         reason: event.extendedProps.reason,
         room: event.extendedProps.room,
-        created_by_id: auth?.userId,
+        created_by_id: user.id,
         date_created: Date.parse(new Date()),
       };
       try {
         await axios.put(`/appointments/${event.id}`, datas, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
           },
         });
         toast.success("Saved Successfully", { containerId: "A" });
@@ -740,10 +702,10 @@ const Calendar = ({ timelineVisible }) => {
           hostsIds,
           rangeStart,
           rangeEnd,
-          auth?.authToken,
-          staffInfos,
-          auth?.title === "Secretary",
-          auth?.userId
+          auth.authToken,
+          clinic.staffInfos,
+          user.title === "Secretary",
+          user.id
         );
       } catch (err) {}
     } else {
@@ -896,14 +858,14 @@ const Calendar = ({ timelineVisible }) => {
       status: tempFormDatas.status,
       reason: tempFormDatas.reason,
       room: tempFormDatas.room,
-      created_by_id: auth?.userId,
+      created_by_id: user.id,
       date_created: Date.parse(new Date()),
     };
     try {
       await axios.put(`/appointments/${currentEvent.current.id}`, datas, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       });
       toast.success("Saved Successfully", { containerId: "A" });
@@ -912,10 +874,10 @@ const Calendar = ({ timelineVisible }) => {
         hostsIds,
         rangeStart,
         rangeEnd,
-        auth?.authToken,
-        staffInfos,
-        auth?.title === "Secretary",
-        auth?.userId
+        auth.authToken,
+        clinic.staffInfos,
+        user.title === "Secretary",
+        user.id
       );
     } catch (err) {}
   };
@@ -924,17 +886,17 @@ const Calendar = ({ timelineVisible }) => {
     fcRef.current.calendar.currentData.options.selectable = selectable;
   };
 
-  return events && staffInfos ? (
+  return events && clinic.staffInfos ? (
     <main className="calendar">
       <section className="calendar-left-bar">
         <Shortcutpickr handleShortcutpickrChange={handleShortcutpickrChange} />
         <div className="calendar-left-bar-options">
           <p>Options</p>
-          <SlotSelect settings={settings} setSettings={setSettings} />
-          <FirstDaySelect settings={settings} setSettings={setSettings} />
+          <SlotSelect />
+          <FirstDaySelect />
         </div>
         <CalendarFilter
-          staffInfos={staffInfos}
+          staffInfos={clinic.staffInfos}
           hostsIds={hostsIds}
           setHostsIds={setHostsIds}
           setEvents={setEvents}
@@ -947,8 +909,8 @@ const Calendar = ({ timelineVisible }) => {
       <section className="calendar-display">
         {!timelineVisible ? (
           <CalendarView
-            slotDuration={settings.slot_duration}
-            firstDay={settings.first_day}
+            slotDuration={user.settings.slot_duration}
+            firstDay={user.settings.first_day}
             fcRef={fcRef}
             isSecretary={isSecretary}
             events={events}
@@ -963,8 +925,8 @@ const Calendar = ({ timelineVisible }) => {
           />
         ) : (
           <TimelineView
-            slotDuration={settings.slot_duration}
-            firstDay={settings.first_day}
+            slotDuration={user.settings.slot_duration}
+            firstDay={user.settings.first_day}
             fcRef={fcRef}
             isSecretary={isSecretary}
             events={events}
@@ -1028,8 +990,8 @@ const Calendar = ({ timelineVisible }) => {
               top={formTop}
               left={formLeft}
               borderColor={currentEvent.current.borderColor}
-              staffInfos={staffInfos}
-              patientsInfos={patientsInfos}
+              staffInfos={clinic.staffInfos}
+              patientsInfos={clinic.patientsInfos}
               currentEvent={currentEvent}
               fpVisible={fpVisible}
               remainingStaff={remainingStaff}

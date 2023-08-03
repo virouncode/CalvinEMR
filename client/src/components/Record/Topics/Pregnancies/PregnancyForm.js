@@ -17,7 +17,7 @@ const PregnancyForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -47,12 +47,12 @@ const PregnancyForm = ({
     try {
       await postPatientRecord(
         "/pregnancies",
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord("/pregnancies", patientId, auth?.authToken)
+        await getPatientRecord("/pregnancies", patientId, auth.authToken)
       );
       editCounter.current -= 1;
       setAddVisible(false);
@@ -126,7 +126,7 @@ const PregnancyForm = ({
         </div>
       </td>
       <td>
-        <em>{formatName(auth?.userName)}</em>{" "}
+        <em>{formatName(user.name)}</em>{" "}
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

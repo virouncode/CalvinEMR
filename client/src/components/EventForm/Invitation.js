@@ -23,7 +23,7 @@ const Invitation = ({
   settings,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [message, setMessage] = useState(
     settings.invitation_templates.find(
       ({ name }) => name === "In person appointment"
@@ -120,7 +120,7 @@ const Invitation = ({
       )
       .replace(
         "[video_call_link]",
-        staffInfos.find(({ id }) => id === auth.userId).video_link
+        staffInfos.find(({ id }) => id === user.id).video_link
       );
 
     for (const patientInfos of patientsGuestsInfos) {
@@ -347,7 +347,7 @@ Powered by Calvin EMR`,
         templateSelected={templateSelected}
       />
       <div className="invitation-btn-row">
-        {auth.userId === hostId && (
+        {user.id === hostId && (
           <button onClick={handleSendAndSave}>Send & Save Template</button>
         )}
         <button onClick={handleSend}>Send</button>

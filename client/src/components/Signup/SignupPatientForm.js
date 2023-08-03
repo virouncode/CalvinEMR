@@ -44,7 +44,7 @@ const SignupPatientForm = () => {
     const patients = await axios.get("/patients", {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${auth?.authToken}`,
+        Authorization: `Bearer ${auth.authToken}`,
       },
     });
     if (
@@ -84,7 +84,7 @@ const SignupPatientForm = () => {
       const response = await axios.post("/patients", datasToPost, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       });
       datasToPost.chart_nbr = createChartNbr(
@@ -96,7 +96,7 @@ const SignupPatientForm = () => {
       await axios.put(`/patients/${response.data.id}`, datasToPost, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       });
 
@@ -180,7 +180,7 @@ const SignupPatientForm = () => {
       await axios.post("/vaccines", vaccinesDatas, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       });
       setPatientAdded(true);

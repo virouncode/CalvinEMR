@@ -4,15 +4,14 @@ import React, { useState, useEffect, useRef } from "react";
 import PatientSearchForm from "./PatientSearchForm";
 import PatientSearchResult from "./PatientSearchResult";
 //Utils
-import { useAxiosFunction } from "../../../hooks/useAxiosFunction";
 import useAuth from "../../../hooks/useAuth";
-import axios from "../../../api/xano";
 
 const BrowsePatient = () => {
   const direction = useRef(false);
-  const [patientsInfos, setPatientsInfos, error, loading, axiosFetch] =
-    useAxiosFunction();
-  const { auth } = useAuth();
+  const { clinic } = useAuth();
+  const [sortedPatientsInfos, setSortedPatientsInfos] = useState(
+    clinic.patientsInfos
+  );
   const [search, setSearch] = useState({
     name: "",
     email: "",
@@ -22,18 +21,9 @@ const BrowsePatient = () => {
     health: "",
   });
 
-  useEffect(() => {
-    axiosFetch({
-      axiosInstance: axios,
-      method: "GET",
-      url: `/patients`,
-      authToken: auth?.authToken,
-    });
-    //eslint-disable-next-line
-  }, [auth?.authToken]);
-
   const handleSort = (columnName) => {
-    const sortedPatientsInfos = [...patientsInfos];
+    console.log("patientsInfos", clinic.patientsInfos);
+    const sortedPatientsInfos = [...clinic.patientsInfos];
     direction.current = !direction.current;
     if (
       columnName === "assigned_md_name" ||
@@ -62,15 +52,14 @@ const BrowsePatient = () => {
             b[columnName]?.toString().localeCompare(a[columnName]?.toString())
           );
     }
-
-    setPatientsInfos(sortedPatientsInfos);
+    setSortedPatientsInfos(sortedPatientsInfos);
   };
   return (
     <>
       <PatientSearchForm setSearch={setSearch} search={search} />
       <PatientSearchResult
         search={search}
-        patientsInfos={patientsInfos}
+        sortedPatientsInfos={sortedPatientsInfos}
         handleSort={handleSort}
       />
     </>

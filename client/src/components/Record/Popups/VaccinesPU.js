@@ -26,7 +26,7 @@ const VaccinesPU = ({
   patientInfos,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [alertVisible, setAlertVisible] = useState(false);
   const [editable, setEditable] = useState(true);
   const [editVisible, setEditVisible] = useState(false);
@@ -61,7 +61,7 @@ const VaccinesPU = ({
     await putPatientRecord(
       "/vaccines",
       datas.id,
-      auth.userId,
+      user.id,
       auth.authToken,
       datas
     );

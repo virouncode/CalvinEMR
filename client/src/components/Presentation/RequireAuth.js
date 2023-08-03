@@ -3,10 +3,10 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const RequireAuth = ({ allowedAccesses }) => {
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const location = useLocation();
 
-  return allowedAccesses.includes(auth?.accessLevel) ? (
+  return allowedAccesses.includes(user.accessLevel) ? (
     <Outlet />
   ) : auth?.email ? (
     <Navigate to="/unauthorized" state={{ from: location }} replace />

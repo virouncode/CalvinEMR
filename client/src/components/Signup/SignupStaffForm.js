@@ -52,7 +52,7 @@ const SignupStaffForm = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
           },
         }
       );
@@ -68,7 +68,7 @@ const SignupStaffForm = () => {
     const staff = await axios.get("/staff", {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${auth?.authToken}`,
+        Authorization: `Bearer ${auth.authToken}`,
       },
     });
     if (
@@ -108,7 +108,7 @@ const SignupStaffForm = () => {
       const response = await axios.post("/staff", datasToPost, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       });
 
@@ -169,7 +169,7 @@ const SignupStaffForm = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
           },
         }
       );

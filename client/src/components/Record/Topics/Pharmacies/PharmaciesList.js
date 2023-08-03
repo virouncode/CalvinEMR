@@ -23,7 +23,7 @@ const PharmaciesList = ({
         const response = await axios.get("/all_pharmacies", {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
           },
           signal: abortController.signal,
         });
@@ -34,7 +34,7 @@ const PharmaciesList = ({
     return () => {
       abortController.abort();
     };
-  }, [auth?.authToken]);
+  }, [auth.authToken]);
 
   //HANDLERS
   const handleSort = (columnName) => {

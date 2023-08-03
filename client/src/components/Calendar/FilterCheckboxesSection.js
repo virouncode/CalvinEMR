@@ -13,7 +13,7 @@ const FilterCheckboxesSection = ({
   handleCheck,
   remainingStaff,
 }) => {
-  const { auth } = useAuth();
+  const { user } = useAuth();
   return (
     <ul>
       <li>
@@ -39,7 +39,7 @@ const FilterCheckboxesSection = ({
             isChecked={isChecked}
             handleCheck={handleCheck}
             color={
-              staff.id !== auth?.userId
+              staff.id !== user.id
                 ? remainingStaff.find(({ id }) => id === staff.id)?.color
                 : "#41A7F5"
             }

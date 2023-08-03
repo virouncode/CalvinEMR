@@ -21,7 +21,7 @@ const DiscussionDetail = ({
   const [replyVisible, setReplyVisible] = useState(false);
   const [transferVisible, setTransferVisible] = useState(false);
   const [allPersons, setAllPersons] = useState(false);
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [patient, setPatient] = useState({});
   const [discussionMsgs, setDiscussionMsgs] = useState([]);
 
@@ -33,7 +33,7 @@ const DiscussionDetail = ({
           { messages_ids: discussion.messages_ids },
           {
             headers: {
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -43,15 +43,15 @@ const DiscussionDetail = ({
         allDiscussionMsgs
           .filter(
             (message) =>
-              message.to_ids.includes(auth.userId) ||
-              message.from_id === auth.userId ||
-              message.transferred_to_ids.includes(auth.userId)
+              message.to_ids.includes(user.id) ||
+              message.from_id === user.id ||
+              message.transferred_to_ids.includes(user.id)
           )
           .sort((a, b) => a.date_created - b.date_created)
       );
     };
     fetchDiscussionMsgs();
-  }, [auth?.authToken, auth.userId, discussion.messages_ids]);
+  }, [auth.authToken, user.id, discussion.messages_ids]);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -59,7 +59,7 @@ const DiscussionDetail = ({
         `patients/${discussion.related_patient_id}`,
         {
           headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
             "Content-Type": "application/json",
           },
         }
@@ -67,7 +67,7 @@ const DiscussionDetail = ({
       setPatient(response.data);
     };
     discussion.related_patient_id && fetchPatient();
-  }, [auth?.authToken, discussion.related_patient_id]);
+  }, [auth.authToken, discussion.related_patient_id]);
 
   const handleClickBack = (e) => {
     setCurrentDiscussionId(0);
@@ -79,7 +79,7 @@ const DiscussionDetail = ({
         `/discussions/${discussion.id}`,
         {
           ...discussion,
-          deleted_by_ids: [...discussion.deleted_by_ids, auth.userId],
+          deleted_by_ids: [...discussion.deleted_by_ids, user.id],
         },
         {
           headers: {
@@ -88,19 +88,16 @@ const DiscussionDetail = ({
           },
         }
       );
-      const response2 = await axios.get(
-        `/discussions?staff_id=${auth.userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response2 = await axios.get(`/discussions?staff_id=${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       const newDiscussions = filterAndSortDiscussions(
         section,
         response2.data,
-        auth.userId
+        user.id
       );
       setDiscussions(newDiscussions);
       setCurrentDiscussionId(0);

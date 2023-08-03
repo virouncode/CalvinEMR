@@ -18,7 +18,7 @@ export const useRecord = (
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
             },
             signal: abortController.signal,
           }
@@ -35,5 +35,5 @@ export const useRecord = (
     return () => {
       abortController.abort();
     };
-  }, [auth?.authToken, patientId, setFormDatas, setStateFunction, tableName]);
+  }, [auth.authToken, patientId, setFormDatas, setStateFunction, tableName]);
 };

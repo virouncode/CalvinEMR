@@ -23,7 +23,7 @@ const ProgressNotesToolBar = ({
   setOrder,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   //Events
   const handleClickSelectAll = (e) => {
     if (selectAll) {
@@ -59,8 +59,8 @@ const ProgressNotesToolBar = ({
     setOrder(value);
     try {
       await axios.put(
-        `settings/${auth.settings.id}`,
-        { ...auth.settings, progress_notes_order: value },
+        `settings/${user.settings.id}`,
+        { ...user.settings, progress_notes_order: value },
         {
           headers: {
             "Content-Type": "application/json",

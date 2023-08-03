@@ -12,7 +12,7 @@ var _ = require("lodash");
 
 const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
   //hooks
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     object: "progress note",
@@ -41,17 +41,17 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
         patient_id: patientId,
         file: file,
         date_created: Date.parse(new Date()),
-        created_by_id: auth?.userId,
+        created_by_id: user.id,
       });
     }
 
     const attach_ids = (
-      await postPatientRecord("/attachments", auth?.userId, auth?.authToken, {
+      await postPatientRecord("/attachments", user.id, auth.authToken, {
         attachments_array: attachments,
       })
     ).data;
 
-    await postPatientRecord("/progress_notes", auth?.userId, auth?.authToken, {
+    await postPatientRecord("/progress_notes", user.id, auth.authToken, {
       ...formDatas,
       attachments_ids: attach_ids,
     });
@@ -61,7 +61,7 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
       await getPatientRecord(
         "/patient_progress_notes",
         patientId,
-        auth?.authToken
+        auth.authToken
       )
     );
   };
@@ -95,7 +95,7 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
           },
           {
             headers: {
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
             },
           }
         );
@@ -118,8 +118,7 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
         <div className="progress-notes-form-row--author">
           <p>
             <strong>From: </strong>
-            {auth?.title === "Doctor" ? "Dr. " : ""}{" "}
-            {formatName(auth?.userName)}
+            {user.title === "Doctor" ? "Dr. " : ""} {formatName(user.name)}
           </p>
           <div className="progress-notes-form-row-template">
             <label>

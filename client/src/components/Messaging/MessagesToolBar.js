@@ -12,7 +12,7 @@ const MessagesToolBar = ({
   discussionsSelectedIds,
   setDiscussionsSelectedIds,
 }) => {
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
@@ -45,7 +45,7 @@ const MessagesToolBar = ({
     ).data;
     for (let discussion of allDiscussionsSelected) {
       const newDeletedByIds = discussion.deleted_by_ids.filter(
-        (id) => id !== auth.userId
+        (id) => id !== user.id
       );
       const newDiscussion = {
         ...discussion,

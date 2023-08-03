@@ -20,7 +20,7 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
             },
           }
         )
@@ -28,7 +28,7 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
       setFiles(attachments.map(({ file }) => file));
     };
     fetchFiles();
-  }, [auth?.authToken, progressNote.attachments_ids]);
+  }, [auth.authToken, progressNote.attachments_ids]);
   //styles
   const BODY_STYLE = {
     padding: "20px",

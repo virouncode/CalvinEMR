@@ -15,7 +15,7 @@ import useAuth from "../../../hooks/useAuth";
 
 const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
   //hooks
-  const { auth } = useAuth();
+  const { user } = useAuth();
   const [progressNotes, setProgressNotes] = useState(null);
   const [addVisible, setAddVisible] = useState(false);
   const [popUpVisible, setPopUpVisible] = useState(false);
@@ -24,7 +24,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [allBodiesVisible, setAllBodiesVisible] = useState(false);
   const [order, setOrder] = useState(
-    auth.settings.progress_notes_order ?? "top"
+    user.settings.progress_notes_order ?? "top"
   );
   const contentRef = useRef(null);
   const triangleRef = useRef(null);

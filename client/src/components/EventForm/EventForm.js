@@ -55,7 +55,7 @@ const EventForm = forwardRef(
       setTempFormDatas,
     ] = useAxiosFunction();
     const [availableRooms, setAvailableRooms] = useState([]);
-    const { auth } = useAuth();
+    const { auth, user } = useAuth();
     const fpStart = useRef(null); //flatpickr start date
     const fpEnd = useRef(null); //flatpickr end date
     const previousStart = useRef(currentEvent.current.start);
@@ -73,10 +73,10 @@ const EventForm = forwardRef(
         axiosInstance: axios,
         method: "GET",
         url: `/appointments/${currentEvent.current.id}`,
-        authToken: auth?.authToken,
+        authToken: auth.authToken,
       });
       //eslint-disable-next-line
-    }, [auth?.authToken, currentEvent]);
+    }, [auth.authToken, currentEvent]);
 
     useEffect(() => {
       const fetchSettings = async () => {
@@ -102,14 +102,14 @@ const EventForm = forwardRef(
             parseInt(currentEvent.current.id),
             Date.parse(currentEvent.current.start),
             Date.parse(currentEvent.current.end),
-            auth?.authToken,
+            auth.authToken,
             controller
           )
         );
       };
       fetchAvailableRooms();
       return () => controller.abort();
-    }, [auth?.authToken, currentEvent]);
+    }, [auth.authToken, currentEvent]);
 
     //============================ HANDLERS ==========================//
 
@@ -125,7 +125,7 @@ const EventForm = forwardRef(
       const value = parseInt(e.target.value);
       currentEvent.current.setExtendedProp("host", value);
 
-      if (value === auth?.userId) {
+      if (value === user.id) {
         currentEvent.current.setProp("color", "#41A7F5");
         currentEvent.current.setProp("textColor", "#FEFEFE");
         setColor("#41A7F5");
@@ -172,7 +172,7 @@ const EventForm = forwardRef(
         parseInt(currentEvent.current.id),
         date,
         rangeEnd,
-        auth?.authToken
+        auth.authToken
       );
       if (
         tempFormDatas.room === "To be determined" ||
@@ -206,7 +206,7 @@ const EventForm = forwardRef(
               parseInt(currentEvent.current.id),
               date,
               date,
-              auth?.authToken,
+              auth.authToken,
               abortControllerStart.current
             )
           );
@@ -228,7 +228,7 @@ const EventForm = forwardRef(
               parseInt(currentEvent.current.id),
               date,
               tempFormDatas.end,
-              auth?.authToken,
+              auth.authToken,
               abortControllerStart.current
             )
           );
@@ -246,7 +246,7 @@ const EventForm = forwardRef(
         parseInt(currentEvent.current.id),
         tempFormDatas.start,
         date,
-        auth?.authToken
+        auth.authToken
       );
       if (
         tempFormDatas.room === "To be determined" ||
@@ -275,7 +275,7 @@ const EventForm = forwardRef(
             parseInt(currentEvent.current.id),
             tempFormDatas.start,
             date,
-            auth?.authToken,
+            auth.authToken,
             abortControllerEnd.current
           )
         );
@@ -352,7 +352,7 @@ const EventForm = forwardRef(
     };
 
     const isSecretary = () => {
-      return auth?.title === "Secretary" ? true : false;
+      return user.title === "Secretary" ? true : false;
     };
 
     useImperativeHandle(ref, () => ({
@@ -368,8 +368,7 @@ const EventForm = forwardRef(
       formDatas && (
         <form
           className={
-            isSecretary() ||
-            currentEvent.current.extendedProps.host === auth?.userId
+            isSecretary() || currentEvent.current.extendedProps.host === user.id
               ? "form"
               : "form form-uneditable"
           }
@@ -456,7 +455,7 @@ const EventForm = forwardRef(
               tempFormDatas={tempFormDatas}
               setTempFormDatas={setTempFormDatas}
               currentEvent={currentEvent}
-              editable={isSecretary() || auth?.userId === tempFormDatas.host_id}
+              editable={isSecretary() || user.id === tempFormDatas.host_id}
               hostId={tempFormDatas.host_id}
               staffGuestsInfos={staffGuestsInfos}
               setStaffGuestsInfos={setStaffGuestsInfos}

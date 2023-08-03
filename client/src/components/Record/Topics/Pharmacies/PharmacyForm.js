@@ -14,7 +14,7 @@ const PharmacyForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     name: "",
     patients: [{ patients_id: patientId }],
@@ -50,15 +50,15 @@ const PharmacyForm = ({
     try {
       await postPatientRecord(
         "/pharmacies",
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setAddNew(false);
       const response = await axios.get("/all_pharmacies", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       });
       setPharmaciesList(response.data);
@@ -157,7 +157,7 @@ const PharmacyForm = ({
         />
       </td>
       <td>
-        <em>{formatName(auth?.userName)}</em>
+        <em>{formatName(user.name)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

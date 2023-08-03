@@ -16,7 +16,7 @@ const AllergyForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     allergy: "",
@@ -37,15 +37,8 @@ const AllergyForm = ({
       return;
     }
     try {
-      await postPatientRecord(
-        "/allergies",
-        auth?.userId,
-        auth?.authToken,
-        formDatas
-      );
-      setDatas(
-        await getPatientRecord("/allergies", patientId, auth?.authToken)
-      );
+      await postPatientRecord("/allergies", user.id, auth.authToken, formDatas);
+      setDatas(await getPatientRecord("/allergies", patientId, auth.authToken));
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
@@ -66,7 +59,7 @@ const AllergyForm = ({
         />
       </td>
       <td>
-        <em>{formatName(auth?.userName)}</em>
+        <em>{formatName(user.name)}</em>
       </td>
       <td>
         <em>{toLocalDate(Date.parse(new Date()))}</em>

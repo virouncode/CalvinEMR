@@ -7,27 +7,20 @@ import PatientMenuRight from "./PatientMenuRight";
 import ProgressNotes from "../Progress/ProgressNotes";
 import { CircularProgress } from "@mui/material";
 //Utils
-import { useAxiosFunction } from "../../../hooks/useAxiosFunction";
 import useAuth from "../../../hooks/useAuth";
-import axios from "../../../api/xano";
 
 const PatientRecord = () => {
   //HOOKS
-  const { auth } = useAuth();
-  const [patientInfos, setPatientInfos, loading, error, axiosFetch] =
-    useAxiosFunction();
+  const { clinic } = useAuth();
+  const [patientInfos, setPatientInfos] = useState(null);
   const { id } = useParams();
   const [allContentsVisible, setAllContentsVisible] = useState(true);
 
   useEffect(() => {
-    axiosFetch({
-      axiosInstance: axios,
-      method: "GET",
-      url: `/patients/${id}`,
-      authToken: auth?.authToken,
-    });
-    //eslint-disable-next-line
-  }, [auth?.authToken, id]);
+    setPatientInfos(
+      clinic.patientsInfos.find((patient) => patient.id === parseInt(id))
+    );
+  }, [id, clinic.patientsInfos]);
 
   const handleClick = (e) => {
     setAllContentsVisible((v) => !v);

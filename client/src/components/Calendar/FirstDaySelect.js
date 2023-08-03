@@ -4,21 +4,24 @@ import axios from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 
-const FirstDaySelect = ({ settings, setSettings }) => {
-  const { auth } = useAuth();
+const FirstDaySelect = () => {
+  const { auth, user, setUser } = useAuth();
   const handleChange = async (e) => {
     const value = e.target.value;
-    setSettings({ ...settings, first_day: value });
     try {
       await axios.put(
-        `/settings/${settings.id}`,
-        { ...settings, first_day: value },
+        `/settings/${user.settings.id}`,
+        { ...user.settings, first_day: value },
         {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
           },
         }
       );
+      setUser({
+        ...user,
+        settings: { ...user.settings, first_day: value },
+      });
       toast.success("Saved preference", { containerId: "A" });
     } catch (err) {
       toast.success("Unable to change preference, please contact admin", {
@@ -31,7 +34,7 @@ const FirstDaySelect = ({ settings, setSettings }) => {
       <label>First day of the week</label>
       <select
         name="duration"
-        value={settings.first_day}
+        value={user.settings.first_day}
         onChange={handleChange}
       >
         <option value="0">Sunday</option>

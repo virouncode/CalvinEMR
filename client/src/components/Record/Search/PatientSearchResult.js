@@ -5,8 +5,8 @@ import PatientResultItem from "./PatientResultItem";
 import { CircularProgress } from "@mui/material";
 import { toLocalDate } from "../../../utils/formatDates";
 
-const PatientSearchResult = ({ search, patientsInfos, handleSort }) => {
-  return patientsInfos ? (
+const PatientSearchResult = ({ search, sortedPatientsInfos, handleSort }) => {
+  return sortedPatientsInfos ? (
     <section className="patient-result">
       <table>
         <thead>
@@ -46,7 +46,7 @@ const PatientSearchResult = ({ search, patientsInfos, handleSort }) => {
           </tr>
         </thead>
         <tbody>
-          {patientsInfos
+          {sortedPatientsInfos
             .filter(
               (patient) =>
                 patient.full_name

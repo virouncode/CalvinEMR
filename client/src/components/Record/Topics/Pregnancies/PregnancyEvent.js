@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 
 const PregnancyEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -44,16 +44,12 @@ const PregnancyEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
       await putPatientRecord(
         "/pregnancies",
         event.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord(
-          "/pregnancies",
-          event.patient_id,
-          auth?.authToken
-        )
+        await getPatientRecord("/pregnancies", event.patient_id, auth.authToken)
       );
       editCounter.current -= 1;
       setEditVisible(false);
@@ -77,13 +73,9 @@ const PregnancyEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/pregnancies", event.id, auth?.authToken);
+      await deletePatientRecord("/pregnancies", event.id, auth.authToken);
       setDatas(
-        await getPatientRecord(
-          "/pregnancies",
-          event.patient_id,
-          auth?.authToken
-        )
+        await getPatientRecord("/pregnancies", event.patient_id, auth.authToken)
       );
     }
   };

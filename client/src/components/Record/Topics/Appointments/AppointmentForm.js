@@ -36,9 +36,9 @@ const AppointmentForm = ({
   setAlertVisible,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, clinic, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
-    host_id: auth?.title === "Secretary" ? 0 : auth?.userId,
+    host_id: user.title === "Secretary" ? 0 : user.id,
     start: null,
     end: null,
     duration: 0,
@@ -73,7 +73,7 @@ const AppointmentForm = ({
 
   //HANDLERS
   const isSecretary = () => {
-    return auth?.title === "Secretary";
+    return user.title === "Secretary";
   };
 
   const handleChange = (e) => {
@@ -132,7 +132,7 @@ const AppointmentForm = ({
       0,
       value,
       rangeEnd,
-      auth?.authToken
+      auth.authToken
     );
     if (
       formDatas.room === "To be determined" ||
@@ -170,7 +170,7 @@ const AppointmentForm = ({
         endMinInput.value = startMinInput.value;
         endAMPMInput.vzalue = startAMPMInput.value;
         setAvailableRooms(
-          await getAvailableRooms(0, value, value, auth?.authToken)
+          await getAvailableRooms(0, value, value, auth.authToken)
         );
       } else {
         setFormDatas({
@@ -179,7 +179,7 @@ const AppointmentForm = ({
           duration: Math.floor((formDatas.end - value) / (1000 * 60)),
         });
         setAvailableRooms(
-          await getAvailableRooms(0, value, formDatas.end, auth?.authToken)
+          await getAvailableRooms(0, value, formDatas.end, auth.authToken)
         );
       }
     } else {
@@ -229,7 +229,7 @@ const AppointmentForm = ({
       0,
       formDatas.start,
       value,
-      auth?.authToken
+      auth.authToken
     );
     if (
       formDatas.room === "To be determined" ||
@@ -261,7 +261,7 @@ const AppointmentForm = ({
         duration: Math.floor((value - formDatas.start) / (1000 * 60)),
       });
       setAvailableRooms(
-        await getAvailableRooms(0, formDatas.start, value, auth?.authToken)
+        await getAvailableRooms(0, formDatas.start, value, auth.authToken)
       );
     } else {
       switch (name) {
@@ -324,15 +324,15 @@ const AppointmentForm = ({
     try {
       await postPatientRecord(
         "/appointments",
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
         await getPatientRecord(
           "/patient_appointments",
           patientId,
-          auth?.authToken
+          auth.authToken
         )
       );
       editCounter.current -= 1;
@@ -355,14 +355,13 @@ const AppointmentForm = ({
       <td style={{ minWidth: "170px" }}>
         {isSecretary() ? (
           <HostsList
-            staffInfos={auth?.staffInfos}
+            staffInfos={clinic.staffInfos}
             handleHostChange={handleHostChange}
             hostId={formDatas.host_id}
           />
         ) : (
           <p>
-            {auth?.title === "Doctor" ? "Dr. " : ""}{" "}
-            {formatName(auth?.userName)}
+            {user.title === "Doctor" ? "Dr. " : ""} {formatName(user.name)}
           </p>
         )}
       </td>
@@ -445,7 +444,7 @@ const AppointmentForm = ({
         />
       </td>
       <td>
-        <em>{formatName(auth?.userName)}</em>
+        <em>{formatName(user.name)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

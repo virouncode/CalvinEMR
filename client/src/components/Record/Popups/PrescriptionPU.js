@@ -14,7 +14,7 @@ import { CircularProgress } from "@mui/material";
 import AddressesList from "../../Lists/AddressesList";
 
 const PrescriptionPU = ({ medsRx, patientInfos }) => {
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [addNotes, setAddNotes] = useState("");
   const [progress, setProgress] = useState(false);
   const printRef = useRef();
@@ -41,7 +41,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
   useEffect(() => {
     const fetchAddress = async () => {
       try {
-        const response = await axios.get(`/settings?staff_id=${auth.userId}`, {
+        const response = await axios.get(`/settings?staff_id=${user.id}`, {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
           },
@@ -53,7 +53,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
       }
     };
     fetchAddress();
-  }, [auth.authToken, auth.userId]);
+  }, [auth.authToken, user.id]);
 
   const handleAddNotes = (e) => {
     const value = e.target.value;
@@ -91,7 +91,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       }
     );
@@ -107,35 +107,25 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
         patient_id: patientInfos.id,
         file: fileToUpload.data,
         date_created: Date.parse(new Date()),
-        created_by_id: auth?.userId,
+        created_by_id: user.id,
       },
     ];
 
     try {
-      await postPatientRecord(
-        "/documents",
-        auth?.userId,
-        auth?.authToken,
-        datas
-      );
+      await postPatientRecord("/documents", user.id, auth.authToken, datas);
       const attach_ids = (
-        await postPatientRecord("/attachments", auth?.userId, auth?.authToken, {
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
           attachments_array: datasAttachment,
         })
       ).data;
 
-      await postPatientRecord(
-        "/progress_notes",
-        auth?.userId,
-        auth?.authToken,
-        {
-          patient_id: patientInfos.id,
-          object: `Prescription ${toLocalDateAndTimeWithSeconds(new Date())}`,
-          body: "See attachment",
-          version_nbr: 1,
-          attachments_ids: attach_ids,
-        }
-      );
+      await postPatientRecord("/progress_notes", user.id, auth.authToken, {
+        patient_id: patientInfos.id,
+        object: `Prescription ${toLocalDateAndTimeWithSeconds(new Date())}`,
+        body: "See attachment",
+        version_nbr: 1,
+        attachments_ids: attach_ids,
+      });
 
       setProgress(false);
       toast.success("Saved succesfully", { containerId: "C" });
@@ -192,8 +182,8 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
             </div>
             <div className="prescription-doctor-infos">
               <p>
-                Prescriber: Dr. {formatName(auth?.userName)} (LIC.{" "}
-                {auth?.licence_nbr})
+                Prescriber: Dr. {formatName(user.name)} (LIC. {user.licence_nbr}
+                )
               </p>
               <p>{sites.find(({ name }) => name === addressSelected)?.name}</p>
               <p>

@@ -25,7 +25,7 @@ import formatName from "../../../../utils/formatName";
 
 const MeasurementEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -42,12 +42,12 @@ const MeasurementEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/measurements", event.id, auth?.authToken);
+      await deletePatientRecord("/measurements", event.id, auth.authToken);
       setDatas(
         await getPatientRecord(
           "/measurements",
           event.patient_id,
-          auth?.authToken
+          auth.authToken
         )
       );
     }
@@ -70,15 +70,15 @@ const MeasurementEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
       await putPatientRecord(
         "/measurements",
         event.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
         await getPatientRecord(
           "/measurements",
           event.patient_id,
-          auth?.authToken
+          auth.authToken
         )
       );
       editCounter.current -= 1;

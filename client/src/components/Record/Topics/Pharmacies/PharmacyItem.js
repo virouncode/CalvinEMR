@@ -18,7 +18,7 @@ const PharmacyItem = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -50,12 +50,12 @@ const PharmacyItem = ({
         await putPatientRecord(
           "/pharmacies",
           item.id,
-          auth?.userId,
-          auth?.authToken,
+          user.id,
+          auth.authToken,
           formDatas
         );
         setDatas(
-          await getPatientRecord("/pharmacies", patientId, auth?.authToken)
+          await getPatientRecord("/pharmacies", patientId, auth.authToken)
         );
         editCounter.current -= 1;
         setEditVisible(false);
@@ -90,12 +90,12 @@ const PharmacyItem = ({
       await putPatientRecord(
         "/pharmacies",
         item.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         pharmacy
       );
       setDatas(
-        await getPatientRecord("/pharmacies", patientId, auth?.authToken)
+        await getPatientRecord("/pharmacies", patientId, auth.authToken)
       );
     }
   };

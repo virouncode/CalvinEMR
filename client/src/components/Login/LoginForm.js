@@ -8,7 +8,7 @@ const LOGIN_URL = "/auth/login";
 const USERINFO_URL = "/auth/me";
 
 const LoginForm = () => {
-  const { setAuth } = useAuth();
+  const { setAuth, setClinic, setUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -37,6 +37,7 @@ const LoginForm = () => {
 
     if (type === "staff") {
       try {
+        //=============== AUTH =================//
         const response = await axios.post(
           LOGIN_URL,
           JSON.stringify({ email, password }),
@@ -45,36 +46,36 @@ const LoginForm = () => {
           }
         );
         const authToken = response?.data?.authToken;
+        setAuth({ email, password, authToken });
 
+        //================ USER ===================//
         const response2 = await axios.get(USERINFO_URL, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         });
         const accessLevel = response2?.data?.access_level;
-        const userId = response2?.data?.id;
-        const userName = response2?.data?.full_name;
+        const id = response2?.data?.id;
+        const name = response2?.data?.full_name;
         const title = response2?.data?.title;
         const sign = response2?.data?.sign;
         const licence_nbr = response2?.data?.licence_nbr;
-        const cell_phone = response2?.data?.cell_phone;
-
-        const response3 = await axios.get(`/settings?staff_id=${userId}`, {
+        //Get user settings
+        const response3 = await axios.get(`/settings?staff_id=${id}`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         });
-
-        const response4 = await axios.get(`/discussions?staff_id=${userId}`, {
+        const settings = response3?.data;
+        //Get user unread messages
+        const response6 = await axios.get(`/discussions?staff_id=${id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
         });
-
-        //unread messages
         let unreadMessagesNbr = 0;
-        for (let discussion of response4.data) {
+        for (let discussion of response6.data) {
           const discussionMessages = (
             await axios.post(
               `/messages_selected`,
@@ -90,30 +91,44 @@ const LoginForm = () => {
           if (
             discussionMessages.find(
               (message) =>
-                !message.read_by_ids.includes(userId) &&
-                (message.to_ids.includes(userId) ||
-                  message.transferred_to_to_ids.includes(userId))
+                !message.read_by_ids.includes(id) &&
+                (message.to_ids.includes(id) ||
+                  message.transferred_to_to_ids.includes(id))
             )
           ) {
             unreadMessagesNbr++;
           }
         }
 
-        const settings = response3?.data;
-        setAuth({
-          email,
-          password,
+        setUser({
           accessLevel,
-          licence_nbr,
-          authToken,
-          userId,
-          userName,
+          id,
+          name,
           title,
           sign,
-          cell_phone,
+          licence_nbr,
           settings,
           unreadMessagesNbr,
         });
+
+        //================== CLINIC ===================//
+        const response4 = await axios.get("/staff", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const staffInfos = response4.data;
+        const response5 = await axios.get("/patients", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const patientsInfos = response5.data;
+        setClinic({ staffInfos, patientsInfos });
+        //=====================================//
+
         setEmail("");
         setPassword("");
         navigate(from, { replace: true });

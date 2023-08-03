@@ -9,7 +9,7 @@ const MyAccountForm = () => {
   const [editVisible, setEditVisible] = useState(false);
   const [formDatas, setFormDatas] = useState(null);
   const [tempFormDatas, setTempFormDatas] = useState(null);
-  const { auth } = useAuth();
+  const { auth, user, clinic, setClinic } = useAuth();
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
   const [infosChanged, setInfosChanged] = useState(false);
@@ -17,7 +17,7 @@ const MyAccountForm = () => {
   useEffect(() => {
     const fetchMyInfos = async () => {
       try {
-        const response = await axios.get(`/staff/${auth.userId}`, {
+        const response = await axios.get(`/staff/${user.id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
@@ -30,7 +30,7 @@ const MyAccountForm = () => {
       }
     };
     fetchMyInfos();
-  }, [auth.authToken, auth.userId]);
+  }, [auth.authToken, user.id]);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -58,7 +58,7 @@ const MyAccountForm = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
           },
         }
       );
@@ -88,13 +88,21 @@ const MyAccountForm = () => {
       datasToPut.date_created = Date.parse(new Date());
       delete datasToPut.confirm_password;
 
-      const response = await axios.put(`/staff/${auth.userId}`, datasToPut, {
+      await axios.put(`/staff/${user.id}`, datasToPut, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       });
       setInfosChanged(true);
+      //update clinic context staffInfos
+      const response = await axios.get("/staff", {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setClinic({ ...clinic, staffInfos: response.data });
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setErrMsg(err.message);

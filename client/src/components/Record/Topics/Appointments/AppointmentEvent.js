@@ -38,7 +38,7 @@ const AppointmentEvent = ({
   setAlertVisible,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, clinic, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
   const [availableRooms, setAvailableRooms] = useState([]);
@@ -69,7 +69,7 @@ const AppointmentEvent = ({
           event.id,
           event.start,
           event.end,
-          auth?.authToken,
+          auth.authToken,
           abortController
         );
         setAvailableRooms(availableRoomsResult);
@@ -79,11 +79,11 @@ const AppointmentEvent = ({
     return () => {
       abortController.abort();
     };
-  }, [auth?.authToken, event.end, event.host_id, event.id, event.start]);
+  }, [auth.authToken, event.end, event.host_id, event.id, event.start]);
 
   //HANDLERS
   const isSecretary = () => {
-    return auth?.title === "Secretary";
+    return user.title === "Secretary";
   };
 
   const handleChange = (e) => {
@@ -155,7 +155,7 @@ const AppointmentEvent = ({
       event.id,
       value,
       rangeEnd,
-      auth?.authToken
+      auth.authToken
     );
     if (
       eventInfos.room === "To be determined" ||
@@ -189,7 +189,7 @@ const AppointmentEvent = ({
         endMinInput.value = startMinInput.value;
         endAMPMInput.value = startAMPMInput.value;
         setAvailableRooms(
-          await getAvailableRooms(event.id, value, value, auth?.authToken)
+          await getAvailableRooms(event.id, value, value, auth.authToken)
         );
       } else {
         setEventInfos({
@@ -203,7 +203,7 @@ const AppointmentEvent = ({
             event.id,
             value,
             eventInfos.end,
-            auth?.authToken
+            auth.authToken
           )
         );
       }
@@ -254,7 +254,7 @@ const AppointmentEvent = ({
       event.id,
       eventInfos.start,
       value,
-      auth?.authToken
+      auth.authToken
     );
     if (
       eventInfos.room === "To be determined" ||
@@ -290,7 +290,7 @@ const AppointmentEvent = ({
           event.id,
           eventInfos.start,
           value,
-          auth?.authToken
+          auth.authToken
         )
       );
     } else {
@@ -358,15 +358,15 @@ const AppointmentEvent = ({
       await putPatientRecord(
         "/appointments",
         event.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
         await getPatientRecord(
           "/patient_appointments",
           patientId,
-          auth?.authToken
+          auth.authToken
         )
       );
       editCounter.current -= 1;
@@ -389,12 +389,12 @@ const AppointmentEvent = ({
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/appointments", event.id, auth?.authToken);
+      await deletePatientRecord("/appointments", event.id, auth.authToken);
       setDatas(
         await getPatientRecord(
           "/patient_appointments",
           patientId,
-          auth?.authToken
+          auth.authToken
         )
       );
     }
@@ -413,7 +413,7 @@ const AppointmentEvent = ({
         <td style={{ minWidth: "170px" }}>
           {editVisible && isSecretary() ? (
             <HostsList
-              staffInfos={auth?.staffInfos}
+              staffInfos={clinic.staffInfos}
               handleHostChange={handleHostChange}
               hostId={eventInfos.host_id}
             />
@@ -554,7 +554,7 @@ const AppointmentEvent = ({
           <em> {toLocalDate(eventInfos.date_created)} </em>
         </td>
         <td>
-          {(isSecretary() || auth?.userId === eventInfos.host_id) &&
+          {(isSecretary() || user.id === eventInfos.host_id) &&
             (!editVisible ? (
               <div className="appointments-event-btn-container">
                 <button onClick={handleEditClick}>Edit</button>

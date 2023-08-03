@@ -16,7 +16,7 @@ const ReminderForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     active: true,
@@ -40,15 +40,8 @@ const ReminderForm = ({
       return;
     }
     try {
-      await postPatientRecord(
-        "/reminders",
-        auth?.userId,
-        auth?.authToken,
-        formDatas
-      );
-      setDatas(
-        await getPatientRecord("/reminders", patientId, auth?.authToken)
-      );
+      await postPatientRecord("/reminders", user.id, auth.authToken, formDatas);
+      setDatas(await getPatientRecord("/reminders", patientId, auth.authToken));
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
@@ -81,7 +74,7 @@ const ReminderForm = ({
         />
       </td>
       <td>
-        <em>{formatName(auth?.userName)}</em>
+        <em>{formatName(user.name)}</em>
       </td>
       <td>
         <em>{toLocalDate(Date.parse(new Date()))}</em>

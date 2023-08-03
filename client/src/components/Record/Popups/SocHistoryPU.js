@@ -14,7 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 const SocHistoryPU = ({ patientId, setDatas, setPopUpVisible }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [formDatas, setFormDatas] = useState(null);
   useRecord("/social_history", patientId, setDatas, setFormDatas);
@@ -62,12 +62,12 @@ const SocHistoryPU = ({ patientId, setDatas, setPopUpVisible }) => {
       await putPatientRecord(
         "/social_history",
         formDatas.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord("/social_history", patientId, auth?.authToken)
+        await getPatientRecord("/social_history", patientId, auth.authToken)
       );
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {

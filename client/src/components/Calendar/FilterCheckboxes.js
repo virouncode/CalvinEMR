@@ -16,7 +16,7 @@ const FilterCheckboxes = ({
   setRemainingStaff,
 }) => {
   //======================= HOOKS ==========================//
-  const { auth } = useAuth();
+  const { user } = useAuth();
   const [hostsCategories, sethostsCategories] = useState([]); //Array
   const [hostsDoctorsIds, setHostsDoctorsIds] = useState([]); //Array
   const [hostsNursesIds, setHostsNursesIds] = useState([]); //Array
@@ -146,7 +146,7 @@ const FilterCheckboxes = ({
   }, [hostsIds, staffInfos]);
 
   useEffect(() => {
-    auth?.title === "Secretary" &&
+    user.title === "Secretary" &&
       sethostsCategories([
         "Doctor",
         "Nurse",
@@ -160,7 +160,7 @@ const FilterCheckboxes = ({
         "Psychologist",
         "Other",
       ]);
-  }, [auth?.title]);
+  }, [user.title]);
 
   //======================== EVENT HANDLERS ===================//
 
@@ -394,7 +394,7 @@ const FilterCheckboxes = ({
     //     {
     //       headers: {
     //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${auth?.authToken}`,
+    //         Authorization: `Bearer ${auth.authToken}`,
     //       },
     //     }
     //   );
@@ -402,7 +402,7 @@ const FilterCheckboxes = ({
     //     appointments,
     //     staffInfos,
     //     isSecretary(),
-    //     auth?.userId
+    //     user.id
     //   );
     //   setEvents(eventsInfos[0]);
     //   setRemainingStaff(eventsInfos[1]);

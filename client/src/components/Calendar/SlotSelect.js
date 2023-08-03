@@ -4,21 +4,24 @@ import axios from "../../api/xano";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 
-const SlotSelect = ({ settings, setSettings }) => {
-  const { auth } = useAuth();
+const SlotSelect = () => {
+  const { auth, setUser, user } = useAuth();
   const handleChange = async (e) => {
     const value = e.target.value;
-    setSettings({ ...settings, slot_duration: value });
     try {
       await axios.put(
-        `/settings/${settings.id}`,
-        { ...settings, slot_duration: value },
+        `/settings/${user.settings.id}`,
+        { ...user.settings, slot_duration: value },
         {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
           },
         }
       );
+      setUser({
+        ...user,
+        settings: { ...user.settings, slot_duration: value },
+      });
       toast.success("Saved preference", { containerId: "A" });
     } catch (err) {
       toast.success("Unable to change preference, please contact admin", {
@@ -31,7 +34,7 @@ const SlotSelect = ({ settings, setSettings }) => {
       <label>Time Slot Duration</label>
       <select
         name="duration"
-        value={settings.slot_duration}
+        value={user.settings.slot_duration}
         onChange={handleChange}
       >
         <option value="00:05">5 mn</option>

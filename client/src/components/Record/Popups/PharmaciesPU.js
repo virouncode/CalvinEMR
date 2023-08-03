@@ -10,7 +10,7 @@ import { ToastContainer } from "react-toastify";
 
 const PharmaciesPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const editCounter = useRef(0);
   const direction = useRef(false);
   const [addVisible, setAddVisible] = useState(false);
@@ -59,11 +59,11 @@ const PharmaciesPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
     await putPatientRecord(
       "/pharmacies",
       item.id,
-      auth?.userId,
-      auth?.authToken,
+      user.id,
+      auth.authToken,
       pharmacy
     );
-    setDatas(await getPatientRecord("/pharmacies", patientId, auth?.authToken));
+    setDatas(await getPatientRecord("/pharmacies", patientId, auth.authToken));
   };
 
   const handleSort = (columnName) => {

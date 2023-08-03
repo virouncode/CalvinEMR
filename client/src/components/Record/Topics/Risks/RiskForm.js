@@ -16,7 +16,7 @@ const RiskForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -39,12 +39,12 @@ const RiskForm = ({
     try {
       await postPatientRecord(
         "/risk_factors",
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord("/risk_factors", patientId, auth?.authToken)
+        await getPatientRecord("/risk_factors", patientId, auth.authToken)
       );
       editCounter.current -= 1;
       setAddVisible(false);
@@ -68,7 +68,7 @@ const RiskForm = ({
         />
       </td>
       <td>
-        <em>{formatName(auth?.userName)}</em>
+        <em>{formatName(user.name)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

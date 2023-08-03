@@ -34,7 +34,7 @@ const ProgressNotesCard = ({
   const [files, setFiles] = useState([]);
   const [bodyVisible, setBodyVisible] = useState(true);
   const bodyRef = useRef(null);
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
 
   useEffect(() => {
     if (progressNote) {
@@ -50,11 +50,7 @@ const ProgressNotesCard = ({
   useEffect(() => {
     const fetchVersions = async () => {
       const versionsResults = (
-        await getPatientRecord(
-          "/progress_notes_log",
-          patientId,
-          auth?.authToken
-        )
+        await getPatientRecord("/progress_notes_log", patientId, auth.authToken)
       ).filter(({ progress_note_id }) => progress_note_id === progressNote.id);
 
       versionsResults.forEach(
@@ -65,7 +61,7 @@ const ProgressNotesCard = ({
       setVersions(versionsResults);
     };
     fetchVersions();
-  }, [auth?.authToken, patientId, progressNote.id]);
+  }, [auth.authToken, patientId, progressNote.id]);
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -76,7 +72,7 @@ const ProgressNotesCard = ({
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${auth?.authToken}`,
+              Authorization: `Bearer ${auth.authToken}`,
             },
           }
         )
@@ -84,7 +80,7 @@ const ProgressNotesCard = ({
       setFiles(attachments.map(({ file }) => file));
     };
     fetchFiles();
-  }, [auth?.authToken, progressNote.attachments_ids]);
+  }, [auth.authToken, progressNote.attachments_ids]);
 
   //HANDLERS
   const handleTriangleProgressClick = (e) => {
@@ -129,8 +125,8 @@ const ProgressNotesCard = ({
       }
       await postPatientRecord(
         "/progress_notes_log",
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         logDatas
       );
 
@@ -139,8 +135,8 @@ const ProgressNotesCard = ({
       await putPatientRecord(
         "/progress_notes",
         progressNote.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         tempFormDatas
       );
       setEditVisible(false);
@@ -148,15 +144,11 @@ const ProgressNotesCard = ({
         await getPatientRecord(
           "/patient_progress_notes",
           patientId,
-          auth?.authToken
+          auth.authToken
         )
       );
       const versionsResults = (
-        await getPatientRecord(
-          "/progress_notes_log",
-          patientId,
-          auth?.authToken
-        )
+        await getPatientRecord("/progress_notes_log", patientId, auth.authToken)
       ).filter(({ progress_note_id }) => progress_note_id === progressNote.id);
 
       versionsResults.forEach(
@@ -203,7 +195,7 @@ const ProgressNotesCard = ({
       const response = await axios.get(`/progress_notes/${progressNote.id}`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
         },
       });
       updatedProgressNotes[index] = response.data;

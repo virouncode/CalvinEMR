@@ -12,7 +12,7 @@ const MessagesLeftBar = ({ section, setSection, setCurrentDiscussionId }) => {
       ? "messages-section-leftbar-category messages-section-leftbar-category--active"
       : "messages-section-leftbar-category";
 
-  const { auth } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="messages-section-leftbar">
@@ -23,7 +23,7 @@ const MessagesLeftBar = ({ section, setSection, setCurrentDiscussionId }) => {
           onClick={handleClickSection}
         >
           {"Inbox" +
-            (auth.unreadMessagesNbr ? ` (${auth.unreadMessagesNbr})` : "")}
+            (user.unreadMessagesNbr ? ` (${user.unreadMessagesNbr})` : "")}
         </li>
         <li
           className={isActive("Sent messages")}

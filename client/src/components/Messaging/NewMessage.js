@@ -15,7 +15,7 @@ const NewMessage = ({
   setDiscussions,
   section,
 }) => {
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [recipientsIds, setRecipientsIds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subject, setSubject] = useState("");
@@ -117,9 +117,9 @@ const NewMessage = ({
   const handleSend = async (e) => {
     //create the message
     const message = {
-      from_id: auth.userId,
+      from_id: user.id,
       to_ids: recipientsIds,
-      read_by_ids: [auth.userId],
+      read_by_ids: [user.id],
       body: body,
       date_created: Date.parse(new Date()),
     };
@@ -127,7 +127,7 @@ const NewMessage = ({
     //post the message and get the id
     const response = await axios.post("/messages", message, {
       headers: {
-        Authorization: `Bearer ${auth?.authToken}`,
+        Authorization: `Bearer ${auth.authToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -136,11 +136,11 @@ const NewMessage = ({
 
     //create a discussion
     const discussion = {
-      author_id: auth.userId,
+      author_id: user.id,
       subject: subject,
-      participants_ids: recipientsIds.includes(auth.userId)
+      participants_ids: recipientsIds.includes(user.id)
         ? recipientsIds
-        : [...recipientsIds, auth.userId],
+        : [...recipientsIds, user.id],
       related_patient_id: patientId,
       deleted_by_ids: [],
       messages_ids: [messageId],
@@ -152,24 +152,21 @@ const NewMessage = ({
     try {
       await axios.post("/discussions", discussion, {
         headers: {
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
 
-      const response2 = await axios.get(
-        `/discussions?staff_id=${auth.userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response2 = await axios.get(`/discussions?staff_id=${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       const newDiscussions = filterAndSortDiscussions(
         section,
         response2.data,
-        auth.userId
+        user.id
       );
       setDiscussions(newDiscussions);
       setNewVisible(false);

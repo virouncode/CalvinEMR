@@ -16,7 +16,7 @@ const MedHistoryForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     ongoing: "false",
@@ -47,12 +47,12 @@ const MedHistoryForm = ({
     try {
       await postPatientRecord(
         "/medical_history",
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord("/medical_history", patientId, auth?.authToken)
+        await getPatientRecord("/medical_history", patientId, auth.authToken)
       );
       editCounter.current -= 1;
       setAddVisible(false);
@@ -97,7 +97,7 @@ const MedHistoryForm = ({
         />
       </td>
       <td>
-        <em>{formatName(auth?.userName)}</em>
+        <em>{formatName(user.name)}</em>
       </td>
       <td>
         <em>{toLocalDate(Date.parse(new Date()))}</em>

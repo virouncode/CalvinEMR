@@ -20,7 +20,7 @@ const VaccineCellItemDouble = ({
   setAlertVisible,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formVisibleFirstDose, setFormVisibleFirstDose] = useState(false);
   const [formVisibleSecondDose, setFormVisibleSecondDose] = useState(false);
   const [scrollPosition, setScrollPosition] = useState([0, 0]);
@@ -69,7 +69,7 @@ const VaccineCellItemDouble = ({
         await putPatientRecord(
           "/vaccines",
           datas.id,
-          auth.userId,
+          user.id,
           auth.authToken,
           newDatas
         );
@@ -104,7 +104,7 @@ const VaccineCellItemDouble = ({
         await putPatientRecord(
           "/vaccines",
           datas.id,
-          auth.userId,
+          user.id,
           auth.authToken,
           newDatas
         );

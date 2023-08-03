@@ -20,7 +20,7 @@ const TransferForm = ({
   patient,
   discussionMsgs,
 }) => {
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [recipientsIds, setRecipientsIds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [body, setBody] = useState("");
@@ -108,7 +108,7 @@ const TransferForm = ({
       const newMessage = { ...message, transferred_to_ids: newTranferredToIds };
       await axios.put(`/messages/${message.id}`, newMessage, {
         headers: {
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
@@ -116,10 +116,10 @@ const TransferForm = ({
     try {
       //create the message
       const message = {
-        from_id: auth.userId,
+        from_id: user.id,
         to_ids: recipientsIds,
         date_created: Date.parse(new Date()),
-        read_by_ids: [auth.userId],
+        read_by_ids: [user.id],
         body: body,
         transferred_to_ids: [],
       };
@@ -127,7 +127,7 @@ const TransferForm = ({
       //post the message
       const response = await axios.post("/messages", message, {
         headers: {
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
@@ -148,27 +148,24 @@ const TransferForm = ({
       //put the discussion
       await axios.put(`/discussions/${discussion.id}`, newDiscussion, {
         headers: {
-          Authorization: `Bearer ${auth?.authToken}`,
+          Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
 
       //update discussions
-      const response2 = await axios.get(
-        `/discussions?staff_id=${auth.userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${auth?.authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response2 = await axios.get(`/discussions?staff_id=${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       //update the discussions for the UI
       const newDiscussions = filterAndSortDiscussions(
         section,
         response2.data,
-        auth.userId
+        user.id
       );
       setDiscussions(newDiscussions);
       setTransferVisible(false);

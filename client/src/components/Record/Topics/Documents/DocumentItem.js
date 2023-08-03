@@ -18,9 +18,9 @@ const DocumentItem = ({ item, setDatas, showDocument }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/documents", item.id, auth?.authToken);
+      await deletePatientRecord("/documents", item.id, auth.authToken);
       setDatas(
-        await getPatientRecord("/documents", item.patient_id, auth?.authToken)
+        await getPatientRecord("/documents", item.patient_id, auth.authToken)
       );
     }
   };

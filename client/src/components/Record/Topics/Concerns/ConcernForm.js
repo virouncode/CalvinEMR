@@ -16,7 +16,7 @@ const ConcernForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -38,12 +38,12 @@ const ConcernForm = ({
     try {
       await postPatientRecord(
         "/ongoing_concerns",
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord("/ongoing_concerns", patientId, auth?.authToken)
+        await getPatientRecord("/ongoing_concerns", patientId, auth.authToken)
       );
       editCounter.current -= 1;
       setAddVisible(false);
@@ -65,7 +65,7 @@ const ConcernForm = ({
         />
       </td>
       <td>
-        <em>{formatName(auth?.userName)}</em>
+        <em>{formatName(user.name)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

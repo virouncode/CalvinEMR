@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 const AllergyItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -37,12 +37,12 @@ const AllergyItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
       await putPatientRecord(
         "/allergies",
         item.id,
-        auth?.userId,
-        auth?.authToken,
+        user.id,
+        auth.authToken,
         formDatas
       );
       setDatas(
-        await getPatientRecord("/allergies", item.patient_id, auth?.authToken)
+        await getPatientRecord("/allergies", item.patient_id, auth.authToken)
       );
       editCounter.current -= 1;
       setEditVisible(false);
@@ -64,9 +64,9 @@ const AllergyItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/allergies", item.id, auth?.authToken);
+      await deletePatientRecord("/allergies", item.id, auth.authToken);
       setDatas(
-        await getPatientRecord("/allergies", item.patient_id, auth?.authToken)
+        await getPatientRecord("/allergies", item.patient_id, auth.authToken)
       );
     }
   };

@@ -17,7 +17,7 @@ const ReplyForm = ({
   setDiscussions,
   section,
 }) => {
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const [body, setBody] = useState("");
 
   const handleCancel = (e) => {
@@ -25,13 +25,11 @@ const ReplyForm = ({
   };
   const handleSend = async (e) => {
     const datas = {
-      from_id: auth.userId,
+      from_id: user.id,
       to_ids: allPersons
-        ? discussion.participants_ids.filter(
-            (staff_id) => staff_id !== auth.userId
-          )
+        ? discussion.participants_ids.filter((staff_id) => staff_id !== user.id)
         : discussionMsgs.slice(-1)[0].from_id,
-      read_by_ids: [auth.userId],
+      read_by_ids: [user.id],
       body: body,
       date_created: Date.parse(new Date()),
     };
@@ -57,23 +55,20 @@ const ReplyForm = ({
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${auth?.authToken}`,
+            Authorization: `Bearer ${auth.authToken}`,
           },
         }
       );
-      const response2 = await axios.get(
-        `/discussions?staff_id=${auth.userId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth?.authToken}`,
-          },
-        }
-      );
+      const response2 = await axios.get(`/discussions?staff_id=${user.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      });
       const newDiscussions = filterAndSortDiscussions(
         section,
         response2.data,
-        auth.userId
+        user.id
       );
       setDiscussions(newDiscussions);
       setReplyVisible(false);
@@ -95,7 +90,7 @@ const ReplyForm = ({
           To :{" "}
           {allPersons
             ? discussion.participants_ids
-                .filter((staff_id) => staff_id !== auth.userId)
+                .filter((staff_id) => staff_id !== user.id)
                 .map(
                   (staff_id) =>
                     staffIdToTitle(staffInfos, staff_id) +

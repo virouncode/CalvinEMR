@@ -1,14 +1,12 @@
 import React from "react";
 import PatientsListItem from "./PatientsListItem";
+import useAuth from "../../hooks/useAuth";
 
-const PatientsList = ({
-  patientsInfos,
-  isPatientChecked,
-  handleCheckPatient,
-}) => {
+const PatientsList = ({ isPatientChecked, handleCheckPatient }) => {
+  const { clinic } = useAuth();
   return (
     <ul className="patients-list">
-      {patientsInfos.map((info) => (
+      {clinic.patientsInfos.map((info) => (
         <PatientsListItem
           info={info}
           key={info.id}
