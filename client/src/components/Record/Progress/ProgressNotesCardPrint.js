@@ -58,7 +58,7 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
         </div>
         <div>
           <label>
-            <strong>Object: </strong>
+            <strong>Subject: </strong>
           </label>
           {progressNote.object}
         </div>

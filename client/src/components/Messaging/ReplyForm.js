@@ -4,13 +4,16 @@ import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
 import { toast } from "react-toastify";
 import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
+import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import { staffIdToName } from "../../utils/staffIdToName";
 
 const ReplyForm = ({
   setReplyVisible,
   allPersons,
   discussion,
   staffInfos,
-  setMessages,
+  discussionMsgs,
+  // setMessages,
   setDiscussions,
   section,
 }) => {
@@ -27,32 +30,29 @@ const ReplyForm = ({
         ? discussion.participants_ids.filter(
             (staff_id) => staff_id !== auth.userId
           )
-        : [discussion.last_replier_id || discussion.author_id],
+        : discussionMsgs.slice(-1)[0].from_id,
       read_by_ids: [auth.userId],
-      date_created: Date.parse(new Date()),
       body: body,
-      discussion_id: discussion.id,
+      date_created: Date.parse(new Date()),
     };
     try {
-      await axios.post("/messages", datas, {
+      const response = await axios.post("/messages", datas, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      const response = await axios.get(`/messages?staff_id=${auth.userId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
-        },
-      });
+
+      const messageId = response.data.id;
+
       //discussion update
       await axios.put(
         `/discussions/${discussion.id}`,
         {
           ...discussion,
-          last_replier_id: auth.userId,
+          messages_ids: [...discussion.messages_ids, messageId],
           date_updated: Date.parse(new Date()),
+          replied: true,
         },
         {
           headers: {
@@ -76,11 +76,6 @@ const ReplyForm = ({
         auth.userId
       );
       setDiscussions(newDiscussions);
-      setMessages(
-        response.data.sort(
-          (a, b) => new Date(a.date_created) - new Date(b.date_created)
-        )
-      );
       setReplyVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
@@ -103,31 +98,12 @@ const ReplyForm = ({
                 .filter((staff_id) => staff_id !== auth.userId)
                 .map(
                   (staff_id) =>
-                    `${
-                      staffInfos.find(({ id }) => id === staff_id).title ===
-                      "Doctor"
-                        ? "Dr. "
-                        : ""
-                    }` +
-                    formatName(
-                      staffInfos.find(({ id }) => id === staff_id).full_name
-                    )
+                    staffIdToTitle(staffInfos, staff_id) +
+                    staffIdToName(staffInfos, staff_id)
                 )
                 .join(", ")
-            : `${
-                staffInfos.find(
-                  ({ id }) =>
-                    id === (discussion.last_replier_id || discussion.author_id)
-                ).title === "Doctor"
-                  ? "Dr. "
-                  : ""
-              }` +
-              formatName(
-                staffInfos.find(
-                  ({ id }) =>
-                    id === (discussion.last_replier_id || discussion.author_id)
-                ).full_name
-              )}
+            : staffIdToTitle(staffInfos, discussionMsgs.slice(-1)[0].from_id) +
+              staffIdToName(staffInfos, discussionMsgs.slice(-1)[0].from_id)}
         </p>
       </div>
       <div className="reply-form-body">

@@ -19,43 +19,11 @@ const MessagesBox = ({
   discussionsSelectedIds,
   currentDiscussionId,
   setCurrentDiscussionId,
+  transferVisible,
+  setTransferVisible,
 }) => {
   const { setAuth, auth } = useAuth();
   const [discussions, setDiscussions] = useState(null);
-  const [messages, setMessages] = useState(null);
-  // const loading = useRef(false);
-
-  console.log("render");
-
-  //Voir en fonction de section
-  useEffect(() => {
-    const fetchMessages = async () => {
-      console.log("fetchMessages");
-      const response = await axios.get(`/messages?staff_id=${auth.userId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.authToken}`,
-        },
-      });
-      setMessages(
-        response.data.sort(
-          (a, b) => new Date(a.date_created) - new Date(b.date_created)
-        )
-      );
-      const unreadMessagesNbr = response.data.reduce(
-        (accumulator, currentValue) => {
-          if (!currentValue.read_by_ids.includes(auth.userId)) {
-            return accumulator + 1;
-          } else {
-            return accumulator;
-          }
-        },
-        0
-      );
-      setAuth({ ...auth, unreadMessagesNbr: unreadMessagesNbr });
-    };
-    fetchMessages();
-  }, [auth.userId, auth.authToken]);
 
   useEffect(() => {
     const fetchDiscussions = async () => {
@@ -65,15 +33,45 @@ const MessagesBox = ({
           Authorization: `Bearer ${auth?.authToken}`,
         },
       });
+      //En fonction de la section on filtre les discussions
       const newDiscussions = filterAndSortDiscussions(
         section,
         response.data,
         auth.userId
       );
       setDiscussions(newDiscussions);
+
+      //unread messages
+      let unreadMsgNbr = 0;
+      for (let discussion of response.data) {
+        const discussionMessages = (
+          await axios.post(
+            `/messages_selected`,
+            { messages_ids: discussion.messages_ids },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${auth?.authToken}`,
+              },
+            }
+          )
+        ).data;
+        if (
+          discussionMessages.find(
+            (message) =>
+              !message.read_by_ids.includes(auth.userId) &&
+              (message.to_ids.includes(auth.userId) ||
+                message.transferred_to_ids.includes(auth.userId))
+          )
+        ) {
+          unreadMsgNbr++;
+        }
+      }
+      setAuth({ ...auth, unreadMessagesNbr: unreadMsgNbr });
     };
     fetchDiscussions();
     return () => setDiscussions(null);
+    //eslint-disable-next-line
   }, [auth?.authToken, auth.userId, section]);
 
   const emptySectionMessages = (sectionName) => {
@@ -92,15 +90,13 @@ const MessagesBox = ({
   return (
     <>
       <div className="messages-section-box">
-        {discussions && messages ? (
+        {discussions ? (
           discussions?.length !== 0 ? (
             currentDiscussionId === 0 ? (
               <DiscussionsOverview
                 discussions={discussions}
-                messages={messages}
                 setCurrentDiscussionId={setCurrentDiscussionId}
                 staffInfos={staffInfos}
-                setMessages={setMessages}
                 setDiscussionsSelectedIds={setDiscussionsSelectedIds}
                 discussionsSelectedIds={discussionsSelectedIds}
                 section={section}
@@ -108,8 +104,6 @@ const MessagesBox = ({
               />
             ) : (
               <DiscussionDetail
-                messages={messages}
-                setMessages={setMessages}
                 setCurrentDiscussionId={setCurrentDiscussionId}
                 discussion={discussions.find(
                   ({ id }) => id === currentDiscussionId
@@ -118,6 +112,8 @@ const MessagesBox = ({
                 setDiscussions={setDiscussions}
                 setSection={setSection}
                 section={section}
+                transferVisible={transferVisible}
+                setTransferVisible={setTransferVisible}
               />
             )
           ) : (
@@ -147,7 +143,6 @@ const MessagesBox = ({
             staffInfos={staffInfos}
             setNewVisible={setNewVisible}
             setDiscussions={setDiscussions}
-            setMessages={setMessages}
             section={section}
           />
         </NewWindow>

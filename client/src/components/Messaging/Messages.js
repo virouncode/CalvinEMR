@@ -10,6 +10,7 @@ const Messages = () => {
   const [search, setSearch] = useState("");
   const [section, setSection] = useState("Inbox");
   const [newVisible, setNewVisible] = useState(false);
+  const [transferVisible, setTransferVisible] = useState(false);
   const [staffInfos, setStaffInfos] = useState(null);
   const [discussionsSelectedIds, setDiscussionsSelectedIds] = useState([]);
   const [currentDiscussionId, setCurrentDiscussionId] = useState(0);
@@ -56,6 +57,8 @@ const Messages = () => {
           setDiscussionsSelectedIds={setDiscussionsSelectedIds}
           currentDiscussionId={currentDiscussionId}
           setCurrentDiscussionId={setCurrentDiscussionId}
+          transferVisible={transferVisible}
+          setTransferVisible={setTransferVisible}
         />
       </div>
     </div>

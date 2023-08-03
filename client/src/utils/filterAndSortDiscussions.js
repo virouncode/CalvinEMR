@@ -4,7 +4,7 @@ export const filterAndSortDiscussions = (section, datas, userId) => {
     case "Inbox":
       newDiscussions = datas.filter(
         (discussion) =>
-          (discussion.author_id !== userId || discussion.last_replier_id) &&
+          (discussion.author_id !== userId || discussion.replied) &&
           !discussion.deleted_by_ids.includes(userId)
       );
       break;
@@ -12,7 +12,7 @@ export const filterAndSortDiscussions = (section, datas, userId) => {
       newDiscussions = datas.filter(
         (discussion) =>
           discussion.author_id === userId &&
-          !discussion.last_replier_id &&
+          !discussion.replied &&
           !discussion.deleted_by_ids.includes(userId)
       );
       break;
@@ -24,8 +24,6 @@ export const filterAndSortDiscussions = (section, datas, userId) => {
     default:
       break;
   }
-  newDiscussions.sort(
-    (a, b) => new Date(b.date_updated) - new Date(a.date_updated)
-  );
+  newDiscussions.sort((a, b) => b.date_updated - a.date_updated);
   return newDiscussions;
 };

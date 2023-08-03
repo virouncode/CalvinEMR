@@ -3,29 +3,23 @@ import DiscussionThumbnail from "./DiscussionThumbnail";
 
 const DiscussionsOverview = ({
   discussions,
-  messages,
+  setDiscussions,
   setCurrentDiscussionId,
   staffInfos,
-  setMessages,
   setDiscussionsSelectedIds,
   discussionsSelectedIds,
   section,
-  setDiscussions,
 }) => {
   return discussions.map((discussion) => (
     <DiscussionThumbnail
-      discussion={discussion}
       key={discussion.id}
-      messages={messages.filter(
-        ({ discussion_id }) => discussion_id === discussion.id
-      )}
-      setMessages={setMessages}
+      discussion={discussion}
+      setDiscussions={setDiscussions}
       setCurrentDiscussionId={setCurrentDiscussionId}
       staffInfos={staffInfos}
       setDiscussionsSelectedIds={setDiscussionsSelectedIds}
       discussionsSelectedIds={discussionsSelectedIds}
       section={section}
-      setDiscussions={setDiscussions}
     />
   ));
 };

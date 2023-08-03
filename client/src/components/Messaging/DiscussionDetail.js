@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Message from "./Message";
 import ReplyForm from "./ReplyForm";
 import axios from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
+import NewWindow from "react-new-window";
+import TransferForm from "./TransferForm";
+import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import { staffIdToName } from "../../utils/staffIdToName";
 
 const DiscussionDetail = ({
   setCurrentDiscussionId,
   discussion,
-  messages,
-  setMessages,
   staffInfos,
   setDiscussions,
   setSection,
@@ -20,6 +22,52 @@ const DiscussionDetail = ({
   const [transferVisible, setTransferVisible] = useState(false);
   const [allPersons, setAllPersons] = useState(false);
   const { auth } = useAuth();
+  const [patient, setPatient] = useState({});
+  const [discussionMsgs, setDiscussionMsgs] = useState([]);
+
+  useEffect(() => {
+    const fetchDiscussionMsgs = async () => {
+      const allDiscussionMsgs = (
+        await axios.post(
+          "/messages_selected",
+          { messages_ids: discussion.messages_ids },
+          {
+            headers: {
+              Authorization: `Bearer ${auth?.authToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+      ).data;
+      setDiscussionMsgs(
+        allDiscussionMsgs
+          .filter(
+            (message) =>
+              message.to_ids.includes(auth.userId) ||
+              message.from_id === auth.userId ||
+              message.transferred_to_ids.includes(auth.userId)
+          )
+          .sort((a, b) => a.date_created - b.date_created)
+      );
+    };
+    fetchDiscussionMsgs();
+  }, [auth?.authToken, auth.userId, discussion.messages_ids]);
+
+  useEffect(() => {
+    const fetchPatient = async () => {
+      const response = await axios.get(
+        `patients/${discussion.related_patient_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setPatient(response.data);
+    };
+    discussion.related_patient_id && fetchPatient();
+  }, [auth?.authToken, discussion.related_patient_id]);
 
   const handleClickBack = (e) => {
     setCurrentDiscussionId(0);
@@ -55,7 +103,6 @@ const DiscussionDetail = ({
         auth.userId
       );
       setDiscussions(newDiscussions);
-      setSection("Inbox");
       setCurrentDiscussionId(0);
       toast.success("Discussion deleted successfully", { containerId: "A" });
     } catch (err) {
@@ -97,33 +144,24 @@ const DiscussionDetail = ({
         )}
       </div>
       <div className="discussion-detail-content">
-        {messages
-          .filter(({ discussion_id }) => discussion_id === discussion.id)
-          .map((message) => (
-            <Message
-              message={message}
-              author={
-                staffInfos.find(({ id }) => id === message.from_id).full_name
-              }
-              authorTitle={
-                staffInfos.find(({ id }) => id === message.from_id).title ===
-                "Doctor"
-                  ? "Dr. "
-                  : ""
-              }
-              discussion={discussion}
-              staffInfos={staffInfos}
-              key={message.id}
-            />
-          ))}
+        {discussionMsgs.map((message) => (
+          <Message
+            message={message}
+            author={staffIdToName(staffInfos, message.from_id)}
+            authorTitle={staffIdToTitle(staffInfos, message.from_id)}
+            discussion={discussion}
+            staffInfos={staffInfos}
+            key={message.id}
+          />
+        ))}
       </div>
       {replyVisible && (
         <ReplyForm
           setReplyVisible={setReplyVisible}
           allPersons={allPersons}
           discussion={discussion}
+          discussionMsgs={discussionMsgs}
           staffInfos={staffInfos}
-          setMessages={setMessages}
           setDiscussions={setDiscussions}
           section={section}
         />
@@ -138,10 +176,37 @@ const DiscussionDetail = ({
               Reply all
             </button>
           )}
-          <button onClick={handleClickTransfer} disabled={replyVisible}>
+          <button onClick={handleClickTransfer} disabled={transferVisible}>
             Transfer
           </button>
         </div>
+      )}
+      {transferVisible && (
+        <NewWindow
+          title="Transfer Discussion"
+          features={{
+            toolbar: "no",
+            scrollbars: "no",
+            menubar: "no",
+            status: "no",
+            directories: "no",
+            width: 1000,
+            height: 500,
+            left: 0,
+            top: 0,
+          }}
+          onUnload={() => setTransferVisible(false)}
+        >
+          <TransferForm
+            staffInfos={staffInfos}
+            setTransferVisible={setTransferVisible}
+            setDiscussions={setDiscussions}
+            section={section}
+            discussion={discussion}
+            patient={patient}
+            discussionMsgs={discussionMsgs}
+          />
+        </NewWindow>
       )}
     </>
   );

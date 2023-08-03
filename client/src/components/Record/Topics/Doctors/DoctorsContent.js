@@ -11,9 +11,7 @@ const DoctorsContent = ({ patientId, datas, setDatas }) => {
         {datas.length >= 1 ? (
           <ul>
             {datas
-              .sort(
-                (a, b) => new Date(b.date_created) - new Date(a.date_created)
-              )
+              .sort((a, b) => b.date_created - a.date_created)
               .map((doctor) => (
                 <li key={doctor.id}>
                   - <strong>{doctor.name}</strong>, {doctor.speciality},{" "}

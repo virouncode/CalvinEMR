@@ -308,7 +308,7 @@ const ProgressNotesCard = ({
             <div className="progress-notes-card-header-row">
               <div className="progress-notes-card-header-object">
                 <label>
-                  <strong>Object: </strong>
+                  <strong>Subject: </strong>
                 </label>
                 {!editVisible ? (
                   tempFormDatas.object
@@ -351,7 +351,7 @@ const ProgressNotesCard = ({
                   )})`}
               {" / "}
               <label>
-                <strong>Object: </strong>
+                <strong>Subject: </strong>
               </label>
               {tempFormDatas.object}
             </div>

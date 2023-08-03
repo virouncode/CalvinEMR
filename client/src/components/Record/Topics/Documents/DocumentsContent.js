@@ -11,7 +11,7 @@ const DocumentsContent = ({ patientId, datas, setDatas, showDocument }) => {
       {datas.length >= 1 ? (
         <ul>
           {datas
-            .sort((a, b) => new Date(b.date_created) - new Date(a.date_created))
+            .sort((a, b) => b.date_created - a.date_created)
             .map((document) => (
               <li
                 key={document.id}

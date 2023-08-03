@@ -1,6 +1,8 @@
 import React from "react";
 import { toLocalDateAndTime } from "../../utils/formatDates";
 import formatName from "../../utils/formatName";
+import { staffIdToName } from "../../utils/staffIdToName";
+import { staffIdToTitle } from "../../utils/staffIdToTitle";
 
 const Message = ({ message, author, authorTitle, discussion, staffInfos }) => {
   return (
@@ -8,7 +10,7 @@ const Message = ({ message, author, authorTitle, discussion, staffInfos }) => {
       <div className="message-title">
         <div className="message-title-author">
           {authorTitle}
-          {formatName(author)}
+          {author}
         </div>
         <div className="message-title-date">
           <div>{toLocalDateAndTime(message.date_created)}</div>
@@ -16,14 +18,11 @@ const Message = ({ message, author, authorTitle, discussion, staffInfos }) => {
       </div>
       <div className="message-subtitle">
         to:{" "}
-        {discussion.participants_ids
-          .filter((staff_id) => staff_id !== message.from_id)
+        {message.to_ids
           .map(
             (staff_id) =>
-              (staffInfos.find(({ id }) => id === staff_id).title === "Doctor"
-                ? "Dr. "
-                : "") +
-              formatName(staffInfos.find(({ id }) => id === staff_id).full_name)
+              staffIdToTitle(staffInfos, staff_id) +
+              staffIdToName(staffInfos, staff_id)
           )
           .join(", ")}
       </div>

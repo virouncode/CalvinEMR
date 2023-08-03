@@ -2,50 +2,35 @@ import React, { useState } from "react";
 import Contacts from "./Contacts";
 import { categoryToTitle } from "../../utils/categoryToTitle";
 import formatName from "../../utils/formatName";
-import Patients from "./Patients";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
 import { toast } from "react-toastify";
 import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
+import Message from "./Message";
+import { staffIdToName } from "../../utils/staffIdToName";
+import { staffIdToTitle } from "../../utils/staffIdToTitle";
 
-const NewMessage = ({
+const TransferForm = ({
   staffInfos,
-  setNewVisible,
+  setTransferVisible,
   setMessages,
   setDiscussions,
   section,
+  discussion,
+  patient,
+  discussionMsgs,
 }) => {
   const { auth } = useAuth();
   const [recipientsIds, setRecipientsIds] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
-  const [patientId, setPatientId] = useState(0);
-  const [patientName, setPatientName] = useState("");
+
   const handleChange = (e) => {
     setBody(e.target.value);
   };
 
-  const handleChangeSubject = (e) => {
-    setSubject(e.target.value);
-  };
-
   const isContactChecked = (id) => recipientsIds.includes(id);
   const isCategoryChecked = (category) => categories.includes(category);
-  const isPatientChecked = (id) => patientId === id;
-
-  const handleCheckPatient = (e) => {
-    const id = parseInt(e.target.id);
-    const checked = e.target.checked;
-    const name = e.target.name;
-    if (checked) {
-      setPatientId(id);
-      setPatientName(name);
-    } else {
-      setPatientId(0);
-      setPatientName("");
-    }
-  };
 
   const handleCheckContact = (e) => {
     const id = parseInt(e.target.id);
@@ -111,34 +96,24 @@ const NewMessage = ({
   };
 
   const handleCancel = (e) => {
-    setNewVisible(false);
+    setTransferVisible(false);
   };
 
   const handleSend = async (e) => {
-    //create a discussion
-    const discussion = {
-      subject: subject,
-      author_id: auth.userId,
-      participants_ids: recipientsIds.includes(auth.userId)
-        ? recipientsIds
-        : [...recipientsIds, auth.userId],
-      last_replier_id: 0,
-      related_patient_id: patientId,
-      deleted_by_ids: [],
-      date_created: Date.parse(new Date()),
-      date_updated: Date.parse(new Date()),
-    };
-
-    //post the discussion and get the discussion id
-    try {
-      const response = await axios.post("/discussions", discussion, {
+    //add recipient ids to transferred_to_ids of all messages
+    for (let message of discussionMsgs) {
+      const transferredToIds = message.transferred_to_ids;
+      const arr = [...transferredToIds, ...recipientsIds];
+      const newTranferredToIds = [...new Set(arr)];
+      const newMessage = { ...message, transferred_to_ids: newTranferredToIds };
+      await axios.put(`/messages/${message.id}`, newMessage, {
         headers: {
           Authorization: `Bearer ${auth?.authToken}`,
           "Content-Type": "application/json",
         },
       });
-      const discussionId = response.data.id;
-
+    }
+    try {
       //create the message
       const message = {
         from_id: auth.userId,
@@ -146,16 +121,39 @@ const NewMessage = ({
         date_created: Date.parse(new Date()),
         read_by_ids: [auth.userId],
         body: body,
-        discussion_id: discussionId,
+        transferred_to_ids: [],
       };
 
       //post the message
-      await axios.post("/messages", message, {
+      const response = await axios.post("/messages", message, {
         headers: {
           Authorization: `Bearer ${auth?.authToken}`,
           "Content-Type": "application/json",
         },
       });
+
+      const messageId = response.data.id;
+
+      //change discussion, add recipientsIds to participantsIds
+      const particpantsIds = discussion.participants_ids;
+      const arr = [...particpantsIds, ...recipientsIds];
+      const newParticipantsIds = [...new Set(arr)];
+      const newDiscussion = {
+        ...discussion,
+        participants_ids: newParticipantsIds,
+        date_updated: Date.parse(new Date()),
+        messages_ids: [...discussion.messages_ids, messageId],
+      };
+
+      //put the discussion
+      await axios.put(`/discussions/${discussion.id}`, newDiscussion, {
+        headers: {
+          Authorization: `Bearer ${auth?.authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      //update discussions
       const response2 = await axios.get(
         `/discussions?staff_id=${auth.userId}`,
         {
@@ -166,30 +164,23 @@ const NewMessage = ({
         }
       );
 
-      //update the messages and discussions for the UI
-      const response3 = await axios.get(`/messages?staff_id=${auth.userId}`, {
-        headers: {
-          Authorization: `Bearer ${auth?.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      //update the discussions for the UI
       const newDiscussions = filterAndSortDiscussions(
         section,
         response2.data,
         auth.userId
       );
       setDiscussions(newDiscussions);
-      setMessages(response3.data);
-      setNewVisible(false);
-      toast.success("Message sent successfully", { containerId: "A" });
+      setTransferVisible(false);
+      toast.success("Transfered successfully", { containerId: "A" });
     } catch (err) {
       toast.error("Error: message wasn't sent");
     }
   };
 
   return (
-    <div className="new-message">
-      <div className="new-message-contacts">
+    <div className="transfer">
+      <div className="transfer-contacts">
         <Contacts
           staffInfos={staffInfos}
           handleCheckContact={handleCheckContact}
@@ -198,8 +189,8 @@ const NewMessage = ({
           isCategoryChecked={isCategoryChecked}
         />
       </div>
-      <div className="new-message-form">
-        <div className="new-message-form-recipients">
+      <div className="transfer-form">
+        <div className="transfer-form-recipients">
           To:{" "}
           <input
             type="text"
@@ -215,40 +206,36 @@ const NewMessage = ({
             readOnly
           />
         </div>
-        <div className="new-message-form-object">
-          Object:{" "}
-          <input
-            type="text"
-            placeholder="Subject"
-            onChange={handleChangeSubject}
-            value={subject}
-          />
+        <div className="transfer-form-object">
+          Subject: {discussion.subject}
         </div>
-        <div className="new-message-form-patient">
-          About patient:{" "}
-          <input
-            type="text"
-            placeholder="Patient"
-            value={patientName}
-            readOnly
-          />
-        </div>
-        <div className="new-message-form-body">
+        {patient?.full_name && (
+          <div className="transfer-form-patient">
+            About patient: {patient.full_name}
+          </div>
+        )}
+        <div className="transfer-form-body">
           <textarea value={body} onChange={handleChange}></textarea>
+          <div className="transfer-form-history">
+            {discussionMsgs.map((message) => (
+              <Message
+                message={message}
+                author={staffIdToName(staffInfos, message.from_id)}
+                authorTitle={staffIdToTitle(staffInfos, message.from_id)}
+                discussion={discussion}
+                staffInfos={staffInfos}
+                key={message.id}
+              />
+            ))}
+          </div>
         </div>
-        <div className="new-message-form-btns">
+        <div className="transfer-form-btns">
           <button onClick={handleSend}>Send</button>
           <button onClick={handleCancel}>Cancel</button>
         </div>
-      </div>
-      <div className="new-message-patients">
-        <Patients
-          handleCheckPatient={handleCheckPatient}
-          isPatientChecked={isPatientChecked}
-        />
       </div>
     </div>
   );
 };
 
-export default NewMessage;
+export default TransferForm;

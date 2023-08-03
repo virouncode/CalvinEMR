@@ -65,22 +65,39 @@ const LoginForm = () => {
           },
         });
 
-        const response4 = await axios.get(`/messages?staff_id=${userId}`, {
+        const response4 = await axios.get(`/discussions?staff_id=${userId}`, {
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
         });
 
-        const unreadMessagesNbr = response4.data.reduce(
-          (accumulator, currentValue) => {
-            if (!currentValue.read_by_ids.includes(userId)) {
-              return accumulator + 1;
-            } else {
-              return accumulator;
-            }
-          },
-          0
-        );
+        //unread messages
+        let unreadMessagesNbr = 0;
+        for (let discussion of response4.data) {
+          const discussionMessages = (
+            await axios.post(
+              `/messages_selected`,
+              { messages_ids: discussion.messages_ids },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${authToken}`,
+                },
+              }
+            )
+          ).data;
+          if (
+            discussionMessages.find(
+              (message) =>
+                !message.read_by_ids.includes(userId) &&
+                (message.to_ids.includes(userId) ||
+                  message.transferred_to_to_ids.includes(userId))
+            )
+          ) {
+            unreadMessagesNbr++;
+          }
+        }
 
         const settings = response3?.data;
         setAuth({

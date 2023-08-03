@@ -12,7 +12,7 @@ const MedicationsContent = ({ patientId, datas, setDatas }) => {
         <ul>
           {datas
             .filter((medication) => medication.active)
-            .sort((a, b) => new Date(b.date_created) - new Date(a.date_created))
+            .sort((a, b) => b.date_created - a.date_created)
             .map((medication) => (
               <li key={medication.id}>
                 - <strong>{medication.name}</strong>, {medication.dose}, active
@@ -20,7 +20,7 @@ const MedicationsContent = ({ patientId, datas, setDatas }) => {
             ))}
           {datas
             .filter((medication) => !medication.active)
-            .sort((a, b) => new Date(b.date_created) - new Date(a.date_created))
+            .sort((a, b) => b.date_created - a.date_created)
             .map((medication) => (
               <li key={medication.id}>
                 - <strong>{medication.name}</strong>, {medication.dose}, not

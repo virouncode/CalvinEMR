@@ -10,9 +10,7 @@ const MeasurementsContent = ({ patientId, datas, setDatas }) => {
   useEffect(() => {
     if (datas) {
       setLastMeasurement(
-        datas.sort(
-          (a, b) => new Date(b.date_created) - new Date(a.date_created)
-        )[0]
+        datas.sort((a, b) => b.date_created - a.date_created)[0]
       );
     }
   }, [datas]);

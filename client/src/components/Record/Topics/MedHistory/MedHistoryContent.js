@@ -11,9 +11,7 @@ const MedHistoryContent = ({ patientId, setDatas, datas }) => {
       {datas.length >= 1 ? (
         <ul>
           {datas
-            .sort(
-              (a, b) => new Date(b.date_of_event) - new Date(a.date_of_event)
-            )
+            .sort((a, b) => b.date_of_event - a.date_of_event)
             .map((event) => (
               <li key={event.id}>- {event.description}</li>
             ))}

@@ -36,10 +36,7 @@ const VaccineCellItemMultiple = ({
           {vaccineInfos.length
             ? `(last : ${toLocalDate(
                 vaccineInfos
-                  .sort(
-                    (a, b) =>
-                      new Date(a.vaccine_date) - new Date(b.vaccine_date)
-                  )
+                  .sort((a, b) => a.vaccine_date - b.vaccine_date)
                   .slice(-1)[0].vaccine_date
               )})`
             : ""}{" "}
@@ -50,10 +47,7 @@ const VaccineCellItemMultiple = ({
           {vaccineInfos.length
             ? `(last : ${toLocalDate(
                 vaccineInfos
-                  .sort(
-                    (a, b) =>
-                      new Date(a.vaccine_date) - new Date(b.vaccine_date)
-                  )
+                  .sort((a, b) => a.vaccine_date - b.vaccine_date)
                   .slice(-1)[0].vaccine_date
               )})`
             : ""}{" "}
@@ -64,10 +58,7 @@ const VaccineCellItemMultiple = ({
           {vaccineInfos.length
             ? `(last : ${toLocalDate(
                 vaccineInfos
-                  .sort(
-                    (a, b) =>
-                      new Date(a.vaccine_date) - new Date(b.vaccine_date)
-                  )
+                  .sort((a, b) => a.vaccine_date - b.vaccine_date)
                   .slice(-1)[0].vaccine_date
               )})`
             : ""}{" "}

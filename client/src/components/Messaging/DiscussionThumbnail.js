@@ -6,20 +6,49 @@ import { NavLink } from "react-router-dom";
 import { toLocalDateAndTime } from "../../utils/formatDates";
 import { toast } from "react-toastify";
 import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
+import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import { staffIdToName } from "../../utils/staffIdToName";
 
 const DiscussionThumbnail = ({
   discussion,
   setDiscussions,
-  messages,
   setCurrentDiscussionId,
   staffInfos,
-  setMessages,
   setDiscussionsSelectedIds,
   discussionsSelectedIds,
   section,
 }) => {
   const { setAuth, auth } = useAuth();
   const [patient, setPatient] = useState({});
+  const [discussionMsgs, setDiscussionMsgs] = useState(null);
+
+  useEffect(() => {
+    const fetchDiscussionMsgs = async () => {
+      const allDiscussionMsgs = (
+        await axios.post(
+          "/messages_selected",
+          { messages_ids: discussion.messages_ids },
+          {
+            headers: {
+              Authorization: `Bearer ${auth?.authToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+      ).data;
+      setDiscussionMsgs(
+        allDiscussionMsgs
+          .filter(
+            (message) =>
+              message.to_ids.includes(auth.userId) ||
+              message.from_id === auth.userId ||
+              message.transferred_to_ids.includes(auth.userId)
+          )
+          .sort((a, b) => a.date_created - b.date_created)
+      );
+    };
+    fetchDiscussionMsgs();
+  }, [auth?.authToken, auth.userId, discussion.messages_ids]);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -38,15 +67,16 @@ const DiscussionThumbnail = ({
   }, [auth?.authToken, discussion.related_patient_id]);
 
   const handleDiscussionClick = async (e) => {
+    //Remove one from the unread messages nbr counter
     if (auth.unreadMessagesNbr !== 0) {
       const newUnreadMessagesNbr = auth.unreadMessagesNbr - 1;
       setAuth({ ...auth, unreadMessagesNbr: newUnreadMessagesNbr });
     }
-    setCurrentDiscussionId(discussion.id);
-    //all messages read by userId
-    for (let message of messages) {
+    setCurrentDiscussionId(discussion.id); //pour afficher les details de la discussion
+
+    for (let message of discussionMsgs) {
       if (!message.read_by_ids.includes(auth.userId)) {
-        //create message to update
+        //create and replace message with read by user id
         const newMessage = {
           ...message,
           read_by_ids: [...message.read_by_ids, auth.userId],
@@ -59,20 +89,29 @@ const DiscussionThumbnail = ({
         });
       }
     }
-    //update messages
-    const response = await axios.get(`/messages?staff_id=${auth.userId}`, {
-      headers: {
-        Authorization: `Bearer ${auth?.authToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    setMessages(response.data);
+    // //update discussions
+    // const response = await axios.get(`/discussions?staff_id=${auth.userId}`, {
+    //   headers: {
+    //     Authorization: `Bearer ${auth?.authToken}`,
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    // const newDiscussions = filterAndSortDiscussions(
+    //   section,
+    //   response.data,
+    //   auth.userId
+    // );
+    // setDiscussions(newDiscussions);
   };
 
   const THUMBNAIL_STYLE = {
-    fontWeight: messages.slice(-1)[0].read_by_ids.includes(auth.userId)
-      ? "normal"
-      : "bold",
+    fontWeight: discussionMsgs?.find(
+      (message) =>
+        !message.read_by_ids.includes(auth.userId) &&
+        message.to_ids.includes(auth.userId)
+    )
+      ? "bold"
+      : "normal",
   };
 
   const handleCheckDiscussion = (e) => {
@@ -131,7 +170,8 @@ const DiscussionThumbnail = ({
   };
 
   return (
-    staffInfos && (
+    staffInfos &&
+    discussionMsgs && (
       <div className="discussion-thumbnail" style={THUMBNAIL_STYLE}>
         <input
           className="discussion-thumbnail-checkbox"
@@ -145,44 +185,28 @@ const DiscussionThumbnail = ({
           className="discussion-thumbnail-link"
         >
           <div className="discussion-thumbnail-persons">
-            {staffInfos.find(({ id }) => id === discussion.author_id).title ===
-            "Doctor"
-              ? "Dr. "
-              : ""}
-            {formatName(
-              staffInfos.find(({ id }) => id === discussion.author_id).full_name
-            )}
-            ,{" "}
+            {staffIdToTitle(staffInfos, discussion.author_id)}
+            {staffIdToName(staffInfos, discussion.author_id)},{" "}
             {discussion.participants_ids
               .filter(
                 (staff_id) =>
                   staff_id !== discussion.author_id &&
-                  staff_id !== discussion.last_replier_id
+                  staff_id !== discussionMsgs.slice(-1)[0].from_id
               )
               .map(
                 (staff_id) =>
-                  (staffInfos.find(({ id }) => id === staff_id).title ===
-                  "Doctor"
-                    ? "Dr. "
-                    : "") +
-                  formatName(
-                    staffInfos.find(({ id }) => id === staff_id).full_name
-                  )
+                  staffIdToTitle(staffInfos, staff_id) +
+                  staffIdToName(staffInfos, staff_id)
               )
               .join(" ,")}
             ,{" "}
-            {discussion.last_replier_id !== 0 &&
-              (staffInfos.find(({ id }) => id === discussion.last_replier_id)
-                .title === "Doctor"
-                ? "Dr. "
-                : "") +
-                formatName(
-                  staffInfos.find(({ id }) => id === discussion.last_replier_id)
-                    .full_name
-                )}
+            {discussionMsgs.slice(-1)[0].from_id !== discussion.author_id &&
+              staffIdToTitle(staffInfos, discussionMsgs.slice(-1)[0].from_id) +
+                staffIdToName(staffInfos, discussionMsgs.slice(-1)[0].from_id)}
           </div>
           <div className="discussion-thumbnail-sample">
-            <span>{discussion.subject}</span> - {messages.slice(-1)[0].body}
+            <span>{discussion.subject}</span> -{" "}
+            {discussionMsgs.slice(-1)[0].body}
           </div>
         </div>
         <div className="discussion-thumbnail-patient">

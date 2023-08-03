@@ -10,7 +10,7 @@ const AppointmentsContent = ({ patientId, datas, setDatas }) => {
       {datas.length >= 1 ? (
         <ul>
           {datas
-            .sort((a, b) => new Date(b.start) - new Date(a.start))
+            .sort((a, b) => b.start - a.start)
             .map((appointment) => (
               <li key={appointment.id}>
                 -{" "}

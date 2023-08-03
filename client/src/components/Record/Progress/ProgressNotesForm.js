@@ -138,7 +138,7 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
           <div>
             {" "}
             <label>
-              <strong>Object: </strong>
+              <strong>Subject: </strong>
             </label>
             <input
               type="text"

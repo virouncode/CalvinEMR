@@ -103,12 +103,8 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
               progressNotes
                 .sort(
                   (a, b) =>
-                    (b.date_updated
-                      ? new Date(b.date_updated)
-                      : new Date(b.date_created)) -
-                    (a.date_updated
-                      ? new Date(a.date_updated)
-                      : new Date(a.date_created))
+                    (b.date_updated ? b.date_updated : b.date_created) -
+                    (a.date_updated ? a.date_updated : a.date_created)
                 )
                 .filter(
                   (note) =>
@@ -144,12 +140,8 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
               progressNotes
                 .sort(
                   (a, b) =>
-                    (a.date_updated
-                      ? new Date(a.date_updated)
-                      : new Date(a.date_created)) -
-                    (b.date_updated
-                      ? new Date(b.date_updated)
-                      : new Date(b.date_created))
+                    (a.date_updated ? a.date_updated : a.date_created) -
+                    (b.date_updated ? b.date_updated : b.date_created)
                 )
                 .filter(
                   (note) =>

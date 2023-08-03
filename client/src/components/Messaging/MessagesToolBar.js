@@ -27,6 +27,10 @@ const MessagesToolBar = ({
   };
 
   const handleClickMoveBack = async (e) => {
+    if (!discussionsSelectedIds.length) {
+      alert("Please choose at least one conversation");
+      return;
+    }
     const allDiscussionsSelected = (
       await axios.post(
         "/discussions_selected",

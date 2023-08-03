@@ -10,7 +10,7 @@ const PharmaciesContent = ({ patientId, setDatas, datas }) => {
       {datas.length >= 1 ? (
         <ul>
           {datas
-            .sort((a, b) => new Date(b.date_created) - new Date(a.date_created))
+            .sort((a, b) => b.date_created - a.date_created)
             .map((pharmacy) => (
               <li key={pharmacy.id}>
                 - <strong>{pharmacy.name.toUpperCase()}, </strong>

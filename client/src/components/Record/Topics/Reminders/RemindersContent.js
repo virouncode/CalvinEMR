@@ -23,9 +23,7 @@ const RemindersContent = ({ patientId, datas, setDatas }) => {
           {datas.filter((reminder) => reminder.active).length >= 1
             ? datas
                 .filter((reminder) => reminder.active)
-                .sort(
-                  (a, b) => new Date(b.date_created) - new Date(a.date_created)
-                )
+                .sort((a, b) => b.date_created - a.date_created)
                 .map((reminder) => (
                   <li key={reminder.id}>- {reminder.reminder}</li>
                 ))

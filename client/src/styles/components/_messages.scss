@@ -128,7 +128,7 @@
         }
         &-subject {
             font-size: 0.9rem;
-            width:70%;
+            width:90%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -178,11 +178,14 @@
     width : 90%;
     font-size: 0.8rem;
     &-title {
+        display: flex;
+        align-items: center;
         border-bottom: solid 0.3px grey;
         height: 40px;
         display: flex;
         align-items: center;
         p {
+            margin: 0;
             padding : 0;
         }
     }
@@ -349,6 +352,83 @@
             align-items: center;
             input[type="checkbox"] {
                 margin-right: 5px;
+            }
+        }
+    }
+}
+
+.transfer{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0 5px;
+    &-contacts {
+        width:20%;
+        border: solid 0.3px grey;
+        border-radius: 4px;
+        margin : 20px auto ;
+        font-size: 0.8rem;
+        padding : 5px 10px;
+
+    }
+    &-form {
+        min-height: 250px;
+        border: solid 0.3px grey;
+        border-radius: 4px;
+        padding : 0 10px;
+        margin : 20px auto ;
+        width : 75%;
+        font-size: 0.8rem;
+        &-recipients{
+            border-bottom: solid 0.3px grey;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            input {
+                outline: none;
+                width: 90%;
+                text-align: left;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+        &-object{
+            border-bottom: solid 0.3px grey;
+            height: 30px;
+            display: flex;
+            align-items: center;
+        }
+        &-patient{
+            border-bottom: solid 0.3px grey;
+            height: 30px;
+            display: flex;
+            align-items: center;
+        }
+        &-body {
+            width: 95%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            textarea {
+                border : none;
+                outline: none;
+                padding: 20px;
+                width: 95%;
+                min-height: 300px;
+            }
+        }
+        &-history {
+            display: flex;
+            flex-direction: column;
+        }
+        &-btns {
+            border-top: solid 0.3px grey;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            button {
+                margin-right: 10px;
             }
         }
     }
