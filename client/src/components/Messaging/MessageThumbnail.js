@@ -43,6 +43,14 @@ const MessageThumbnail = ({
         },
       });
     }
+    const response = await axios.get(`/messages?staff_id=${user.id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.authToken}`,
+      },
+    });
+    const newMessages = filterAndSortMessages(section, response.data, user.id);
+    setMessages(newMessages);
   };
 
   const THUMBNAIL_STYLE = {

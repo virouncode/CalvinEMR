@@ -146,8 +146,8 @@ const ForwardForm = ({
   };
 
   return (
-    <div className="transfer">
-      <div className="transfer-contacts">
+    <div className="forward">
+      <div className="forward-contacts">
         <Contacts
           staffInfos={clinic.staffInfos}
           handleCheckContact={handleCheckContact}
@@ -156,8 +156,8 @@ const ForwardForm = ({
           isCategoryChecked={isCategoryChecked}
         />
       </div>
-      <div className="transfer-form">
-        <div className="transfer-form-recipients">
+      <div className="forward-form">
+        <div className="forward-form-recipients">
           To:{" "}
           <input
             type="text"
@@ -173,7 +173,7 @@ const ForwardForm = ({
             readOnly
           />
         </div>
-        <div className="transfer-form-object">
+        <div className="forward-form-object">
           Subject:{" "}
           {previousMsgs.length
             ? `Fwd ${previousMsgs.length + 1}: ${message.subject.slice(
@@ -182,13 +182,13 @@ const ForwardForm = ({
             : `Fwd: ${message.subject}`}
         </div>
         {patient?.full_name && (
-          <div className="transfer-form-patient">
+          <div className="forward-form-patient">
             About patient: {patient.full_name}
           </div>
         )}
-        <div className="transfer-form-body">
+        <div className="forward-form-body">
           <textarea value={body} onChange={handleChange}></textarea>
-          <div className="transfer-form-history">
+          <div className="forward-form-history">
             <Message
               message={message}
               author={staffIdToName(clinic.staffInfos, message.from_id)}
@@ -207,7 +207,7 @@ const ForwardForm = ({
             ))}
           </div>
         </div>
-        <div className="transfer-form-btns">
+        <div className="forward-form-btns">
           <button onClick={handleSend}>Send</button>
           <button onClick={handleCancel}>Cancel</button>
         </div>

@@ -13663,6 +13663,10 @@ readers do not read off random characters that represent icons */
 }
 .message-thumbnail-author {
   width: 35%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10px;
 }
 .message-thumbnail-sample {
   width: 65%;
@@ -13670,6 +13674,7 @@ readers do not read off random characters that represent icons */
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-right: 20px;
+  padding-right: 10px;
 }
 .message-thumbnail-patient {
   width: 13%;
@@ -13796,6 +13801,16 @@ readers do not read off random characters that represent icons */
   align-items: center;
 }
 .reply-form-subject input {
+  outline: none;
+  width: 92%;
+}
+.reply-form-patient {
+  border-bottom: solid 0.3px grey;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.reply-form-patient input {
   outline: none;
   width: 92%;
 }
@@ -13963,13 +13978,13 @@ readers do not read off random characters that represent icons */
   margin-right: 5px;
 }
 
-.transfer {
+.forward {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   padding: 0 5px;
 }
-.transfer-contacts {
+.forward-contacts {
   width: 20%;
   border: solid 0.3px grey;
   border-radius: 4px;
@@ -13977,7 +13992,7 @@ readers do not read off random characters that represent icons */
   font-size: 0.8rem;
   padding: 5px 10px;
 }
-.transfer-form {
+.forward-form {
   min-height: 250px;
   border: solid 0.3px grey;
   border-radius: 4px;
@@ -13986,13 +14001,13 @@ readers do not read off random characters that represent icons */
   width: 75%;
   font-size: 0.8rem;
 }
-.transfer-form-recipients {
+.forward-form-recipients {
   border-bottom: solid 0.3px grey;
   height: 30px;
   display: flex;
   align-items: center;
 }
-.transfer-form-recipients input {
+.forward-form-recipients input {
   outline: none;
   width: 90%;
   text-align: left;
@@ -14000,41 +14015,41 @@ readers do not read off random characters that represent icons */
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.transfer-form-object {
+.forward-form-object {
   border-bottom: solid 0.3px grey;
   height: 30px;
   display: flex;
   align-items: center;
 }
-.transfer-form-patient {
+.forward-form-patient {
   border-bottom: solid 0.3px grey;
   height: 30px;
   display: flex;
   align-items: center;
 }
-.transfer-form-body {
+.forward-form-body {
   width: 95%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.transfer-form-body textarea {
+.forward-form-body textarea {
   border: none;
   outline: none;
   padding: 20px;
   width: 95%;
   min-height: 300px;
 }
-.transfer-form-history {
+.forward-form-history {
   display: flex;
   flex-direction: column;
 }
-.transfer-form-btns {
+.forward-form-btns {
   border-top: solid 0.3px grey;
   height: 40px;
   display: flex;
   align-items: center;
 }
-.transfer-form-btns button {
+.forward-form-btns button {
   margin-right: 10px;
 }/*# sourceMappingURL=index.css.map */

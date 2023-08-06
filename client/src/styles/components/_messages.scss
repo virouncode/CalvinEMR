@@ -113,6 +113,10 @@
     }
     &-author {
         width: 35%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding-right: 10px;
     }
     &-sample {
         width: 65%;
@@ -120,6 +124,7 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         margin-right: 20px;
+        padding-right: 10px;
     }
     &-patient {
         width: 13%;
@@ -243,6 +248,16 @@
         }
     }
     &-subject {
+        border-bottom: solid 0.3px grey;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        input {
+            outline: none;
+            width: 92%;
+        }
+    }
+    &-patient {
         border-bottom: solid 0.3px grey;
         height: 40px;
         display: flex;
@@ -430,7 +445,7 @@
     }
 }
 
-.transfer{
+.forward{
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
