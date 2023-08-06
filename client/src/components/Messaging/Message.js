@@ -1,12 +1,16 @@
 import React from "react";
 import { toLocalDateAndTime } from "../../utils/formatDates";
-import formatName from "../../utils/formatName";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import useAuth from "../../hooks/useAuth";
 
-const Message = ({ message, author, authorTitle, discussion, staffInfos }) => {
+const Message = ({ message, author, authorTitle, index }) => {
+  const { clinic } = useAuth();
   return (
-    <div className="message">
+    <div
+      className="message"
+      style={{ marginLeft: `${parseInt(index) * 20}px` }}
+    >
       <div className="message-title">
         <div className="message-title-author">
           {authorTitle}
@@ -21,8 +25,8 @@ const Message = ({ message, author, authorTitle, discussion, staffInfos }) => {
         {message.to_ids
           .map(
             (staff_id) =>
-              staffIdToTitle(staffInfos, staff_id) +
-              staffIdToName(staffInfos, staff_id)
+              staffIdToTitle(clinic.staffInfos, staff_id) +
+              staffIdToName(clinic.staffInfos, staff_id)
           )
           .join(", ")}
       </div>

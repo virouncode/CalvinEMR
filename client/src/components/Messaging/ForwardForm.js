@@ -5,22 +5,20 @@ import formatName from "../../utils/formatName";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
 import { toast } from "react-toastify";
-import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
 import Message from "./Message";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 
-const TransferForm = ({
-  staffInfos,
-  setTransferVisible,
+const ForwardForm = ({
+  setForwardVisible,
   setMessages,
-  setDiscussions,
   section,
-  discussion,
+  message,
+  previousMsgs,
   patient,
-  discussionMsgs,
 }) => {
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [recipientsIds, setRecipientsIds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [body, setBody] = useState("");
@@ -36,7 +34,7 @@ const TransferForm = ({
     const id = parseInt(e.target.id);
     const checked = e.target.checked;
     const category = e.target.name;
-    const categoryContactsIds = staffInfos
+    const categoryContactsIds = clinic.staffInfos
       .filter(({ title }) => title === categoryToTitle(category))
       .map(({ id }) => id);
 
@@ -67,7 +65,7 @@ const TransferForm = ({
   const handleCheckCategory = (e) => {
     const category = e.target.id;
     const checked = e.target.checked;
-    const categoryContactsIds = staffInfos
+    const categoryContactsIds = clinic.staffInfos
       .filter(({ title }) => title === categoryToTitle(category))
       .map(({ id }) => id);
 
@@ -96,79 +94,51 @@ const TransferForm = ({
   };
 
   const handleCancel = (e) => {
-    setTransferVisible(false);
+    setForwardVisible(false);
   };
 
   const handleSend = async (e) => {
-    //add recipient ids to transferred_to_ids of all messages
-    for (let message of discussionMsgs) {
-      const transferredToIds = message.transferred_to_ids;
-      const arr = [...transferredToIds, ...recipientsIds];
-      const newTranferredToIds = [...new Set(arr)];
-      const newMessage = { ...message, transferred_to_ids: newTranferredToIds };
-      await axios.put(`/messages/${message.id}`, newMessage, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-    }
     try {
       //create the message
-      const message = {
+      const forwardMessage = {
         from_id: user.id,
         to_ids: recipientsIds,
-        date_created: Date.parse(new Date()),
         read_by_ids: [user.id],
+        subject: previousMsgs.length
+          ? `Fwd ${previousMsgs.length + 1}: ${message.subject.slice(
+              message.subject.indexOf(":") + 1
+            )}`
+          : `Fwd: ${message.subject}`,
         body: body,
+        previous_ids: [...message.previous_ids, message.id],
+        related_patient_id: message.related_patient_id || 0,
+        replied: false,
+        date_created: Date.parse(new Date()),
         transferred_to_ids: [],
       };
 
       //post the message
-      const response = await axios.post("/messages", message, {
+      await axios.post("/messages", forwardMessage, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
 
-      const messageId = response.data.id;
-
-      //change discussion, add recipientsIds to participantsIds
-      const particpantsIds = discussion.participants_ids;
-      const arr = [...particpantsIds, ...recipientsIds];
-      const newParticipantsIds = [...new Set(arr)];
-      const newDiscussion = {
-        ...discussion,
-        participants_ids: newParticipantsIds,
-        date_updated: Date.parse(new Date()),
-        messages_ids: [...discussion.messages_ids, messageId],
-      };
-
-      //put the discussion
-      await axios.put(`/discussions/${discussion.id}`, newDiscussion, {
+      const response = await axios.get(`/messages?staff_id=${user.id}`, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
 
-      //update discussions
-      const response2 = await axios.get(`/discussions?staff_id=${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      //update the discussions for the UI
-      const newDiscussions = filterAndSortDiscussions(
+      const newMessages = filterAndSortMessages(
         section,
-        response2.data,
+        response.data,
         user.id
       );
-      setDiscussions(newDiscussions);
-      setTransferVisible(false);
+      setMessages(newMessages);
+      setForwardVisible(false);
       toast.success("Transfered successfully", { containerId: "A" });
     } catch (err) {
       toast.error("Error: message wasn't sent");
@@ -179,7 +149,7 @@ const TransferForm = ({
     <div className="transfer">
       <div className="transfer-contacts">
         <Contacts
-          staffInfos={staffInfos}
+          staffInfos={clinic.staffInfos}
           handleCheckContact={handleCheckContact}
           isContactChecked={isContactChecked}
           handleCheckCategory={handleCheckCategory}
@@ -192,7 +162,7 @@ const TransferForm = ({
           <input
             type="text"
             placeholder="Recipients"
-            value={staffInfos
+            value={clinic.staffInfos
               .filter(({ id }) => recipientsIds.includes(id))
               .map(
                 (staff) =>
@@ -204,7 +174,12 @@ const TransferForm = ({
           />
         </div>
         <div className="transfer-form-object">
-          Subject: {discussion.subject}
+          Subject:{" "}
+          {previousMsgs.length
+            ? `Fwd ${previousMsgs.length + 1}: ${message.subject.slice(
+                message.subject.indexOf(":") + 1
+              )}`
+            : `Fwd: ${message.subject}`}
         </div>
         {patient?.full_name && (
           <div className="transfer-form-patient">
@@ -214,14 +189,20 @@ const TransferForm = ({
         <div className="transfer-form-body">
           <textarea value={body} onChange={handleChange}></textarea>
           <div className="transfer-form-history">
-            {discussionMsgs.map((message) => (
+            <Message
+              message={message}
+              author={staffIdToName(clinic.staffInfos, message.from_id)}
+              authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+              key={message.id}
+              index={0}
+            />
+            {previousMsgs.map((message, index) => (
               <Message
                 message={message}
-                author={staffIdToName(staffInfos, message.from_id)}
-                authorTitle={staffIdToTitle(staffInfos, message.from_id)}
-                discussion={discussion}
-                staffInfos={staffInfos}
+                author={staffIdToName(clinic.staffInfos, message.from_id)}
+                authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
                 key={message.id}
+                index={index + 1}
               />
             ))}
           </div>
@@ -235,4 +216,4 @@ const TransferForm = ({
   );
 };
 
-export default TransferForm;
+export default ForwardForm;

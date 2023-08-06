@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
+import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
+import { toast } from "react-toastify";
 
 const MessagesToolBar = ({
   search,
   setSearch,
   newVisible,
   setNewVisible,
+  messages,
+  setMessages,
   section,
   setSection,
-  discussionsSelectedIds,
-  setDiscussionsSelectedIds,
+  msgsSelectedIds,
+  setMsgsSelectedIds,
+  currentMsgId,
 }) => {
   const { auth, user } = useAuth();
+  const [selectAllVisible, setSelectAllVisible] = useState(true);
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
@@ -26,15 +32,55 @@ const MessagesToolBar = ({
     setNewVisible(true);
   };
 
-  const handleClickMoveBack = async (e) => {
-    if (!discussionsSelectedIds.length) {
-      alert("Please choose at least one conversation");
-      return;
+  const handleSelectAll = () => {
+    const allMessagesIds = messages.map(({ id }) => id);
+    setMsgsSelectedIds(allMessagesIds);
+    setSelectAllVisible(false);
+  };
+
+  const handleUnselectAll = () => {
+    setMsgsSelectedIds([]);
+    setSelectAllVisible(true);
+  };
+
+  const handleDeleteSelected = async () => {
+    for (let messageId of msgsSelectedIds) {
+      const response = await axios.get(`/messages/${messageId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      });
+      const newMessage = {
+        ...response.data,
+        deleted_by_ids: [...response.data.deleted_by_ids, user.id],
+      };
+      await axios.put(`/messages/${messageId}`, newMessage, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      });
     }
-    const allDiscussionsSelected = (
+    const response = await axios.get(`/messages?staff_id=${user.id}`, {
+      headers: {
+        Authorization: `Bearer ${auth.authToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const newMessages = filterAndSortMessages(section, response.data, user.id);
+    setMessages(newMessages);
+    setNewVisible(false);
+    toast.success("Message(s) deleted successfully", { containerId: "A" });
+    setMsgsSelectedIds([]);
+    setSelectAllVisible(true);
+  };
+
+  const handleClickMoveBack = async (e) => {
+    const msgsSelected = (
       await axios.post(
-        "/discussions_selected",
-        { discussions_selected_ids: discussionsSelectedIds },
+        "/messages_selected",
+        { messages_ids: msgsSelectedIds },
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,15 +89,15 @@ const MessagesToolBar = ({
         }
       )
     ).data;
-    for (let discussion of allDiscussionsSelected) {
-      const newDeletedByIds = discussion.deleted_by_ids.filter(
+    for (let message of msgsSelected) {
+      const newDeletedByIds = message.deleted_by_ids.filter(
         (id) => id !== user.id
       );
-      const newDiscussion = {
-        ...discussion,
+      const newMessage = {
+        ...message,
         deleted_by_ids: newDeletedByIds,
       };
-      await axios.put(`/discussions/${discussion.id}`, newDiscussion, {
+      await axios.put(`/messages/${message.id}`, newMessage, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
@@ -59,7 +105,8 @@ const MessagesToolBar = ({
       });
     }
     setSection("Inbox");
-    setDiscussionsSelectedIds([]);
+    setMsgsSelectedIds([]);
+    setSelectAllVisible(true);
   };
 
   const handleClickSearch = (e) => {};
@@ -79,11 +126,21 @@ const MessagesToolBar = ({
       ></i>
       <div className="messages-toolbar-btns">
         <button onClick={handleClickNew}>New</button>
-        <button>Select All</button>
-        {section === "Deleted messages" && (
+        {section === "Deleted messages" && msgsSelectedIds.length !== 0 && (
           <button onClick={handleClickMoveBack}>Move back to Inbox</button>
         )}
-        <button>Print</button>
+        {currentMsgId !== 0 && <button>Print</button>}
+        {section !== "Deleted messages" &&
+          currentMsgId === 0 &&
+          msgsSelectedIds.length !== 0 && (
+            <button onClick={handleDeleteSelected}>Delete Selected</button>
+          )}
+        {currentMsgId === 0 &&
+          (selectAllVisible ? (
+            <button onClick={handleSelectAll}>Select All</button>
+          ) : (
+            <button onClick={handleUnselectAll}>Unselect All</button>
+          ))}
       </div>
     </div>
   );

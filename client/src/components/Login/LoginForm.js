@@ -67,38 +67,23 @@ const LoginForm = () => {
           },
         });
         const settings = response3?.data;
-        //Get user unread messages
-        const response6 = await axios.get(`/discussions?staff_id=${id}`, {
+        // Get user unread messages
+        const response6 = await axios.get(`/messages?staff_id=${id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
         });
-        let unreadMessagesNbr = 0;
-        for (let discussion of response6.data) {
-          const discussionMessages = (
-            await axios.post(
-              `/messages_selected`,
-              { messages_ids: discussion.messages_ids },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${authToken}`,
-                },
-              }
-            )
-          ).data;
-          if (
-            discussionMessages.find(
-              (message) =>
-                !message.read_by_ids.includes(id) &&
-                (message.to_ids.includes(id) ||
-                  message.transferred_to_to_ids.includes(id))
-            )
-          ) {
-            unreadMessagesNbr++;
-          }
-        }
+        const unreadMessagesNbr = response6.data.length
+          ? response6.data.reduce((accumulator, currentValue) => {
+              if (
+                !currentValue.read_by_ids.includes(id) &&
+                currentValue.to_ids.includes(id)
+              ) {
+                return accumulator + 1;
+              } else return accumulator;
+            }, 0)
+          : 0;
 
         setUser({
           accessLevel,

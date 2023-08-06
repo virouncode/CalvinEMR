@@ -22,7 +22,6 @@ const BrowsePatient = () => {
   });
 
   const handleSort = (columnName) => {
-    console.log("patientsInfos", clinic.patientsInfos);
     const sortedPatientsInfos = [...clinic.patientsInfos];
     direction.current = !direction.current;
     if (

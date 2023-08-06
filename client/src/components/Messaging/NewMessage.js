@@ -6,22 +6,17 @@ import Patients from "./Patients";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
 import { toast } from "react-toastify";
-import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
+import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
+import { patientIdToName } from "../../utils/patientIdToName";
 
-const NewMessage = ({
-  staffInfos,
-  setNewVisible,
-  setMessages,
-  setDiscussions,
-  section,
-}) => {
-  const { auth, user } = useAuth();
+const NewMessage = ({ setNewVisible, setMessages, section }) => {
+  const { auth, user, clinic } = useAuth();
   const [recipientsIds, setRecipientsIds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [patientId, setPatientId] = useState(0);
-  const [patientName, setPatientName] = useState("");
+
   const handleChange = (e) => {
     setBody(e.target.value);
   };
@@ -37,13 +32,10 @@ const NewMessage = ({
   const handleCheckPatient = (e) => {
     const id = parseInt(e.target.id);
     const checked = e.target.checked;
-    const name = e.target.name;
     if (checked) {
       setPatientId(id);
-      setPatientName(name);
     } else {
       setPatientId(0);
-      setPatientName("");
     }
   };
 
@@ -51,7 +43,7 @@ const NewMessage = ({
     const id = parseInt(e.target.id);
     const checked = e.target.checked;
     const category = e.target.name;
-    const categoryContactsIds = staffInfos
+    const categoryContactsIds = clinic.staffInfos
       .filter(({ title }) => title === categoryToTitle(category))
       .map(({ id }) => id);
 
@@ -82,7 +74,7 @@ const NewMessage = ({
   const handleCheckCategory = (e) => {
     const category = e.target.id;
     const checked = e.target.checked;
-    const categoryContactsIds = staffInfos
+    const categoryContactsIds = clinic.staffInfos
       .filter(({ title }) => title === categoryToTitle(category))
       .map(({ id }) => id);
 
@@ -115,60 +107,38 @@ const NewMessage = ({
   };
 
   const handleSend = async (e) => {
-    //create the message
-    const message = {
-      from_id: user.id,
-      to_ids: recipientsIds,
-      read_by_ids: [user.id],
-      body: body,
-      date_created: Date.parse(new Date()),
-    };
-
-    //post the message and get the id
-    const response = await axios.post("/messages", message, {
-      headers: {
-        Authorization: `Bearer ${auth.authToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const messageId = response.data.id;
-
-    //create a discussion
-    const discussion = {
-      author_id: user.id,
-      subject: subject,
-      participants_ids: recipientsIds.includes(user.id)
-        ? recipientsIds
-        : [...recipientsIds, user.id],
-      related_patient_id: patientId,
-      deleted_by_ids: [],
-      messages_ids: [messageId],
-      date_created: Date.parse(new Date()),
-      date_updated: Date.parse(new Date()),
-      replied: false,
-    };
-
     try {
-      await axios.post("/discussions", discussion, {
+      //create the message
+      const message = {
+        from_id: user.id,
+        to_ids: recipientsIds,
+        read_by_ids: [user.id],
+        subject: subject,
+        body: body,
+        related_patient_id: patientId,
+        replied: false,
+        date_created: Date.parse(new Date()),
+      };
+
+      await axios.post("/messages", message, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
 
-      const response2 = await axios.get(`/discussions?staff_id=${user.id}`, {
+      const response = await axios.get(`/messages?staff_id=${user.id}`, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
-      const newDiscussions = filterAndSortDiscussions(
+      const newMessages = filterAndSortMessages(
         section,
-        response2.data,
+        response.data,
         user.id
       );
-      setDiscussions(newDiscussions);
+      setMessages(newMessages);
       setNewVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
@@ -180,7 +150,7 @@ const NewMessage = ({
     <div className="new-message">
       <div className="new-message-contacts">
         <Contacts
-          staffInfos={staffInfos}
+          staffInfos={clinic.staffInfos}
           handleCheckContact={handleCheckContact}
           isContactChecked={isContactChecked}
           handleCheckCategory={handleCheckCategory}
@@ -193,7 +163,7 @@ const NewMessage = ({
           <input
             type="text"
             placeholder="Recipients"
-            value={staffInfos
+            value={clinic.staffInfos
               .filter(({ id }) => recipientsIds.includes(id))
               .map(
                 (staff) =>
@@ -204,7 +174,7 @@ const NewMessage = ({
             readOnly
           />
         </div>
-        <div className="new-message-form-object">
+        <div className="new-message-form-subject">
           Subject:{" "}
           <input
             type="text"
@@ -218,7 +188,9 @@ const NewMessage = ({
           <input
             type="text"
             placeholder="Patient"
-            value={patientName}
+            value={
+              patientId ? patientIdToName(clinic.patientsInfos, patientId) : ""
+            }
             readOnly
           />
         </div>

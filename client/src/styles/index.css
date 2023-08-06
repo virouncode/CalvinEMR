@@ -13582,6 +13582,11 @@ readers do not read off random characters that represent icons */
 .messages-section-box {
   width: 90%;
 }
+.messages-section-box p {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  text-align: center;
+}
 .messages-toolbar {
   width: 98%;
   margin: 0 auto;
@@ -13612,75 +13617,118 @@ readers do not read off random characters that represent icons */
 .messages-toolbar-btns button {
   margin-right: 10px;
 }
+.messages-overview-toolbar {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid 0.5px grey;
+  font-size: 0.85rem;
+  padding: 5px;
+  font-weight: bold;
+}
+.messages-overview-toolbar-from {
+  text-align: center;
+  width: 20%;
+}
+.messages-overview-toolbar-subject {
+  text-align: center;
+  width: 50%;
+}
+.messages-overview-toolbar-patient {
+  text-align: center;
+  width: 13%;
+}
+.messages-overview-toolbar-date {
+  text-align: center;
+  width: 17%;
+}
 
-.discussion-thumbnail {
+.message-thumbnail {
   font-size: 0.8rem;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   height: 35px;
   border-bottom: solid 0.5px grey;
+  padding: 0 5px;
 }
-.discussion-thumbnail-checkbox {
+.message-thumbnail-checkbox {
   width: 3%;
 }
-.discussion-thumbnail-link {
+.message-thumbnail-link {
   width: 67%;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-.discussion-thumbnail-persons {
-  width: 30%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-right: 10px;
+.message-thumbnail-author {
+  width: 35%;
 }
-.discussion-thumbnail-sample {
+.message-thumbnail-sample {
   width: 65%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-right: 20px;
 }
-.discussion-thumbnail-patient {
-  width: 15%;
+.message-thumbnail-patient {
+  width: 13%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   text-align: center;
 }
-.discussion-thumbnail-patient-link {
+.message-thumbnail-patient-link {
   text-decoration: underline;
 }
-.discussion-thumbnail-date {
+.message-thumbnail-date {
   width: 15%;
   text-align: center;
 }
+.message-thumbnail-trash {
+  width: 2%;
+  cursor: pointer;
+}
 
-.discussion-detail-toolbar {
+.message-detail-toolbar {
   padding: 5px;
   border-bottom: solid 0.5px grey;
   display: flex;
   align-items: center;
   position: sticky;
+  justify-content: space-between;
 }
-.discussion-detail-toolbar-arrow {
-  width: 7%;
+.message-detail-toolbar-arrow {
+  width: 5%;
 }
-.discussion-detail-toolbar-subject {
+.message-detail-toolbar-subject {
   font-size: 0.9rem;
-  width: 70%;
+  width: 50%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.discussion-detail-btns {
+.message-detail-toolbar-patient {
+  width: 40%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-size: 0.8rem;
+}
+.message-detail-toolbar-patient-link {
+  text-decoration: underline;
+}
+.message-detail-toolbar-trash {
+  width: 5%;
+  cursor: pointer;
+  text-align: end;
+  font-size: 0.8rem;
+}
+.message-detail-btns {
   padding: 20px;
 }
-.discussion-detail-btns button {
+.message-detail-btns button {
   margin-right: 10px;
 }
 
@@ -13699,6 +13747,16 @@ readers do not read off random characters that represent icons */
 .message-title-date {
   width: 28%;
   text-align: right;
+}
+.message-subject {
+  border-bottom: solid 0.3px grey;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+.message-subject input {
+  outline: none;
+  width: 92%;
 }
 .message-subtitle {
   font-size: 0.6rem;
@@ -13719,19 +13777,44 @@ readers do not read off random characters that represent icons */
   font-size: 0.8rem;
 }
 .reply-form-title {
+  display: flex;
+  align-items: center;
   border-bottom: solid 0.3px grey;
   height: 40px;
   display: flex;
   align-items: center;
 }
 .reply-form-title p {
+  margin: 0;
   padding: 0;
+  font-size: 0.8rem;
+}
+.reply-form-subject {
+  border-bottom: solid 0.3px grey;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.reply-form-subject input {
+  outline: none;
+  width: 92%;
 }
 .reply-form-body {
+  width: 95%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  height: 80%;
-  padding: 10px 0;
+}
+.reply-form-body textarea {
+  border: none;
+  outline: none;
+  padding: 20px;
+  width: 95%;
+  min-height: 300px;
+}
+.reply-form-history {
+  display: flex;
+  flex-direction: column;
 }
 .reply-form-btns {
   border-top: solid 0.3px grey;
@@ -13745,8 +13828,8 @@ readers do not read off random characters that represent icons */
 .reply-form textarea {
   border: none;
   outline: none;
-  padding: 5px 0;
-  width: 95%;
+  padding: 10px 0;
+  width: 100%;
   min-height: 200px;
 }
 
@@ -13787,13 +13870,13 @@ readers do not read off random characters that represent icons */
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.new-message-form-object {
+.new-message-form-subject {
   border-bottom: solid 0.3px grey;
   height: 30px;
   display: flex;
   align-items: center;
 }
-.new-message-form-object input {
+.new-message-form-subject input {
   outline: none;
   width: 92%;
 }
@@ -13812,15 +13895,14 @@ readers do not read off random characters that represent icons */
   text-overflow: ellipsis;
 }
 .new-message-form-body {
-  width: 95%;
   display: flex;
   justify-content: center;
 }
 .new-message-form-body textarea {
   border: none;
   outline: none;
-  padding: 20px;
-  width: 95%;
+  padding: 10px 0;
+  width: 100%;
   min-height: 300px;
 }
 .new-message-form-btns {
@@ -13879,4 +13961,80 @@ readers do not read off random characters that represent icons */
 }
 .patients-list-item input[type=checkbox] {
   margin-right: 5px;
+}
+
+.transfer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 5px;
+}
+.transfer-contacts {
+  width: 20%;
+  border: solid 0.3px grey;
+  border-radius: 4px;
+  margin: 20px auto;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+}
+.transfer-form {
+  min-height: 250px;
+  border: solid 0.3px grey;
+  border-radius: 4px;
+  padding: 0 10px;
+  margin: 20px auto;
+  width: 75%;
+  font-size: 0.8rem;
+}
+.transfer-form-recipients {
+  border-bottom: solid 0.3px grey;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+.transfer-form-recipients input {
+  outline: none;
+  width: 90%;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.transfer-form-object {
+  border-bottom: solid 0.3px grey;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+.transfer-form-patient {
+  border-bottom: solid 0.3px grey;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+.transfer-form-body {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.transfer-form-body textarea {
+  border: none;
+  outline: none;
+  padding: 20px;
+  width: 95%;
+  min-height: 300px;
+}
+.transfer-form-history {
+  display: flex;
+  flex-direction: column;
+}
+.transfer-form-btns {
+  border-top: solid 0.3px grey;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.transfer-form-btns button {
+  margin-right: 10px;
 }/*# sourceMappingURL=index.css.map */

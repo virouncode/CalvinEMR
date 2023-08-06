@@ -1,76 +1,67 @@
 import React, { useState } from "react";
-import formatName from "../../utils/formatName";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
 import { toast } from "react-toastify";
-import { filterAndSortDiscussions } from "../../utils/filterAndSortDiscussions";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
+import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
+import Message from "./Message";
+import { findLastSenderId } from "../../utils/findLastSenderId";
 
 const ReplyForm = ({
   setReplyVisible,
   allPersons,
-  discussion,
-  staffInfos,
-  discussionMsgs,
-  // setMessages,
-  setDiscussions,
+  message,
+  previousMsgs,
+  setMessages,
   section,
+  patient,
 }) => {
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [body, setBody] = useState("");
 
   const handleCancel = (e) => {
     setReplyVisible(false);
   };
   const handleSend = async (e) => {
-    const datas = {
+    const replyMessage = {
       from_id: user.id,
       to_ids: allPersons
-        ? discussion.participants_ids.filter((staff_id) => staff_id !== user.id)
-        : discussionMsgs.slice(-1)[0].from_id,
+        ? [...new Set([...message.to_ids, message.from_id])].filter(
+            (staffId) => staffId !== user.id
+          )
+        : [message.from_id],
       read_by_ids: [user.id],
+      subject: previousMsgs.length
+        ? `Re ${previousMsgs.length + 1}: ${message.subject.slice(
+            message.subject.indexOf(":") + 1
+          )}`
+        : `Re: ${message.subject}`,
       body: body,
+      previous_ids: [...previousMsgs.map(({ id }) => id), message.id],
+      related_patient_id: message.related_patient_id || 0,
+      replied: false,
       date_created: Date.parse(new Date()),
     };
     try {
-      const response = await axios.post("/messages", datas, {
+      await axios.post("/messages", replyMessage, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-
-      const messageId = response.data.id;
-
-      //discussion update
-      await axios.put(
-        `/discussions/${discussion.id}`,
-        {
-          ...discussion,
-          messages_ids: [...discussion.messages_ids, messageId],
-          date_updated: Date.parse(new Date()),
-          replied: true,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-        }
-      );
-      const response2 = await axios.get(`/discussions?staff_id=${user.id}`, {
+      const response = await axios.get(`/messages?staff_id=${user.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      const newDiscussions = filterAndSortDiscussions(
+      const newMessages = filterAndSortMessages(
         section,
-        response2.data,
+        response.data,
         user.id
       );
-      setDiscussions(newDiscussions);
+      setMessages(newMessages);
       setReplyVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
@@ -87,22 +78,54 @@ const ReplyForm = ({
     <div className="reply-form">
       <div className="reply-form-title">
         <p>
-          To :{" "}
+          To:{" "}
           {allPersons
-            ? discussion.participants_ids
-                .filter((staff_id) => staff_id !== user.id)
+            ? [...new Set([...message.to_ids, message.from_id])]
+                .filter((staffId) => staffId !== user.id)
                 .map(
-                  (staff_id) =>
-                    staffIdToTitle(staffInfos, staff_id) +
-                    staffIdToName(staffInfos, staff_id)
+                  (staffId) =>
+                    staffIdToTitle(clinic.staffInfos, staffId) +
+                    staffIdToName(clinic.staffInfos, staffId)
                 )
                 .join(", ")
-            : staffIdToTitle(staffInfos, discussionMsgs.slice(-1)[0].from_id) +
-              staffIdToName(staffInfos, discussionMsgs.slice(-1)[0].from_id)}
+            : staffIdToTitle(clinic.staffInfos, message.from_id) +
+              staffIdToName(clinic.staffInfos, message.from_id)}
         </p>
       </div>
+      <div className="reply-form-subject">
+        Subject:{" "}
+        {previousMsgs.length
+          ? `Re ${previousMsgs.length + 1}: ${message.subject.slice(
+              message.subject.indexOf(":") + 1
+            )}`
+          : `Re: ${message.subject}`}
+      </div>
+
+      {patient?.full_name && (
+        <div className="reply-form-patient">
+          About patient: {patient.full_name}
+        </div>
+      )}
       <div className="reply-form-body">
         <textarea value={body} onChange={handleChange}></textarea>
+        <div className="reply-form-history">
+          <Message
+            message={message}
+            author={staffIdToName(clinic.staffInfos, message.from_id)}
+            authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+            key={message.id}
+            index={0}
+          />
+          {previousMsgs.map((message, index) => (
+            <Message
+              message={message}
+              author={staffIdToName(clinic.staffInfos, message.from_id)}
+              authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+              key={message.id}
+              index={index + 1}
+            />
+          ))}
+        </div>
       </div>
       <div className="reply-form-btns">
         <button onClick={handleSend}>Send</button>
