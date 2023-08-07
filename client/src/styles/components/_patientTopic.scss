@@ -122,7 +122,7 @@
             border-right : solid 0.5px grey;
             border-bottom : solid 0.5px grey;
         }
-        .patient-doctors-content, .patient-reminders-content, .patient-pregnancies-content, .patient-allergies-content, .patient-concerns-content, .patient-documents-content, .patient-appointments-content, .patient-vaccines-content, .patient-messages-content {
+        .patient-doctors-content, .patient-reminders-content, .patient-pregnancies-content, .patient-allergies-content, .patient-concerns-content, .patient-documents-content, .patient-appointments-content, .patient-vaccines-content {
             padding : 5px;
             width: 100%;
             display:flex;
@@ -151,6 +151,33 @@
                     &:hover {
                         color:blue;
                     }
+                }
+            }
+        }
+        .patient-messages-content{
+            padding : 5px;
+            width: 100%;
+            &-item{
+                display: flex;
+                overflow: hidden;
+                justify-content: space-between;
+                border-bottom: solid 0.5px grey;
+                width: 100%;
+                padding: 5px 0;
+                &-overview{
+                    width:70%;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+                &-date{
+                    width:30%;
+                    text-align: end;
+                  
+                }
+                &-link {
+                    text-decoration: underline;
+                    color:blue;
                 }
             }
         }

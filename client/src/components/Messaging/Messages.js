@@ -8,16 +8,26 @@ import MessagesBox from "./MessagesBox";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Messages = () => {
   //HOOKSs
+  const { messageId, sectionName } = useParams();
   const [search, setSearch] = useState("");
-  const [section, setSection] = useState("Inbox");
+  const [section, setSection] = useState(sectionName || "Inbox");
   const [newVisible, setNewVisible] = useState(false);
   const [msgsSelectedIds, setMsgsSelectedIds] = useState([]);
   const [currentMsgId, setCurrentMsgId] = useState(0);
   const [messages, setMessages] = useState(null);
-  const { user, auth } = useAuth();
+  const { auth, user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (messageId) {
+      setCurrentMsgId(parseInt(messageId));
+      navigate("/messages");
+    }
+  }, [messageId, navigate, setCurrentMsgId]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -29,7 +39,7 @@ const Messages = () => {
       });
       //En fonction de la section on filtre les messages
       const newMessages = filterAndSortMessages(
-        section,
+        sectionName || section,
         response.data,
         user.id
       );
@@ -37,8 +47,7 @@ const Messages = () => {
     };
     fetchMessages();
     return () => setMessages(null);
-    //eslint-disable-next-line
-  }, [auth.authToken, user.id, section]);
+  }, [auth.authToken, user.id, section, sectionName]);
 
   return (
     <div className="messages-container">

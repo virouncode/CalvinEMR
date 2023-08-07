@@ -8,9 +8,8 @@ import NewWindow from "react-new-window";
 import ForwardForm from "./ForwardForm";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
-import { patientIdToName } from "../../utils/patientIdToName";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const MessageDetail = ({
   setCurrentMsgId,
@@ -24,9 +23,11 @@ const MessageDetail = ({
   const [allPersons, setAllPersons] = useState(false);
   const { auth, user, clinic } = useAuth();
   const [previousMsgs, setPreviousMsgs] = useState(null);
+  const navigate = useNavigate();
   const patient = clinic.patientsInfos.find(
     ({ id }) => id === message.related_patient_id
   );
+
   useEffect(() => {
     const fetchPreviousMsgs = async () => {
       const response = await axios.post(
@@ -78,6 +79,7 @@ const MessageDetail = ({
       );
       setMessages(newMessages);
       setCurrentMsgId(0);
+
       toast.success("Message deleted successfully", { containerId: "A" });
     } catch (err) {
       console.log(err);

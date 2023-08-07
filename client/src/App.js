@@ -36,6 +36,10 @@ const App = () => {
           <Route path="signup-patient" element={<SignupPagePatient />} />
           <Route path="my-account" element={<MyAccountPage />} />
           <Route path="messages" element={<MessagesPage />} />
+          <Route
+            path="messages/:messageId/:sectionName"
+            element={<MessagesPage />}
+          />
         </Route>
         <Route element={<RequireAuth allowedAccesses={["Admin"]} />}>
           <Route path="signup-staff" element={<SignupPageStaff />} />

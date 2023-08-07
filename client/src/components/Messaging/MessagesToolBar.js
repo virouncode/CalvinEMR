@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import axios from "../../api/xano";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const MessagesToolBar = ({
   search,
@@ -19,6 +20,7 @@ const MessagesToolBar = ({
 }) => {
   const { auth, user } = useAuth();
   const [selectAllVisible, setSelectAllVisible] = useState(true);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
@@ -110,6 +112,8 @@ const MessagesToolBar = ({
   };
 
   const handleClickSearch = (e) => {};
+  const handleClickPrint = () => {};
+
   return (
     <div className="messages-toolbar">
       <p className="messages-toolbar-title">Messaging</p>
@@ -129,7 +133,9 @@ const MessagesToolBar = ({
         {section === "Deleted messages" && msgsSelectedIds.length !== 0 && (
           <button onClick={handleClickMoveBack}>Move back to Inbox</button>
         )}
-        {currentMsgId !== 0 && <button>Print</button>}
+        {currentMsgId !== 0 && (
+          <button onClick={handleClickPrint}>Print</button>
+        )}
         {section !== "Deleted messages" &&
           currentMsgId === 0 &&
           msgsSelectedIds.length !== 0 && (
