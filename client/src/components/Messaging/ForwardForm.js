@@ -112,9 +112,7 @@ const ForwardForm = ({
         body: body,
         previous_ids: [...message.previous_ids, message.id],
         related_patient_id: message.related_patient_id || 0,
-        replied: false,
         date_created: Date.parse(new Date()),
-        transferred_to_ids: [],
       };
 
       //post the message

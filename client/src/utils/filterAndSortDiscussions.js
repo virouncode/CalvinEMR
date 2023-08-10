@@ -4,7 +4,7 @@ export const filterAndSortDiscussions = (section, datas, userId) => {
     case "Inbox":
       newDiscussions = datas.filter(
         (discussion) =>
-          (discussion.author_id !== userId || discussion.replied) &&
+          discussion.author_id !== userId &&
           !discussion.deleted_by_ids.includes(userId)
       );
       break;
@@ -12,7 +12,6 @@ export const filterAndSortDiscussions = (section, datas, userId) => {
       newDiscussions = datas.filter(
         (discussion) =>
           discussion.author_id === userId &&
-          !discussion.replied &&
           !discussion.deleted_by_ids.includes(userId)
       );
       break;

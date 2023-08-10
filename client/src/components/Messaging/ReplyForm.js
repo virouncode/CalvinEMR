@@ -40,7 +40,6 @@ const ReplyForm = ({
       body: body,
       previous_ids: [...previousMsgs.map(({ id }) => id), message.id],
       related_patient_id: message.related_patient_id || 0,
-      replied: false,
       date_created: Date.parse(new Date()),
     };
     try {

@@ -7,6 +7,7 @@ const PatientTopicHeader = ({
   handleTriangleClick,
   handlePopUpClick,
   allContentsVisible,
+  popUpButton = true,
 }) => {
   return (
     <>
@@ -18,7 +19,11 @@ const PatientTopicHeader = ({
         color="#FEFEFE"
       />
       {topic}
-      <PopUpButton handlePopUpClick={handlePopUpClick} />
+      {popUpButton ? (
+        <PopUpButton handlePopUpClick={handlePopUpClick} />
+      ) : (
+        <div></div>
+      )}
     </>
   );
 };

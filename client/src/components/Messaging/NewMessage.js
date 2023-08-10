@@ -116,7 +116,6 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
         subject: subject,
         body: body,
         related_patient_id: patientId,
-        replied: false,
         date_created: Date.parse(new Date()),
       };
 

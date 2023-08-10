@@ -4,8 +4,7 @@ export const filterAndSortMessages = (section, datas, userId) => {
     case "Inbox":
       newMessages = datas.filter(
         (message) =>
-          (message.from_id !== userId || message.replied) &&
-          !message.deleted_by_ids.includes(userId)
+          message.from_id !== userId && !message.deleted_by_ids.includes(userId)
       );
       break;
     case "Sent messages":

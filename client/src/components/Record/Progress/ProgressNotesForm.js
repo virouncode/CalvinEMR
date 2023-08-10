@@ -1,5 +1,5 @@
 //Librairies
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 //Components
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 //Utils
@@ -8,6 +8,10 @@ import formatName from "../../../utils/formatName";
 import { getPatientRecord, postPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
 import axios from "../../../api/xano";
+import ProgressNotesTemplatesList from "./ProgressNotesTemplatesList";
+import NewWindow from "react-new-window";
+import NewTemplate from "./NewTemplate";
+import EditTemplate from "./EditTemplate";
 var _ = require("lodash");
 
 const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
@@ -21,6 +25,23 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
     attachments_ids: [],
   });
   const [files, setFiles] = useState([]);
+  const [templateSelectedId, setTemplateSelectedId] = useState("-3");
+  const [templates, setTemplates] = useState([]);
+  const [newTemplateVisible, setNewTemplateVisible] = useState(false);
+  const [editTemplateVisible, setEditTemplateVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      const response = await axios.get("/progress_notes_templates", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      });
+      setTemplates(response.data);
+    };
+    fetchTemplates();
+  }, [auth.authToken]);
 
   //HANDLERS
   const handleCancelClick = async () => {
@@ -112,6 +133,25 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
     setFiles(updatedFiles);
   };
 
+  const handleSelectTemplate = (e) => {
+    const value = parseInt(e.target.value);
+    setTemplateSelectedId(value);
+    if (value !== -1 && value !== -2) {
+      setFormDatas({
+        ...formDatas,
+        body: templates.find(({ id }) => id === parseInt(value)).body,
+      });
+    } else if (value === -1) {
+      setNewTemplateVisible(true);
+    } else if (value === -2) {
+      if (!templates.filter(({ author_id }) => author_id === user.id).length) {
+        alert("You don't have any templates");
+        return;
+      }
+      setEditTemplateVisible(true);
+    }
+  };
+
   return (
     <form className="progress-notes-form" onSubmit={handleSubmit}>
       <div className="progress-notes-form-header">
@@ -124,13 +164,11 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
             <label>
               <strong>Use template: </strong>
             </label>
-            <select>
-              <option value="">Choose a template</option>
-              <option value="1">Template 1</option>
-              <option value="2">Template 2</option>
-              <option value="3">Template 3</option>
-              <option value="4">Template 4</option>
-            </select>
+            <ProgressNotesTemplatesList
+              templates={templates}
+              templateSelectedId={templateSelectedId}
+              handleSelectTemplate={handleSelectTemplate}
+            />
           </div>
         </div>
         <div className="progress-notes-form-row">
@@ -181,6 +219,60 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
           Cancel
         </button>
       </div>
+      {newTemplateVisible && (
+        <NewWindow
+          title="New Template"
+          features={{
+            toolbar: "no",
+            scrollbars: "no",
+            menubar: "no",
+            status: "no",
+            directories: "no",
+            width: 1000,
+            height: 500,
+            left: 0,
+            top: 0,
+          }}
+          onUnload={() => setNewTemplateVisible(false)}
+        >
+          <NewTemplate
+            setNewTemplateVisible={setNewTemplateVisible}
+            templates={templates}
+            setTemplateSelectedId={setTemplateSelectedId}
+            setTemplates={setTemplates}
+            setFormDatas={setFormDatas}
+            formDatas={formDatas}
+          />
+        </NewWindow>
+      )}
+      {editTemplateVisible && (
+        <NewWindow
+          title="Edit A Template"
+          features={{
+            toolbar: "no",
+            scrollbars: "no",
+            menubar: "no",
+            status: "no",
+            directories: "no",
+            width: 1000,
+            height: 500,
+            left: 0,
+            top: 0,
+          }}
+          onUnload={() => setEditTemplateVisible(false)}
+        >
+          <EditTemplate
+            setEditTemplateVisible={setEditTemplateVisible}
+            myTemplates={templates.filter(
+              ({ author_id }) => author_id === user.id
+            )}
+            setTemplateSelectedId={setTemplateSelectedId}
+            setTemplates={setTemplates}
+            setFormDatas={setFormDatas}
+            formDatas={formDatas}
+          />
+        </NewWindow>
+      )}
     </form>
   );
 };
