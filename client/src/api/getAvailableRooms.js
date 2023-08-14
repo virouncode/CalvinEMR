@@ -1,4 +1,4 @@
-import axios from "./xano";
+import axiosXano from "./xano";
 var _ = require("lodash");
 
 export const getAvailableRooms = async (
@@ -9,7 +9,7 @@ export const getAvailableRooms = async (
   controller
 ) => {
   try {
-    const response = await axios.post(
+    const response = await axiosXano.post(
       "/appointments_in_range",
       { range_start: rangeStart, range_end: rangeEnd },
       {
@@ -41,6 +41,6 @@ export const getAvailableRooms = async (
     const availableRooms = _.difference(allRooms, occupiedRooms);
     return availableRooms;
   } catch (err) {
-    console.log(err.message);
+    throw err;
   }
 };

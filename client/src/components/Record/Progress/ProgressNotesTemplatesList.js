@@ -7,7 +7,7 @@ const ProgressNotesTemplatesList = ({
 }) => {
   return (
     <select value={templateSelectedId} onChange={handleSelectTemplate}>
-      <option style={{ backgroundColor: "#cccccc" }} disabled value="-3">
+      <option disabled value="">
         Select a template
       </option>
       <option value={"-1"}>New</option>

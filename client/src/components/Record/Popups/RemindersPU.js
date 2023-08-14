@@ -4,11 +4,18 @@ import React, { useRef, useState } from "react";
 import ReminderItem from "../Topics/Reminders/ReminderItem";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import ReminderForm from "../Topics/Reminders/ReminderForm";
-import { useRecord } from "../../../hooks/useRecord";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
-const RemindersPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
+const RemindersPU = ({
+  patientId,
+  setPopUpVisible,
+  datas,
+  setDatas,
+  fetchRecord,
+  isLoading,
+  errMsg,
+}) => {
   //HOOKS
 
   const editCounter = useRef(0);
@@ -16,7 +23,6 @@ const RemindersPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
   const [errMsgPost, setErrMsgPost] = useState(false);
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
-  useRecord("/reminders", patientId, setDatas);
 
   //STYLE
   const DIALOG_CONTAINER_STYLE = {
@@ -59,111 +65,121 @@ const RemindersPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
 
   return (
     <>
-      {datas ? (
-        <>
-          <h1 className="reminders-title">Patient reminders & alerts</h1>
-          {errMsgPost && (
-            <div className="reminders-err">
-              Unable to save form : please fill out all fields
-            </div>
-          )}
-          <table className="reminders-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("active")}>Active</th>
-                <th onClick={() => handleSort("reminder")}>Reminder</th>
-                <th onClick={() => handleSort("created_by_id")}>Created By</th>
-                <th onClick={() => handleSort("date_created")}>Created On</th>
-                <th style={{ textDecoration: "none", cursor: "default" }}>
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {addVisible && (
-                <ReminderForm
-                  editCounter={editCounter}
-                  setAddVisible={setAddVisible}
-                  patientId={patientId}
-                  setDatas={setDatas}
-                  setErrMsgPost={setErrMsgPost}
-                />
+      {!isLoading ? (
+        errMsg ? (
+          <p className="reminders-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="reminders-title">Patient reminders & alerts</h1>
+              {errMsgPost && (
+                <div className="reminders-err">
+                  Unable to save form : please fill out all fields
+                </div>
               )}
-              {direction.current
-                ? datas
-                    .filter((reminder) => reminder.active)
-                    .sort((a, b) =>
-                      a[columnToSort]
-                        ?.toString()
-                        .localeCompare(b[columnToSort]?.toString())
-                    )
-                    .map((reminder) => (
-                      <ReminderItem
-                        item={reminder}
-                        key={reminder.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))
-                : datas
-                    .filter((reminder) => reminder.active)
-                    .sort((a, b) =>
-                      b[columnToSort]
-                        ?.toString()
-                        .localeCompare(a[columnToSort]?.toString())
-                    )
-                    .map((reminder) => (
-                      <ReminderItem
-                        item={reminder}
-                        key={reminder.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))}
-              {direction.current
-                ? datas
-                    .filter((reminder) => !reminder.active)
-                    .sort((a, b) =>
-                      a[columnToSort]
-                        ?.toString()
-                        .localeCompare(b[columnToSort]?.toString())
-                    )
-                    .map((reminder) => (
-                      <ReminderItem
-                        item={reminder}
-                        key={reminder.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))
-                : datas
-                    .filter((reminder) => !reminder.active)
-                    .sort((a, b) =>
-                      b[columnToSort]
-                        ?.toString()
-                        .localeCompare(a[columnToSort]?.toString())
-                    )
-                    .map((reminder) => (
-                      <ReminderItem
-                        item={reminder}
-                        key={reminder.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))}
-            </tbody>
-          </table>
-          <div className="reminders-btn-container">
-            <button onClick={handleAdd} disabled={addVisible}>
-              Add Reminder
-            </button>
-            <button onClick={handleClose}>Close</button>
-          </div>
-        </>
+              <table className="reminders-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort("active")}>Active</th>
+                    <th onClick={() => handleSort("reminder")}>Reminder</th>
+                    <th onClick={() => handleSort("created_by_id")}>
+                      Created By
+                    </th>
+                    <th onClick={() => handleSort("date_created")}>
+                      Created On
+                    </th>
+                    <th style={{ textDecoration: "none", cursor: "default" }}>
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {addVisible && (
+                    <ReminderForm
+                      editCounter={editCounter}
+                      setAddVisible={setAddVisible}
+                      patientId={patientId}
+                      fetchRecord={fetchRecord}
+                      setErrMsgPost={setErrMsgPost}
+                    />
+                  )}
+                  {direction.current
+                    ? datas
+                        .filter((reminder) => reminder.active)
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((reminder) => (
+                          <ReminderItem
+                            item={reminder}
+                            key={reminder.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))
+                    : datas
+                        .filter((reminder) => reminder.active)
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((reminder) => (
+                          <ReminderItem
+                            item={reminder}
+                            key={reminder.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))}
+                  {direction.current
+                    ? datas
+                        .filter((reminder) => !reminder.active)
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((reminder) => (
+                          <ReminderItem
+                            item={reminder}
+                            key={reminder.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))
+                    : datas
+                        .filter((reminder) => !reminder.active)
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((reminder) => (
+                          <ReminderItem
+                            item={reminder}
+                            key={reminder.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))}
+                </tbody>
+              </table>
+              <div className="reminders-btn-container">
+                <button onClick={handleAdd} disabled={addVisible}>
+                  Add Reminder
+                </button>
+                <button onClick={handleClose}>Close</button>
+              </div>
+            </>
+          )
+        )
       ) : (
         <CircularProgress />
       )}

@@ -11,7 +11,7 @@ const VaccineFormFirstDose = ({
   name,
   age,
   datas,
-  setDatas,
+  fetchRecord,
 }) => {
   //HOOKS
   const { auth, user } = useAuth();
@@ -48,12 +48,13 @@ const VaccineFormFirstDose = ({
         auth.authToken,
         formDatas
       );
-      setDatas(formDatas);
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       setFormVisible(false);
       setEditable(true);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", {
+      toast.error(err.message, {
         containerId: "B",
       });
     }

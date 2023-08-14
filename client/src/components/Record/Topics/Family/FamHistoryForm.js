@@ -3,17 +3,14 @@ import formatName from "../../../../utils/formatName";
 import { toLocalDate, toISOStringNoMs } from "../../../../utils/formatDates";
 import RelativesList from "../../../Lists/RelativesList";
 import useAuth from "../../../../hooks/useAuth";
-import {
-  getPatientRecord,
-  postPatientRecord,
-} from "../../../../api/fetchRecords";
+import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 
 const FamHistoryForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  setDatas,
+  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
@@ -53,14 +50,13 @@ const FamHistoryForm = ({
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord("/family_history", patientId, auth.authToken)
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", { containerId: "B" });
+      toast.error(err.message, { containerId: "B" });
     }
   };
 

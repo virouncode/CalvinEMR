@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import useAuth from "../../../../hooks/useAuth";
-import {
-  getPatientRecord,
-  postPatientRecord,
-} from "../../../../api/fetchRecords";
-import axios from "../../../../api/xano";
+import { postPatientRecord } from "../../../../api/fetchRecords";
+import axiosXano from "../../../../api/xano";
 import { toast } from "react-toastify";
+import { CircularProgress } from "@mui/material";
 
 const DocumentForm = ({
   patientId,
-  setDatas,
+  fetchRecord,
   setAddVisible,
   editCounter,
   setErrMsgPost,
@@ -22,6 +20,8 @@ const DocumentForm = ({
     description: "",
     file: null,
   });
+  const [saveDisabled, setSaveDisabled] = useState(true);
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -39,18 +39,23 @@ const DocumentForm = ({
     }
     try {
       await postPatientRecord("/documents", user.id, auth.authToken, formDatas);
-      setDatas(await getPatientRecord("/documents", patientId, auth.authToken));
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", { containerId: "B" });
+      toast.error(err.message, { containerId: "B" });
     }
   };
   const handleUpload = async (e) => {
+    setAlertVisible(false);
+    setIsLoadingFile(true);
+    setSaveDisabled(true);
     const file = e.target.files[0];
     if (file.size > 20000000) {
       setAlertVisible(true);
+      setIsLoadingFile(false);
       return;
     }
     // setting up the reader
@@ -59,18 +64,26 @@ const DocumentForm = ({
     // here we tell the reader what to do when it's done reading...
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
-      let fileToUpload = await axios.post(
-        "/upload/attachment",
-        {
-          content: content,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
+      let fileToUpload;
+      try {
+        fileToUpload = await axiosXano.post(
+          "/upload/attachment",
+          {
+            content: content,
           },
-        }
-      );
-      setFormDatas({ ...formDatas, file: fileToUpload.data });
+          {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
+        setIsLoadingFile(false);
+        setSaveDisabled(false);
+        setFormDatas({ ...formDatas, file: fileToUpload.data });
+      } catch (err) {
+        setIsLoadingFile(false);
+        toast.error(err.message, { containerId: "B" });
+      }
     };
   };
 
@@ -90,10 +103,21 @@ const DocumentForm = ({
         </div>
         <div className="documents-form-content-row">
           <label>Upload document</label>
-          <input name="file" required type="file" onChange={handleUpload} />
+          <input
+            name="file"
+            required
+            type="file"
+            onChange={handleUpload}
+            accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav"
+          />
         </div>
         <div className="documents-form-content-row">
-          <input type="submit" value="Save" />
+          {!saveDisabled && <input type="submit" value="Save" />}
+        </div>
+        <div className="documents-form-content-row">
+          {isLoadingFile && (
+            <CircularProgress size="1rem" style={{ margin: "5px" }} />
+          )}
         </div>
       </form>
     </div>

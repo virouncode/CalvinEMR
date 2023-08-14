@@ -10,17 +10,14 @@ import {
   lbsToKg,
 } from "../../../../utils/measurements";
 import useAuth from "../../../../hooks/useAuth";
-import {
-  postPatientRecord,
-  getPatientRecord,
-} from "../../../../api/fetchRecords";
+import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 
 const MeasurementForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  setDatas,
+  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
@@ -155,14 +152,13 @@ const MeasurementForm = ({
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord("/measurements", patientId, auth.authToken)
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", { containerId: "B" });
+      toast.error(err.message, { containerId: "B" });
     }
   };
 

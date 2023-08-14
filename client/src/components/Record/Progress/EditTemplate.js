@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import CopyTemplatesList from "./CopyTemplatesList";
-import axios from "../../../api/xano";
+import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import EditTemplatesList from "./EditTemplatesList";
+import { ToastContainer, toast } from "react-toastify";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 
 const EditTemplate = ({
   setEditTemplateVisible,
@@ -13,12 +14,26 @@ const EditTemplate = ({
   formDatas,
 }) => {
   const { auth, user } = useAuth();
-  const [editTemplateSelectedId, setEditTemplateSelectedId] = useState("-1");
+  const [editTemplateSelectedId, setEditTemplateSelectedId] = useState("");
   const [editedTemplate, setEditedTemplate] = useState({
     author_id: user.id,
     body: "",
     name: "",
   });
+
+  const DIALOG_CONTAINER_STYLE = {
+    height: "100vh",
+    width: "200vw",
+    fontFamily: "Arial",
+    position: "absolute",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    top: "0px",
+    left: "0px",
+    background: "rgba(0,0,0,0.8)",
+    zIndex: "100000",
+  };
 
   const handleSelectEditTemplate = (e) => {
     const value = parseInt(e.target.value);
@@ -40,21 +55,37 @@ const EditTemplate = ({
   };
 
   const handleDelete = async () => {
-    await axios.delete(`/progress_notes_templates/${editTemplateSelectedId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.authToken}`,
-      },
-    });
-    //reload templates :
-    const response = await axios.get("/progress_notes_templates", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.authToken}`,
-      },
-    });
-    setTemplates(response.data);
-    setEditTemplateVisible(false);
+    if (
+      await confirmAlertPopUp({
+        content: "Do you really want to delete this template ?",
+      })
+    ) {
+      try {
+        await axiosXano.delete(
+          `/progress_notes_templates/${editTemplateSelectedId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
+        //reload templates :
+        const response = await axiosXano.get("/progress_notes_templates", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        });
+        setTemplates(response.data);
+        setEditTemplateVisible(false);
+        setTemplateSelectedId("");
+        setFormDatas({ ...formDatas, body: "" });
+        toast.success("Deleted successfully", { containerId: "B" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+      }
+    }
   };
 
   const handleSave = async () => {
@@ -62,27 +93,32 @@ const EditTemplate = ({
     const templateToPut = { ...editedTemplate };
     templateToPut.date_created = Date.parse(new Date());
 
-    await axios.put(
-      `/progress_notes_templates/${editTemplateSelectedId}`,
-      templateToPut,
-      {
+    try {
+      await axiosXano.put(
+        `/progress_notes_templates/${editTemplateSelectedId}`,
+        templateToPut,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        }
+      );
+      //reload templates :
+      const response2 = await axiosXano.get("/progress_notes_templates", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
-      }
-    );
-    //reload templates :
-    const response2 = await axios.get("/progress_notes_templates", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.authToken}`,
-      },
-    });
-    setTemplates(response2.data);
-    setFormDatas({ ...formDatas, body: editedTemplate.body });
-    setTemplateSelectedId(editTemplateSelectedId);
-    setEditTemplateVisible(false);
+      });
+      setTemplates(response2.data);
+      setFormDatas({ ...formDatas, body: editedTemplate.body });
+      setTemplateSelectedId(editTemplateSelectedId);
+      setEditTemplateVisible(false);
+      toast.success("Saved successfully", { containerId: "B" });
+    } catch (err) {
+      toast.error(err.message, { containerId: "B" });
+    }
   };
   return (
     <div className="edit-template">
@@ -103,13 +139,34 @@ const EditTemplate = ({
           name="body"
           value={editedTemplate.body}
           onChange={handleChange}
+          readOnly={!editTemplateSelectedId}
         />
       </div>
       <div className="edit-template-btns">
-        <button onClick={handleSave}>Save</button>
-        <button onClick={handleDelete}>Delete</button>
+        <button onClick={handleSave} disabled={!editTemplateSelectedId}>
+          Save
+        </button>
+        <button onClick={handleDelete} disabled={!editTemplateSelectedId}>
+          Delete
+        </button>
         <button onClick={handleCancel}>Cancel</button>
       </div>
+      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ToastContainer
+        enableMultiContainer
+        containerId={"B"}
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        limit={1}
+      />
     </div>
   );
 };

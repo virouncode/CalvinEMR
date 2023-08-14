@@ -11,15 +11,17 @@ import {
   putPatientRecord,
 } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
-import axios from "../../../api/xano";
+import axiosXano from "../../../api/xano";
 import formatName from "../../../utils/formatName";
 import TriangleButtonProgress from "./../Buttons/TriangleButtonProgress";
+import { toast } from "react-toastify";
 var _ = require("lodash");
 
 const ProgressNotesCard = ({
   progressNote,
   progressNotes,
   setProgressNotes,
+  fetchRecord,
   patientId,
   checkedNotes,
   setCheckedNotes,
@@ -48,38 +50,62 @@ const ProgressNotesCard = ({
   }, [allBodiesVisible]);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchVersions = async () => {
-      const versionsResults = (
-        await getPatientRecord("/progress_notes_log", patientId, auth.authToken)
-      ).filter(({ progress_note_id }) => progress_note_id === progressNote.id);
+      try {
+        const versionsResults = (
+          await getPatientRecord(
+            "/progress_notes_log",
+            patientId,
+            auth.authToken,
+            abortController
+          )
+        ).filter(
+          ({ progress_note_id }) => progress_note_id === progressNote.id
+        );
 
-      versionsResults.forEach(
-        (version) => (version.id = version.progress_note_id) //change id field value to progress_note_id value to match progress_notes fields
-      );
-      versionsResults.sort((a, b) => a.version_nbr - b.version_nbr);
+        versionsResults.forEach(
+          (version) => (version.id = version.progress_note_id) //change id field value to progress_note_id value to match progress_notes fields
+        );
+        versionsResults.sort((a, b) => a.version_nbr - b.version_nbr);
 
-      setVersions(versionsResults);
+        setVersions(versionsResults);
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
     };
     fetchVersions();
+    return () => {
+      abortController.abort();
+    };
   }, [auth.authToken, patientId, progressNote.id]);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchFiles = async () => {
-      const attachments = (
-        await axios.post(
-          "/attachments_for_progress_note",
-          { attachments_ids: progressNote.attachments_ids },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          }
-        )
-      ).data;
-      setFiles(attachments.map(({ file }) => file));
+      try {
+        const attachments = (
+          await axiosXano.post(
+            "/attachments_for_progress_note",
+            { attachments_ids: progressNote.attachments_ids },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+              signal: abortController.signal,
+            }
+          )
+        ).data;
+        setFiles(attachments.map(({ file }) => file));
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
     };
     fetchFiles();
+    return () => {
+      abortController.abort();
+    };
   }, [auth.authToken, progressNote.attachments_ids]);
 
   //HANDLERS
@@ -123,39 +149,45 @@ const ProgressNotesCard = ({
         logDatas.updated_by_id = formDatas.updated_by_id;
         logDatas.date_updated = formDatas.date_updated;
       }
-      await postPatientRecord(
-        "/progress_notes_log",
-        user.id,
-        auth.authToken,
-        logDatas
-      );
 
-      //then put the new progress note version in the progress note tbl
-      tempFormDatas.version_nbr = progressNote.version_nbr + 1; //increment version
-      await putPatientRecord(
-        "/progress_notes",
-        progressNote.id,
-        user.id,
-        auth.authToken,
-        tempFormDatas
-      );
-      setEditVisible(false);
-      setProgressNotes(
-        await getPatientRecord(
-          "/patient_progress_notes",
-          patientId,
-          auth.authToken
-        )
-      );
-      const versionsResults = (
-        await getPatientRecord("/progress_notes_log", patientId, auth.authToken)
-      ).filter(({ progress_note_id }) => progress_note_id === progressNote.id);
+      try {
+        await postPatientRecord(
+          "/progress_notes_log",
+          user.id,
+          auth.authToken,
+          logDatas
+        );
+        //then put the new progress note version in the progress note tbl
+        tempFormDatas.version_nbr = progressNote.version_nbr + 1; //increment version
+        await putPatientRecord(
+          "/progress_notes",
+          progressNote.id,
+          user.id,
+          auth.authToken,
+          tempFormDatas
+        );
+        setEditVisible(false);
+        const abortController = new AbortController();
+        fetchRecord(abortController);
+        const versionsResults = (
+          await getPatientRecord(
+            "/progress_notes_log",
+            patientId,
+            auth.authToken
+          )
+        ).filter(
+          ({ progress_note_id }) => progress_note_id === progressNote.id
+        );
 
-      versionsResults.forEach(
-        (version) => (version.id = version.progress_note_id)
-      );
-      versionsResults.sort((a, b) => a.version_nbr - b.version_nbr);
-      setVersions(versionsResults);
+        versionsResults.forEach(
+          (version) => (version.id = version.progress_note_id)
+        );
+        versionsResults.sort((a, b) => a.version_nbr - b.version_nbr);
+        setVersions(versionsResults);
+        toast.success("Progress note saved successfully", { containerId: "A" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
     }
   };
 
@@ -192,12 +224,15 @@ const ProgressNotesCard = ({
       updatedProgressNotes[index] = versions[value - 1];
     } else {
       //last version
-      const response = await axios.get(`/progress_notes/${progressNote.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
+      const response = await axiosXano.get(
+        `/progress_notes/${progressNote.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        }
+      );
       updatedProgressNotes[index] = response.data;
     }
     setProgressNotes(updatedProgressNotes);

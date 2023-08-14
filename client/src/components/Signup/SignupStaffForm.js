@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
 
@@ -45,7 +45,7 @@ const SignupStaffForm = () => {
     // here we tell the reader what to do when it's done reading...
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
-      let fileToUpload = await axios.post(
+      let fileToUpload = await axiosXano.post(
         "/upload/attachment",
         {
           content: content,
@@ -65,7 +65,7 @@ const SignupStaffForm = () => {
       setErrMsg("You entered two different passwords");
       return;
     }
-    const staff = await axios.get("/staff", {
+    const staff = await axiosXano.get("/staff", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.authToken}`,
@@ -105,14 +105,14 @@ const SignupStaffForm = () => {
       datasToPost.date_created = Date.parse(new Date());
       delete datasToPost.confirm_password;
 
-      const response = await axios.post("/staff", datasToPost, {
+      const response = await axiosXano.post("/staff", datasToPost, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
 
-      await axios.post(
+      await axiosXano.post(
         "/settings",
         {
           staff_id: response.data.id,

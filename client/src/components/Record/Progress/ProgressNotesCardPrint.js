@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import ProgressNotesAttachments from "./ProgressNotesAttachments";
 //Utils
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
-import axios from "../../../api/xano";
+import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 
 const ProgressNotesCardPrint = ({ progressNote }) => {
@@ -14,7 +14,7 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
   useEffect(() => {
     const fetchFiles = async () => {
       const attachments = (
-        await axios.post(
+        await axiosXano.post(
           "/attachments_for_progress_note",
           { attachments_ids: progressNote.attachments_ids },
           {

@@ -17,7 +17,7 @@
         border-collapse: collapse;
         border : solid 1px $black;
         font-size: 0.8rem;
-        margin: 0 auto;
+        margin: 20px;
         thead {
             background-color: $blue;
             border : solid 1px $black;
@@ -78,7 +78,8 @@
             border-collapse: collapse;
             border: solid 1px $black;
             font-size: 0.8rem;
-            margin: 10px auto 0;
+            margin: 10px 20px;
+            padding : 0 10px;
             thead {
                 background-color: $blue;
                 border: solid 1px $black;

@@ -1,6 +1,5 @@
 //Librairies
 import React, { useRef, useState } from "react";
-import { useRecord } from "../../../hooks/useRecord";
 //Components
 import DocumentItem from "../Topics/Documents/DocumentItem";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
@@ -11,10 +10,13 @@ import { ToastContainer } from "react-toastify";
 
 const DocumentsPU = ({
   patientId,
-  datas,
-  setDatas,
   showDocument,
   setPopUpVisible,
+  datas,
+  setDatas,
+  fetchRecord,
+  isLoading,
+  errMsg,
 }) => {
   //HOOKS
   const editCounter = useRef(0);
@@ -23,7 +25,6 @@ const DocumentsPU = ({
   const [alertVisible, setAlertVisible] = useState(false);
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
-  useRecord("/documents", patientId, setDatas);
 
   //STYLE
   const DIALOG_CONTAINER_STYLE = {
@@ -65,112 +66,129 @@ const DocumentsPU = ({
     }
   };
 
-  return datas ? (
+  return (
     <>
-      <h1 className="documents-title">Patient documents</h1>
-      {errMsgPost && (
-        <div className="documents-err">
-          Unable to save document : please fill out "Description" field
-        </div>
-      )}
-      {alertVisible && (
-        <AlertMsg
-          severity="error"
-          setAlertVisible={setAlertVisible}
-          title="Error"
-          msg="The file is too large, please choose another file"
-        />
-      )}
-      <table className="documents-table">
-        <thead>
-          <tr>
-            <th onClick={() => handleSort("description")}>Description</th>
-            <th onClick={() => handleSort("name")}>File Name</th>
-            <th onClick={() => handleSort("type")}>Type</th>
-            <th onClick={() => handleSort("created_by_id")}>Created By</th>
-            <th onClick={() => handleSort("date_created")}>Created On</th>
-            <th style={{ textDecoration: "none", cursor: "default" }}>
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {columnToSort === "name" || columnToSort === "type"
-            ? direction.current
-              ? datas
-                  .sort((a, b) =>
-                    a.file[columnToSort]
-                      ?.toString()
-                      .localeCompare(b.file[columnToSort]?.toString())
-                  )
-                  .map((document) => (
-                    <DocumentItem
-                      item={document}
-                      key={document.id}
-                      setDatas={setDatas}
-                      showDocument={showDocument}
-                    />
-                  ))
-              : datas
-                  .sort((a, b) =>
-                    b.file[columnToSort]
-                      ?.toString()
-                      .localeCompare(a.file[columnToSort]?.toString())
-                  )
-                  .map((document) => (
-                    <DocumentItem
-                      item={document}
-                      key={document.id}
-                      setDatas={setDatas}
-                      showDocument={showDocument}
-                    />
-                  ))
-            : direction.current
-            ? datas
-                .sort((a, b) =>
-                  a[columnToSort]
-                    ?.toString()
-                    .localeCompare(b[columnToSort]?.toString())
-                )
-                .map((document) => (
-                  <DocumentItem
-                    item={document}
-                    key={document.id}
-                    setDatas={setDatas}
-                    showDocument={showDocument}
-                  />
-                ))
-            : datas
-                .sort((a, b) =>
-                  b[columnToSort]
-                    ?.toString()
-                    .localeCompare(a[columnToSort]?.toString())
-                )
-                .map((document) => (
-                  <DocumentItem
-                    item={document}
-                    key={document.id}
-                    setDatas={setDatas}
-                    showDocument={showDocument}
-                  />
-                ))}
-        </tbody>
-      </table>
-      <div className="documents-btn-container">
-        <button disabled={addVisible} onClick={handleAdd}>
-          Add document
-        </button>
-        <button onClick={handleClose}>Close</button>
-      </div>
-      {addVisible && (
-        <DocumentForm
-          patientId={patientId}
-          setDatas={setDatas}
-          setAddVisible={setAddVisible}
-          editCounter={editCounter}
-          setErrMsgPost={setErrMsgPost}
-          setAlertVisible={setAlertVisible}
-        />
+      {!isLoading ? (
+        errMsg ? (
+          <p className="documents-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="documents-title">Patient documents</h1>
+              <AlertMsg
+                severity="error"
+                title="Error"
+                msg="The file is too large, please choose another file"
+                open={alertVisible}
+                setOpen={setAlertVisible}
+              />
+              {errMsgPost && (
+                <div className="documents-err">
+                  Unable to save document : please fill out "Description" field
+                </div>
+              )}
+              <table className="documents-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort("description")}>
+                      Description
+                    </th>
+                    <th onClick={() => handleSort("name")}>File Name</th>
+                    <th onClick={() => handleSort("type")}>Type</th>
+                    <th onClick={() => handleSort("created_by_id")}>
+                      Created By
+                    </th>
+                    <th onClick={() => handleSort("date_created")}>
+                      Created On
+                    </th>
+                    <th style={{ textDecoration: "none", cursor: "default" }}>
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {columnToSort === "name" || columnToSort === "type"
+                    ? direction.current
+                      ? datas
+                          .sort((a, b) =>
+                            a.file[columnToSort]
+                              ?.toString()
+                              .localeCompare(b.file[columnToSort]?.toString())
+                          )
+                          .map((document) => (
+                            <DocumentItem
+                              item={document}
+                              key={document.id}
+                              fetchRecord={fetchRecord}
+                              showDocument={showDocument}
+                            />
+                          ))
+                      : datas
+                          .sort((a, b) =>
+                            b.file[columnToSort]
+                              ?.toString()
+                              .localeCompare(a.file[columnToSort]?.toString())
+                          )
+                          .map((document) => (
+                            <DocumentItem
+                              item={document}
+                              key={document.id}
+                              fetchRecord={fetchRecord}
+                              showDocument={showDocument}
+                            />
+                          ))
+                    : direction.current
+                    ? datas
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((document) => (
+                          <DocumentItem
+                            item={document}
+                            key={document.id}
+                            fetchRecord={fetchRecord}
+                            showDocument={showDocument}
+                          />
+                        ))
+                    : datas
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((document) => (
+                          <DocumentItem
+                            item={document}
+                            key={document.id}
+                            fetchRecord={fetchRecord}
+                            showDocument={showDocument}
+                          />
+                        ))}
+                </tbody>
+              </table>
+              <div className="documents-btn-container">
+                <button disabled={addVisible} onClick={handleAdd}>
+                  Add document
+                </button>
+                <button onClick={handleClose}>Close</button>
+              </div>
+              {addVisible && (
+                <DocumentForm
+                  patientId={patientId}
+                  fetchRecord={fetchRecord}
+                  setAddVisible={setAddVisible}
+                  editCounter={editCounter}
+                  setErrMsgPost={setErrMsgPost}
+                  setAlertVisible={setAlertVisible}
+                />
+              )}
+            </>
+          )
+        )
+      ) : (
+        <CircularProgress />
       )}
       <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
       <ToastContainer
@@ -189,8 +207,6 @@ const DocumentsPU = ({
         limit={1}
       />
     </>
-  ) : (
-    <CircularProgress />
   );
 };
 

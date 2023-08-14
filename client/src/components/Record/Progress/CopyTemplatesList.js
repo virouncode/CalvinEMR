@@ -7,7 +7,7 @@ const CopyTemplatesList = ({
 }) => {
   return (
     <select value={copyTemplateSelectedId} onChange={handleSelectCopyTemplate}>
-      <option style={{ backgroundColor: "#cccccc" }} disabled value="-1">
+      <option disabled value="">
         an existing template
       </option>
       {templates.map((template) => (

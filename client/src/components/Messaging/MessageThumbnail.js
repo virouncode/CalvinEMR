@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { NavLink } from "react-router-dom";
 import { toLocalDateAndTime } from "../../utils/formatDates";
@@ -36,14 +36,14 @@ const MessageThumbnail = ({
         ...message,
         read_by_ids: [...message.read_by_ids, user.id],
       };
-      await axios.put(`/messages/${message.id}`, newMessage, {
+      await axiosXano.put(`/messages/${message.id}`, newMessage, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
     }
-    const response = await axios.get(`/messages?staff_id=${user.id}`, {
+    const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.authToken}`,
@@ -82,7 +82,7 @@ const MessageThumbnail = ({
 
   const handleDeleteMsg = async (e) => {
     try {
-      await axios.put(
+      await axiosXano.put(
         `/messages/${message.id}`,
         {
           ...message,
@@ -95,7 +95,7 @@ const MessageThumbnail = ({
           },
         }
       );
-      const response2 = await axios.get(`/messages?staff_id=${user.id}`, {
+      const response2 = await axiosXano.get(`/messages?staff_id=${user.id}`, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",

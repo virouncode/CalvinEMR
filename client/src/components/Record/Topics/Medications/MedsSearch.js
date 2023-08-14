@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { searchByBrandName } from "../../../../api/medsService";
 import MedsResult from "./MedsResult";
 import { CircularProgress } from "@mui/material";
+import { toast } from "react-toastify";
 
 const MedsSearch = ({ handleMedClick }) => {
   const [results, setResults] = useState([]);
@@ -31,6 +32,7 @@ const MedsSearch = ({ handleMedClick }) => {
       setLoading(false);
     } catch (err) {
       setLoading(false);
+      toast.error(err.message, { containerId: "B" });
     }
   };
 

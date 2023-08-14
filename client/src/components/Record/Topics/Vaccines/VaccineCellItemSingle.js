@@ -5,6 +5,7 @@ import VaccineForm from "./VaccineForm";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import useAuth from "../../../../hooks/useAuth";
 import { putPatientRecord } from "../../../../api/fetchRecords";
+import { toast } from "react-toastify";
 
 const VaccineCellItemSingle = ({
   age,
@@ -14,7 +15,7 @@ const VaccineCellItemSingle = ({
   rangeStart,
   rangeEnd,
   datas,
-  setDatas,
+  fetchRecord,
   editable,
   setEditable,
 }) => {
@@ -51,14 +52,20 @@ const VaccineCellItemSingle = ({
           date_created: Date.parse(new Date()),
           created_by_id: user.id,
         };
-        await putPatientRecord(
-          "/vaccines",
-          datas.id,
-          user.id,
-          auth.authToken,
-          newDatas
-        );
-        setDatas(newDatas);
+        try {
+          await putPatientRecord(
+            "/vaccines",
+            datas.id,
+            user.id,
+            auth.authToken,
+            newDatas
+          );
+          const abortController = new AbortController();
+          fetchRecord(abortController);
+          toast.success("Saved successfully", { containerId: "B" });
+        } catch (err) {
+          toast.error(err.message, { containerId: "B" });
+        }
       }
     }
   };
@@ -95,7 +102,7 @@ const VaccineCellItemSingle = ({
           setFormVisible={setFormVisible}
           setEditable={setEditable}
           datas={datas}
-          setDatas={setDatas}
+          fetchRecord={fetchRecord}
           scrollPosition={scrollPosition}
           name={name}
           age={age}

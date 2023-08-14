@@ -3,18 +3,24 @@ import React, { useRef, useState } from "react";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import MeasurementEvent from "../Topics/Measurements/MeasurementEvent";
 import MeasurementForm from "../Topics/Measurements/MeasurementForm";
-import { useRecord } from "../../../hooks/useRecord";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
-const MeasurementsPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
+const MeasurementsPU = ({
+  patientId,
+  setPopUpVisible,
+  datas,
+  setDatas,
+  fetchRecord,
+  isLoading,
+  errMsg,
+}) => {
   //HOOKS
   const [errMsgPost, setErrMsgPost] = useState(false);
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
-  useRecord("/measurements", patientId, setDatas);
 
   //STYLE
   const DIALOG_CONTAINER_STYLE = {
@@ -58,93 +64,107 @@ const MeasurementsPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
 
   return (
     <>
-      {datas ? (
-        <>
-          <h1 className="measurements-title">Patient measurements</h1>
-          {errMsgPost && (
-            <div className="measurements-err">
-              Unable to save form : please fill out at least one field
-            </div>
-          )}
-          <table className="measurements-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("height_cm")}>Height(cm)</th>
-                <th onClick={() => handleSort("height_feet")}>Height(feet)</th>
-                <th onClick={() => handleSort("weight_kg")}>Weight(kg)</th>
-                <th onClick={() => handleSort("weight_lbs")}>Weight(lbs)</th>
-                <th onClick={() => handleSort("waist_circumference")}>
-                  Waist Circumference (cm)
-                </th>
-                <th onClick={() => handleSort("body_mass_index")}>
-                  Body Mass Index(kg/m2)
-                </th>
-                <th onClick={() => handleSort("body_surface_area")}>
-                  Body Surface Area(m2)
-                </th>
-                <th onClick={() => handleSort("blood_pressure_systolic")}>
-                  Systolic(mmHg)
-                </th>
-                <th onClick={() => handleSort("blood_pressure_diastolic")}>
-                  Diastolic(mmHg)
-                </th>
-                <th onClick={() => handleSort("created_by_id")}>Created By</th>
-                <th onClick={() => handleSort("date_created")}>Created On</th>
-                <th style={{ textDecoration: "none", cursor: "default" }}>
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {addVisible && (
-                <MeasurementForm
-                  editCounter={editCounter}
-                  setAddVisible={setAddVisible}
-                  patientId={patientId}
-                  setDatas={setDatas}
-                  setErrMsgPost={setErrMsgPost}
-                />
+      {!isLoading ? (
+        errMsg ? (
+          <p className="measurements-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="measurements-title">Patient measurements</h1>
+              {errMsgPost && (
+                <div className="measurements-err">
+                  Unable to save form : please fill out at least one field
+                </div>
               )}
-              {direction.current
-                ? datas
-                    .sort((a, b) =>
-                      a[columnToSort]
-                        ?.toString()
-                        .localeCompare(b[columnToSort]?.toString())
-                    )
-                    .map((event) => (
-                      <MeasurementEvent
-                        event={event}
-                        key={event.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))
-                : datas
-                    .sort((a, b) =>
-                      b[columnToSort]
-                        ?.toString()
-                        .localeCompare(a[columnToSort]?.toString())
-                    )
-                    .map((event) => (
-                      <MeasurementEvent
-                        event={event}
-                        key={event.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))}
-            </tbody>
-          </table>
-          <div className="measurements-btn-container">
-            <button onClick={handleAdd} disabled={addVisible}>
-              Add Measurement
-            </button>
-            <button onClick={handleClose}>Close</button>
-          </div>
-        </>
+              <table className="measurements-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort("height_cm")}>Height(cm)</th>
+                    <th onClick={() => handleSort("height_feet")}>
+                      Height(feet)
+                    </th>
+                    <th onClick={() => handleSort("weight_kg")}>Weight(kg)</th>
+                    <th onClick={() => handleSort("weight_lbs")}>
+                      Weight(lbs)
+                    </th>
+                    <th onClick={() => handleSort("waist_circumference")}>
+                      Waist Circumference (cm)
+                    </th>
+                    <th onClick={() => handleSort("body_mass_index")}>
+                      Body Mass Index(kg/m2)
+                    </th>
+                    <th onClick={() => handleSort("body_surface_area")}>
+                      Body Surface Area(m2)
+                    </th>
+                    <th onClick={() => handleSort("blood_pressure_systolic")}>
+                      Systolic(mmHg)
+                    </th>
+                    <th onClick={() => handleSort("blood_pressure_diastolic")}>
+                      Diastolic(mmHg)
+                    </th>
+                    <th onClick={() => handleSort("created_by_id")}>
+                      Created By
+                    </th>
+                    <th onClick={() => handleSort("date_created")}>
+                      Created On
+                    </th>
+                    <th style={{ textDecoration: "none", cursor: "default" }}>
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {addVisible && (
+                    <MeasurementForm
+                      editCounter={editCounter}
+                      setAddVisible={setAddVisible}
+                      patientId={patientId}
+                      fetchRecord={fetchRecord}
+                      setErrMsgPost={setErrMsgPost}
+                    />
+                  )}
+                  {direction.current
+                    ? datas
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((event) => (
+                          <MeasurementEvent
+                            event={event}
+                            key={event.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))
+                    : datas
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((event) => (
+                          <MeasurementEvent
+                            event={event}
+                            key={event.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))}
+                </tbody>
+              </table>
+              <div className="measurements-btn-container">
+                <button onClick={handleAdd} disabled={addVisible}>
+                  Add Measurement
+                </button>
+                <button onClick={handleClose}>Close</button>
+              </div>
+            </>
+          )
+        )
       ) : (
         <CircularProgress />
       )}

@@ -1,6 +1,6 @@
 //Librairies
 import React from "react";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 
@@ -9,7 +9,7 @@ const FirstDaySelect = () => {
   const handleChange = async (e) => {
     const value = e.target.value;
     try {
-      await axios.put(
+      await axiosXano.put(
         `/settings/${user.settings.id}`,
         { ...user.settings, first_day: value },
         {

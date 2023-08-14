@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import Message from "./Message";
-import { findLastSenderId } from "../../utils/findLastSenderId";
 
 const ReplyForm = ({
   setReplyVisible,
@@ -43,13 +42,13 @@ const ReplyForm = ({
       date_created: Date.parse(new Date()),
     };
     try {
-      await axios.post("/messages", replyMessage, {
+      await axiosXano.post("/messages", replyMessage, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      const response = await axios.get(`/messages?staff_id=${user.id}`, {
+      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,

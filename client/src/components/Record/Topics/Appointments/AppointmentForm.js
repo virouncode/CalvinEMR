@@ -20,14 +20,11 @@ import TimePicker from "../../../Pickers/TimePicker";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import formatName from "../../../../utils/formatName";
 import useAuth from "../../../../hooks/useAuth";
-import {
-  getPatientRecord,
-  postPatientRecord,
-} from "../../../../api/fetchRecords";
+import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 
 const AppointmentForm = ({
-  setDatas,
+  fetchRecord,
   patientId,
   editCounter,
   patientInfos,
@@ -128,78 +125,83 @@ const AppointmentForm = ({
     const rangeEnd =
       new Date(value) > new Date(formDatas.end) ? value : formDatas.end;
 
-    const hypotheticAvailableRooms = await getAvailableRooms(
-      0,
-      value,
-      rangeEnd,
-      auth.authToken
-    );
-    if (
-      formDatas.room === "To be determined" ||
-      hypotheticAvailableRooms.includes(formDatas.room) ||
-      (!hypotheticAvailableRooms.includes(formDatas.room) &&
-        (await confirmAlertPopUp({
-          content: `${formDatas.room} will be occupied at this time slot, book it anyway ?`,
-        })))
-    ) {
-      switch (name) {
-        case "date":
-          previousStartDate.current = dateValue;
-          minEndDate.current = dateValue;
-          break;
-        case "hour":
-          previousStartHours.current = hourValue;
-          break;
-        case "min":
-          previousStartMin.current = minValue;
-          break;
-        case "ampm":
-          previousStartAMPM.current = ampmValue;
-          break;
-        default:
-          break;
-      }
-      if (new Date(value) > new Date(formDatas.end)) {
-        setFormDatas({
-          ...formDatas,
-          start: value,
-          end: value,
-          duration: 0,
-        });
-        endHourInput.value = startHourInput.value;
-        endMinInput.value = startMinInput.value;
-        endAMPMInput.vzalue = startAMPMInput.value;
-        setAvailableRooms(
-          await getAvailableRooms(0, value, value, auth.authToken)
-        );
+    let hypotheticAvailableRooms;
+    try {
+      hypotheticAvailableRooms = await getAvailableRooms(
+        0,
+        value,
+        rangeEnd,
+        auth.authToken
+      );
+      if (
+        formDatas.room === "To be determined" ||
+        hypotheticAvailableRooms.includes(formDatas.room) ||
+        (!hypotheticAvailableRooms.includes(formDatas.room) &&
+          (await confirmAlertPopUp({
+            content: `${formDatas.room} will be occupied at this time slot, book it anyway ?`,
+          })))
+      ) {
+        switch (name) {
+          case "date":
+            previousStartDate.current = dateValue;
+            minEndDate.current = dateValue;
+            break;
+          case "hour":
+            previousStartHours.current = hourValue;
+            break;
+          case "min":
+            previousStartMin.current = minValue;
+            break;
+          case "ampm":
+            previousStartAMPM.current = ampmValue;
+            break;
+          default:
+            break;
+        }
+        if (new Date(value) > new Date(formDatas.end)) {
+          setFormDatas({
+            ...formDatas,
+            start: value,
+            end: value,
+            duration: 0,
+          });
+          endHourInput.value = startHourInput.value;
+          endMinInput.value = startMinInput.value;
+          endAMPMInput.vzalue = startAMPMInput.value;
+          setAvailableRooms(
+            await getAvailableRooms(0, value, value, auth.authToken)
+          );
+        } else {
+          setFormDatas({
+            ...formDatas,
+            start: value,
+            duration: Math.floor((formDatas.end - value) / (1000 * 60)),
+          });
+          setAvailableRooms(
+            await getAvailableRooms(0, value, formDatas.end, auth.authToken)
+          );
+        }
       } else {
-        setFormDatas({
-          ...formDatas,
-          start: value,
-          duration: Math.floor((formDatas.end - value) / (1000 * 60)),
-        });
-        setAvailableRooms(
-          await getAvailableRooms(0, value, formDatas.end, auth.authToken)
-        );
+        //set input value to previous start
+        switch (name) {
+          case "date":
+            e.target.value = previousStartDate.current;
+            break;
+          case "hour":
+            e.target.value = previousStartHours.current;
+            break;
+          case "min":
+            e.target.value = previousStartMin.current;
+            break;
+          case "ampm":
+            e.target.value = previousStartAMPM.current;
+            break;
+          default:
+            break;
+        }
       }
-    } else {
-      //set input value to previous start
-      switch (name) {
-        case "date":
-          e.target.value = previousStartDate.current;
-          break;
-        case "hour":
-          e.target.value = previousStartHours.current;
-          break;
-        case "min":
-          e.target.value = previousStartMin.current;
-          break;
-        case "ampm":
-          e.target.value = previousStartAMPM.current;
-          break;
-        default:
-          break;
-      }
+    } catch (err) {
+      toast.error(err.message, { containerId: "B" });
     }
   };
 
@@ -225,65 +227,71 @@ const AppointmentForm = ({
 
     value = Date.parse(new Date(value));
 
-    const hypotheticAvailableRooms = await getAvailableRooms(
-      0,
-      formDatas.start,
-      value,
-      auth.authToken
-    );
-    if (
-      formDatas.room === "To be determined" ||
-      hypotheticAvailableRooms.includes(formDatas.room) ||
-      (!hypotheticAvailableRooms.includes(formDatas.room) &&
-        (await confirmAlertPopUp({
-          content: `${formDatas.room} will be occupied at this time slot, book it anyway ?`,
-        })))
-    ) {
-      switch (name) {
-        case "date":
-          previousEndDate.current = dateValue;
-          break;
-        case "hour":
-          previousEndHours.current = hourValue;
-          break;
-        case "min":
-          previousEndMin.current = minValue;
-          break;
-        case "ampm":
-          previousEndAMPM.current = ampmValue;
-          break;
-        default:
-          break;
-      }
-      setFormDatas({
-        ...formDatas,
-        end: value,
-        duration: Math.floor((value - formDatas.start) / (1000 * 60)),
-      });
-      setAvailableRooms(
-        await getAvailableRooms(0, formDatas.start, value, auth.authToken)
+    let hypotheticAvailableRooms;
+    try {
+      hypotheticAvailableRooms = await getAvailableRooms(
+        0,
+        formDatas.start,
+        value,
+        auth.authToken
       );
-    } else {
-      switch (name) {
-        case "date":
-          e.target.value = previousEndDate.current;
-          break;
-        case "hour":
-          e.target.value = previousEndHours.current;
-          break;
-        case "min":
-          e.target.value = previousEndMin.current;
-          break;
-        case "ampm":
-          e.target.value = previousEndAMPM.current;
-          break;
-        default:
-          break;
+      if (
+        formDatas.room === "To be determined" ||
+        hypotheticAvailableRooms.includes(formDatas.room) ||
+        (!hypotheticAvailableRooms.includes(formDatas.room) &&
+          (await confirmAlertPopUp({
+            content: `${formDatas.room} will be occupied at this time slot, book it anyway ?`,
+          })))
+      ) {
+        switch (name) {
+          case "date":
+            previousEndDate.current = dateValue;
+            break;
+          case "hour":
+            previousEndHours.current = hourValue;
+            break;
+          case "min":
+            previousEndMin.current = minValue;
+            break;
+          case "ampm":
+            previousEndAMPM.current = ampmValue;
+            break;
+          default:
+            break;
+        }
+        setFormDatas({
+          ...formDatas,
+          end: value,
+          duration: Math.floor((value - formDatas.start) / (1000 * 60)),
+        });
+        setAvailableRooms(
+          await getAvailableRooms(0, formDatas.start, value, auth.authToken)
+        );
+      } else {
+        switch (name) {
+          case "date":
+            e.target.value = previousEndDate.current;
+            break;
+          case "hour":
+            e.target.value = previousEndHours.current;
+            break;
+          case "min":
+            e.target.value = previousEndMin.current;
+            break;
+          case "ampm":
+            e.target.value = previousEndAMPM.current;
+            break;
+          default:
+            break;
+        }
       }
+    } catch (err) {
+      toast.error(err.message, { containerId: "B" });
     }
   };
 
   const handleAllDayChange = (e) => {
+    setAlertVisible(false);
     let value = e.target.value;
     value = value === "true"; //cast to boolean
     if (value) {
@@ -328,18 +336,13 @@ const AppointmentForm = ({
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord(
-          "/patient_appointments",
-          patientId,
-          auth.authToken
-        )
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", { containerId: "B" });
+      toast.error(err.message, { containerId: "B" });
     }
   };
 

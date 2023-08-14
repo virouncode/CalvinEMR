@@ -6,14 +6,13 @@ import useAuth from "../../../../hooks/useAuth";
 import formatName from "../../../../utils/formatName";
 import {
   deletePatientRecord,
-  getPatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 
 const MedicationEvent = ({
   event,
-  setDatas,
+  fetchRecord,
   editCounter,
   setErrMsgPost,
   presVisible,
@@ -33,10 +32,14 @@ const MedicationEvent = ({
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/medications", event.id, auth.authToken);
-      setDatas(
-        await getPatientRecord("/medications", event.patient_id, auth.authToken)
-      );
+      try {
+        await deletePatientRecord("/medications", event.id, auth.authToken);
+        const abortController = new AbortController();
+        fetchRecord(abortController);
+        toast.success("Deleted successfully", { containerId: "B" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+      }
     }
   };
 
@@ -69,14 +72,13 @@ const MedicationEvent = ({
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord("/medications", event.patient_id, auth.authToken)
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", { containerId: "B" });
+      toast.error(err.message, { containerId: "B" });
     }
   };
 

@@ -1,15 +1,26 @@
-import axios from "../api/xano";
+import axiosXano from "../api/xano";
 
-export const getPatientRecord = async (tableName, patientId, authToken) => {
+export const getPatientRecord = async (
+  tableName,
+  patientId,
+  authToken,
+  abortController = null
+) => {
   try {
-    const response = await axios.get(`${tableName}?patient_id=${patientId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
+    const response = await axiosXano.get(
+      `${tableName}?patient_id=${patientId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        ...(abortController && { signal: abortController.signal }),
+      }
+    );
     return response?.data;
-  } catch (err) {}
+  } catch (err) {
+    if (err.name !== "CanceledError") throw err;
+  }
 };
 
 export const putPatientRecord = async (
@@ -17,7 +28,8 @@ export const putPatientRecord = async (
   recordId,
   authId,
   authToken,
-  datas
+  datas,
+  abortController = null
 ) => {
   if (
     tableName === "/patients" ||
@@ -31,20 +43,24 @@ export const putPatientRecord = async (
     datas.date_created = Date.parse(new Date());
   }
   try {
-    return await axios.put(`${tableName}/${recordId}`, datas, {
+    return await axiosXano.put(`${tableName}/${recordId}`, datas, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
+      ...(abortController && { signal: abortController.signal }),
     });
-  } catch (err) {}
+  } catch (err) {
+    if (err.name !== "CanceledError") throw err;
+  }
 };
 
 export const postPatientRecord = async (
   tableName,
   authId,
   authToken,
-  datas
+  datas,
+  abortController = null
 ) => {
   if (tableName !== "/progress_notes_log") {
     //if it's the log we don't want to change the date of creation, for attachments this is assured by the bulk add
@@ -53,24 +69,33 @@ export const postPatientRecord = async (
   }
 
   try {
-    return await axios.post(tableName, datas, {
+    return await axiosXano.post(tableName, datas, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
+      ...(abortController && { signal: abortController.signal }),
     });
   } catch (err) {
-    throw err;
+    if (err.name !== "CanceledError") throw err;
   }
 };
 
-export const deletePatientRecord = async (tableName, recordId, authToken) => {
+export const deletePatientRecord = async (
+  tableName,
+  recordId,
+  authToken,
+  abortController = null
+) => {
   try {
-    return await axios.delete(`${tableName}/${recordId}`, {
+    return await axiosXano.delete(`${tableName}/${recordId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
+      ...(abortController && { signal: abortController.signal }),
     });
-  } catch (err) {}
+  } catch (err) {
+    if (err.name !== "CanceledError") throw err;
+  }
 };

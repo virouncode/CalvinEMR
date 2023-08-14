@@ -4,7 +4,7 @@ import { categoryToTitle } from "../../utils/categoryToTitle";
 import formatName from "../../utils/formatName";
 import Patients from "./Patients";
 import useAuth from "../../hooks/useAuth";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { patientIdToName } from "../../utils/patientIdToName";
@@ -119,14 +119,14 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
         date_created: Date.parse(new Date()),
       };
 
-      await axios.post("/messages", message, {
+      await axiosXano.post("/messages", message, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
 
-      const response = await axios.get(`/messages?staff_id=${user.id}`, {
+      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",

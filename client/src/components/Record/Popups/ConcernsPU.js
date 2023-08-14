@@ -2,18 +2,24 @@ import React, { useRef, useState } from "react";
 import ConcernItem from "../Topics/Concerns/ConcernItem";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import ConcernForm from "../Topics/Concerns/ConcernForm";
-import { useRecord } from "../../../hooks/useRecord";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
-const ConcernsPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
+const ConcernsPU = ({
+  patientId,
+  setPopUpVisible,
+  datas,
+  setDatas,
+  fetchRecord,
+  isLoading,
+  errMsg,
+}) => {
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState(false);
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
-  useRecord("/ongoing_concerns", patientId, setDatas);
 
   //STYLE
   const DIALOG_CONTAINER_STYLE = {
@@ -56,75 +62,86 @@ const ConcernsPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
 
   return (
     <>
-      {datas ? (
-        <>
-          <h1 className="concerns-title">Patient concerns</h1>
-          {errMsgPost && (
-            <div className="concerns-err">
-              Unable to save form : please fill out all fields
-            </div>
-          )}
-          <table className="concerns-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("description")}>Concern</th>
-                <th onClick={() => handleSort("created_by_id")}>Created By</th>
-                <th onClick={() => handleSort("date_created")}>Created On</th>
-                <th style={{ textDecoration: "none", cursor: "default" }}>
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {addVisible && (
-                <ConcernForm
-                  editCounter={editCounter}
-                  setAddVisible={setAddVisible}
-                  patientId={patientId}
-                  setDatas={setDatas}
-                  setErrMsgPost={setErrMsgPost}
-                />
+      {!isLoading ? (
+        errMsg ? (
+          <p className="concerns-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="concerns-title">Patient concerns</h1>
+              {errMsgPost && (
+                <div className="concerns-err">
+                  Unable to save form : please fill out all fields
+                </div>
               )}
-              {direction.current
-                ? datas
-                    .sort((a, b) =>
-                      a[columnToSort]
-                        ?.toString()
-                        .localeCompare(b[columnToSort]?.toString())
-                    )
-                    .map((concern) => (
-                      <ConcernItem
-                        item={concern}
-                        key={concern.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))
-                : datas
-                    .sort((a, b) =>
-                      b[columnToSort]
-                        ?.toString()
-                        .localeCompare(a[columnToSort]?.toString())
-                    )
-                    .map((concern) => (
-                      <ConcernItem
-                        item={concern}
-                        key={concern.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))}
-            </tbody>
-          </table>
-          <div className="concerns-btn-container">
-            <button onClick={handleAdd} disabled={addVisible}>
-              Add Concern
-            </button>
-            <button onClick={handleClose}>Close</button>
-          </div>
-        </>
+              <table className="concerns-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort("description")}>Concern</th>
+                    <th onClick={() => handleSort("created_by_id")}>
+                      Created By
+                    </th>
+                    <th onClick={() => handleSort("date_created")}>
+                      Created On
+                    </th>
+                    <th style={{ textDecoration: "none", cursor: "default" }}>
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {addVisible && (
+                    <ConcernForm
+                      editCounter={editCounter}
+                      setAddVisible={setAddVisible}
+                      patientId={patientId}
+                      fetchRecord={fetchRecord}
+                      setErrMsgPost={setErrMsgPost}
+                    />
+                  )}
+                  {direction.current
+                    ? datas
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((concern) => (
+                          <ConcernItem
+                            item={concern}
+                            key={concern.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))
+                    : datas
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((concern) => (
+                          <ConcernItem
+                            item={concern}
+                            key={concern.id}
+                            setDatas={setDatas}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))}
+                </tbody>
+              </table>
+              <div className="concerns-btn-container">
+                <button onClick={handleAdd} disabled={addVisible}>
+                  Add Concern
+                </button>
+                <button onClick={handleClose}>Close</button>
+              </div>
+            </>
+          )
+        )
       ) : (
         <CircularProgress />
       )}

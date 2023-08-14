@@ -2,18 +2,24 @@ import React, { useRef, useState } from "react";
 import AllergyItem from "../Topics/Allergies/AllergyItem";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import AllergyForm from "../Topics/Allergies/AllergyForm";
-import { useRecord } from "../../../hooks/useRecord";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
-const AllergiesPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
+const AllergiesPU = ({
+  patientId,
+  setPopUpVisible,
+  datas,
+  setDatas,
+  fetchRecord,
+  errMsg,
+  isLoading,
+}) => {
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState(false);
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
-  useRecord("/allergies", patientId, setDatas);
 
   //STYLE
   const DIALOG_CONTAINER_STYLE = {
@@ -57,75 +63,85 @@ const AllergiesPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
 
   return (
     <>
-      {datas ? (
-        <>
-          <h1 className="allergies-title">Patient allergies</h1>
-          {errMsgPost && (
-            <div className="allergies-err">
-              Unable to save form : please fill out all fields
-            </div>
-          )}
-          <table className="allergies-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("allergy")}>Allergy</th>
-                <th onClick={() => handleSort("created_by_id")}>Created By</th>
-                <th onClick={() => handleSort("date_created")}>Created On</th>
-                <th style={{ textDecoration: "none", cursor: "default" }}>
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {addVisible && (
-                <AllergyForm
-                  editCounter={editCounter}
-                  setAddVisible={setAddVisible}
-                  patientId={patientId}
-                  setDatas={setDatas}
-                  setErrMsgPost={setErrMsgPost}
-                />
+      {!isLoading ? (
+        errMsg ? (
+          <p className="allergies-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="allergies-title">Patient allergies</h1>
+              {errMsgPost && (
+                <div className="allergies-err">
+                  Unable to save form : please fill out all fields
+                </div>
               )}
-              {direction.current
-                ? datas
-                    .sort((a, b) =>
-                      a[columnToSort]
-                        ?.toString()
-                        .localeCompare(b[columnToSort]?.toString())
-                    )
-                    .map((allergy) => (
-                      <AllergyItem
-                        item={allergy}
-                        key={allergy.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))
-                : datas
-                    .sort((a, b) =>
-                      b[columnToSort]
-                        ?.toString()
-                        .localeCompare(a[columnToSort]?.toString())
-                    )
-                    .map((allergy) => (
-                      <AllergyItem
-                        item={allergy}
-                        key={allergy.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))}
-            </tbody>
-          </table>
-          <div className="allergies-btn-container">
-            <button onClick={handleAdd} disabled={addVisible}>
-              Add Allergy
-            </button>
-            <button onClick={handleClose}>Close</button>
-          </div>
-        </>
+              <table className="allergies-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort("allergy")}>Allergy</th>
+                    <th onClick={() => handleSort("created_by_id")}>
+                      Created By
+                    </th>
+                    <th onClick={() => handleSort("date_created")}>
+                      Created On
+                    </th>
+                    <th style={{ textDecoration: "none", cursor: "default" }}>
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {addVisible && (
+                    <AllergyForm
+                      editCounter={editCounter}
+                      setAddVisible={setAddVisible}
+                      patientId={patientId}
+                      fetchRecord={fetchRecord}
+                      setErrMsgPost={setErrMsgPost}
+                    />
+                  )}
+                  {direction.current
+                    ? datas
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((allergy) => (
+                          <AllergyItem
+                            item={allergy}
+                            key={allergy.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))
+                    : datas
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((allergy) => (
+                          <AllergyItem
+                            item={allergy}
+                            key={allergy.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))}
+                </tbody>
+              </table>
+              <div className="allergies-btn-container">
+                <button onClick={handleAdd} disabled={addVisible}>
+                  Add Allergy
+                </button>
+                <button onClick={handleClose}>Close</button>
+              </div>
+            </>
+          )
+        )
       ) : (
         <CircularProgress />
       )}

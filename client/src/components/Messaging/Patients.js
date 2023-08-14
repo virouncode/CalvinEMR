@@ -5,7 +5,6 @@ const Patients = ({ isPatientChecked, handleCheckPatient }) => {
   const [search, setSearch] = useState("");
   const handleChange = (e) => {
     const value = e.target.value;
-    console.log(typeof value, value);
     setSearch(value);
   };
   return (

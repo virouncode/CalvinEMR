@@ -1,7 +1,7 @@
 //Librairies
 import React, { useEffect, useState, useRef } from "react";
 import useAuth from "../../hooks/useAuth";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const LOGIN_URL = "/auth/login";
@@ -38,7 +38,7 @@ const LoginForm = () => {
     if (type === "staff") {
       try {
         //=============== AUTH =================//
-        const response = await axios.post(
+        const response = await axiosXano.post(
           LOGIN_URL,
           JSON.stringify({ email, password }),
           {
@@ -49,7 +49,7 @@ const LoginForm = () => {
         setAuth({ email, password, authToken });
 
         //================ USER ===================//
-        const response2 = await axios.get(USERINFO_URL, {
+        const response2 = await axiosXano.get(USERINFO_URL, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -61,14 +61,14 @@ const LoginForm = () => {
         const sign = response2?.data?.sign;
         const licence_nbr = response2?.data?.licence_nbr;
         //Get user settings
-        const response3 = await axios.get(`/settings?staff_id=${id}`, {
+        const response3 = await axiosXano.get(`/settings?staff_id=${id}`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         });
         const settings = response3?.data;
         // Get user unread messages
-        const response6 = await axios.get(`/messages?staff_id=${id}`, {
+        const response6 = await axiosXano.get(`/messages?staff_id=${id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
@@ -97,14 +97,14 @@ const LoginForm = () => {
         });
 
         //================== CLINIC ===================//
-        const response4 = await axios.get("/staff", {
+        const response4 = await axiosXano.get("/staff", {
           headers: {
             Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
         });
         const staffInfos = response4.data;
-        const response5 = await axios.get("/patients", {
+        const response5 = await axiosXano.get("/patients", {
           headers: {
             Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",

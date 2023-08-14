@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
@@ -17,7 +17,7 @@ const MyAccountForm = () => {
   useEffect(() => {
     const fetchMyInfos = async () => {
       try {
-        const response = await axios.get(`/staff/${user.id}`, {
+        const response = await axiosXano.get(`/staff/${user.id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
@@ -51,7 +51,7 @@ const MyAccountForm = () => {
     // here we tell the reader what to do when it's done reading...
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
-      let fileToUpload = await axios.post(
+      let fileToUpload = await axiosXano.post(
         "/upload/attachment",
         {
           content: content,
@@ -88,7 +88,7 @@ const MyAccountForm = () => {
       datasToPut.date_created = Date.parse(new Date());
       delete datasToPut.confirm_password;
 
-      await axios.put(`/staff/${user.id}`, datasToPut, {
+      await axiosXano.put(`/staff/${user.id}`, datasToPut, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
@@ -96,7 +96,7 @@ const MyAccountForm = () => {
       });
       setInfosChanged(true);
       //update clinic context staffInfos
-      const response = await axios.get("/staff", {
+      const response = await axiosXano.get("/staff", {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",

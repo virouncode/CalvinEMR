@@ -18,7 +18,7 @@ const RelativesList = ({
       onFocus={onFocus}
       onBlur={onBlur}
     >
-      <option value="" hidden>
+      <option value="" disabled>
         Choose a relative...
       </option>
       <option value="Aunt - maternal">Aunt - maternal</option>

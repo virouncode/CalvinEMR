@@ -3,17 +3,14 @@ import PregnanciesList from "../../../Lists/PregnanciesList";
 import formatName from "../../../../utils/formatName";
 import { toLocalDate, toISOStringNoMs } from "../../../../utils/formatDates";
 import useAuth from "../../../../hooks/useAuth";
-import {
-  getPatientRecord,
-  postPatientRecord,
-} from "../../../../api/fetchRecords";
+import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 
 const PregnancyForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  setDatas,
+  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
@@ -51,14 +48,13 @@ const PregnancyForm = ({
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord("/pregnancies", patientId, auth.authToken)
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", {
+      toast.error(err.message, {
         containerId: "B",
       });
     }

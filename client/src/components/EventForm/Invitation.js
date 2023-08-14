@@ -10,7 +10,7 @@ import AddressesList from "../Lists/AddressesList";
 import useAuth from "../../hooks/useAuth";
 import { sendEmail } from "../../api/sendEmail";
 import formatName from "../../utils/formatName";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 
 const Invitation = ({
   setInvitationVisible,
@@ -38,14 +38,14 @@ const Invitation = ({
     "In person appointment"
   );
   const [addressSelected, setAddressSelected] = useState(
-    settings.clinic_address
+    settings.clinic_address || "-1" //-1 is the default for the place holder
   );
   const [sites, setSites] = useState([]);
 
   useEffect(() => {
     const fetchSites = async () => {
       try {
-        const response = await axios.get(`/sites`, {
+        const response = await axiosXano.get(`/sites`, {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
           },
@@ -126,7 +126,7 @@ const Invitation = ({
     for (const patientInfos of patientsGuestsInfos) {
       try {
         await sendEmail(
-          "virirak@gmail.com",
+          "virounk@gmail.com", //to be changed to patientInfo.email
           patientInfos.full_name,
           subject,
           intro,
@@ -149,7 +149,8 @@ const Invitation = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          to: "+16474447761", //to be changed to patientInfos.cell_phone
+          // from: "New Life",
+          to: "+33683267962", //to be changed to patientInfos.cell_phone
           body: `
 Hello ${patientInfos.full_name},
           
@@ -178,7 +179,7 @@ Powered by Calvin EMR`,
     for (const staffInfos of staffGuestsInfos) {
       try {
         await sendEmail(
-          "virirak@gmail.com",
+          "virounk@gmail.com", //to be changed to patientInfo.mail
           staffInfos.full_name,
           subject,
           intro,
@@ -201,7 +202,8 @@ Powered by Calvin EMR`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          to: "+16474447761", //to be changed to staffInfos.cell_phone
+          // from: "New Life",
+          to: "+33683267962", //to be changed to staffInfos.cell_phone
           body: `
 Hello ${staffInfos.full_name},
           
@@ -236,7 +238,7 @@ Powered by Calvin EMR`,
     newTemplates.find(({ name }) => name === templateSelected).message =
       message;
     try {
-      await axios.put(
+      await axiosXano.put(
         `/settings/${settings.id}`,
         { ...settings, invitation_templates: newTemplates },
         {
@@ -273,7 +275,7 @@ Powered by Calvin EMR`,
   const handleAddressChange = async (e) => {
     setAddressSelected(e.target.value);
     try {
-      await axios.put(
+      await axiosXano.put(
         `/settings/${settings.id}`,
         { ...settings, clinic_address: e.target.value },
         {

@@ -10,6 +10,7 @@ import { CircularProgress } from "@mui/material";
 import useAuth from "../../../hooks/useAuth";
 
 const PatientRecord = () => {
+  console.log("render Record");
   //HOOKS
   const { clinic } = useAuth();
   const [patientInfos, setPatientInfos] = useState(null);

@@ -4,16 +4,13 @@ import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import CountriesList from "../../../Lists/CountriesList";
 import useAuth from "../../../../hooks/useAuth";
 import formatName from "../../../../utils/formatName";
-import {
-  getPatientRecord,
-  putPatientRecord,
-} from "../../../../api/fetchRecords";
+import { putPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 
 const PharmacyItem = ({
   patientId,
   item,
-  setDatas,
+  fetchRecord,
   editCounter,
   setErrMsgPost,
 }) => {
@@ -54,14 +51,13 @@ const PharmacyItem = ({
           auth.authToken,
           formDatas
         );
-        setDatas(
-          await getPatientRecord("/pharmacies", patientId, auth.authToken)
-        );
+        const abortController = new AbortController();
+        fetchRecord(abortController);
         editCounter.current -= 1;
         setEditVisible(false);
         toast.success("Saved successfully", { containerId: "B" });
       } catch (err) {
-        toast.error("Unable to save, please contact admin", {
+        toast.error(err.message, {
           containerId: "B",
         });
       }
@@ -87,16 +83,20 @@ const PharmacyItem = ({
         ({ patients_id }) => patients_id !== patientId
       );
       pharmacy.patients = patientsFiltered;
-      await putPatientRecord(
-        "/pharmacies",
-        item.id,
-        user.id,
-        auth.authToken,
-        pharmacy
-      );
-      setDatas(
-        await getPatientRecord("/pharmacies", patientId, auth.authToken)
-      );
+      try {
+        await putPatientRecord(
+          "/pharmacies",
+          item.id,
+          user.id,
+          auth.authToken,
+          pharmacy
+        );
+        const abortController = new AbortController();
+        fetchRecord(abortController);
+        toast.success("Saved successfully", { containerId: "B" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+      }
     }
   };
 

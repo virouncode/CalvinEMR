@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 const MedicationForm = ({
   patientId,
-  setDatas,
+  fetchRecord,
   setAddVisible,
   editCounter,
   setErrMsgPost,
@@ -29,19 +29,27 @@ const MedicationForm = ({
     duration: "",
     active: true,
   });
+  const [errAllergies, setErrAllergies] = useState(null);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchAllergies = async () => {
       try {
         const allergiesResults = await getPatientRecord(
           "/allergies",
           patientId,
-          auth.authToken
+          auth.authToken,
+          abortController
         );
         setAllergies(allergiesResults);
-      } catch (err) {}
+      } catch (err) {
+        setErrAllergies(err.message);
+      }
     };
     fetchAllergies();
+    return () => {
+      abortController.abort();
+    };
   }, [auth.authToken, patientId]);
 
   //HANDLERS
@@ -68,14 +76,13 @@ const MedicationForm = ({
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord("/medications", patientId, auth.authToken)
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", { containerId: "B" });
+      toast.error(err.message, { containerId: "B" });
     }
   };
 
@@ -99,7 +106,9 @@ const MedicationForm = ({
             style={{ color: "#ff0000" }}
           ></i>{" "}
           Patient Allergies :{" "}
-          {allergies.length > 0
+          {errAllergies
+            ? errAllergies
+            : allergies && allergies.length > 0
             ? allergies.map(({ allergy }) => allergy).join(", ")
             : "No Allergies"}
         </div>

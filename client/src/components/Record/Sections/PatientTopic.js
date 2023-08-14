@@ -38,9 +38,10 @@ import NewWindow from "react-new-window";
 import RelationshipsContent from "../Topics/Relationships/RelationshipsContent";
 import RelationshipsPU from "../Popups/RelationshipsPU";
 import MessagesContent from "../Topics/MessagesAboutPatient/MessagesContent";
-import MessagesPU from "../Popups/MessagesPU";
+import { usePatientRecord } from "../../../hooks/usePatientRecord";
 
 const PatientTopic = ({
+  url,
   backgroundColor,
   textColor,
   topic,
@@ -52,7 +53,8 @@ const PatientTopic = ({
 }) => {
   //HOOKS
   const [popUpVisible, setPopUpVisible] = useState(false);
-  const [datas, setDatas] = useState(null);
+  const [{ datas, isLoading, errMsg }, fetchRecord, setDatas] =
+    usePatientRecord(url, patientId);
   const contentRef = useRef("null");
 
   //STYLE
@@ -143,9 +145,9 @@ const PatientTopic = ({
         {/* MEDICAL HISTORY */}
         {topic === "MEDICAL HISTORY" && (
           <MedHistoryContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "MEDICAL HISTORY" && popUpVisible && (
@@ -168,6 +170,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -177,9 +182,9 @@ const PatientTopic = ({
         {/* FAMILY HISTORY */}
         {topic === "FAMILY HISTORY" && (
           <FamHistoryContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "FAMILY HISTORY" && popUpVisible && (
@@ -202,7 +207,10 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
               setPopUpVisible={setPopUpVisible}
+              isLoading={isLoading}
+              errMsg={errMsg}
             />
           </NewWindow>
         )}
@@ -211,9 +219,9 @@ const PatientTopic = ({
         {/* RELATIONSHIPS */}
         {topic === "RELATIONSHIPS" && (
           <RelationshipsContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "RELATIONSHIPS" && popUpVisible && (
@@ -236,6 +244,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -245,9 +256,9 @@ const PatientTopic = ({
         {/* SOCIAL HISTORY */}
         {topic === "SOCIAL HISTORY" && (
           <SocHistoryContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "SOCIAL HISTORY" && popUpVisible && (
@@ -268,7 +279,11 @@ const PatientTopic = ({
           >
             <SocHistoryPU
               patientId={patientId}
+              datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -277,11 +292,7 @@ const PatientTopic = ({
 
         {/* RISK FACTORS */}
         {topic === "RISK FACTORS/PREVENTION" && (
-          <RiskContent
-            patientId={patientId}
-            datas={datas}
-            setDatas={setDatas}
-          />
+          <RiskContent datas={datas} isLoading={isLoading} errMsg={errMsg} />
         )}
         {topic === "RISK FACTORS/PREVENTION" && popUpVisible && (
           <NewWindow
@@ -303,6 +314,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -312,9 +326,9 @@ const PatientTopic = ({
         {/* MEDICATIONS */}
         {topic === "MEDICATIONS" && (
           <MedicationsContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "MEDICATIONS" && popUpVisible && (
@@ -337,6 +351,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
               patientInfos={patientInfos}
             />
@@ -347,9 +364,9 @@ const PatientTopic = ({
         {/* PHARMACIES */}
         {topic === "PHARMACIES" && (
           <PharmaciesContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "PHARMACIES" && popUpVisible && (
@@ -372,6 +389,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -381,9 +401,9 @@ const PatientTopic = ({
         {/* MEASUREMENTS */}
         {topic === "MEASUREMENTS" && (
           <MeasurementsContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "MEASUREMENTS" && popUpVisible && (
@@ -406,6 +426,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -414,11 +437,7 @@ const PatientTopic = ({
 
         {/* FAMILY DOCTORS */}
         {topic === "FAMILY DOCTORS/SPECIALISTS" && (
-          <DoctorsContent
-            patientId={patientId}
-            datas={datas}
-            setDatas={setDatas}
-          />
+          <DoctorsContent datas={datas} isLoading={isLoading} errMsg={errMsg} />
         )}
         {topic === "FAMILY DOCTORS/SPECIALISTS" && popUpVisible && (
           <NewWindow
@@ -440,6 +459,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -449,9 +471,9 @@ const PatientTopic = ({
         {/* REMINDERS */}
         {topic === "REMINDERS/ALERTS" && (
           <RemindersContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "REMINDERS/ALERTS" && popUpVisible && (
@@ -474,6 +496,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -483,9 +508,9 @@ const PatientTopic = ({
         {/* PREGNANCIES */}
         {topic === "PREGNANCIES" && (
           <PregnanciesContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "PREGNANCIES" && popUpVisible && (
@@ -508,6 +533,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -517,9 +545,9 @@ const PatientTopic = ({
         {/* ALLERGIES */}
         {topic === "ALLERGIES" && (
           <AllergiesContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "ALLERGIES" && popUpVisible && (
@@ -542,6 +570,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -551,9 +582,9 @@ const PatientTopic = ({
         {/* CONCERNS */}
         {topic === "ONGOING CONCERNS" && (
           <ConcernsContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "ONGOING CONCERNS" && popUpVisible && (
@@ -576,6 +607,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -585,9 +619,9 @@ const PatientTopic = ({
         {/* DOCUMENTS */}
         {topic === "DOCUMENTS" && (
           <DocumentsContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
             showDocument={showDocument}
           />
         )}
@@ -611,6 +645,9 @@ const PatientTopic = ({
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               showDocument={showDocument}
               setPopUpVisible={setPopUpVisible}
             />
@@ -619,14 +656,7 @@ const PatientTopic = ({
         {/*******************/}
 
         {/* VACCINES */}
-        {topic === "VACCINES" && (
-          <VaccinesContent
-            patientId={patientId}
-            datas={datas}
-            setDatas={setDatas}
-            patientInfos={patientInfos}
-          />
-        )}
+        {topic === "VACCINES" && <VaccinesContent />}
         {topic === "VACCINES" && popUpVisible && (
           <NewWindow
             title="Patient Vaccines"
@@ -644,9 +674,11 @@ const PatientTopic = ({
             onUnload={() => setPopUpVisible(false)}
           >
             <VaccinesPU
-              patientId={patientId}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
               patientInfos={patientInfos}
             />
@@ -657,14 +689,14 @@ const PatientTopic = ({
         {/* APPOINTMENTS */}
         {topic === "APPOINTMENTS" && (
           <AppointmentsContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
         )}
         {topic === "APPOINTMENTS" && popUpVisible && (
           <NewWindow
-            title="Patient Vaccines"
+            title="Patient Appointments"
             features={{
               toolbar: "no",
               scrollbars: "no",
@@ -683,6 +715,9 @@ const PatientTopic = ({
               patientInfos={patientInfos}
               datas={datas}
               setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
           </NewWindow>
@@ -691,34 +726,10 @@ const PatientTopic = ({
         {/* MESSAGES */}
         {topic === "MESSAGES" && (
           <MessagesContent
-            patientId={patientId}
             datas={datas}
-            setDatas={setDatas}
+            isLoading={isLoading}
+            errMsg={errMsg}
           />
-        )}
-        {topic === "MESSAGES" && popUpVisible && (
-          <NewWindow
-            title="Messages about patient"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
-          >
-            <MessagesPU
-              patientId={patientId}
-              datas={datas}
-              setDatas={setDatas}
-              setPopUpVisible={setPopUpVisible}
-            />
-          </NewWindow>
         )}
         {/*******************/}
       </div>

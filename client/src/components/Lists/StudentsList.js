@@ -19,7 +19,7 @@ const StudentsList = ({
       onBlur={onBlur}
       onChange={handleChange}
     >
-      <option value="" hidden>
+      <option value="" disabled>
         Choose a student...
       </option>
       <option value="0">None</option>

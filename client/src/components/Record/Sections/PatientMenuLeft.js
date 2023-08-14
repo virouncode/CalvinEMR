@@ -22,6 +22,7 @@ const PatientMenuLeft = ({
         side="left"
       />
       <PatientTopic
+        url="/medical_history"
         textColor="#FEFEFE"
         backgroundColor="#577399"
         topic="MEDICAL HISTORY"
@@ -30,6 +31,7 @@ const PatientMenuLeft = ({
         side="left"
       />
       <PatientTopic
+        url="/family_history"
         textColor="#FEFEFE"
         backgroundColor="#326771"
         topic="FAMILY HISTORY"
@@ -38,6 +40,7 @@ const PatientMenuLeft = ({
         side="left"
       />
       <PatientTopic
+        url="/relationships"
         textColor="#FEFEFE"
         backgroundColor="#01ba95"
         topic="RELATIONSHIPS"
@@ -46,6 +49,7 @@ const PatientMenuLeft = ({
         side="left"
       />
       <PatientTopic
+        url="/social_history"
         textColor="#FEFEFE"
         backgroundColor="#2c8c99"
         topic="SOCIAL HISTORY"
@@ -54,6 +58,7 @@ const PatientMenuLeft = ({
         side="left"
       />
       <PatientTopic
+        url="/risk_factors"
         textColor="#FEFEFE"
         backgroundColor="#ef0b00"
         topic="RISK FACTORS/PREVENTION"
@@ -62,6 +67,7 @@ const PatientMenuLeft = ({
         side="left"
       />
       <PatientTopic
+        url="/medications"
         textColor="#FEFEFE"
         backgroundColor="#931621"
         topic="MEDICATIONS"
@@ -71,6 +77,7 @@ const PatientMenuLeft = ({
         patientInfos={patientInfos}
       />
       <PatientTopic
+        url="/pharmacies"
         textColor="#FEFEFE"
         backgroundColor="#28464b"
         topic="PHARMACIES"
@@ -79,6 +86,7 @@ const PatientMenuLeft = ({
         side="left"
       />
       <PatientTopic
+        url="/measurements"
         textColor="#FEFEFE"
         backgroundColor="#21201e"
         topic="MEASUREMENTS"

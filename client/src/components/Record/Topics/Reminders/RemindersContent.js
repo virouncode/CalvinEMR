@@ -1,12 +1,10 @@
 //Librairies
 import React, { useEffect } from "react";
-import { useRecord } from "../../../../hooks/useRecord";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
 //Components
 
-const RemindersContent = ({ patientId, datas, setDatas }) => {
-  useRecord("/reminders", patientId, setDatas);
+const RemindersContent = ({ datas, isLoading, errMsg }) => {
   useEffect(() => {
     if (datas) {
       datas.forEach((reminder) => {
@@ -16,23 +14,27 @@ const RemindersContent = ({ patientId, datas, setDatas }) => {
     }
   }, [datas]);
 
-  return datas ? (
-    <div className="patient-reminders-content">
-      {datas.length >= 1 ? (
-        <ul>
-          {datas.filter((reminder) => reminder.active).length >= 1
-            ? datas
-                .filter((reminder) => reminder.active)
-                .sort((a, b) => b.date_created - a.date_created)
-                .map((reminder) => (
-                  <li key={reminder.id}>- {reminder.reminder}</li>
-                ))
-            : "No active reminder"}
-        </ul>
-      ) : (
-        "No reminders"
-      )}
-    </div>
+  return !isLoading ? (
+    errMsg ? (
+      <p className="patient-reminders-content-err">{errMsg}</p>
+    ) : (
+      <div className="patient-reminders-content">
+        {datas && datas.length >= 1 ? (
+          <ul>
+            {datas.filter((reminder) => reminder.active).length >= 1
+              ? datas
+                  .filter((reminder) => reminder.active)
+                  .sort((a, b) => b.date_created - a.date_created)
+                  .map((reminder) => (
+                    <li key={reminder.id}>- {reminder.reminder}</li>
+                  ))
+              : "No active reminder"}
+          </ul>
+        ) : (
+          "No reminders"
+        )}
+      </div>
+    )
   ) : (
     <CircularProgress size="1rem" style={{ margin: "5px" }} />
   );

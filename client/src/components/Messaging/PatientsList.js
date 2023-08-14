@@ -6,7 +6,6 @@ const PatientsList = ({ isPatientChecked, handleCheckPatient, search }) => {
   const { clinic } = useAuth();
   return (
     <ul className="patients-list">
-      {console.log(clinic.patientsInfos)}
       {clinic.patientsInfos
         .filter(
           (patient) =>

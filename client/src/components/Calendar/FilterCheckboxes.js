@@ -384,7 +384,7 @@ const FilterCheckboxes = ({
     setHostsIds(newHostsIds);
     // const hostsToFetch = isSecretary() ? [""] : newHostsIds;
     // try {
-    //   const appointments = await axios.post(
+    //   const appointments = await axiosXano.post(
     //     "/staff_appointments",
     //     {
     //       hosts_ids: hostsToFetch,

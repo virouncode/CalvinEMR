@@ -32,6 +32,14 @@
             input {
                 min-width: 30px;
             }
+            &-btns {
+                width:100%;
+                text-align: center;
+                margin-top: 10px;
+                button {
+                    margin-right: 10px;
+                }
+            }
         }
     }
 }

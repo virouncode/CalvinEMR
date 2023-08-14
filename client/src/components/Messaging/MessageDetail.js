@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Message from "./Message";
 import ReplyForm from "./ReplyForm";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import NewWindow from "react-new-window";
@@ -9,7 +9,7 @@ import ForwardForm from "./ForwardForm";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const MessageDetail = ({
   setCurrentMsgId,
@@ -23,14 +23,13 @@ const MessageDetail = ({
   const [allPersons, setAllPersons] = useState(false);
   const { auth, user, clinic } = useAuth();
   const [previousMsgs, setPreviousMsgs] = useState(null);
-  const navigate = useNavigate();
   const patient = clinic.patientsInfos.find(
     ({ id }) => id === message.related_patient_id
   );
 
   useEffect(() => {
     const fetchPreviousMsgs = async () => {
-      const response = await axios.post(
+      const response = await axiosXano.post(
         "/messages_selected",
         { messages_ids: message.previous_ids },
         {
@@ -53,7 +52,7 @@ const MessageDetail = ({
 
   const handleDeleteMsg = async (e) => {
     try {
-      await axios.put(
+      await axiosXano.put(
         `/messages/${message.id}`,
         {
           ...message,
@@ -66,7 +65,7 @@ const MessageDetail = ({
           },
         }
       );
-      const response2 = await axios.get(`/messages?staff_id=${user.id}`, {
+      const response2 = await axiosXano.get(`/messages?staff_id=${user.id}`, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",

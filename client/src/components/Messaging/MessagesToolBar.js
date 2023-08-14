@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const MessagesToolBar = ({
   search,
@@ -20,7 +19,6 @@ const MessagesToolBar = ({
 }) => {
   const { auth, user } = useAuth();
   const [selectAllVisible, setSelectAllVisible] = useState(true);
-  const navigate = useNavigate();
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
@@ -47,7 +45,7 @@ const MessagesToolBar = ({
 
   const handleDeleteSelected = async () => {
     for (let messageId of msgsSelectedIds) {
-      const response = await axios.get(`/messages/${messageId}`, {
+      const response = await axiosXano.get(`/messages/${messageId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
@@ -57,14 +55,14 @@ const MessagesToolBar = ({
         ...response.data,
         deleted_by_ids: [...response.data.deleted_by_ids, user.id],
       };
-      await axios.put(`/messages/${messageId}`, newMessage, {
+      await axiosXano.put(`/messages/${messageId}`, newMessage, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
     }
-    const response = await axios.get(`/messages?staff_id=${user.id}`, {
+    const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
       headers: {
         Authorization: `Bearer ${auth.authToken}`,
         "Content-Type": "application/json",
@@ -80,7 +78,7 @@ const MessagesToolBar = ({
 
   const handleClickMoveBack = async (e) => {
     const msgsSelected = (
-      await axios.post(
+      await axiosXano.post(
         "/messages_selected",
         { messages_ids: msgsSelectedIds },
         {
@@ -99,7 +97,7 @@ const MessagesToolBar = ({
         ...message,
         deleted_by_ids: newDeletedByIds,
       };
-      await axios.put(`/messages/${message.id}`, newMessage, {
+      await axiosXano.put(`/messages/${message.id}`, newMessage, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,

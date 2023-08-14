@@ -1,7 +1,7 @@
 //Librairies
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
-import axios from "../../../api/xano";
+import axiosXano from "../../../api/xano";
 
 const ProgressNotesToolBar = ({
   addVisible,
@@ -58,7 +58,7 @@ const ProgressNotesToolBar = ({
     const value = e.target.value;
     setOrder(value);
     try {
-      await axios.put(
+      await axiosXano.put(
         `settings/${user.settings.id}`,
         { ...user.settings, progress_notes_order: value },
         {

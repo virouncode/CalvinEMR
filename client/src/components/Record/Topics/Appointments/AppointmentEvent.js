@@ -23,7 +23,6 @@ import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import useAuth from "../../../../hooks/useAuth";
 import {
   deletePatientRecord,
-  getPatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import formatName from "../../../../utils/formatName";
@@ -31,8 +30,7 @@ import { toast } from "react-toastify";
 
 const AppointmentEvent = ({
   event,
-  setDatas,
-  patientId,
+  fetchRecord,
   editCounter,
   setErrMsgPost,
   setAlertVisible,
@@ -62,7 +60,6 @@ const AppointmentEvent = ({
 
   useEffect(() => {
     const abortController = new AbortController();
-
     const fetchAvailableRooms = async () => {
       try {
         const availableRoomsResult = await getAvailableRooms(
@@ -73,7 +70,9 @@ const AppointmentEvent = ({
           abortController
         );
         setAvailableRooms(availableRoomsResult);
-      } catch (err) {}
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+      }
     };
     fetchAvailableRooms();
     return () => {
@@ -151,80 +150,92 @@ const AppointmentEvent = ({
     const rangeEnd =
       new Date(value) > new Date(eventInfos.end) ? value : eventInfos.end;
 
-    const hypotheticAvailableRooms = await getAvailableRooms(
-      event.id,
-      value,
-      rangeEnd,
-      auth.authToken
-    );
-    if (
-      eventInfos.room === "To be determined" ||
-      hypotheticAvailableRooms.includes(eventInfos.room) ||
-      (!hypotheticAvailableRooms.includes(eventInfos.room) &&
-        (await confirmAlertPopUp({
-          content: `${eventInfos.room} will be occupied at this time slot, book it anyway ?`,
-        })))
-    ) {
-      switch (name) {
-        case "date":
-          previousStartDate.current = dateValue;
-          minEndDate.current = dateValue;
-          break;
-        case "hour":
-          previousStartHours.current = hourValue;
-          break;
-        case "min":
-          previousStartMin.current = minValue;
-          break;
-        case "ampm":
-          previousStartAMPM.current = ampmValue;
-          break;
-        default:
-          break;
-      }
+    let hypotheticAvailableRooms;
 
-      if (new Date(value) > new Date(eventInfos.end)) {
-        setEventInfos({ ...eventInfos, start: value, end: value, duration: 0 });
-        endHourInput.value = startHourInput.value;
-        endMinInput.value = startMinInput.value;
-        endAMPMInput.value = startAMPMInput.value;
-        setAvailableRooms(
-          await getAvailableRooms(event.id, value, value, auth.authToken)
-        );
+    try {
+      hypotheticAvailableRooms = await getAvailableRooms(
+        event.id,
+        value,
+        rangeEnd,
+        auth.authToken
+      );
+
+      if (
+        eventInfos.room === "To be determined" ||
+        hypotheticAvailableRooms.includes(eventInfos.room) ||
+        (!hypotheticAvailableRooms.includes(eventInfos.room) &&
+          (await confirmAlertPopUp({
+            content: `${eventInfos.room} will be occupied at this time slot, book it anyway ?`,
+          })))
+      ) {
+        switch (name) {
+          case "date":
+            previousStartDate.current = dateValue;
+            minEndDate.current = dateValue;
+            break;
+          case "hour":
+            previousStartHours.current = hourValue;
+            break;
+          case "min":
+            previousStartMin.current = minValue;
+            break;
+          case "ampm":
+            previousStartAMPM.current = ampmValue;
+            break;
+          default:
+            break;
+        }
+
+        if (new Date(value) > new Date(eventInfos.end)) {
+          setEventInfos({
+            ...eventInfos,
+            start: value,
+            end: value,
+            duration: 0,
+          });
+          endHourInput.value = startHourInput.value;
+          endMinInput.value = startMinInput.value;
+          endAMPMInput.value = startAMPMInput.value;
+          setAvailableRooms(
+            await getAvailableRooms(event.id, value, value, auth.authToken)
+          );
+        } else {
+          setEventInfos({
+            ...eventInfos,
+            start: value,
+            duration: Math.floor((eventInfos.end - value) / (1000 * 60)),
+          });
+
+          setAvailableRooms(
+            await getAvailableRooms(
+              event.id,
+              value,
+              eventInfos.end,
+              auth.authToken
+            )
+          );
+        }
       } else {
-        setEventInfos({
-          ...eventInfos,
-          start: value,
-          duration: Math.floor((eventInfos.end - value) / (1000 * 60)),
-        });
-
-        setAvailableRooms(
-          await getAvailableRooms(
-            event.id,
-            value,
-            eventInfos.end,
-            auth.authToken
-          )
-        );
+        //set input value to previous start
+        switch (name) {
+          case "date":
+            e.target.value = previousStartDate.current;
+            break;
+          case "hour":
+            e.target.value = previousStartHours.current;
+            break;
+          case "min":
+            e.target.value = previousStartMin.current;
+            break;
+          case "ampm":
+            e.target.value = previousStartAMPM.current;
+            break;
+          default:
+            break;
+        }
       }
-    } else {
-      //set input value to previous start
-      switch (name) {
-        case "date":
-          e.target.value = previousStartDate.current;
-          break;
-        case "hour":
-          e.target.value = previousStartHours.current;
-          break;
-        case "min":
-          e.target.value = previousStartMin.current;
-          break;
-        case "ampm":
-          e.target.value = previousStartAMPM.current;
-          break;
-        default:
-          break;
-      }
+    } catch (err) {
+      toast.error(err.message, { containerId: "B" });
     }
   };
 
@@ -250,70 +261,76 @@ const AppointmentEvent = ({
 
     value = Date.parse(new Date(value));
 
-    const hypotheticAvailableRooms = await getAvailableRooms(
-      event.id,
-      eventInfos.start,
-      value,
-      auth.authToken
-    );
-    if (
-      eventInfos.room === "To be determined" ||
-      hypotheticAvailableRooms.includes(eventInfos.room) ||
-      (!hypotheticAvailableRooms.includes(eventInfos.room) &&
-        (await confirmAlertPopUp({
-          content: `${eventInfos.room} will be occupied at this time slot, book it anyway ?`,
-        })))
-    ) {
-      switch (name) {
-        case "date":
-          previousEndDate.current = dateValue;
-          break;
-        case "hour":
-          previousEndHours.current = hourValue;
-          break;
-        case "min":
-          previousEndMin.current = minValue;
-          break;
-        case "ampm":
-          previousEndAMPM.current = ampmValue;
-          break;
-        default:
-          break;
-      }
-      setEventInfos({
-        ...eventInfos,
-        end: value,
-        duration: Math.floor((value - eventInfos.start) / (1000 * 60)),
-      });
-      setAvailableRooms(
-        await getAvailableRooms(
-          event.id,
-          eventInfos.start,
-          value,
-          auth.authToken
-        )
+    let hypotheticAvailableRooms;
+    try {
+      hypotheticAvailableRooms = await getAvailableRooms(
+        event.id,
+        eventInfos.start,
+        value,
+        auth.authToken
       );
-    } else {
-      switch (name) {
-        case "date":
-          e.target.value = previousEndDate.current;
-          break;
-        case "hour":
-          e.target.value = previousEndHours.current;
-          break;
-        case "min":
-          e.target.value = previousEndMin.current;
-          break;
-        case "ampm":
-          e.target.value = previousEndAMPM.current;
-          break;
-        default:
-          break;
+      if (
+        eventInfos.room === "To be determined" ||
+        hypotheticAvailableRooms.includes(eventInfos.room) ||
+        (!hypotheticAvailableRooms.includes(eventInfos.room) &&
+          (await confirmAlertPopUp({
+            content: `${eventInfos.room} will be occupied at this time slot, book it anyway ?`,
+          })))
+      ) {
+        switch (name) {
+          case "date":
+            previousEndDate.current = dateValue;
+            break;
+          case "hour":
+            previousEndHours.current = hourValue;
+            break;
+          case "min":
+            previousEndMin.current = minValue;
+            break;
+          case "ampm":
+            previousEndAMPM.current = ampmValue;
+            break;
+          default:
+            break;
+        }
+        setEventInfos({
+          ...eventInfos,
+          end: value,
+          duration: Math.floor((value - eventInfos.start) / (1000 * 60)),
+        });
+        setAvailableRooms(
+          await getAvailableRooms(
+            event.id,
+            eventInfos.start,
+            value,
+            auth.authToken
+          )
+        );
+      } else {
+        switch (name) {
+          case "date":
+            e.target.value = previousEndDate.current;
+            break;
+          case "hour":
+            e.target.value = previousEndHours.current;
+            break;
+          case "min":
+            e.target.value = previousEndMin.current;
+            break;
+          case "ampm":
+            e.target.value = previousEndAMPM.current;
+            break;
+          default:
+            break;
+        }
       }
+    } catch (err) {
+      toast.error(err.message, { containerId: "B" });
     }
   };
 
   const handleAllDayChange = (e) => {
+    setAlertVisible(false);
     setErrMsgPost(false);
     let value = e.target.value;
     value = value === "true"; //cast to boolean
@@ -362,18 +379,13 @@ const AppointmentEvent = ({
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord(
-          "/patient_appointments",
-          patientId,
-          auth.authToken
-        )
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", { containerId: "B" });
+      toast.error(err.message, { containerId: "B" });
     }
   };
 
@@ -389,14 +401,14 @@ const AppointmentEvent = ({
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/appointments", event.id, auth.authToken);
-      setDatas(
-        await getPatientRecord(
-          "/patient_appointments",
-          patientId,
-          auth.authToken
-        )
-      );
+      try {
+        await deletePatientRecord("/appointments", event.id, auth.authToken);
+        const abortController = new AbortController();
+        fetchRecord(abortController);
+        toast.success("Deleted successfully", { containerId: "B" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+      }
     }
   };
 

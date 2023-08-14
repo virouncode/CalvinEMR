@@ -3,7 +3,7 @@ import Contacts from "./Contacts";
 import { categoryToTitle } from "../../utils/categoryToTitle";
 import formatName from "../../utils/formatName";
 import useAuth from "../../hooks/useAuth";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
 import Message from "./Message";
 import { staffIdToName } from "../../utils/staffIdToName";
@@ -116,14 +116,14 @@ const ForwardForm = ({
       };
 
       //post the message
-      await axios.post("/messages", forwardMessage, {
+      await axiosXano.post("/messages", forwardMessage, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
 
-      const response = await axios.get(`/messages?staff_id=${user.id}`, {
+      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",

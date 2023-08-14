@@ -1,6 +1,5 @@
 //Librairies
 import React, { useRef, useState } from "react";
-import { useRecord } from "../../../hooks/useRecord";
 //Components
 import MedicationEvent from "../Topics/Medications/MedicationEvent";
 import MedicationForm from "../Topics/Medications/MedicationForm";
@@ -13,10 +12,13 @@ import useAuth from "../../../hooks/useAuth";
 
 const MedicationsPU = ({
   patientId,
-  datas,
-  setDatas,
   setPopUpVisible,
   patientInfos,
+  datas,
+  setDatas,
+  fetchRecord,
+  isLoading,
+  errMsg,
 }) => {
   //HOOKS
   const { user } = useAuth();
@@ -27,7 +29,6 @@ const MedicationsPU = ({
   const [columnToSort, setColumnToSort] = useState("start");
   const [medsRx, setMedsRx] = useState([]);
   const direction = useRef(false);
-  useRecord("/medications", patientId, setDatas);
 
   //STYLE
   const DIALOG_CONTAINER_STYLE = {
@@ -71,141 +72,151 @@ const MedicationsPU = ({
 
   return (
     <>
-      {datas ? (
-        <>
-          <h1 className="medications-title">Patient medications</h1>
-          {errMsgPost && (
-            <div className="medications-err">
-              Unable to save form : please fill out "Medication Name" field at
-              least
-            </div>
-          )}
-          <table className="medications-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("active")}>Active</th>
-                <th onClick={() => handleSort("name")}>Medication Name</th>
-                <th onClick={() => handleSort("active_ingredients")}>
-                  Active Ingredients
-                </th>
-                <th onClick={() => handleSort("route_of_administration")}>
-                  Route
-                </th>
-                <th onClick={() => handleSort("dose")}>Dose</th>
-                <th onClick={() => handleSort("frequency")}>Frequency</th>
-                <th onClick={() => handleSort("number_of_doses")}>
-                  Number of doses
-                </th>
-                <th onClick={() => handleSort("duration")}>Duration</th>
-                <th onClick={() => handleSort("created_by_id")}>Created By</th>
-                <th onClick={() => handleSort("date_created")}>Created On</th>
-                {user.title === "Doctor" && (
-                  <th style={{ textDecoration: "none", cursor: "default" }}>
-                    Action
-                  </th>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {direction.current
-                ? datas
-                    .filter((medication) => medication.active)
-                    .sort((a, b) =>
-                      a[columnToSort]
-                        ?.toString()
-                        .localeCompare(b[columnToSort]?.toString())
-                    )
-                    .map((medication) => (
-                      <MedicationEvent
-                        event={medication}
-                        key={medication.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        presVisible={presVisible}
-                        setPresVisible={setPresVisible}
-                        setErrMsgPost={setErrMsgPost}
-                        medsRx={medsRx}
-                        setMedsRx={setMedsRx}
-                      />
-                    ))
-                : datas
-                    .filter((medication) => medication.active)
-                    .sort((a, b) =>
-                      b[columnToSort]
-                        ?.toString()
-                        .localeCompare(a[columnToSort]?.toString())
-                    )
-                    .map((medication) => (
-                      <MedicationEvent
-                        event={medication}
-                        key={medication.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                        presVisible={presVisible}
-                        setPresVisible={setPresVisible}
-                        medsRx={medsRx}
-                        setMedsRx={setMedsRx}
-                      />
-                    ))}
-              {direction.current
-                ? datas
-                    .filter((medication) => !medication.active)
-                    .sort((a, b) =>
-                      a[columnToSort]
-                        ?.toString()
-                        .localeCompare(b[columnToSort]?.toString())
-                    )
-                    .map((medication) => (
-                      <MedicationEvent
-                        event={medication}
-                        key={medication.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                        presVisible={presVisible}
-                        setPresVisible={setPresVisible}
-                        medsRx={medsRx}
-                        setMedsRx={setMedsRx}
-                      />
-                    ))
-                : datas
-                    .filter((medication) => !medication.active)
-                    .sort((a, b) =>
-                      b[columnToSort]
-                        ?.toString()
-                        .localeCompare(a[columnToSort]?.toString())
-                    )
-                    .map((medication) => (
-                      <MedicationEvent
-                        event={medication}
-                        key={medication.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                        presVisible={presVisible}
-                        setPresVisible={setPresVisible}
-                        medsRx={medsRx}
-                        setMedsRx={setMedsRx}
-                      />
-                    ))}
-            </tbody>
-          </table>
-          {user.title === "Doctor" && (
-            <div className="medications-btn-container">
-              <button onClick={handleAdd} disabled={addVisible}>
-                Add Medication To Profile
-              </button>
-              <button onClick={handleClose}>Close</button>
-            </div>
-          )}
-        </>
+      {!isLoading ? (
+        errMsg ? (
+          <p className="medications-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="medications-title">Patient medications</h1>
+              {errMsgPost && (
+                <div className="medications-err">
+                  Unable to save form : please fill out "Medication Name" field
+                  at least
+                </div>
+              )}
+              <table className="medications-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort("active")}>Active</th>
+                    <th onClick={() => handleSort("name")}>Medication Name</th>
+                    <th onClick={() => handleSort("active_ingredients")}>
+                      Active Ingredients
+                    </th>
+                    <th onClick={() => handleSort("route_of_administration")}>
+                      Route
+                    </th>
+                    <th onClick={() => handleSort("dose")}>Dose</th>
+                    <th onClick={() => handleSort("frequency")}>Frequency</th>
+                    <th onClick={() => handleSort("number_of_doses")}>
+                      Number of doses
+                    </th>
+                    <th onClick={() => handleSort("duration")}>Duration</th>
+                    <th onClick={() => handleSort("created_by_id")}>
+                      Created By
+                    </th>
+                    <th onClick={() => handleSort("date_created")}>
+                      Created On
+                    </th>
+                    {user.title === "Doctor" && (
+                      <th style={{ textDecoration: "none", cursor: "default" }}>
+                        Action
+                      </th>
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {direction.current
+                    ? datas
+                        .filter((medication) => medication.active)
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((medication) => (
+                          <MedicationEvent
+                            event={medication}
+                            key={medication.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            presVisible={presVisible}
+                            setPresVisible={setPresVisible}
+                            setErrMsgPost={setErrMsgPost}
+                            medsRx={medsRx}
+                            setMedsRx={setMedsRx}
+                          />
+                        ))
+                    : datas
+                        .filter((medication) => medication.active)
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((medication) => (
+                          <MedicationEvent
+                            event={medication}
+                            key={medication.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                            presVisible={presVisible}
+                            setPresVisible={setPresVisible}
+                            medsRx={medsRx}
+                            setMedsRx={setMedsRx}
+                          />
+                        ))}
+                  {direction.current
+                    ? datas
+                        .filter((medication) => !medication.active)
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((medication) => (
+                          <MedicationEvent
+                            event={medication}
+                            key={medication.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                            presVisible={presVisible}
+                            setPresVisible={setPresVisible}
+                            medsRx={medsRx}
+                            setMedsRx={setMedsRx}
+                          />
+                        ))
+                    : datas
+                        .filter((medication) => !medication.active)
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((medication) => (
+                          <MedicationEvent
+                            event={medication}
+                            key={medication.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                            presVisible={presVisible}
+                            setPresVisible={setPresVisible}
+                            medsRx={medsRx}
+                            setMedsRx={setMedsRx}
+                          />
+                        ))}
+                </tbody>
+              </table>
+              {user.title === "Doctor" && (
+                <div className="medications-btn-container">
+                  <button onClick={handleAdd} disabled={addVisible}>
+                    Add Medication To Profile
+                  </button>
+                  <button onClick={handleClose}>Close</button>
+                </div>
+              )}
+            </>
+          )
+        )
       ) : (
         <CircularProgress />
       )}
       {addVisible && (
         <MedicationForm
-          setDatas={setDatas}
+          fetchRecord={fetchRecord}
           patientId={patientId}
           setAddVisible={setAddVisible}
           editCounter={editCounter}

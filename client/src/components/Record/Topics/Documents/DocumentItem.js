@@ -3,13 +3,11 @@ import React from "react";
 import { toLocalDate } from "../../../../utils/formatDates";
 import formatName from "../../../../utils/formatName";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import {
-  deletePatientRecord,
-  getPatientRecord,
-} from "../../../../api/fetchRecords";
+import { deletePatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
-const DocumentItem = ({ item, setDatas, showDocument }) => {
+const DocumentItem = ({ item, fetchRecord, showDocument }) => {
   const { auth } = useAuth();
 
   const handleDeleteClick = async (e) => {
@@ -18,10 +16,14 @@ const DocumentItem = ({ item, setDatas, showDocument }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/documents", item.id, auth.authToken);
-      setDatas(
-        await getPatientRecord("/documents", item.patient_id, auth.authToken)
-      );
+      try {
+        await deletePatientRecord("/documents", item.id, auth.authToken);
+        const abortController = new AbortController();
+        fetchRecord(abortController);
+        toast.success("Deleted successfully", { containerId: "B" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+      }
     }
   };
 

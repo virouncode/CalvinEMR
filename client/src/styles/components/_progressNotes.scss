@@ -2,6 +2,11 @@
     font-size: 0.85rem;
     border : solid 0.5px grey;
     border-radius: 2px;
+    &-err {
+        background:$red;
+        padding: 10px;
+        font-size: 0.8rem;
+    }
     &-header {
         position:sticky;
         top:0;

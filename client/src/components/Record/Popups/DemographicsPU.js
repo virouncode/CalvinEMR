@@ -14,7 +14,7 @@ import StudentsList from "../../Lists/StudentsList";
 import NursesList from "../../Lists/NursesList";
 import useAuth from "../../../hooks/useAuth";
 import { putPatientRecord } from "../../../api/fetchRecords";
-import axios from "../../../api/xano";
+import axiosXano from "../../../api/xano";
 import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
@@ -102,8 +102,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
     }
     if (name === "email") {
       const emailRegex = new RegExp(
-        /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
-        "gm"
+        /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/
       );
       if (emailRegex.test(value)) {
         e.target.style.color = "black";
@@ -133,7 +132,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
     // here we tell the reader what to do when it's done reading...
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
-      let fileToUpload = await axios.post(
+      let fileToUpload = await axiosXano.post(
         "/upload/attachment",
         {
           content: content,
@@ -185,7 +184,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
           auth.authToken,
           datas.current
         );
-        const response = await axios.get(`/patients/${patientInfos.id}`, {
+        const response = await axiosXano.get(`/patients/${patientInfos.id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
@@ -195,7 +194,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         setEditVisible(false);
 
         //update patientsInfos
-        const response2 = await axios.get("/patients", {
+        const response2 = await axiosXano.get("/patients", {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
             "Content-Type": "application/json",
@@ -204,7 +203,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         setClinic({ ...clinic, patientsInfos: response2.data });
         toast.success("Saved successfully", { containerId: "B" });
       } catch (err) {
-        toast.error("Unable to save, please contact admin", {
+        toast.error(err.message, {
           containerId: "B",
         });
       }

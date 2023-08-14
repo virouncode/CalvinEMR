@@ -6,12 +6,16 @@ import useAuth from "../../../../hooks/useAuth";
 import formatName from "../../../../utils/formatName";
 import {
   deletePatientRecord,
-  getPatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 
-const MedHistoryEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
+const MedHistoryEvent = ({
+  event,
+  fetchRecord,
+  editCounter,
+  setErrMsgPost,
+}) => {
   //HOOKS
   const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
@@ -46,18 +50,13 @@ const MedHistoryEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord(
-          "/medical_history",
-          event.patient_id,
-          auth.authToken
-        )
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", { containerId: "B" });
+      toast.error(err.message, { containerId: "B" });
     }
   };
 
@@ -73,14 +72,14 @@ const MedHistoryEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/medical_history", event.id, auth.authToken);
-      setDatas(
-        await getPatientRecord(
-          "/medical_history",
-          event.patient_id,
-          auth.authToken
-        )
-      );
+      try {
+        await deletePatientRecord("/medical_history", event.id, auth.authToken);
+        const abortController = new AbortController();
+        fetchRecord(abortController);
+        toast.success("Deleted successfully", { containerId: "B" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+      }
     }
   };
 

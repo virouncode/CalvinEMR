@@ -7,7 +7,9 @@ const AddressesList = ({ handleAddressChange, addressSelected, sites }) => {
       style={{ marginLeft: "10px" }}
       value={addressSelected}
     >
-      <option hidden>Choose an address...</option>
+      <option value="" disabled>
+        Choose an address...
+      </option>
       {sites.map(({ name }) => (
         <option key={name} value={name}>
           {name}

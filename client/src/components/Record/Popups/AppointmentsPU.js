@@ -2,17 +2,19 @@ import React, { useRef, useState } from "react";
 import AppointmentEvent from "../Topics/Appointments/AppointmentEvent";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import AppointmentForm from "../Topics/Appointments/AppointmentForm";
-import { useRecord } from "../../../hooks/useRecord";
 import AlertMsg from "../../Alert/AlertMsg";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
 const AppointmentsPU = ({
   patientId,
-  datas,
-  setDatas,
   setPopUpVisible,
   patientInfos,
+  datas,
+  setDatas,
+  fetchRecord,
+  isLoading,
+  errMsg,
 }) => {
   //HOOKS
   const editCounter = useRef(0);
@@ -21,7 +23,6 @@ const AppointmentsPU = ({
   const [columnToSort, setColumnToSort] = useState("start");
   const [alertVisible, setAlertVisible] = useState(false);
   const direction = useRef(false);
-  useRecord("/patient_appointments", patientId, setDatas);
 
   //STYLE
   const DIALOG_CONTAINER_STYLE = {
@@ -64,95 +65,103 @@ const AppointmentsPU = ({
 
   return (
     <>
-      {datas ? (
-        <>
-          <h1 className="appointments-title">Patient appointments</h1>
-          {errMsgPost && (
-            <div className="appointments-err">
-              Unable to save form : please fill out all fields
-            </div>
-          )}
-          {alertVisible && (
-            <AlertMsg
-              severity="error"
-              setAlertVisible={setAlertVisible}
-              title="Error"
-              msg="Please choose a start date first"
-            />
-          )}
-          <table className="appointments-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("host_id")}>Host</th>
-                <th onClick={() => handleSort("reason")}>Reason</th>
-                <th onClick={() => handleSort("start")}>From</th>
-                <th onClick={() => handleSort("end")}>To</th>
-                <th onClick={() => handleSort("all_day")}>All Day</th>
-                <th onClick={() => handleSort("room")}>Room</th>
-                <th onClick={() => handleSort("status")}>Status</th>
-                <th onClick={() => handleSort("created_by_id")}>Created By</th>
-                <th onClick={() => handleSort("date_created")}>Created On</th>
-                <th style={{ textDecoration: "none", cursor: "default" }}>
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {addVisible && (
-                <AppointmentForm
-                  setDatas={setDatas}
-                  patientId={patientId}
-                  editCounter={editCounter}
-                  patientInfos={patientInfos}
-                  setAddVisible={setAddVisible}
-                  setErrMsgPost={setErrMsgPost}
-                  setAlertVisible={setAlertVisible}
-                />
+      {!isLoading ? (
+        errMsg ? (
+          <p className="appointments-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="appointments-title">Patient appointments</h1>
+              <AlertMsg
+                severity="error"
+                title="Error"
+                msg="Please choose a start date first"
+                open={alertVisible}
+                setOpen={setAlertVisible}
+              />
+              {errMsgPost && (
+                <div className="appointments-err">
+                  Unable to save form : please fill out all fields
+                </div>
               )}
-              {direction.current
-                ? datas
-                    .sort((a, b) =>
-                      a[columnToSort]
-                        ?.toString()
-                        .localeCompare(b[columnToSort]?.toString())
-                    )
-                    .map((appointment) => (
-                      <AppointmentEvent
-                        event={appointment}
-                        key={appointment.id}
-                        setDatas={setDatas}
-                        patientId={patientId}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                        setAlertVisible={setAlertVisible}
-                      />
-                    ))
-                : datas
-                    .sort((a, b) =>
-                      b[columnToSort]
-                        ?.toString()
-                        .localeCompare(a[columnToSort]?.toString())
-                    )
-                    .map((appointment) => (
-                      <AppointmentEvent
-                        event={appointment}
-                        key={appointment.id}
-                        setDatas={setDatas}
-                        patientId={patientId}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                        setAlertVisible={setAlertVisible}
-                      />
-                    ))}
-            </tbody>
-          </table>
-          <div className="appointments-btn-container">
-            <button onClick={handleAdd} disabled={addVisible}>
-              Add Appointment
-            </button>
-            <button onClick={handleClose}>Close</button>
-          </div>
-        </>
+
+              <table className="appointments-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort("host_id")}>Host</th>
+                    <th onClick={() => handleSort("reason")}>Reason</th>
+                    <th onClick={() => handleSort("start")}>From</th>
+                    <th onClick={() => handleSort("end")}>To</th>
+                    <th onClick={() => handleSort("all_day")}>All Day</th>
+                    <th onClick={() => handleSort("room")}>Room</th>
+                    <th onClick={() => handleSort("status")}>Status</th>
+                    <th onClick={() => handleSort("created_by_id")}>
+                      Created By
+                    </th>
+                    <th onClick={() => handleSort("date_created")}>
+                      Created On
+                    </th>
+                    <th style={{ textDecoration: "none", cursor: "default" }}>
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {addVisible && (
+                    <AppointmentForm
+                      patientId={patientId}
+                      fetchRecord={fetchRecord}
+                      editCounter={editCounter}
+                      patientInfos={patientInfos}
+                      setAddVisible={setAddVisible}
+                      setErrMsgPost={setErrMsgPost}
+                      setAlertVisible={setAlertVisible}
+                    />
+                  )}
+                  {direction.current
+                    ? datas
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((appointment) => (
+                          <AppointmentEvent
+                            event={appointment}
+                            key={appointment.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                            setAlertVisible={setAlertVisible}
+                          />
+                        ))
+                    : datas
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((appointment) => (
+                          <AppointmentEvent
+                            event={appointment}
+                            key={appointment.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                            setAlertVisible={setAlertVisible}
+                          />
+                        ))}
+                </tbody>
+              </table>
+              <div className="appointments-btn-container">
+                <button onClick={handleAdd} disabled={addVisible}>
+                  Add Appointment
+                </button>
+                <button onClick={handleClose}>Close</button>
+              </div>
+            </>
+          )
+        )
       ) : (
         <CircularProgress />
       )}

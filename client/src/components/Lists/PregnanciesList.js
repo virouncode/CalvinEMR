@@ -18,7 +18,9 @@ const PregnanciesList = ({
       onFocus={onFocus}
       onBlur={onBlur}
     >
-      <option value="">Choose an event</option>
+      <option value="" disabled>
+        Choose an event
+      </option>
       <option value="Abortion - 1st trimester">Abortion - 1st trimester</option>
       <option value="Abortion - 2nd trimester">Abortion - 2nd trimester</option>
       <option value="Abortion - 3rd trimester">Abortion - 3rd trimester</option>

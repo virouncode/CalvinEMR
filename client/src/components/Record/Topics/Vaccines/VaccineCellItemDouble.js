@@ -6,6 +6,7 @@ import { putPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import VaccineFormFirstDose from "./VaccineFormFirstDose";
 import VaccineFormSecondDose from "./VaccineFormSecondDose";
+import { toast } from "react-toastify";
 
 const VaccineCellItemDouble = ({
   age,
@@ -14,7 +15,7 @@ const VaccineCellItemDouble = ({
   vaccineInfos,
   patientInfos,
   datas,
-  setDatas,
+  fetchRecord,
   editable,
   setEditable,
   setAlertVisible,
@@ -66,14 +67,20 @@ const VaccineCellItemDouble = ({
       ) {
         const newDatas = { ...datas };
         newDatas[name][age] = [];
-        await putPatientRecord(
-          "/vaccines",
-          datas.id,
-          user.id,
-          auth.authToken,
-          newDatas
-        );
-        setDatas(newDatas);
+        try {
+          await putPatientRecord(
+            "/vaccines",
+            datas.id,
+            user.id,
+            auth.authToken,
+            newDatas
+          );
+          const abortController = new AbortController();
+          fetchRecord(abortController);
+          toast.success("Saved successfully", { containerId: "B" });
+        } catch (err) {
+          toast.error(err.message, { containerId: "B" });
+        }
       }
     }
   };
@@ -101,14 +108,20 @@ const VaccineCellItemDouble = ({
       ) {
         const newDatas = { ...datas };
         newDatas[name][age].pop();
-        await putPatientRecord(
-          "/vaccines",
-          datas.id,
-          user.id,
-          auth.authToken,
-          newDatas
-        );
-        setDatas(newDatas);
+        try {
+          await putPatientRecord(
+            "/vaccines",
+            datas.id,
+            user.id,
+            auth.authToken,
+            newDatas
+          );
+          const abortController = new AbortController();
+          fetchRecord(abortController);
+          toast.success("Saved successfully", { containerId: "B" });
+        } catch (err) {
+          toast.error(err.message, { containerId: "B" });
+        }
       }
     }
   };
@@ -185,7 +198,7 @@ const VaccineCellItemDouble = ({
             setEditable={setEditable}
             scrollPosition={scrollPosition}
             datas={datas}
-            setDatas={setDatas}
+            fetchRecord={fetchRecord}
             name={name}
             age={age}
           />
@@ -309,7 +322,7 @@ const VaccineCellItemDouble = ({
             setEditable={setEditable}
             scrollPosition={scrollPosition}
             datas={datas}
-            setDatas={setDatas}
+            fetchRecord={fetchRecord}
             name={name}
             age={age}
           />

@@ -18,7 +18,7 @@ const HostsList = ({
       disabled={disabled}
       style={style}
     >
-      <option hidden value="0">
+      <option value="" disabled>
         Choose a host...
       </option>
       {staffInfos.map((staff) => (

@@ -1,7 +1,7 @@
 //Library
 import React, { useState } from "react";
 import { CircularProgress } from "@mui/material";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 //Components
 import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
@@ -12,16 +12,17 @@ import VaccineItem from "../Topics/Vaccines/VaccineItem";
 import SplittedHeader from "../../Presentation/SplittedHeader";
 
 //Utils
-import { useRecord } from "../../../hooks/useRecord";
 import { vaccinesList } from "../../../utils/vaccines";
 import { formatAge } from "../../../utils/formatAge";
 import useAuth from "../../../hooks/useAuth";
 import { putPatientRecord } from "../../../api/fetchRecords";
 
 const VaccinesPU = ({
-  patientId,
   datas,
   setDatas,
+  fetchRecord,
+  isLoading,
+  errMsg,
   setPopUpVisible,
   patientInfos,
 }) => {
@@ -30,7 +31,6 @@ const VaccinesPU = ({
   const [alertVisible, setAlertVisible] = useState(false);
   const [editable, setEditable] = useState(true);
   const [editVisible, setEditVisible] = useState(false);
-  useRecord("/vaccines", patientId, setDatas);
 
   //STYLES
   const DIALOG_CONTAINER_STYLE = {
@@ -58,106 +58,117 @@ const VaccinesPU = ({
 
   const handleSave = async (e) => {
     e.preventDefault();
-    await putPatientRecord(
-      "/vaccines",
-      datas.id,
-      user.id,
-      auth.authToken,
-      datas
-    );
-    setEditVisible(false);
+    try {
+      await putPatientRecord(
+        "/vaccines",
+        datas.id,
+        user.id,
+        auth.authToken,
+        datas
+      );
+      toast.success("Observations saved successfully", { containerId: "B" });
+      setEditVisible(false);
+    } catch (err) {
+      toast.error(err.message, { containerId: "B" });
+    }
   };
 
   return (
     <>
-      {datas ? (
-        <>
-          <h1 className="vaccines-title">Patient vaccines</h1>
-          {alertVisible && (
-            <AlertMsg
-              severity="error"
-              setAlertVisible={setAlertVisible}
-              title="Error"
-              msg="Please check first dose before"
-            />
-          )}
-          <table className="vaccines-table">
-            <thead>
-              <tr>
-                <SplittedHeader left="Vaccine" right="Age" />
-                {datas.ages.map((age) => (
-                  <VaccineHeaderAge key={age} name={formatAge(age)} />
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {vaccinesList.map((vaccine, index) => (
-                <VaccineItem
-                  key={vaccine.id}
-                  vaccineId={vaccine.id}
-                  item={datas[vaccine.name]}
-                  dose={vaccine.dose}
-                  ages={datas.ages}
-                  name={vaccine.name}
-                  type={vaccine.type}
-                  description={vaccine.description}
-                  datas={datas}
-                  setDatas={setDatas}
-                  patientInfos={patientInfos}
-                  setEditable={setEditable}
-                  editable={editable}
-                  setAlertVisible={setAlertVisible}
+      {!isLoading ? (
+        errMsg ? (
+          <p className="vaccines-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="vaccines-title">Patient vaccines</h1>
+              {alertVisible && (
+                <AlertMsg
+                  severity="error"
+                  title="Error"
+                  msg="Please check first dose before"
+                  open={alertVisible}
+                  setOpen={setAlertVisible}
                 />
-              ))}
-            </tbody>
-          </table>
-          <VaccineCaption />
-          <div className="vaccines-obs">
-            <p className="vaccines-obs-title">Observations</p>
-            {editVisible ? (
-              <textarea
-                value={datas.observations}
-                onChange={handleChangeObs}
-                autoFocus
-              />
-            ) : (
-              <p className="vaccines-obs-content">{datas.observations}</p>
-            )}
-            <div className="vaccines-obs-btn-container">
-              {!editVisible ? (
-                <button type="button" onClick={handleEditClick}>
-                  Edit
-                </button>
-              ) : (
-                <button type="button" onClick={handleSave}>
-                  Save
-                </button>
               )}
-            </div>
-          </div>
-          <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
-          <ToastContainer
-            enableMultiContainer
-            containerId={"B"}
-            position="bottom-right"
-            autoClose={2000}
-            hideProgressBar={true}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-            limit={1}
-          />
-        </>
+              <table className="vaccines-table">
+                <thead>
+                  <tr>
+                    <SplittedHeader left="Vaccine" right="Age" />
+                    {datas.ages.map((age) => (
+                      <VaccineHeaderAge key={age} name={formatAge(age)} />
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {vaccinesList.map((vaccine, index) => (
+                    <VaccineItem
+                      key={vaccine.id}
+                      vaccineId={vaccine.id}
+                      item={datas[vaccine.name]}
+                      dose={vaccine.dose}
+                      ages={datas.ages}
+                      name={vaccine.name}
+                      type={vaccine.type}
+                      description={vaccine.description}
+                      datas={datas}
+                      fetchRecord={fetchRecord}
+                      patientInfos={patientInfos}
+                      setEditable={setEditable}
+                      editable={editable}
+                      setAlertVisible={setAlertVisible}
+                    />
+                  ))}
+                </tbody>
+              </table>
+              <VaccineCaption />
+              <div className="vaccines-obs">
+                <p className="vaccines-obs-title">Observations</p>
+                {editVisible ? (
+                  <textarea
+                    value={datas.observations}
+                    onChange={handleChangeObs}
+                    autoFocus
+                  />
+                ) : (
+                  <p className="vaccines-obs-content">{datas.observations}</p>
+                )}
+                <div className="vaccines-obs-btn-container">
+                  {!editVisible ? (
+                    <button type="button" onClick={handleEditClick}>
+                      Edit
+                    </button>
+                  ) : (
+                    <button type="button" onClick={handleSave}>
+                      Save
+                    </button>
+                  )}
+                </div>
+              </div>
+              <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+              <ToastContainer
+                enableMultiContainer
+                containerId={"B"}
+                position="bottom-right"
+                autoClose={2000}
+                hideProgressBar={true}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                limit={1}
+              />
+            </>
+          )
+        )
       ) : (
         <CircularProgress />
       )}
     </>
   );
-  // );
 };
 
 export default VaccinesPU;

@@ -19,7 +19,7 @@ const NursesList = ({
       onBlur={onBlur}
       onChange={handleChange}
     >
-      <option value="" hidden>
+      <option value="" disabled>
         Choose a nurse...
       </option>
       <option value="0">None</option>

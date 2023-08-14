@@ -5,18 +5,24 @@ import PregnancyEvent from "../Topics/Pregnancies/PregnancyEvent";
 import { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
 import PregnancyForm from "../Topics/Pregnancies/PregnancyForm";
-import { useRecord } from "../../../hooks/useRecord";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
-const PregnanciesPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
+const PregnanciesPU = ({
+  patientId,
+  setPopUpVisible,
+  datas,
+  setDatas,
+  fetchRecord,
+  isLoading,
+  errMsg,
+}) => {
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState(false);
   const [columnToSort, setColumnToSort] = useState("date_of_event");
   const direction = useRef(false);
-  useRecord("/pregnancies", patientId, setDatas);
 
   //STYLE
   const DIALOG_CONTAINER_STYLE = {
@@ -60,81 +66,93 @@ const PregnanciesPU = ({ patientId, datas, setDatas, setPopUpVisible }) => {
 
   return (
     <>
-      {datas ? (
-        <>
-          <h1 className="pregnancies-title">Patient pregnancies</h1>
-          {errMsgPost && (
-            <div className="pregnancies-err">
-              Unable to save form : please fill out "Description, Date Of Event"
-              fields
-            </div>
-          )}
-          <table className="pregnancies-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("description")}>Description</th>
-                <th onClick={() => handleSort("date_of_event")}>
-                  Date Of Event
-                </th>
-                <th onClick={() => handleSort("premises")}>Premises</th>
-                <th className="pregnancies-table-nofilter">Term</th>
-                <th onClick={() => handleSort("created_by_id")}>Created By</th>
-                <th onClick={() => handleSort("date_created")}>Created On</th>
-                <th style={{ textDecoration: "none", cursor: "default" }}>
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {addVisible && (
-                <PregnancyForm
-                  editCounter={editCounter}
-                  setAddVisible={setAddVisible}
-                  patientId={patientId}
-                  setDatas={setDatas}
-                  setErrMsgPost={setErrMsgPost}
-                />
+      {!isLoading ? (
+        errMsg ? (
+          <p className="pregnancies-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="pregnancies-title">Patient pregnancies</h1>
+              {errMsgPost && (
+                <div className="pregnancies-err">
+                  Unable to save form : please fill out "Description, Date Of
+                  Event" fields
+                </div>
               )}
-              {direction.current
-                ? datas
-                    .sort((a, b) =>
-                      a[columnToSort]
-                        ?.toString()
-                        .localeCompare(b[columnToSort]?.toString())
-                    )
-                    .map((pregnancy) => (
-                      <PregnancyEvent
-                        event={pregnancy}
-                        key={pregnancy.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))
-                : datas
-                    .sort((a, b) =>
-                      b[columnToSort]
-                        ?.toString()
-                        .localeCompare(a[columnToSort]?.toString())
-                    )
-                    .map((pregnancy) => (
-                      <PregnancyEvent
-                        event={pregnancy}
-                        key={pregnancy.id}
-                        setDatas={setDatas}
-                        editCounter={editCounter}
-                        setErrMsgPost={setErrMsgPost}
-                      />
-                    ))}
-            </tbody>
-          </table>
-          <div className="pregnancies-btn-container">
-            <button onClick={handleAdd} disabled={addVisible}>
-              Add Event
-            </button>
-            <button onClick={handleClose}>Close</button>
-          </div>
-        </>
+              <table className="pregnancies-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort("description")}>
+                      Description
+                    </th>
+                    <th onClick={() => handleSort("date_of_event")}>
+                      Date Of Event
+                    </th>
+                    <th onClick={() => handleSort("premises")}>Premises</th>
+                    <th className="pregnancies-table-nofilter">Term</th>
+                    <th onClick={() => handleSort("created_by_id")}>
+                      Created By
+                    </th>
+                    <th onClick={() => handleSort("date_created")}>
+                      Created On
+                    </th>
+                    <th style={{ textDecoration: "none", cursor: "default" }}>
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {addVisible && (
+                    <PregnancyForm
+                      editCounter={editCounter}
+                      setAddVisible={setAddVisible}
+                      patientId={patientId}
+                      fetchRecord={fetchRecord}
+                      setErrMsgPost={setErrMsgPost}
+                    />
+                  )}
+                  {direction.current
+                    ? datas
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((pregnancy) => (
+                          <PregnancyEvent
+                            event={pregnancy}
+                            key={pregnancy.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))
+                    : datas
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((pregnancy) => (
+                          <PregnancyEvent
+                            event={pregnancy}
+                            key={pregnancy.id}
+                            fetchRecord={fetchRecord}
+                            editCounter={editCounter}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))}
+                </tbody>
+              </table>
+              <div className="pregnancies-btn-container">
+                <button onClick={handleAdd} disabled={addVisible}>
+                  Add Event
+                </button>
+                <button onClick={handleClose}>Close</button>
+              </div>
+            </>
+          )
+        )
       ) : (
         <CircularProgress />
       )}

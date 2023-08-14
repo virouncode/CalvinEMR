@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CircularProgress } from "@mui/material";
 
 //API
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import { getAvailableRooms } from "../../api/getAvailableRooms";
 import { useAxiosEvents } from "../../hooks/useAxiosEvents";
 
@@ -128,7 +128,7 @@ const Calendar = ({ timelineVisible }) => {
           const newEvents = [...events];
           newEvents.splice(indexOfEventToRemove, 1);
           try {
-            await axios.delete(`/appointments/${currentEvent.current.id}`, {
+            await axiosXano.delete(`/appointments/${currentEvent.current.id}`, {
               headers: { Authorization: `Bearer ${auth.authToken}` },
             });
             toast.success("Deleted Successfully", { containerId: "A" });
@@ -160,7 +160,7 @@ const Calendar = ({ timelineVisible }) => {
       const newEvents = [...events];
       newEvents.splice(indexOfEventToRemove, 1);
       try {
-        await axios.delete(`/appointments/${currentEvent.current.id}`, {
+        await axiosXano.delete(`/appointments/${currentEvent.current.id}`, {
           headers: { Authorization: `Bearer ${auth.authToken}` },
         });
         toast.success("Deleted Successfully", { containerId: "A" });
@@ -459,7 +459,7 @@ const Calendar = ({ timelineVisible }) => {
         };
 
         try {
-          const response = await axios.post("/appointments", datas, {
+          const response = await axiosXano.post("/appointments", datas, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${auth.authToken}`,
@@ -498,7 +498,7 @@ const Calendar = ({ timelineVisible }) => {
         date_created: Date.parse(new Date()),
       };
       try {
-        const response = await axios.post(
+        const response = await axiosXano.post(
           "/appointments",
           JSON.stringify(datas),
           {
@@ -579,7 +579,7 @@ const Calendar = ({ timelineVisible }) => {
       ) {
         datas.room = event.extendedProps.room;
         try {
-          await axios.put(`/appointments/${event.id}`, datas, {
+          await axiosXano.put(`/appointments/${event.id}`, datas, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${auth.authToken}`,
@@ -615,7 +615,7 @@ const Calendar = ({ timelineVisible }) => {
         event.setResources([rooms[_.findIndex(rooms, { title: newRoom })].id]);
         datas.room = newRoom;
         try {
-          await axios.put(`/appointments/${event.id}`, datas, {
+          await axiosXano.put(`/appointments/${event.id}`, datas, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${auth.authToken}`,
@@ -691,7 +691,7 @@ const Calendar = ({ timelineVisible }) => {
         date_created: Date.parse(new Date()),
       };
       try {
-        await axios.put(`/appointments/${event.id}`, datas, {
+        await axiosXano.put(`/appointments/${event.id}`, datas, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
@@ -862,7 +862,7 @@ const Calendar = ({ timelineVisible }) => {
       date_created: Date.parse(new Date()),
     };
     try {
-      await axios.put(`/appointments/${currentEvent.current.id}`, datas, {
+      await axiosXano.put(`/appointments/${currentEvent.current.id}`, datas, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,

@@ -10,13 +10,12 @@ import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import useAuth from "../../../../hooks/useAuth";
 import {
   deletePatientRecord,
-  getPatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
 
-const PregnancyEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
+const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
   const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
@@ -48,14 +47,13 @@ const PregnancyEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord("/pregnancies", event.patient_id, auth.authToken)
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", {
+      toast.error(err.message, {
         containerId: "B",
       });
     }
@@ -73,10 +71,14 @@ const PregnancyEvent = ({ event, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/pregnancies", event.id, auth.authToken);
-      setDatas(
-        await getPatientRecord("/pregnancies", event.patient_id, auth.authToken)
-      );
+      try {
+        await deletePatientRecord("/pregnancies", event.id, auth.authToken);
+        const abortController = new AbortController();
+        fetchRecord(abortController);
+        toast.success("Deleted successfully", { containerId: "B" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+      }
     }
   };
 

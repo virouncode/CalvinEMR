@@ -8,7 +8,7 @@ import {
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { postPatientRecord } from "../../../api/fetchRecords";
-import axios from "../../../api/xano";
+import axiosXano from "../../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
 import AddressesList from "../../Lists/AddressesList";
@@ -25,7 +25,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
   useEffect(() => {
     const fetchSites = async () => {
       try {
-        const response = await axios.get(`/sites`, {
+        const response = await axiosXano.get(`/sites`, {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
           },
@@ -41,7 +41,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
   useEffect(() => {
     const fetchAddress = async () => {
       try {
-        const response = await axios.get(`/settings?staff_id=${user.id}`, {
+        const response = await axiosXano.get(`/settings?staff_id=${user.id}`, {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
           },
@@ -84,7 +84,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
       pdf.internal.pageSize.getWidth(),
       pdf.internal.pageSize.getHeight()
     );
-    let fileToUpload = await axios.post(
+    let fileToUpload = await axiosXano.post(
       "/upload/attachment",
       {
         content: pdf.output("dataurlstring"),
@@ -131,7 +131,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
       toast.success("Saved succesfully", { containerId: "C" });
     } catch (err) {
       setProgress(false);
-      toast.error("Unable to save, please contact admin", { containerId: "C" });
+      toast.error(err.message, { containerId: "C" });
     }
   };
 
@@ -140,7 +140,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
   const handleAddressChange = async (e) => {
     setAddressSelected(e.target.value);
     try {
-      await axios.put(
+      await axiosXano.put(
         `/settings/${settings.id}`,
         { ...settings, clinic_address: e.target.value },
         {

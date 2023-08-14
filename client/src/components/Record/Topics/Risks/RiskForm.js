@@ -2,17 +2,14 @@ import React, { useState } from "react";
 import formatName from "../../../../utils/formatName";
 import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
 import useAuth from "../../../../hooks/useAuth";
-import {
-  getPatientRecord,
-  postPatientRecord,
-} from "../../../../api/fetchRecords";
+import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 
 const RiskForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  setDatas,
+  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
@@ -43,14 +40,13 @@ const RiskForm = ({
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord("/risk_factors", patientId, auth.authToken)
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", {
+      toast.error(err.message, {
         containerId: "B",
       });
     }

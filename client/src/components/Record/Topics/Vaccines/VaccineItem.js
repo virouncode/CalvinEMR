@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import VaccineCell from "./VaccineCell";
 
 const VaccineItem = ({
@@ -10,7 +10,7 @@ const VaccineItem = ({
   type,
   description,
   datas,
-  setDatas,
+  fetchRecord,
   patientInfos,
   editable,
   setEditable,
@@ -45,7 +45,7 @@ const VaccineItem = ({
                 setFormVisible={setFormVisible}
                 setScrollPosition={setScrollPosition}
                 datas={datas}
-                setDatas={setDatas}
+                fetchRecord={fetchRecord}
                 setAlertVisible={setAlertVisible}
               />
             ))
@@ -68,7 +68,7 @@ const VaccineItem = ({
                   setFormVisible={setFormVisible}
                   setScrollPosition={setScrollPosition}
                   datas={datas}
-                  setDatas={setDatas}
+                  fetchRecord={fetchRecord}
                   setAlertVisible={setAlertVisible}
                 />
               ))
@@ -89,7 +89,7 @@ const VaccineItem = ({
                 setFormVisible={setFormVisible}
                 setScrollPosition={setScrollPosition}
                 datas={datas}
-                setDatas={setDatas}
+                fetchRecord={fetchRecord}
                 setAlertVisible={setAlertVisible}
               />
             ))}

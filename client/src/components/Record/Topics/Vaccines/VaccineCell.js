@@ -15,7 +15,7 @@ const VaccineCell = ({
   editable,
   setEditable,
   datas,
-  setDatas,
+  fetchRecord,
   setAlertVisible,
 }) => {
   return vaccineInfos ? (
@@ -35,7 +35,7 @@ const VaccineCell = ({
               .rangeEnd
           }
           datas={datas}
-          setDatas={setDatas}
+          fetchRecord={fetchRecord}
           editable={editable}
           setEditable={setEditable}
         />
@@ -48,7 +48,7 @@ const VaccineCell = ({
           vaccineInfos={vaccineInfos}
           patientInfos={patientInfos}
           datas={datas}
-          setDatas={setDatas}
+          fetchRecord={fetchRecord}
           editable={editable}
           setEditable={setEditable}
           setAlertVisible={setAlertVisible}
@@ -61,7 +61,7 @@ const VaccineCell = ({
           vaccineInfos={vaccineInfos}
           patientInfos={patientInfos}
           datas={datas}
-          setDatas={setDatas}
+          fetchRecord={fetchRecord}
           editable={editable}
           setEditable={setEditable}
         />

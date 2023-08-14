@@ -6,7 +6,7 @@ import MessagesLeftBar from "./MessagesLeftBar";
 import MessagesBox from "./MessagesBox";
 //Utils
 import useAuth from "../../hooks/useAuth";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -31,7 +31,7 @@ const Messages = () => {
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const response = await axios.get(`/messages?staff_id=${user.id}`, {
+      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,

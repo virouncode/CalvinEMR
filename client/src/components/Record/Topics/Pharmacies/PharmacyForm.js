@@ -4,7 +4,7 @@ import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
 import CountriesList from "../../../Lists/CountriesList";
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
-import axios from "../../../../api/xano";
+import axiosXano from "../../../../api/xano";
 import { toast } from "react-toastify";
 
 const PharmacyForm = ({
@@ -55,7 +55,7 @@ const PharmacyForm = ({
         formDatas
       );
       setAddNew(false);
-      const response = await axios.get("/all_pharmacies", {
+      const response = await axiosXano.get("/all_pharmacies", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
@@ -64,7 +64,7 @@ const PharmacyForm = ({
       setPharmaciesList(response.data);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", { containerId: "B" });
+      toast.error(err.message, { containerId: "B" });
     }
   };
 

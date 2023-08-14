@@ -5,16 +5,18 @@ import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 //Utils
 import ProgressNotesAttachments from "./ProgressNotesAttachments";
 import formatName from "../../../utils/formatName";
-import { getPatientRecord, postPatientRecord } from "../../../api/fetchRecords";
+import { postPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
-import axios from "../../../api/xano";
+import axiosXano from "../../../api/xano";
 import ProgressNotesTemplatesList from "./ProgressNotesTemplatesList";
 import NewWindow from "react-new-window";
 import NewTemplate from "./NewTemplate";
 import EditTemplate from "./EditTemplate";
+import { toast } from "react-toastify";
+import { CircularProgress } from "@mui/material";
 var _ = require("lodash");
 
-const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
+const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
   //hooks
   const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
@@ -25,22 +27,36 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
     attachments_ids: [],
   });
   const [files, setFiles] = useState([]);
-  const [templateSelectedId, setTemplateSelectedId] = useState("-3");
+  const [templateSelectedId, setTemplateSelectedId] = useState("");
   const [templates, setTemplates] = useState([]);
   const [newTemplateVisible, setNewTemplateVisible] = useState(false);
   const [editTemplateVisible, setEditTemplateVisible] = useState(false);
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchTemplates = async () => {
-      const response = await axios.get("/progress_notes_templates", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
-      setTemplates(response.data);
+      try {
+        const response = await axiosXano.get("/progress_notes_templates", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+          signal: abortController.signal,
+        });
+        setTemplates(
+          response.data.sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          )
+        );
+      } catch (err) {
+        if (err.name !== "CanceledError") {
+          toast.error(err.message, { containerId: "A" });
+        }
+      }
     };
     fetchTemplates();
+    return () => abortController.abort();
   }, [auth.authToken]);
 
   //HANDLERS
@@ -65,26 +81,25 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
         created_by_id: user.id,
       });
     }
+    try {
+      const attach_ids = (
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: attachments,
+        })
+      ).data;
 
-    const attach_ids = (
-      await postPatientRecord("/attachments", user.id, auth.authToken, {
-        attachments_array: attachments,
-      })
-    ).data;
+      await postPatientRecord("/progress_notes", user.id, auth.authToken, {
+        ...formDatas,
+        attachments_ids: attach_ids,
+      });
 
-    await postPatientRecord("/progress_notes", user.id, auth.authToken, {
-      ...formDatas,
-      attachments_ids: attach_ids,
-    });
-
-    setAddVisible(false);
-    setProgressNotes(
-      await getPatientRecord(
-        "/patient_progress_notes",
-        patientId,
-        auth.authToken
-      )
-    );
+      setAddVisible(false);
+      const abortController = new AbortController();
+      fetchRecord(abortController);
+      toast.success("Saved successfully", { containerId: "A" });
+    } catch (err) {
+      toast.err(err.message, { containerId: "A" });
+    }
   };
   const handleChange = (e) => {
     const name = e.target.name;
@@ -98,6 +113,7 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
     input.accept = ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav";
     input.onchange = (e) => {
       // getting a hold of the file reference
+      setIsLoadingFile(true);
       let file = e.target.files[0];
       if (file.size > 20000000) {
         alert("The file is too large, please choose another one");
@@ -109,18 +125,23 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
       // here we tell the reader what to do when it's done reading...
       reader.onload = async (e) => {
         let content = e.target.result; // this is the content!
-        const response = await axios.post(
-          "/upload/attachment",
-          {
-            content: content,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
+        try {
+          const response = await axiosXano.post(
+            "/upload/attachment",
+            {
+              content: content,
             },
-          }
-        );
-        setFiles([...files, response.data]); //meta, mime, name, path, size, type
+            {
+              headers: {
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+            }
+          );
+          setFiles([...files, response.data]); //meta, mime, name, path, size, type
+          setIsLoadingFile(false);
+        } catch (err) {
+          toast.error(err.message, { containerId: "A" });
+        }
       };
     };
     input.click();
@@ -210,6 +231,7 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
           className="progress-notes-form-submit-btn"
           type="submit"
           value="Save & Sign"
+          disabled={isLoadingFile}
         />
         <button
           type="button"
@@ -218,6 +240,9 @@ const ProgressNotesForm = ({ setAddVisible, setProgressNotes, patientId }) => {
         >
           Cancel
         </button>
+        {isLoadingFile && (
+          <CircularProgress size="1rem" style={{ margin: "5px" }} />
+        )}
       </div>
       {newTemplateVisible && (
         <NewWindow

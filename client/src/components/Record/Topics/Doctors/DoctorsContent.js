@@ -1,14 +1,15 @@
 //Librairies
 //Librairies
+import { CircularProgress } from "@mui/material";
 import React from "react";
-import { useRecord } from "../../../../hooks/useRecord";
 
-const DoctorsContent = ({ patientId, datas, setDatas }) => {
-  useRecord("/family_doctors", patientId, setDatas);
-  return (
-    datas && (
+const DoctorsContent = ({ datas, isLoading, errMsg }) => {
+  return !isLoading ? (
+    errMsg ? (
+      <p className="patient-doctors-content-err">{errMsg}</p>
+    ) : (
       <div className="patient-doctors-content">
-        {datas.length >= 1 ? (
+        {datas && datas.length >= 1 ? (
           <ul>
             {datas
               .sort((a, b) => b.date_created - a.date_created)
@@ -24,6 +25,8 @@ const DoctorsContent = ({ patientId, datas, setDatas }) => {
         )}
       </div>
     )
+  ) : (
+    <CircularProgress size="1rem" style={{ margin: "5px" }} />
   );
 };
 

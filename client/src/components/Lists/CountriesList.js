@@ -3,7 +3,9 @@ import React from "react";
 const CountriesList = ({ handleChange, value, name }) => {
   return (
     <select name={name} onChange={handleChange} value={value}>
-      <option value="">Choose a Country</option>
+      <option value="" disabled>
+        Choose a Country
+      </option>
       <option value="Afghanistan">Afghanistan</option>
       <option value="Aland Islands">Aland Islands</option>
       <option value="Albania">Albania</option>

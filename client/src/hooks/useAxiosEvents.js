@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { parseToEvents } from "../utils/parseToEvents";
-import axios from "../api/xano";
+import axiosXano from "../api/xano";
 
 export const useAxiosEvents = () => {
   const [events, setEvents] = useState(null);
@@ -22,7 +22,7 @@ export const useAxiosEvents = () => {
       setLoadingEvents(true);
       const ctrl = new AbortController();
       setController(ctrl);
-      const res = await axios.post(
+      const res = await axiosXano.post(
         "/staff_appointments",
         {
           hosts_ids: hostsIds,

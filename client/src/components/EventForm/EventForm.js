@@ -9,7 +9,7 @@ import React, {
 
 //API
 import { getAvailableRooms } from "../../api/getAvailableRooms";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 
 //Components
 import EditGuests from "./EditGuests";
@@ -70,7 +70,7 @@ const EventForm = forwardRef(
     //formDatas
     useEffect(() => {
       axiosFetch({
-        axiosInstance: axios,
+        axiosInstance: axiosXano,
         method: "GET",
         url: `/appointments/${currentEvent.current.id}`,
         authToken: auth.authToken,
@@ -80,7 +80,7 @@ const EventForm = forwardRef(
 
     useEffect(() => {
       const fetchSettings = async () => {
-        const response = await axios.get(
+        const response = await axiosXano.get(
           `/settings?staff_id=${currentEvent.current.extendedProps.host}`,
           {
             headers: {

@@ -7,7 +7,7 @@ const EditTemplatesList = ({
 }) => {
   return (
     <select value={editTemplateSelectedId} onChange={handleSelectEditTemplate}>
-      <option style={{ backgroundColor: "#cccccc" }} disabled value="-1">
+      <option disabled value="">
         my templates
       </option>
       {myTemplates.map((template) => (

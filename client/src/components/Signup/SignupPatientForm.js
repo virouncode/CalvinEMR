@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toLocalDate } from "../../utils/formatDates";
 import CountriesList from "../Lists/CountriesList";
-import axios from "../../api/xano";
+import axiosXano from "../../api/xano";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { createChartNbr } from "../../utils/createChartNbr";
@@ -41,7 +41,7 @@ const SignupPatientForm = () => {
       setErrMsg("You entered two different passwords");
       return;
     }
-    const patients = await axios.get("/patients", {
+    const patients = await axiosXano.get("/patients", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.authToken}`,
@@ -81,7 +81,7 @@ const SignupPatientForm = () => {
       datasToPost.date_created = Date.parse(new Date());
       delete datasToPost.confirm_password;
 
-      const response = await axios.post("/patients", datasToPost, {
+      const response = await axiosXano.post("/patients", datasToPost, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
@@ -93,7 +93,7 @@ const SignupPatientForm = () => {
         response.data.id
       );
 
-      await axios.put(`/patients/${response.data.id}`, datasToPost, {
+      await axiosXano.put(`/patients/${response.data.id}`, datasToPost, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
@@ -177,7 +177,7 @@ const SignupPatientForm = () => {
         observations: "",
       };
 
-      await axios.post("/vaccines", vaccinesDatas, {
+      await axiosXano.post("/vaccines", vaccinesDatas, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
@@ -209,7 +209,7 @@ const SignupPatientForm = () => {
     // here we tell the reader what to do when it's done reading...
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
-      let fileToUpload = await axios.post("/upload/attachment_register", {
+      let fileToUpload = await axiosXano.post("/upload/attachment_register", {
         content: content,
       });
       setFormDatas({ ...formDatas, avatar: fileToUpload.data });

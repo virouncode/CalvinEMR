@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import ProgressNotesCard from "./ProgressNotesCard";
 import ProgressNotesForm from "./ProgressNotesForm";
 //Hooks
-import { useRecord } from "../../../hooks/useRecord";
+import { usePatientRecord } from "../../../hooks/usePatientRecord";
 //Utils
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import ProgressNotesHeader from "./ProgressNotesHeader";
@@ -16,7 +16,6 @@ import useAuth from "../../../hooks/useAuth";
 const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
   //hooks
   const { user } = useAuth();
-  const [progressNotes, setProgressNotes] = useState(null);
   const [addVisible, setAddVisible] = useState(false);
   const [popUpVisible, setPopUpVisible] = useState(false);
   const [search, setSearch] = useState("");
@@ -28,7 +27,12 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
   );
   const contentRef = useRef(null);
   const triangleRef = useRef(null);
-  useRecord("/patient_progress_notes", patientId, setProgressNotes);
+
+  const [
+    { datas: progressNotes, isLoading, errMsg },
+    fetchRecord,
+    setProgressNotes,
+  ] = usePatientRecord("/patient_progress_notes", patientId);
 
   const checkAllNotes = () => {
     const allNotesIds = progressNotes.map(({ id }) => id);
@@ -93,12 +97,14 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
         {progressNotes && addVisible && (
           <ProgressNotesForm
             setAddVisible={setAddVisible}
-            setProgressNotes={setProgressNotes}
+            fetchRecord={fetchRecord}
             patientId={patientId}
           />
         )}
-        {progressNotes ? (
-          progressNotes.length > 0 ? (
+        {!isLoading ? (
+          errMsg ? (
+            <p className="progress-notes-err">{errMsg}</p>
+          ) : progressNotes && progressNotes.length ? (
             order === "top" ? (
               progressNotes
                 .sort(
@@ -128,6 +134,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
                     progressNote={progressNote}
                     progressNotes={progressNotes}
                     setProgressNotes={setProgressNotes}
+                    fetchRecord={fetchRecord}
                     patientId={patientId}
                     key={progressNote.id}
                     checkedNotes={checkedNotes}
@@ -165,6 +172,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
                     progressNote={progressNote}
                     progressNotes={progressNotes}
                     setProgressNotes={setProgressNotes}
+                    fetchRecord={fetchRecord}
                     patientId={patientId}
                     key={progressNote.id}
                     checkedNotes={checkedNotes}

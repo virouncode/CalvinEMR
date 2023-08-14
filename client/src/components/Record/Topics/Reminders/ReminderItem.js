@@ -7,13 +7,12 @@ import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import useAuth from "../../../../hooks/useAuth";
 import {
   deletePatientRecord,
-  getPatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
 
-const ReminderItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
+const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
   const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
@@ -45,14 +44,13 @@ const ReminderItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
         auth.authToken,
         formDatas
       );
-      setDatas(
-        await getPatientRecord("/reminders", item.patient_id, auth.authToken)
-      );
+      const abortController = new AbortController();
+      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error("Unable to save, please contact admin", {
+      toast.error(err.message, {
         containerId: "B",
       });
     }
@@ -70,10 +68,14 @@ const ReminderItem = ({ item, setDatas, editCounter, setErrMsgPost }) => {
         content: "Do you really want to delete this item ?",
       })
     ) {
-      await deletePatientRecord("/reminders", item.id, auth.authToken);
-      setDatas(
-        await getPatientRecord("/reminders", item.patient_id, auth.authToken)
-      );
+      try {
+        await deletePatientRecord("/reminders", item.id, auth.authToken);
+        const abortController = new AbortController();
+        fetchRecord(abortController);
+        toast.success("Deleted successfully", { containerId: "B" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+      }
     }
   };
 
