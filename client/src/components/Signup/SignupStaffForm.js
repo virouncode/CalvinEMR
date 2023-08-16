@@ -64,7 +64,9 @@ const SignupStaffForm = () => {
         setFormDatas({ ...formDatas, sign: fileToUpload.data });
         setIsLoadingFile(false);
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error unable to load file: ${err.message}`, {
+          containerId: "A",
+        });
         setIsLoadingFile(false);
       }
     };
@@ -94,7 +96,7 @@ const SignupStaffForm = () => {
         return;
       }
     } catch (err) {
-      setErrMsg(err.message);
+      setErrMsg(`Error: unable to sign up staff: ${err.message}`);
       return;
     }
     try {

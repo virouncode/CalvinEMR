@@ -58,7 +58,9 @@ const MessageThumbnail = ({
         );
         setMessages(newMessages);
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to get messages: ${err.message}`, {
+          containerId: "A",
+        });
       }
     }
   };
@@ -124,7 +126,9 @@ const MessageThumbnail = ({
         setMessages(newMessages);
         toast.success("Message deleted successfully", { containerId: "A" });
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to delete message: ${err.message}`, {
+          containerId: "A",
+        });
       }
     }
   };

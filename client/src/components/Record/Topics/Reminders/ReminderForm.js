@@ -44,7 +44,7 @@ const ReminderForm = ({
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, {
+      toast.error(`Error unable to save reminder: ${err.message}`, {
         containerId: "B",
       });
     }

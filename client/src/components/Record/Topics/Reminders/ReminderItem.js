@@ -50,7 +50,7 @@ const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, {
+      toast.error(`Error: unable to update reminder: ${err.message}`, {
         containerId: "B",
       });
     }
@@ -74,7 +74,9 @@ const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        toast.error(`Error: unable to delete reminder: ${err.message}`, {
+          containerId: "B",
+        });
       }
     }
   };

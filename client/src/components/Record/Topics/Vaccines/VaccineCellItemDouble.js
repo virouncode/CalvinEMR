@@ -79,7 +79,9 @@ const VaccineCellItemDouble = ({
           fetchRecord(abortController);
           toast.success("Saved successfully", { containerId: "B" });
         } catch (err) {
-          toast.error(err.message, { containerId: "B" });
+          toast.error(`Error unable to save vaccine: ${err.message}`, {
+            containerId: "B",
+          });
         }
       }
     }
@@ -120,7 +122,9 @@ const VaccineCellItemDouble = ({
           fetchRecord(abortController);
           toast.success("Saved successfully", { containerId: "B" });
         } catch (err) {
-          toast.error(err.message, { containerId: "B" });
+          toast.error(`Error unable to save vaccine: ${err.message}`, {
+            containerId: "B",
+          });
         }
       }
     }

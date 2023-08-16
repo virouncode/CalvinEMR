@@ -36,7 +36,9 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
         setSites(response.data);
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "B" });
+          toast.error(`Error: unable to fetch clinic sites: ${err.message}`, {
+            containerId: "B",
+          });
       }
     };
     fetchSites();
@@ -57,7 +59,10 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
         setSettings(response.data);
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "B" });
+          toast.error(
+            `Error: unable to fetch user preferred site address: ${err.message}`,
+            { containerId: "B" }
+          );
       }
     };
     fetchAddress();
@@ -140,7 +145,10 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
       toast.success("Saved succesfully", { containerId: "C" });
     } catch (err) {
       setProgress(false);
-      toast.error(err.message, { containerId: "C" });
+      toast.error(
+        `Error: unable to save prescription to progress notes: ${err.message}`,
+        { containerId: "C" }
+      );
     }
   };
 

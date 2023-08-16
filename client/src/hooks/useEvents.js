@@ -73,7 +73,10 @@ export const useEvents = (
         dispatch({ type: "FETCH_SUCCESS", payload: formattedEvents });
       } catch (err) {
         if (err.name !== "CanceledError") {
-          dispatch({ type: "FETCH_ERROR", payload: err.message });
+          dispatch({
+            type: "FETCH_ERROR",
+            payload: `Error: unable to fetch appointments: ${err.message}`,
+          });
         }
       }
     },

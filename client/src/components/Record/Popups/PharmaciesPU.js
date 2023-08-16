@@ -74,7 +74,9 @@ const PharmaciesPU = ({
       fetchRecord(abortController);
       toast.success("Pharmacy added to patient", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to add pharmacy: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

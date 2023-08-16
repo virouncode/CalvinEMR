@@ -33,7 +33,12 @@ const MyAccountForm = () => {
         setTempFormDatas(response.data);
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "A" });
+          toast.error(
+            `Error : unable fetch your account infos: ${err.message}`,
+            {
+              containerId: "A",
+            }
+          );
       }
     };
     fetchMyInfos();
@@ -76,7 +81,9 @@ const MyAccountForm = () => {
         setTempFormDatas({ ...tempFormDatas, sign: fileToUpload.data });
         setIsLoadingFile(false);
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to load file: ${err.message}`, {
+          containerId: "A",
+        });
       }
     };
   };
@@ -120,7 +127,7 @@ const MyAccountForm = () => {
       setClinic({ ...clinic, staffInfos: response.data });
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setErrMsg(err.message);
+      setErrMsg(`Error: unable to save infos: ${err.message}`);
     }
   };
 

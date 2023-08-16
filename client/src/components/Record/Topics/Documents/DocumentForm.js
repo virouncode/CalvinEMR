@@ -45,7 +45,9 @@ const DocumentForm = ({
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error unable to save document: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
   const handleUpload = async (e) => {
@@ -82,7 +84,9 @@ const DocumentForm = ({
         setFormDatas({ ...formDatas, file: fileToUpload.data });
       } catch (err) {
         setIsLoadingFile(false);
-        toast.error(err.message, { containerId: "B" });
+        toast.error(`Error unable to load document: ${err.message}`, {
+          containerId: "B",
+        });
       }
     };
   };

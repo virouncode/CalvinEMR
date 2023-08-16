@@ -30,7 +30,9 @@ const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
       fetchRecord(abortController);
       toast.success("Saved successfully", { containerId: "A" });
     } catch (err) {
-      toast.error(err.message, { containerId: "A" });
+      toast.error(`Error unable to save social history: ${err.message}`, {
+        containerId: "B",
+      });
     }
     setPopUpVisible(false);
   };

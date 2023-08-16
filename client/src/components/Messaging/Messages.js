@@ -71,7 +71,9 @@ const Messages = () => {
         setMessages(newMessages);
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "A" });
+          toast.error(`Error: unable to get messages: ${err.message}`, {
+            containerId: "A",
+          });
       }
     };
     fetchMessages();

@@ -151,7 +151,9 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         setFormDatas({ ...formDatas, avatar: fileToUpload.data });
         setIsLoadingFile(false);
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        toast.error(`Error: unable to load file: ${err.message}`, {
+          containerId: "B",
+        });
         setIsLoadingFile(false);
       }
     };
@@ -213,9 +215,12 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         setClinic({ ...clinic, patientsInfos: response2.data });
         toast.success("Saved successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, {
-          containerId: "B",
-        });
+        toast.error(
+          `Error: unable to update patient demographics : ${err.message}`,
+          {
+            containerId: "B",
+          }
+        );
       }
     }
   };

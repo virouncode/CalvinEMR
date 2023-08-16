@@ -50,7 +50,10 @@ const MessageDetail = ({
         );
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "A" });
+          toast.error(
+            `Error: unable to fetch previous messages: ${err.message}`,
+            { containerId: "A" }
+          );
       }
     };
     fetchPreviousMsgs();
@@ -96,7 +99,9 @@ const MessageDetail = ({
         setCurrentMsgId(0);
         toast.success("Message deleted successfully", { containerId: "A" });
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to delete message: ${err.message}`, {
+          containerId: "A",
+        });
       }
     }
   };

@@ -70,7 +70,9 @@ const ProgressNotesToolBar = ({
         }
       );
     } catch (err) {
-      toast.error(err.message, { containerId: "A" });
+      toast.error(`Error: unable to change order: ${err.message}`, {
+        containerId: "A",
+      });
     }
   };
 

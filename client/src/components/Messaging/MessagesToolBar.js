@@ -86,7 +86,9 @@ const MessagesToolBar = ({
         setMsgsSelectedIds([]);
         setSelectAllVisible(true);
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to delete message(s): ${err.message}`, {
+          containerId: "A",
+        });
       }
     }
   };
@@ -127,7 +129,9 @@ const MessagesToolBar = ({
         containerId: "A",
       });
     } catch (err) {
-      toast.error(err.message, { containerId: "A" });
+      toast.error(`Error: unable to mve messages back: ${err.message}`, {
+        containerId: "A",
+      });
     }
   };
 

@@ -145,7 +145,9 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
       setNewVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to send message: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

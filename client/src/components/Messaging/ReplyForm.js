@@ -64,7 +64,9 @@ const ReplyForm = ({
       setReplyVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
-      toast.error(err.message, { containerId: "A" });
+      toast.error(`Error: unable to send message: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

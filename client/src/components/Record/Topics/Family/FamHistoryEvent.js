@@ -61,7 +61,10 @@ const FamHistoryEvent = ({
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(
+        `Error unable to update family history item: ${err.message}`,
+        { containerId: "B" }
+      );
     }
   };
 
@@ -83,7 +86,10 @@ const FamHistoryEvent = ({
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        toast.error(
+          `Error unable to delete family history item: ${err.message}`,
+          { containerId: "B" }
+        );
       }
     }
   };

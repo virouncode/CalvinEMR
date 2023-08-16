@@ -22,7 +22,9 @@ const DocumentItem = ({ item, fetchRecord, showDocument }) => {
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        toast.error(`Error unable to delete document: ${err.message}`, {
+          containerId: "B",
+        });
       }
     }
   };

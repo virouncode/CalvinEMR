@@ -36,7 +36,9 @@ const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        toast.error(`Error unable to delete ongoing concern: ${err.message}`, {
+          containerId: "B",
+        });
       }
     }
   };
@@ -69,7 +71,9 @@ const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error unable to update ongoing concern: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

@@ -24,7 +24,7 @@ const FirstDaySelect = () => {
       });
       toast.success("Saved preference", { containerId: "A" });
     } catch (err) {
-      toast.success(err.message, {
+      toast.success(`Error: unable to save preference: ${err.message}`, {
         containerId: "A",
       });
     }

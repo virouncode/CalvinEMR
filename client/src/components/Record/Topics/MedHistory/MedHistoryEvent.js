@@ -56,7 +56,10 @@ const MedHistoryEvent = ({
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(
+        `Error unable to update medical history event: ${err.message}`,
+        { containerId: "B" }
+      );
     }
   };
 
@@ -78,7 +81,10 @@ const MedHistoryEvent = ({
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        toast.error(
+          `Error unable to delete medical history event: ${err.message}`,
+          { containerId: "B" }
+        );
       }
     }
   };

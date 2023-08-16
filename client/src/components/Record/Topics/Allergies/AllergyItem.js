@@ -46,7 +46,9 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to update allergy: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 
@@ -68,7 +70,9 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        toast.error(`Error: unable to delete item: ${err.message}`, {
+          containerId: "B",
+        });
       }
     }
   };

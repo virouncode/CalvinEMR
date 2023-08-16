@@ -52,7 +52,9 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
         );
       } catch (err) {
         if (err.name !== "CanceledError") {
-          toast.error(err.message, { containerId: "A" });
+          toast.error(`Error: unable to fetch templates: ${err.message}`, {
+            containerId: "A",
+          });
         }
       }
     };
@@ -99,7 +101,9 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
       fetchRecord(abortController);
       toast.success("Saved successfully", { containerId: "A" });
     } catch (err) {
-      toast.err(err.message, { containerId: "A" });
+      toast.err(`Error: unable to save progress note: ${err.message}`, {
+        containerId: "A",
+      });
     }
   };
   const handleChange = (e) => {
@@ -141,7 +145,9 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
           setFiles([...files, response.data]); //meta, mime, name, path, size, type
           setIsLoadingFile(false);
         } catch (err) {
-          toast.error(err.message, { containerId: "A" });
+          toast.error(`Error: unable to load file: ${err.message}`, {
+            containerId: "A",
+          });
           setIsLoadingFile(false);
         }
       };

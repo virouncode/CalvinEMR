@@ -201,7 +201,9 @@ const AppointmentForm = ({
         }
       }
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error unable to change start date: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 
@@ -286,7 +288,9 @@ const AppointmentForm = ({
         }
       }
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error unable to change end date: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 
@@ -342,7 +346,9 @@ const AppointmentForm = ({
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error unable to save appointment: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

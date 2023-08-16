@@ -54,7 +54,10 @@ const MedHistoryForm = ({
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(
+        `Error unable to save medical history event: ${err.message}`,
+        { containerId: "B" }
+      );
     }
   };
 

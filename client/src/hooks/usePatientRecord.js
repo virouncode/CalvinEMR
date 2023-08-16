@@ -44,7 +44,10 @@ export const usePatientRecord = (url, patientId) => {
         dispatch({ type: "FETCH_SUCCESS", payload: response.data });
       } catch (err) {
         if (err.name !== "CanceledError") {
-          dispatch({ type: "FETCH_ERROR", payload: err.message });
+          dispatch({
+            type: "FETCH_ERROR",
+            payload: `Error: unable to fetch patient record: ${err.message}`,
+          });
         }
       }
     },

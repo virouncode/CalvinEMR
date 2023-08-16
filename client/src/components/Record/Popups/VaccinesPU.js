@@ -69,7 +69,9 @@ const VaccinesPU = ({
       toast.success("Observations saved successfully", { containerId: "B" });
       setEditVisible(false);
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to save vaccine: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

@@ -79,7 +79,9 @@ const EventForm = forwardRef(
           setHostSettings(response.data);
         } catch (err) {
           if (err.name !== "CanceledError")
-            toast.error(err.message, { containerId: "A" });
+            toast.error(`Error: unable to fetch settings: ${err.message}`, {
+              containerId: "A",
+            });
         }
       };
       fetchSettings();
@@ -102,7 +104,9 @@ const EventForm = forwardRef(
           setAvailableRooms(response);
         } catch (err) {
           if (err.name !== "CanceledError")
-            toast.error(err.message, { containerId: "A" });
+            toast.error(`Error: unable to get available rooms ${err.message}`, {
+              containerId: "A",
+            });
           else console.log("aborted");
         }
       };
@@ -179,7 +183,9 @@ const EventForm = forwardRef(
           auth.authToken
         );
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to get available rooms: ${err.message}`, {
+          containerId: "A",
+        });
         return;
       }
       if (
@@ -226,7 +232,9 @@ const EventForm = forwardRef(
           auth.authToken
         );
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to get available rooms: ${err.message}`, {
+          containerId: "A",
+        });
       }
       if (
         tempFormDatas.room === "To be determined" ||

@@ -72,7 +72,9 @@ const ProgressNotesCard = ({
         setVersions(versionsResults);
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "A" });
+          toast.error(`Error: unable to save versions: ${err.message}`, {
+            containerId: "A",
+          });
       }
     };
     fetchVersions();
@@ -102,7 +104,9 @@ const ProgressNotesCard = ({
         setFiles(attachments.map(({ file }) => file));
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "A" });
+          toast.error(`Error: unable to fetch attachments: ${err.message}`, {
+            containerId: "A",
+          });
       }
     };
     fetchFiles();
@@ -189,7 +193,9 @@ const ProgressNotesCard = ({
         setVersions(versionsResults);
         toast.success("Progress note saved successfully", { containerId: "A" });
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to save progress note: ${err.message}`, {
+          containerId: "A",
+        });
       }
     }
   };

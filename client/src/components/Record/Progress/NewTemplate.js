@@ -84,7 +84,9 @@ const NewTemplate = ({
       setNewTemplateVisible(false);
       toast.success("Saved succesfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to save template: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
   return (

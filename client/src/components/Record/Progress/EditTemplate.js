@@ -83,7 +83,9 @@ const EditTemplate = ({
         setFormDatas({ ...formDatas, body: "" });
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        toast.error(`Error: unable to delete template: ${err.message}`, {
+          containerId: "B",
+        });
       }
     }
   };
@@ -117,7 +119,9 @@ const EditTemplate = ({
       setEditTemplateVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to save template: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
   return (

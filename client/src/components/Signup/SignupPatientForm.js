@@ -63,7 +63,7 @@ const SignupPatientForm = () => {
         return;
       }
     } catch (err) {
-      setErrMsg(err.message);
+      setErrMsg(`Error: unable to sign up patient: ${err.message}`);
       return;
     }
 
@@ -221,7 +221,9 @@ const SignupPatientForm = () => {
         setFormDatas({ ...formDatas, avatar: fileToUpload.data });
         setIsLoadingFile(false);
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error unable to sload file: ${err.message}`, {
+          containerId: "A",
+        });
         setIsLoadingFile(false);
       }
     };

@@ -55,7 +55,9 @@ const Invitation = ({
         if (abortController.signal.aborted) return;
         setSites(response.data);
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to get clinic sites: ${err.message}`, {
+          containerId: "A",
+        });
       }
     };
     fetchSites();
@@ -252,7 +254,9 @@ Powered by Calvin EMR`,
         }
       );
     } catch (err) {
-      toast.error(err.message, { containerId: "A" });
+      toast.error(`Error: unable to get user settings: ${err.message}`, {
+        containerId: "A",
+      });
     }
   };
   const handleMessageChange = (e) => {
@@ -289,7 +293,9 @@ Powered by Calvin EMR`,
         }
       );
     } catch (err) {
-      toast.error(err.message, { containerId: "A" });
+      toast.error(`Error: unable to get user settings: ${err.message}`, {
+        containerId: "A",
+      });
     }
   };
 

@@ -110,7 +110,9 @@ const Calendar = ({ timelineVisible }) => {
             currentEvent.current = null;
             lastCurrentId.current = "";
           } catch (err) {
-            toast.error(err.message, { containerId: "A" });
+            toast.error(`Error: unable to delete appointment: ${err.message}`, {
+              containerId: "A",
+            });
           }
         }
       }
@@ -143,7 +145,9 @@ const Calendar = ({ timelineVisible }) => {
         currentEvent.current = null;
         lastCurrentId.current = "";
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to delete appointment: ${err.message}`, {
+          containerId: "A",
+        });
       }
     }
   };
@@ -408,7 +412,9 @@ const Calendar = ({ timelineVisible }) => {
           auth.authToken
         );
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to get available rooms: ${err.message}`, {
+          containerId: "A",
+        });
         return;
       }
       if (
@@ -452,7 +458,9 @@ const Calendar = ({ timelineVisible }) => {
           lastCurrentId.current = response.data.id.toString();
         } catch (err) {
           if (err.name !== "CanceledError")
-            toast.error(err.message, { containerId: "A" });
+            toast.error(`Error: unable to save apointment: ${err.message}`, {
+              containerId: "A",
+            });
         }
       }
     } else {
@@ -491,7 +499,9 @@ const Calendar = ({ timelineVisible }) => {
         lastCurrentId.current = response.data.id.toString();
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "A" });
+          toast.error(`Error: unable to save appointment: ${err.message}`, {
+            containerId: "A",
+          });
       }
     }
   };
@@ -526,7 +536,9 @@ const Calendar = ({ timelineVisible }) => {
         auth.authToken
       );
     } catch (err) {
-      toast.error(err.message, { containerId: "A" });
+      toast.error(`Error: unable to get availabale rooms: ${err.message}`, {
+        containerId: "A",
+      });
       return;
     }
     const startAllDay = event.start.setHours(0, 0, 0, 0);
@@ -569,7 +581,9 @@ const Calendar = ({ timelineVisible }) => {
           fetchEvents(abortController);
         } catch (err) {
           if (err.name !== "CanceledError")
-            toast.error(err.message, { containerId: "A" });
+            toast.error(`Error: unable to save appointment: ${err.message}`, {
+              containerId: "A",
+            });
         }
       } else {
         info.revert();
@@ -601,7 +615,9 @@ const Calendar = ({ timelineVisible }) => {
           fetchEvents(abortController);
         } catch (err) {
           if (err.name !== "CanceledError")
-            toast.error(err.message, { containerId: "A" });
+            toast.error(`Error: unable to save appointment: ${err.message}`, {
+              containerId: "A",
+            });
         }
       } else {
         info.revert();
@@ -637,7 +653,9 @@ const Calendar = ({ timelineVisible }) => {
         auth.authToken
       );
     } catch (err) {
-      toast.error(err.message, { containerId: "A" });
+      toast.error(`Error: unable to save appointment: ${err.message}`, {
+        containerId: "A",
+      });
       return;
     }
     const startAllDay = event.start.setHours(0, 0, 0, 0);
@@ -679,7 +697,9 @@ const Calendar = ({ timelineVisible }) => {
         fetchEvents(abortController);
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "A" });
+          toast.error(`Error: unable to save appointment: ${err.message}`, {
+            containerId: "A",
+          });
       }
     } else {
       info.revert();
@@ -847,7 +867,9 @@ const Calendar = ({ timelineVisible }) => {
       fetchEvents(abortController);
     } catch (err) {
       if (err.name !== "CanceledError")
-        toast.error(err.message, { containerId: "A" });
+        toast.error(`Error: unable to save appointment: ${err.message}`, {
+          containerId: "A",
+        });
     }
   };
 

@@ -54,7 +54,7 @@ const VaccineForm = ({
       setEditable(true);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, {
+      toast.error(`Error unable to save vaccine: ${err.message}`, {
         containerId: "B",
       });
     }

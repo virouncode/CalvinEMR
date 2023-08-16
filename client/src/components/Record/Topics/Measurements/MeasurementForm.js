@@ -158,7 +158,9 @@ const MeasurementForm = ({
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error unable to save measurement: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

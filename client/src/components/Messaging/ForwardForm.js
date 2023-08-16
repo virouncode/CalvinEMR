@@ -143,7 +143,9 @@ const ForwardForm = ({
       setForwardVisible(false);
       toast.success("Transfered successfully", { containerId: "A" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to forward message: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

@@ -73,7 +73,9 @@ const AppointmentEvent = ({
         setAvailableRooms(availableRoomsResult);
       } catch (err) {
         if (err.name !== "CanceledError")
-          toast.error(err.message, { containerId: "B" });
+          toast.error(`Error: unable to get available rooms: ${err.message}`, {
+            containerId: "B",
+          });
       }
     };
     fetchAvailableRooms();
@@ -198,24 +200,12 @@ const AppointmentEvent = ({
           endHourInput.value = startHourInput.value;
           endMinInput.value = startMinInput.value;
           endAMPMInput.value = startAMPMInput.value;
-          setAvailableRooms(
-            await getAvailableRooms(event.id, value, value, auth.authToken)
-          );
         } else {
           setEventInfos({
             ...eventInfos,
             start: value,
             duration: Math.floor((eventInfos.end - value) / (1000 * 60)),
           });
-
-          setAvailableRooms(
-            await getAvailableRooms(
-              event.id,
-              value,
-              eventInfos.end,
-              auth.authToken
-            )
-          );
         }
       } else {
         //set input value to previous start
@@ -237,7 +227,9 @@ const AppointmentEvent = ({
         }
       }
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to save start date: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 
@@ -300,14 +292,6 @@ const AppointmentEvent = ({
           end: value,
           duration: Math.floor((value - eventInfos.start) / (1000 * 60)),
         });
-        setAvailableRooms(
-          await getAvailableRooms(
-            event.id,
-            eventInfos.start,
-            value,
-            auth.authToken
-          )
-        );
       } else {
         switch (name) {
           case "date":
@@ -327,7 +311,9 @@ const AppointmentEvent = ({
         }
       }
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to save end date: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 
@@ -387,7 +373,9 @@ const AppointmentEvent = ({
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to save appointment: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 
@@ -409,7 +397,9 @@ const AppointmentEvent = ({
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        toast.error(`Error: unable to delete appointment: ${err.message}`, {
+          containerId: "B",
+        });
       }
     }
   };
