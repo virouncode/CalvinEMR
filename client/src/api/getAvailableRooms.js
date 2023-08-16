@@ -6,7 +6,7 @@ export const getAvailableRooms = async (
   rangeStart,
   rangeEnd,
   authToken,
-  controller
+  controller = null
 ) => {
   try {
     const response = await axiosXano.post(
@@ -41,6 +41,6 @@ export const getAvailableRooms = async (
     const availableRooms = _.difference(allRooms, occupiedRooms);
     return availableRooms;
   } catch (err) {
-    throw err;
+    if (err.name !== "CanceledError") throw err;
   }
 };

@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { toast } from "react-toastify";
+import { confirmAlert } from "../Confirm/ConfirmGlobal";
 
 const MessagesToolBar = ({
   search,
@@ -44,72 +45,93 @@ const MessagesToolBar = ({
   };
 
   const handleDeleteSelected = async () => {
-    for (let messageId of msgsSelectedIds) {
-      const response = await axiosXano.get(`/messages/${messageId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
-      const newMessage = {
-        ...response.data,
-        deleted_by_ids: [...response.data.deleted_by_ids, user.id],
-      };
-      await axiosXano.put(`/messages/${messageId}`, newMessage, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
+    if (
+      await confirmAlert({
+        content: "Do you really want to delete selected messages ?",
+      })
+    ) {
+      try {
+        for (let messageId of msgsSelectedIds) {
+          const response = await axiosXano.get(`/messages/${messageId}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          });
+          const newMessage = {
+            ...response.data,
+            deleted_by_ids: [...response.data.deleted_by_ids, user.id],
+          };
+          await axiosXano.put(`/messages/${messageId}`, newMessage, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          });
+        }
+        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const newMessages = filterAndSortMessages(
+          section,
+          response.data,
+          user.id
+        );
+        setMessages(newMessages);
+        setNewVisible(false);
+        toast.success("Message(s) deleted successfully", { containerId: "A" });
+        setMsgsSelectedIds([]);
+        setSelectAllVisible(true);
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
     }
-    const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-      headers: {
-        Authorization: `Bearer ${auth.authToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    const newMessages = filterAndSortMessages(section, response.data, user.id);
-    setMessages(newMessages);
-    setNewVisible(false);
-    toast.success("Message(s) deleted successfully", { containerId: "A" });
-    setMsgsSelectedIds([]);
-    setSelectAllVisible(true);
   };
 
   const handleClickMoveBack = async (e) => {
-    const msgsSelected = (
-      await axiosXano.post(
-        "/messages_selected",
-        { messages_ids: msgsSelectedIds },
-        {
+    try {
+      const msgsSelected = (
+        await axiosXano.post(
+          "/messages_selected",
+          { messages_ids: msgsSelectedIds },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        )
+      ).data;
+      for (let message of msgsSelected) {
+        const newDeletedByIds = message.deleted_by_ids.filter(
+          (id) => id !== user.id
+        );
+        const newMessage = {
+          ...message,
+          deleted_by_ids: newDeletedByIds,
+        };
+        await axiosXano.put(`/messages/${message.id}`, newMessage, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
           },
-        }
-      )
-    ).data;
-    for (let message of msgsSelected) {
-      const newDeletedByIds = message.deleted_by_ids.filter(
-        (id) => id !== user.id
-      );
-      const newMessage = {
-        ...message,
-        deleted_by_ids: newDeletedByIds,
-      };
-      await axiosXano.put(`/messages/${message.id}`, newMessage, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
+        });
+      }
+      setSection("Inbox");
+      setMsgsSelectedIds([]);
+      setSelectAllVisible(true);
+      toast.success("Message(s) moved back to Inbox successfully", {
+        containerId: "A",
       });
+    } catch (err) {
+      toast.error(err.message, { containerId: "A" });
     }
-    setSection("Inbox");
-    setMsgsSelectedIds([]);
-    setSelectAllVisible(true);
   };
 
-  const handleClickSearch = (e) => {};
+  // const handleClickSearch = (e) => {};
   const handleClickPrint = () => {};
 
   return (
@@ -121,11 +143,11 @@ const MessagesToolBar = ({
         value={search}
         onChange={handleChange}
       />
-      <i
+      {/* <i
         style={{ marginLeft: "10px", cursor: "pointer" }}
         className="fa-solid fa-magnifying-glass messages-toolbar-magnifying"
         onClick={handleClickSearch}
-      ></i>
+      ></i> */}
       <div className="messages-toolbar-btns">
         <button onClick={handleClickNew}>New</button>
         {section === "Deleted messages" && msgsSelectedIds.length !== 0 && (

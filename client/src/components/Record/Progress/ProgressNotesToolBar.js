@@ -2,6 +2,7 @@
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import axiosXano from "../../../api/xano";
+import { toast } from "react-toastify";
 
 const ProgressNotesToolBar = ({
   addVisible,
@@ -69,7 +70,7 @@ const ProgressNotesToolBar = ({
         }
       );
     } catch (err) {
-      console.log(err);
+      toast.error(err.message, { containerId: "A" });
     }
   };
 

@@ -3,6 +3,7 @@ import PharmacyListItem from "./PharmacyListItem";
 import PharmacyForm from "./PharmacyForm";
 import axiosXano from "../../../../api/xano";
 import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 var _ = require("lodash");
 
 const PharmaciesList = ({
@@ -28,7 +29,11 @@ const PharmaciesList = ({
           signal: abortController.signal,
         });
         setPharmaciesList(response.data);
-      } catch (err) {}
+      } catch (err) {
+        if (err.name !== "CanceledError") {
+          toast.error(err.message, { containerId: "B" });
+        }
+      }
     };
     fetchAllPharmacies();
     return () => {

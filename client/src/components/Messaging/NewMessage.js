@@ -5,7 +5,7 @@ import formatName from "../../utils/formatName";
 import Patients from "./Patients";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { patientIdToName } from "../../utils/patientIdToName";
 
@@ -107,6 +107,10 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
   };
 
   const handleSend = async (e) => {
+    if (!recipientsIds.length) {
+      toast.error("Please choose at least one recipient", { containerId: "B" });
+      return;
+    }
     try {
       //create the message
       const message = {
@@ -141,7 +145,7 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
       setNewVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
-      toast.error("Error: message wasn't sent");
+      toast.error(err.message, { containerId: "B" });
     }
   };
 
@@ -207,6 +211,21 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
           isPatientChecked={isPatientChecked}
         />
       </div>
+      <ToastContainer
+        enableMultiContainer
+        containerId={"B"}
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        limit={1}
+      />
     </div>
   );
 };

@@ -6,11 +6,14 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { createChartNbr } from "../../utils/createChartNbr";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
+import { CircularProgress } from "@mui/material";
+import { toast } from "react-toastify";
 
 const SignupPatientForm = () => {
   const { auth } = useAuth();
   const [patientAdded, setPatientAdded] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
   const [formDatas, setFormDatas] = useState({
     email: "",
     password: "",
@@ -18,8 +21,8 @@ const SignupPatientForm = () => {
     first_name: "",
     middle_name: "",
     last_name: "",
-    gender_at_birth: "",
-    gender_identification: "",
+    gender_at_birth: "Male",
+    gender_identification: "Male",
     date_of_birth: "",
     health_insurance_nbr: "",
     health_card_expiry: null,
@@ -41,26 +44,26 @@ const SignupPatientForm = () => {
       setErrMsg("You entered two different passwords");
       return;
     }
-    const patients = await axiosXano.get("/patients", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.authToken}`,
-      },
-    });
-    if (
-      patients.data.find(
-        ({ email }) => email.toLowerCase() === formDatas.email.toLowerCase()
-      )
-    ) {
-      setErrMsg(
-        "There is already an account with this email, please choose another one"
-      );
-      return;
-    }
-    if (formDatas.password !== formDatas.confirm_password) {
-      setErrMsg(
-        "You entered 2 different passwords, please verify password fields"
-      );
+
+    try {
+      const patients = await axiosXano.get("/patients", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      });
+      if (
+        patients.data.find(
+          ({ email }) => email.toLowerCase() === formDatas.email.toLowerCase()
+        )
+      ) {
+        setErrMsg(
+          "There is already an account with this email, please choose another one"
+        );
+        return;
+      }
+    } catch (err) {
+      setErrMsg(err.message);
       return;
     }
 
@@ -190,6 +193,7 @@ const SignupPatientForm = () => {
     }
   };
   const handleChange = (e) => {
+    setErrMsg("");
     let value = e.target.value;
     const name = e.target.name;
     if (name === "health_card_expiry" || name === "date_of_birth") {
@@ -200,19 +204,26 @@ const SignupPatientForm = () => {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file.size > 20000000) {
-      // setAlertVisible(true);
+      alert("File size exceeds 20Mbs, please choose another file");
       return;
     }
+    setIsLoadingFile(true);
     // setting up the reader
     let reader = new FileReader();
     reader.readAsDataURL(file);
     // here we tell the reader what to do when it's done reading...
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
-      let fileToUpload = await axiosXano.post("/upload/attachment_register", {
-        content: content,
-      });
-      setFormDatas({ ...formDatas, avatar: fileToUpload.data });
+      try {
+        let fileToUpload = await axiosXano.post("/upload/attachment_register", {
+          content: content,
+        });
+        setFormDatas({ ...formDatas, avatar: fileToUpload.data });
+        setIsLoadingFile(false);
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+        setIsLoadingFile(false);
+      }
     };
   };
 
@@ -442,15 +453,18 @@ const SignupPatientForm = () => {
               accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg"
               onChange={handleAvatarChange}
             />
+            {isLoadingFile && (
+              <CircularProgress size="1rem" style={{ margin: "5px" }} />
+            )}
           </div>
           <div className="signup-patient-form-row-submit">
-            <input type="submit" value="Sign Up" />
+            <input type="submit" value="Sign Up" disabled={isLoadingFile} />
           </div>
         </div>
       </form>
     </>
   ) : (
-    <p className="signup-patient-confirm">Patient added successfully</p>
+    <span className="signup-patient-confirm">Patient added successfully</span>
   );
 };
 

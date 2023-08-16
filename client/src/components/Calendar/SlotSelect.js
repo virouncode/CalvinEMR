@@ -24,7 +24,7 @@ const SlotSelect = () => {
       });
       toast.success("Saved preference", { containerId: "A" });
     } catch (err) {
-      toast.success("Unable to change preference, please contact admin", {
+      toast.success(err.message, {
         containerId: "A",
       });
     }

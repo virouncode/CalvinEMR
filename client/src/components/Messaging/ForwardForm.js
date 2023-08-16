@@ -4,7 +4,7 @@ import { categoryToTitle } from "../../utils/categoryToTitle";
 import formatName from "../../utils/formatName";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import Message from "./Message";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
@@ -98,6 +98,10 @@ const ForwardForm = ({
   };
 
   const handleSend = async (e) => {
+    if (!recipientsIds.length) {
+      toast.error("Please choose at least one recipient", { containerId: "B" });
+      return;
+    }
     try {
       //create the message
       const forwardMessage = {
@@ -139,7 +143,7 @@ const ForwardForm = ({
       setForwardVisible(false);
       toast.success("Transfered successfully", { containerId: "A" });
     } catch (err) {
-      toast.error("Error: message wasn't sent");
+      toast.error(err.message, { containerId: "B" });
     }
   };
 
@@ -189,7 +193,9 @@ const ForwardForm = ({
           <div className="forward-form-history">
             <Message
               message={message}
-              author={staffIdToName(clinic.staffInfos, message.from_id)}
+              author={formatName(
+                staffIdToName(clinic.staffInfos, message.from_id)
+              )}
               authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
               key={message.id}
               index={0}
@@ -197,7 +203,9 @@ const ForwardForm = ({
             {previousMsgs.map((message, index) => (
               <Message
                 message={message}
-                author={staffIdToName(clinic.staffInfos, message.from_id)}
+                author={formatName(
+                  staffIdToName(clinic.staffInfos, message.from_id)
+                )}
                 authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
                 key={message.id}
                 index={index + 1}
@@ -210,6 +218,21 @@ const ForwardForm = ({
           <button onClick={handleCancel}>Cancel</button>
         </div>
       </div>
+      <ToastContainer
+        enableMultiContainer
+        containerId={"B"}
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        limit={1}
+      />
     </div>
   );
 };

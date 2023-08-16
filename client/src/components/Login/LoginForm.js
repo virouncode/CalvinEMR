@@ -104,6 +104,7 @@ const LoginForm = () => {
           },
         });
         const staffInfos = response4.data;
+
         const response5 = await axiosXano.get("/patients", {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -119,17 +120,18 @@ const LoginForm = () => {
         navigate(from, { replace: true });
       } catch (err) {
         if (!err?.response) {
-          setErrMsg("no server response");
+          setErrMsg("No server response");
         } else if (err.response?.response?.status === 400) {
-          setErrMsg("missing email or password");
+          setErrMsg("Missing email or password");
         } else if (err.response?.response?.status === 401) {
-          setErrMsg("unhauthorized");
+          setErrMsg("Unhauthorized");
         } else {
-          setErrMsg("login failed, please try again");
+          setErrMsg("Login failed, please try again");
         }
         errRef.current.focus();
       }
     } else {
+      //Patient Log in
     }
   };
 

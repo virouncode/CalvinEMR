@@ -1,9 +1,7 @@
 import React from "react";
 import useAuth from "../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 
 const MessagesLeftBar = ({ section, setSection, setCurrentMsgId }) => {
-  const navigate = useNavigate();
   const handleClickSection = (e) => {
     const name = e.target.id;
     setSection(name);

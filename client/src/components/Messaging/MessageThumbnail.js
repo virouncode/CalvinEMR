@@ -8,6 +8,8 @@ import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdListToTitleAndName } from "../../utils/staffIdListToTitleAndName";
+import { confirmAlert } from "../Confirm/ConfirmGlobal";
+import formatName from "../../utils/formatName";
 
 const MessageThumbnail = ({
   message,
@@ -32,25 +34,33 @@ const MessageThumbnail = ({
 
     if (!message.read_by_ids.includes(user.id)) {
       //create and replace message with read by user id
-      const newMessage = {
-        ...message,
-        read_by_ids: [...message.read_by_ids, user.id],
-      };
-      await axiosXano.put(`/messages/${message.id}`, newMessage, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      try {
+        const newMessage = {
+          ...message,
+          read_by_ids: [...message.read_by_ids, user.id],
+        };
+        await axiosXano.put(`/messages/${message.id}`, newMessage, {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        });
+        const newMessages = filterAndSortMessages(
+          section,
+          response.data,
+          user.id
+        );
+        setMessages(newMessages);
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
     }
-    const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.authToken}`,
-      },
-    });
-    const newMessages = filterAndSortMessages(section, response.data, user.id);
-    setMessages(newMessages);
   };
 
   const THUMBNAIL_STYLE = {
@@ -81,36 +91,41 @@ const MessageThumbnail = ({
   };
 
   const handleDeleteMsg = async (e) => {
-    try {
-      await axiosXano.put(
-        `/messages/${message.id}`,
-        {
-          ...message,
-          deleted_by_ids: [...message.deleted_by_ids, user.id],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
+    if (
+      await confirmAlert({
+        content: "Do you really want to remove this message ?",
+      })
+    ) {
+      try {
+        await axiosXano.put(
+          `/messages/${message.id}`,
+          {
+            ...message,
+            deleted_by_ids: [...message.deleted_by_ids, user.id],
           },
-        }
-      );
-      const response2 = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const newMessages = filterAndSortMessages(
-        section,
-        response2.data,
-        user.id
-      );
-      setMessages(newMessages);
-      toast.success("Message deleted successfully", { containerId: "A" });
-    } catch (err) {
-      console.log(err);
-      toast.error("Couldn't delete the message", { containerId: "A" });
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
+        const response2 = await axiosXano.get(`/messages?staff_id=${user.id}`, {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const newMessages = filterAndSortMessages(
+          section,
+          response2.data,
+          user.id
+        );
+        setMessages(newMessages);
+        toast.success("Message deleted successfully", { containerId: "A" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
     }
   };
 
@@ -127,7 +142,7 @@ const MessageThumbnail = ({
         <div className="message-thumbnail-author">
           {section !== "Sent messages"
             ? staffIdToTitle(clinic.staffInfos, message.from_id) +
-              staffIdToName(clinic.staffInfos, message.from_id)
+              formatName(staffIdToName(clinic.staffInfos, message.from_id))
             : staffIdListToTitleAndName(clinic.staffInfos, message.to_ids)}
         </div>
         <div className="message-thumbnail-sample">

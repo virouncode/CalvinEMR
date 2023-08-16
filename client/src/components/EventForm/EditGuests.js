@@ -1,5 +1,5 @@
 //Librairies
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 //Components
 import GuestsSearch from "./GuestsSearch";
 import GuestsList from "./GuestsList";
@@ -33,7 +33,13 @@ const EditGuests = ({
     setPatientsGuestsInfos(
       patientsInfos.filter(({ id }) => patientsGuestsIds.includes(id))
     );
-  }, [patientsInfos, staffInfos, tempFormDatas]);
+  }, [
+    patientsInfos,
+    setPatientsGuestsInfos,
+    setStaffGuestsInfos,
+    staffInfos,
+    tempFormDatas,
+  ]);
 
   // //========================== EVENTS HANDLERS =======================//
 

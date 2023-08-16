@@ -69,9 +69,11 @@ const AppointmentEvent = ({
           auth.authToken,
           abortController
         );
+        if (abortController.signal.aborted) return;
         setAvailableRooms(availableRoomsResult);
       } catch (err) {
-        toast.error(err.message, { containerId: "B" });
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "B" });
       }
     };
     fetchAvailableRooms();

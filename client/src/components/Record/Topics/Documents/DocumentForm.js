@@ -50,7 +50,6 @@ const DocumentForm = ({
   };
   const handleUpload = async (e) => {
     setAlertVisible(false);
-    setIsLoadingFile(true);
     setSaveDisabled(true);
     const file = e.target.files[0];
     if (file.size > 20000000) {
@@ -59,6 +58,7 @@ const DocumentForm = ({
       return;
     }
     // setting up the reader
+    setIsLoadingFile(true);
     let reader = new FileReader();
     reader.readAsDataURL(file);
     // here we tell the reader what to do when it's done reading...

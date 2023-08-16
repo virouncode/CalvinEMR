@@ -44,6 +44,7 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
           },
           signal: abortController.signal,
         });
+        if (abortController.signal.aborted) return;
         setTemplates(
           response.data.sort((a, b) =>
             a.name.toLowerCase().localeCompare(b.name.toLowerCase())
@@ -113,13 +114,13 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
     input.accept = ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav";
     input.onchange = (e) => {
       // getting a hold of the file reference
-      setIsLoadingFile(true);
       let file = e.target.files[0];
       if (file.size > 20000000) {
         alert("The file is too large, please choose another one");
         return;
       }
-      // setting up the reader
+      setIsLoadingFile(true);
+      // setting up the reader`
       let reader = new FileReader();
       reader.readAsDataURL(file);
       // here we tell the reader what to do when it's done reading...
@@ -141,6 +142,7 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
           setIsLoadingFile(false);
         } catch (err) {
           toast.error(err.message, { containerId: "A" });
+          setIsLoadingFile(false);
         }
       };
     };

@@ -3,6 +3,8 @@ import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
+import { toast } from "react-toastify";
+import { CircularProgress } from "@mui/material";
 
 const MyAccountForm = () => {
   //HOOKS
@@ -13,8 +15,10 @@ const MyAccountForm = () => {
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
   const [infosChanged, setInfosChanged] = useState(false);
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchMyInfos = async () => {
       try {
         const response = await axiosXano.get(`/staff/${user.id}`, {
@@ -22,14 +26,18 @@ const MyAccountForm = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
           },
+          signal: abortController.signal,
         });
+        if (abortController.signal.aborted) return;
         setFormDatas(response.data);
         setTempFormDatas(response.data);
       } catch (err) {
-        console.log(err);
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "A" });
       }
     };
     fetchMyInfos();
+    return () => abortController.abort();
   }, [auth.authToken, user.id]);
 
   //HANDLERS
@@ -39,30 +47,37 @@ const MyAccountForm = () => {
     const name = e.target.name;
     setTempFormDatas({ ...tempFormDatas, [name]: value });
   };
+
   const handleSignChange = async (e) => {
     const file = e.target.files[0];
     if (file.size > 20000000) {
-      // setAlertVisible(true);
+      alert("File size exceeds 20Mbs, please choose another file");
       return;
     }
     // setting up the reader
+    setIsLoadingFile(true);
     let reader = new FileReader();
     reader.readAsDataURL(file);
     // here we tell the reader what to do when it's done reading...
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
-      let fileToUpload = await axiosXano.post(
-        "/upload/attachment",
-        {
-          content: content,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
+      try {
+        let fileToUpload = await axiosXano.post(
+          "/upload/attachment",
+          {
+            content: content,
           },
-        }
-      );
-      setTempFormDatas({ ...tempFormDatas, sign: fileToUpload.data });
+          {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
+        setTempFormDatas({ ...tempFormDatas, sign: fileToUpload.data });
+        setIsLoadingFile(false);
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
     };
   };
   const handleEdit = (e) => {
@@ -120,7 +135,9 @@ const MyAccountForm = () => {
       <div className="myaccount-section-btns">
         {editVisible ? (
           <>
-            <button onClick={handleSave}>Save</button>
+            <button onClick={handleSave} disabled={isLoadingFile}>
+              Save
+            </button>
             <button onClick={handleCancel}>Cancel</button>
           </>
         ) : (
@@ -354,12 +371,17 @@ const MyAccountForm = () => {
             <div className="myaccount-section-form-row">
               <label>E-sign: </label>
               {editVisible ? (
-                <input
-                  name="sign"
-                  type="file"
-                  accept=".jpeg, .jpg, .png, .tif, .pdf, .svg"
-                  onChange={handleSignChange}
-                />
+                <>
+                  <input
+                    name="sign"
+                    type="file"
+                    accept=".jpeg, .jpg, .png, .tif, .pdf, .svg"
+                    onChange={handleSignChange}
+                  />
+                  {isLoadingFile && (
+                    <CircularProgress size="1rem" style={{ margin: "5px" }} />
+                  )}
+                </>
               ) : (
                 tempFormDatas.sign?.url && (
                   <div className="myaccount-section-form-row-image">

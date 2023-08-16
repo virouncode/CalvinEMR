@@ -6,6 +6,7 @@ import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import Message from "./Message";
+import formatName from "../../utils/formatName";
 
 const ReplyForm = ({
   setReplyVisible,
@@ -63,8 +64,7 @@ const ReplyForm = ({
       setReplyVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
-      console.log(err);
-      toast.error("Message couldn't be sent", { containerId: "A" });
+      toast.error(err.message, { containerId: "A" });
     }
   };
 
@@ -83,11 +83,11 @@ const ReplyForm = ({
                 .map(
                   (staffId) =>
                     staffIdToTitle(clinic.staffInfos, staffId) +
-                    staffIdToName(clinic.staffInfos, staffId)
+                    formatName(staffIdToName(clinic.staffInfos, staffId))
                 )
                 .join(", ")
             : staffIdToTitle(clinic.staffInfos, message.from_id) +
-              staffIdToName(clinic.staffInfos, message.from_id)}
+              formatName(staffIdToName(clinic.staffInfos, message.from_id))}
         </p>
       </div>
       <div className="reply-form-subject">
@@ -109,7 +109,9 @@ const ReplyForm = ({
         <div className="reply-form-history">
           <Message
             message={message}
-            author={staffIdToName(clinic.staffInfos, message.from_id)}
+            author={formatName(
+              staffIdToName(clinic.staffInfos, message.from_id)
+            )}
             authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
             key={message.id}
             index={0}
@@ -117,7 +119,9 @@ const ReplyForm = ({
           {previousMsgs.map((message, index) => (
             <Message
               message={message}
-              author={staffIdToName(clinic.staffInfos, message.from_id)}
+              author={formatName(
+                staffIdToName(clinic.staffInfos, message.from_id)
+              )}
               authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
               key={message.id}
               index={index + 1}

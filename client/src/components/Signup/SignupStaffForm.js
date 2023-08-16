@@ -3,11 +3,14 @@ import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
+import { CircularProgress } from "@mui/material";
+import { toast } from "react-toastify";
 
 const SignupStaffForm = () => {
   const { auth } = useAuth();
   const [staffAdded, setStaffAdded] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
   const navigate = useNavigate();
   const [formDatas, setFormDatas] = useState({
     email: "",
@@ -36,27 +39,34 @@ const SignupStaffForm = () => {
   const handleSignChange = async (e) => {
     const file = e.target.files[0];
     if (file.size > 20000000) {
-      // setAlertVisible(true);
+      alert("File size exceeds 20Mbs, please choose another file");
       return;
     }
+    setIsLoadingFile(true);
     // setting up the reader
     let reader = new FileReader();
     reader.readAsDataURL(file);
     // here we tell the reader what to do when it's done reading...
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
-      let fileToUpload = await axiosXano.post(
-        "/upload/attachment",
-        {
-          content: content,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
+      try {
+        let fileToUpload = await axiosXano.post(
+          "/upload/attachment",
+          {
+            content: content,
           },
-        }
-      );
-      setFormDatas({ ...formDatas, sign: fileToUpload.data });
+          {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
+        setFormDatas({ ...formDatas, sign: fileToUpload.data });
+        setIsLoadingFile(false);
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+        setIsLoadingFile(false);
+      }
     };
   };
   const handleSubmit = async (e) => {
@@ -65,26 +75,26 @@ const SignupStaffForm = () => {
       setErrMsg("You entered two different passwords");
       return;
     }
-    const staff = await axiosXano.get("/staff", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.authToken}`,
-      },
-    });
-    if (
-      staff.data.find(
-        ({ email }) => email.toLowerCase() === formDatas.email.toLowerCase()
-      )
-    ) {
-      setErrMsg(
-        "There is already an account with this email, please choose another one"
-      );
-      return;
-    }
-    if (formDatas.password !== formDatas.confirm_password) {
-      setErrMsg(
-        "You entered 2 different passwords, please verify password fields"
-      );
+
+    try {
+      const staff = await axiosXano.get("/staff", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      });
+      if (
+        staff.data.find(
+          ({ email }) => email.toLowerCase() === formDatas.email.toLowerCase()
+        )
+      ) {
+        setErrMsg(
+          "There is already an account with this email, please choose another one"
+        );
+        return;
+      }
+    } catch (err) {
+      setErrMsg(err.message);
       return;
     }
     try {
@@ -368,11 +378,13 @@ const SignupStaffForm = () => {
               type="file"
               accept=".jpeg, .jpg, .png, .tif, .pdf, .svg"
               onChange={handleSignChange}
-              // required={formDatas.title === "Doctor"}
             />
+            {isLoadingFile && (
+              <CircularProgress size="1rem" style={{ margin: "5px" }} />
+            )}
           </div>
           <div className="signup-staff-form-row-submit">
-            <input type="submit" value="Sign Up" />
+            <input type="submit" value="Sign Up" disabled={isLoadingFile} />
           </div>
         </div>
       </form>

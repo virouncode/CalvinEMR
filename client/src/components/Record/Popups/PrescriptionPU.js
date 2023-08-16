@@ -23,36 +23,45 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
   const [settings, setSettings] = useState();
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchSites = async () => {
       try {
         const response = await axiosXano.get(`/sites`, {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
           },
+          signal: abortController.signal,
         });
+        if (abortController.signal.aborted) return;
         setSites(response.data);
       } catch (err) {
-        console.log(err);
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "B" });
       }
     };
     fetchSites();
   }, [auth.authToken]);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchAddress = async () => {
       try {
         const response = await axiosXano.get(`/settings?staff_id=${user.id}`, {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
           },
+          signal: abortController.signal,
         });
+        if (abortController.signal.aborted) return;
         setAddressSelected(response.data.clinic_address);
         setSettings(response.data);
       } catch (err) {
-        console.log(err);
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "B" });
       }
     };
     fetchAddress();
+    return () => abortController.abort();
   }, [auth.authToken, user.id]);
 
   const handleAddNotes = (e) => {
@@ -266,7 +275,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
       </div>
       <ToastContainer
         enableMultiContainer
-        containerId={"C"}
+        containerId={"B"}
         position="bottom-right"
         autoClose={2000}
         hideProgressBar={true}

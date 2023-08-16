@@ -63,7 +63,7 @@ const ProgressNotesCard = ({
         ).filter(
           ({ progress_note_id }) => progress_note_id === progressNote.id
         );
-
+        if (abortController.signal.aborted) return;
         versionsResults.forEach(
           (version) => (version.id = version.progress_note_id) //change id field value to progress_note_id value to match progress_notes fields
         );
@@ -71,7 +71,8 @@ const ProgressNotesCard = ({
 
         setVersions(versionsResults);
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "A" });
       }
     };
     fetchVersions();
@@ -97,9 +98,11 @@ const ProgressNotesCard = ({
             }
           )
         ).data;
+        if (abortController.signal.aborted) return;
         setFiles(attachments.map(({ file }) => file));
       } catch (err) {
-        toast.error(err.message, { containerId: "A" });
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "A" });
       }
     };
     fetchFiles();

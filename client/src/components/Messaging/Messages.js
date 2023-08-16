@@ -9,6 +9,9 @@ import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { staffIdToName } from "../../utils/staffIdToName";
+import { patientIdToName } from "../../utils/patientIdToName";
 
 const Messages = () => {
   //HOOKSs
@@ -19,7 +22,7 @@ const Messages = () => {
   const [msgsSelectedIds, setMsgsSelectedIds] = useState([]);
   const [currentMsgId, setCurrentMsgId] = useState(0);
   const [messages, setMessages] = useState(null);
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,24 +33,61 @@ const Messages = () => {
   }, [messageId, navigate, setCurrentMsgId]);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchMessages = async () => {
-      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
-      //En fonction de la section on filtre les messages
-      const newMessages = filterAndSortMessages(
-        sectionName || section,
-        response.data,
-        user.id
-      );
-      setMessages(newMessages);
+      try {
+        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+          signal: abortController.signal,
+        });
+        if (abortController.signal.aborted) return;
+        //En fonction de la section on filtre les messages
+        let newMessages = filterAndSortMessages(
+          sectionName || section,
+          response.data,
+          user.id
+        );
+        //FILTER HERE SEARCH
+        newMessages = newMessages.filter(
+          (message) =>
+            staffIdToName(clinic.staffInfos, message.from_id)
+              .toLowerCase()
+              .includes(search.toLowerCase()) ||
+            message.to_ids
+              .map((id) => staffIdToName(clinic.staffInfos, id))
+              .join(", ")
+              .toLowerCase()
+              .includes(search.toLowerCase()) ||
+            message.subject.toLowerCase().includes(search.toLowerCase()) ||
+            message.body.toLowerCase().includes(search.toLowerCase()) ||
+            patientIdToName(clinic.patientsInfos, message.related_patient_id)
+              .toLowerCase()
+              .includes(search.toLowerCase())
+        );
+
+        setMessages(newMessages);
+      } catch (err) {
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "A" });
+      }
     };
     fetchMessages();
-    return () => setMessages(null);
-  }, [auth.authToken, user.id, section, sectionName]);
+    return () => {
+      abortController.abort();
+      setMessages(null);
+    };
+  }, [
+    auth.authToken,
+    user.id,
+    section,
+    sectionName,
+    search,
+    clinic.staffInfos,
+    clinic.patientsInfos,
+  ]);
 
   return (
     <div className="messages-container">

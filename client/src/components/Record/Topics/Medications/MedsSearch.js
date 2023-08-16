@@ -27,6 +27,7 @@ const MedsSearch = ({ handleMedClick }) => {
         search.toUpperCase(),
         abortController.current
       );
+      if (abortController.signal.aborted) return;
       setResults(drugResults);
       abortController.current = null;
       setLoading(false);

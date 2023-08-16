@@ -38,24 +38,28 @@ const Invitation = ({
     "In person appointment"
   );
   const [addressSelected, setAddressSelected] = useState(
-    settings.clinic_address || "-1" //-1 is the default for the place holder
+    settings.clinic_address || ""
   );
   const [sites, setSites] = useState([]);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchSites = async () => {
       try {
         const response = await axiosXano.get(`/sites`, {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
           },
+          signal: abortController.signal,
         });
+        if (abortController.signal.aborted) return;
         setSites(response.data);
       } catch (err) {
-        console.log(err);
+        toast.error(err.message, { containerId: "A" });
       }
     };
     fetchSites();
+    return () => abortController.abort();
   }, [auth.authToken]);
 
   //HANDLERS
@@ -139,7 +143,7 @@ const Invitation = ({
           { containerId: "A" }
         );
       } catch (err) {
-        toast.error(`Couldn't send the invitation : $(err.text)`, {
+        toast.error(`Couldn't send the invitation : ${err.text}`, {
           containerId: "A",
         });
       }
@@ -192,7 +196,7 @@ Powered by Calvin EMR`,
           { containerId: "A" }
         );
       } catch (err) {
-        toast.error(`Couldn't send the invitation email : $(err.text)`, {
+        toast.error(`Couldn't send the invitation email : ${err.text}`, {
           containerId: "A",
         });
       }
@@ -248,7 +252,7 @@ Powered by Calvin EMR`,
         }
       );
     } catch (err) {
-      console.log(err);
+      toast.error(err.message, { containerId: "A" });
     }
   };
   const handleMessageChange = (e) => {
@@ -285,7 +289,7 @@ Powered by Calvin EMR`,
         }
       );
     } catch (err) {
-      console.log(err);
+      toast.error(err.message, { containerId: "A" });
     }
   };
 

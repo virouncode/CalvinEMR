@@ -78,7 +78,7 @@ const DocumentsPU = ({
               <AlertMsg
                 severity="error"
                 title="Error"
-                msg="The file is too large, please choose another file"
+                msg="File size exceeds 20Mbs, please choose another file"
                 open={alertVisible}
                 setOpen={setAlertVisible}
               />

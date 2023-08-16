@@ -13,13 +13,15 @@ const useOutsideCloser = (
   useEffect(() => {
     function handleClickOutside(e) {
       if (
+        !document.getElementById("confirm-dialog") &&
         wrapperRef.current && //if the wrapper exists
         !wrapperRef.current.contains(e.target) && //if you click outside the wrapper
         !eventElement.current.contains(e.target) && //if you click outside the event element
         !fpVisible.current //if flatpicker calendar not visible
       ) {
-        setFormVisible(false);
+        console.log("click outside");
         putForm();
+        setFormVisible(false);
         setCalendarSelectable(true);
       }
     }

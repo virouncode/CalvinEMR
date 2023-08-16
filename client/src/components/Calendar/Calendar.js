@@ -5,7 +5,6 @@ import { CircularProgress } from "@mui/material";
 //API
 import axiosXano from "../../api/xano";
 import { getAvailableRooms } from "../../api/getAvailableRooms";
-import { useAxiosEvents } from "../../hooks/useAxiosEvents";
 
 //Components
 import Shortcutpickr from "./Shortcutpickr";
@@ -26,6 +25,7 @@ import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import { useEvents } from "../../hooks/useEvents";
 
 //Require
 var _ = require("lodash");
@@ -34,16 +34,6 @@ var _ = require("lodash");
 const Calendar = ({ timelineVisible }) => {
   //====================== HOOKS =======================//
   const { clinic, auth, user } = useAuth();
-  const [
-    events,
-    setEvents,
-    remainingStaff,
-    setRemainingStaff,
-    errorEvents,
-    loadingEvents,
-    axiosFetchEvents,
-  ] = useAxiosEvents();
-
   const [hostsIds, setHostsIds] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
   const [formTop, setFormTop] = useState(0);
@@ -58,6 +48,14 @@ const Calendar = ({ timelineVisible }) => {
   const lastCurrentId = useRef("");
   const [rangeStart, setRangeStart] = useState(Date.parse(getWeekRange()[0]));
   const [rangeEnd, setRangeEnd] = useState(Date.parse(getWeekRange()[1]));
+  const isSecretary = useCallback(() => {
+    return user.title === "Secretary" ? true : false;
+  }, [user.title]);
+  const [
+    { events, remainingStaff, isLoading, errMsg },
+    fetchEvents,
+    setEvents,
+  ] = useEvents(hostsIds, rangeStart, rangeEnd, isSecretary(), user.id);
 
   useEffect(() => {
     if (lastCurrentId.current) {
@@ -84,31 +82,6 @@ const Calendar = ({ timelineVisible }) => {
   }, [clinic.staffInfos, user.id, user.title]);
 
   useEffect(() => {
-    axiosFetchEvents(
-      hostsIds,
-      rangeStart,
-      rangeEnd,
-      auth.authToken,
-      clinic.staffInfos,
-      user.title === "Secretary",
-      user.id
-    );
-    //eslint-disable-next-line
-  }, [
-    user.title,
-    auth.authToken,
-    user.id,
-    hostsIds,
-    rangeEnd,
-    rangeStart,
-    clinic.staffInfos,
-  ]);
-
-  const isSecretary = useCallback(() => {
-    return user.title === "Secretary" ? true : false;
-  }, [user.title]);
-
-  useEffect(() => {
     const handleDelete = async (e) => {
       if (
         currentEvent.current &&
@@ -122,22 +95,23 @@ const Calendar = ({ timelineVisible }) => {
             content: "Do you really want to remove this event ?",
           })
         ) {
-          const indexOfEventToRemove = _.findIndex(events, {
-            id: currentEvent.current.id,
-          });
-          const newEvents = [...events];
-          newEvents.splice(indexOfEventToRemove, 1);
           try {
             await axiosXano.delete(`/appointments/${currentEvent.current.id}`, {
               headers: { Authorization: `Bearer ${auth.authToken}` },
             });
             toast.success("Deleted Successfully", { containerId: "A" });
+            let newEvents = [...events];
+            newEvents = newEvents.filter(
+              ({ id }) => id !== currentEvent.current.id
+            );
             setEvents(newEvents);
             setFormVisible(false);
             setCalendarSelectable(true);
             currentEvent.current = null;
             lastCurrentId.current = "";
-          } catch (err) {}
+          } catch (err) {
+            toast.error(err.message, { containerId: "A" });
+          }
         }
       }
     };
@@ -154,22 +128,23 @@ const Calendar = ({ timelineVisible }) => {
         content: "Do you really want to remove this event ?",
       })
     ) {
-      const indexOfEventToRemove = _.findIndex(events, {
-        id: currentEvent.current.id,
-      });
-      const newEvents = [...events];
-      newEvents.splice(indexOfEventToRemove, 1);
       try {
         await axiosXano.delete(`/appointments/${currentEvent.current.id}`, {
           headers: { Authorization: `Bearer ${auth.authToken}` },
         });
         toast.success("Deleted Successfully", { containerId: "A" });
+        let newEvents = [...events];
+        newEvents = newEvents.filter(
+          ({ id }) => id !== currentEvent.current.id
+        );
         setEvents(newEvents);
         setFormVisible(false);
         setCalendarSelectable(true);
         currentEvent.current = null;
         lastCurrentId.current = "";
-      } catch (err) {}
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
     }
   };
   const renderEventContent = (info) => {
@@ -242,7 +217,7 @@ const Calendar = ({ timelineVisible }) => {
       }
 
       const hostName = event.extendedProps.host
-        ? staffIdToName(clinic.staffInfos, event.extendedProps.host)
+        ? formatName(staffIdToName(clinic.staffInfos, event.extendedProps.host))
         : "";
 
       const hostNameShort = formatName(hostName);
@@ -424,12 +399,18 @@ const Calendar = ({ timelineVisible }) => {
     };
 
     if (timelineVisible) {
-      const availableRooms = await getAvailableRooms(
-        0,
-        startDate,
-        endDate,
-        auth.authToken
-      );
+      let availableRooms;
+      try {
+        availableRooms = await getAvailableRooms(
+          0,
+          startDate,
+          endDate,
+          auth.authToken
+        );
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+        return;
+      }
       if (
         info.resource.title === "To be determined" ||
         availableRooms.includes(info.resource.title) ||
@@ -466,17 +447,13 @@ const Calendar = ({ timelineVisible }) => {
             },
           });
           toast.success("Saved Successfully", { containerId: "A" });
-          axiosFetchEvents(
-            hostsIds,
-            rangeStart,
-            rangeEnd,
-            auth.authToken,
-            clinic.staffInfos,
-            user.title === "Secretary",
-            user.id
-          );
+          const abortController = new AbortController();
+          fetchEvents(abortController);
           lastCurrentId.current = response.data.id.toString();
-        } catch (err) {}
+        } catch (err) {
+          if (err.name !== "CanceledError")
+            toast.error(err.message, { containerId: "A" });
+        }
       }
     } else {
       newEvent.resourceId = "z";
@@ -509,17 +486,13 @@ const Calendar = ({ timelineVisible }) => {
           }
         );
         toast.success("Saved Successfully", { containerId: "A" });
-        axiosFetchEvents(
-          hostsIds,
-          rangeStart,
-          rangeEnd,
-          auth.authToken,
-          clinic.staffInfos,
-          user.title === "Secretary",
-          user.id
-        );
+        const abortController = new AbortController();
+        fetchEvents(abortController);
         lastCurrentId.current = response.data.id.toString();
-      } catch (err) {}
+      } catch (err) {
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "A" });
+      }
     }
   };
 
@@ -544,12 +517,18 @@ const Calendar = ({ timelineVisible }) => {
     currentEventElt.current = eventElt;
     const startDate = Date.parse(event.start);
     const endDate = Date.parse(event.end);
-    const availableRooms = await getAvailableRooms(
-      parseInt(event.id),
-      startDate,
-      endDate,
-      auth.authToken
-    );
+    let availableRooms;
+    try {
+      availableRooms = await getAvailableRooms(
+        parseInt(event.id),
+        startDate,
+        endDate,
+        auth.authToken
+      );
+    } catch (err) {
+      toast.error(err.message, { containerId: "A" });
+      return;
+    }
     const startAllDay = event.start.setHours(0, 0, 0, 0);
     const endAllDay = event.end.setHours(0, 0, 0, 0);
     let datas = {
@@ -586,16 +565,12 @@ const Calendar = ({ timelineVisible }) => {
             },
           });
           toast.success("Saved Successfully", { containerId: "A" });
-          axiosFetchEvents(
-            hostsIds,
-            rangeStart,
-            rangeEnd,
-            auth.authToken,
-            clinic.staffInfos,
-            user.title === "Secretary",
-            user.id
-          );
-        } catch (err) {}
+          const abortController = new AbortController();
+          fetchEvents(abortController);
+        } catch (err) {
+          if (err.name !== "CanceledError")
+            toast.error(err.message, { containerId: "A" });
+        }
       } else {
         info.revert();
       }
@@ -622,16 +597,12 @@ const Calendar = ({ timelineVisible }) => {
             },
           });
           toast.success("Saved Successfully", { containerId: "A" });
-          axiosFetchEvents(
-            hostsIds,
-            rangeStart,
-            rangeEnd,
-            auth.authToken,
-            clinic.staffInfos,
-            user.title === "Secretary",
-            user.id
-          );
-        } catch (err) {}
+          const abortController = new AbortController();
+          fetchEvents(abortController);
+        } catch (err) {
+          if (err.name !== "CanceledError")
+            toast.error(err.message, { containerId: "A" });
+        }
       } else {
         info.revert();
       }
@@ -657,12 +628,18 @@ const Calendar = ({ timelineVisible }) => {
     const endDate = Date.parse(event.end);
 
     //same as a drop
-    const availableRooms = await getAvailableRooms(
-      parseInt(event.id),
-      startDate,
-      endDate,
-      auth.authToken
-    );
+    let availableRooms;
+    try {
+      availableRooms = await getAvailableRooms(
+        parseInt(event.id),
+        startDate,
+        endDate,
+        auth.authToken
+      );
+    } catch (err) {
+      toast.error(err.message, { containerId: "A" });
+      return;
+    }
     const startAllDay = event.start.setHours(0, 0, 0, 0);
     const endAllDay = event.end.setHours(0, 0, 0, 0);
 
@@ -698,16 +675,12 @@ const Calendar = ({ timelineVisible }) => {
           },
         });
         toast.success("Saved Successfully", { containerId: "A" });
-        axiosFetchEvents(
-          hostsIds,
-          rangeStart,
-          rangeEnd,
-          auth.authToken,
-          clinic.staffInfos,
-          user.title === "Secretary",
-          user.id
-        );
-      } catch (err) {}
+        const abortController = new AbortController();
+        fetchEvents(abortController);
+      } catch (err) {
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "A" });
+      }
     } else {
       info.revert();
     }
@@ -870,16 +843,12 @@ const Calendar = ({ timelineVisible }) => {
       });
       toast.success("Saved Successfully", { containerId: "A" });
       setHostsIds([...hostsIds, tempFormDatas.host_id]);
-      axiosFetchEvents(
-        hostsIds,
-        rangeStart,
-        rangeEnd,
-        auth.authToken,
-        clinic.staffInfos,
-        user.title === "Secretary",
-        user.id
-      );
-    } catch (err) {}
+      const abortController = new AbortController();
+      fetchEvents(abortController);
+    } catch (err) {
+      if (err.name !== "CanceledError")
+        toast.error(err.message, { containerId: "A" });
+    }
   };
 
   const setCalendarSelectable = (selectable) => {
@@ -899,11 +868,7 @@ const Calendar = ({ timelineVisible }) => {
           staffInfos={clinic.staffInfos}
           hostsIds={hostsIds}
           setHostsIds={setHostsIds}
-          setEvents={setEvents}
-          rangeStart={rangeStart}
-          rangeEnd={rangeEnd}
           remainingStaff={remainingStaff}
-          setRemainingStaff={setRemainingStaff}
         />
       </section>
       <section className="calendar-display">

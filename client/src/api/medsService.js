@@ -39,7 +39,7 @@ export const getActiveIngredients = async (drugCode, abortController) => {
       throw new Error(errorMsg);
     }
   } catch (err) {
-    if (err.name !== "AbortError") {
+    if (err.name !== "CanceledError") {
       alert(err);
     }
   }
@@ -77,7 +77,7 @@ export const getRoute = async (drugCode, abortController) => {
       throw new Error(errorMsg);
     }
   } catch (err) {
-    if (err.name !== "AbortError") {
+    if (err.name !== "CanceledError") {
       alert(err);
     }
   }

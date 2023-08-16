@@ -3,6 +3,7 @@ import { toLocalDateAndTime } from "../../utils/formatDates";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import useAuth from "../../hooks/useAuth";
+import formatName from "../../utils/formatName";
 
 const Message = ({ message, author, authorTitle, index }) => {
   const { clinic } = useAuth();
@@ -26,7 +27,7 @@ const Message = ({ message, author, authorTitle, index }) => {
           .map(
             (staff_id) =>
               staffIdToTitle(clinic.staffInfos, staff_id) +
-              staffIdToName(clinic.staffInfos, staff_id)
+              formatName(staffIdToName(clinic.staffInfos, staff_id))
           )
           .join(", ")}
       </div>

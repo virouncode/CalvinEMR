@@ -26,8 +26,9 @@ import DurationPicker from "../Pickers/DurationPicker";
 import { rooms } from "../../utils/rooms";
 import { statuses } from "../../utils/statuses";
 import useAuth from "../../hooks/useAuth";
-import { useAxiosFunction } from "../../hooks/useAxiosFunction";
 import formatName from "../../utils/formatName";
+import { useEventForm } from "../../hooks/useEventForm";
+import { toast } from "react-toastify";
 
 var _ = require("lodash");
 
@@ -46,69 +47,70 @@ const EventForm = forwardRef(
     ref
   ) => {
     const [
-      formDatas,
-      setFormDatas,
-      error,
-      loading,
-      axiosFetch,
-      tempFormDatas,
+      { formDatas, tempFormDatas, isLoading, errMsg },
+      fetchEventFormDatas,
       setTempFormDatas,
-    ] = useAxiosFunction();
+    ] = useEventForm(currentEvent.current.id);
     const [availableRooms, setAvailableRooms] = useState([]);
     const { auth, user } = useAuth();
     const fpStart = useRef(null); //flatpickr start date
     const fpEnd = useRef(null); //flatpickr end date
     const previousStart = useRef(currentEvent.current.start);
     const previousEnd = useRef(currentEvent.current.end);
-    const abortControllerStart = useRef(null);
-    const abortControllerEnd = useRef(null);
     const [staffGuestsInfos, setStaffGuestsInfos] = useState([]);
     const [patientsGuestsInfos, setPatientsGuestsInfos] = useState([]);
     const [invitationVisible, setInvitationVisible] = useState(false);
     const [hostSettings, setHostSettings] = useState(null);
 
-    //formDatas
     useEffect(() => {
-      axiosFetch({
-        axiosInstance: axiosXano,
-        method: "GET",
-        url: `/appointments/${currentEvent.current.id}`,
-        authToken: auth.authToken,
-      });
-      //eslint-disable-next-line
-    }, [auth.authToken, currentEvent]);
-
-    useEffect(() => {
+      const abortController = new AbortController();
       const fetchSettings = async () => {
-        const response = await axiosXano.get(
-          `/settings?staff_id=${currentEvent.current.extendedProps.host}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          }
-        );
-        setHostSettings(response.data);
+        try {
+          const response = await axiosXano.get(
+            `/settings?staff_id=${currentEvent.current.extendedProps.host}`,
+            {
+              headers: {
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+              signal: abortController.signal,
+            }
+          );
+          if (abortController.signal.aborted) return;
+          setHostSettings(response.data);
+        } catch (err) {
+          if (err.name !== "CanceledError")
+            toast.error(err.message, { containerId: "A" });
+        }
       };
       fetchSettings();
+      return () => abortController.abort();
     }, [auth.authToken, currentEvent]);
 
     //available rooms
     useEffect(() => {
-      const controller = new AbortController();
+      const abortController = new AbortController();
       const fetchAvailableRooms = async () => {
-        setAvailableRooms(
-          await getAvailableRooms(
+        try {
+          const response = await getAvailableRooms(
             parseInt(currentEvent.current.id),
             Date.parse(currentEvent.current.start),
             Date.parse(currentEvent.current.end),
             auth.authToken,
-            controller
-          )
-        );
+            abortController
+          );
+          if (abortController.signal.aborted) return;
+          setAvailableRooms(response);
+        } catch (err) {
+          if (err.name !== "CanceledError")
+            toast.error(err.message, { containerId: "A" });
+          else console.log("aborted");
+        }
       };
       fetchAvailableRooms();
-      return () => controller.abort();
+      return () => {
+        console.log("aborted");
+        abortController.abort();
+      };
     }, [auth.authToken, currentEvent]);
 
     //============================ HANDLERS ==========================//
@@ -168,12 +170,18 @@ const EventForm = forwardRef(
           ? date
           : tempFormDatas.end;
       //when i change time i want to know only the rooms occupied by others otherwise i will trigger confirm for nothing
-      const hypotheticAvailableRooms = await getAvailableRooms(
-        parseInt(currentEvent.current.id),
-        date,
-        rangeEnd,
-        auth.authToken
-      );
+      let hypotheticAvailableRooms;
+      try {
+        hypotheticAvailableRooms = await getAvailableRooms(
+          parseInt(currentEvent.current.id),
+          date,
+          rangeEnd,
+          auth.authToken
+        );
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+        return;
+      }
       if (
         tempFormDatas.room === "To be determined" ||
         hypotheticAvailableRooms.includes(tempFormDatas.room) ||
@@ -185,7 +193,6 @@ const EventForm = forwardRef(
         currentEvent.current.setStart(date);
         previousStart.current = date;
         endPicker.config.minDate = date;
-        setTempFormDatas({ ...tempFormDatas, start: date });
         if (selectedDates[0] > new Date(tempFormDatas.end)) {
           currentEvent.current.setEnd(date);
           endPicker.setDate(date);
@@ -195,44 +202,12 @@ const EventForm = forwardRef(
             end: date,
             duration: 0,
           });
-          if (abortControllerStart.current) {
-            abortControllerStart.current.abort();
-            abortControllerStart.current = null;
-            console.log("aborted");
-          }
-          abortControllerStart.current = new AbortController();
-          setAvailableRooms(
-            await getAvailableRooms(
-              parseInt(currentEvent.current.id),
-              date,
-              date,
-              auth.authToken,
-              abortControllerStart.current
-            )
-          );
-          abortControllerStart.current = null;
         } else {
           setTempFormDatas({
             ...tempFormDatas,
             start: date,
             duration: Math.floor((tempFormDatas.end - date) / (1000 * 60)),
           });
-          if (abortControllerStart.current) {
-            abortControllerStart.current.abort();
-            abortControllerStart.current = null;
-            console.log("aborted");
-          }
-          abortControllerStart.current = new AbortController();
-          setAvailableRooms(
-            await getAvailableRooms(
-              parseInt(currentEvent.current.id),
-              date,
-              tempFormDatas.end,
-              auth.authToken,
-              abortControllerStart.current
-            )
-          );
-          abortControllerStart.current = null;
         }
       } else {
         instance.setDate(previousStart.current);
@@ -242,12 +217,17 @@ const EventForm = forwardRef(
     const handleEndChange = async (selectedDates, dateStr, instance) => {
       if (selectedDates.length === 0) return; //if the flatpickr is cleared
       const date = Date.parse(selectedDates[0]); //remove ms for compareValues
-      const hypotheticAvailableRooms = await getAvailableRooms(
-        parseInt(currentEvent.current.id),
-        tempFormDatas.start,
-        date,
-        auth.authToken
-      );
+      let hypotheticAvailableRooms;
+      try {
+        hypotheticAvailableRooms = await getAvailableRooms(
+          parseInt(currentEvent.current.id),
+          tempFormDatas.start,
+          date,
+          auth.authToken
+        );
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
       if (
         tempFormDatas.room === "To be determined" ||
         hypotheticAvailableRooms.includes(tempFormDatas.room) ||
@@ -256,30 +236,13 @@ const EventForm = forwardRef(
             content: `${tempFormDatas.room} will be occupied at this time slot, change end time anyway ?`,
           })))
       ) {
-        currentEvent.current.setEnd(date);
+        currentEvent.current.setEnd(date); //re-render
         previousEnd.current = date;
         setTempFormDatas({
           ...tempFormDatas,
           end: date,
           duration: Math.floor((date - tempFormDatas.start) / (1000 * 60)),
         });
-
-        if (abortControllerEnd.current) {
-          abortControllerEnd.current.abort();
-          abortControllerEnd.current = null;
-          console.log("aborted");
-        }
-        abortControllerEnd.current = new AbortController();
-        setAvailableRooms(
-          await getAvailableRooms(
-            parseInt(currentEvent.current.id),
-            tempFormDatas.start,
-            date,
-            auth.authToken,
-            abortControllerEnd.current
-          )
-        );
-        abortControllerEnd.current = null;
       } else {
         instance.setDate(previousEnd.current);
       }

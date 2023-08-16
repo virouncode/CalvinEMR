@@ -10,6 +10,8 @@ import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { NavLink } from "react-router-dom";
+import { confirmAlert } from "../Confirm/ConfirmGlobal";
+import formatName from "../../utils/formatName";
 
 const MessageDetail = ({
   setCurrentMsgId,
@@ -28,22 +30,31 @@ const MessageDetail = ({
   );
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchPreviousMsgs = async () => {
-      const response = await axiosXano.post(
-        "/messages_selected",
-        { messages_ids: message.previous_ids },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setPreviousMsgs(
-        response.data.sort((a, b) => b.date_created - a.date_created)
-      );
+      try {
+        const response = await axiosXano.post(
+          "/messages_selected",
+          { messages_ids: message.previous_ids },
+          {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+              "Content-Type": "application/json",
+            },
+            signal: abortController.signal,
+          }
+        );
+        if (abortController.signal.aborted) return;
+        setPreviousMsgs(
+          response.data.sort((a, b) => b.date_created - a.date_created)
+        );
+      } catch (err) {
+        if (err.name !== "CanceledError")
+          toast.error(err.message, { containerId: "A" });
+      }
     };
     fetchPreviousMsgs();
+    return () => abortController.abort();
   }, [auth.authToken, user.id, message.previous_ids]);
 
   const handleClickBack = (e) => {
@@ -51,38 +62,42 @@ const MessageDetail = ({
   };
 
   const handleDeleteMsg = async (e) => {
-    try {
-      await axiosXano.put(
-        `/messages/${message.id}`,
-        {
-          ...message,
-          deleted_by_ids: [...message.deleted_by_ids, user.id],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
+    if (
+      await confirmAlert({
+        content: "Do you really want to delete this message ?",
+      })
+    ) {
+      try {
+        await axiosXano.put(
+          `/messages/${message.id}`,
+          {
+            ...message,
+            deleted_by_ids: [...message.deleted_by_ids, user.id],
           },
-        }
-      );
-      const response2 = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const newMessages = filterAndSortMessages(
-        section,
-        response2.data,
-        user.id
-      );
-      setMessages(newMessages);
-      setCurrentMsgId(0);
-
-      toast.success("Message deleted successfully", { containerId: "A" });
-    } catch (err) {
-      console.log(err);
-      toast.error("Couldn't delete the message", { containerId: "A" });
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
+        const response2 = await axiosXano.get(`/messages?staff_id=${user.id}`, {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const newMessages = filterAndSortMessages(
+          section,
+          response2.data,
+          user.id
+        );
+        setMessages(newMessages);
+        setCurrentMsgId(0);
+        toast.success("Message deleted successfully", { containerId: "A" });
+      } catch (err) {
+        toast.error(err.message, { containerId: "A" });
+      }
     }
   };
 
@@ -128,7 +143,7 @@ const MessageDetail = ({
       <div className="message-detail-content">
         <Message
           message={message}
-          author={staffIdToName(clinic.staffInfos, message.from_id)}
+          author={formatName(staffIdToName(clinic.staffInfos, message.from_id))}
           authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
           key={message.id}
           index={0}
@@ -137,7 +152,9 @@ const MessageDetail = ({
           previousMsgs.map((message, index) => (
             <Message
               message={message}
-              author={staffIdToName(clinic.staffInfos, message.from_id)}
+              author={formatName(
+                staffIdToName(clinic.staffInfos, message.from_id)
+              )}
               authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
               key={message.id}
               index={index + 1}

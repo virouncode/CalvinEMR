@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Welcome from "./Welcome";
-import Footer from "./Footer";
 import ConfirmGlobal from "../Confirm/ConfirmGlobal";
 import { ToastContainer } from "react-toastify";
+import { useRef } from "react";
 
 const Layout = () => {
   const DIALOG_CONTAINER_STYLE = {
@@ -19,7 +19,7 @@ const Layout = () => {
     background: "rgba(0,0,0,0.8)",
     zIndex: "100000",
   };
-
+  const confirmDialogRef = useRef(null);
   return (
     <>
       <Header />

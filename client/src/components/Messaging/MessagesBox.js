@@ -4,6 +4,7 @@ import NewWindow from "react-new-window";
 import { CircularProgress } from "@mui/material";
 import MessagesOverview from "./MessagesOverview";
 import MessageDetail from "./MessageDetail";
+import useAuth from "../../hooks/useAuth";
 
 const MessagesBox = ({
   section,

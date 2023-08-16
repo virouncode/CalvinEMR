@@ -1,5 +1,5 @@
 //Librairies
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 //Components
 import PatientSearchForm from "./PatientSearchForm";
 import PatientSearchResult from "./PatientSearchResult";

@@ -28,7 +28,7 @@ export const usePatientRecord = (url, patientId) => {
   const [httpState, dispatch] = useReducer(httpReducer, initialHttpState);
   const fetchRecord = useCallback(
     async (abortController) => {
-      if (!url) {
+      if (!url || abortController.signal.aborted) {
         return;
       }
       try {
@@ -40,12 +40,11 @@ export const usePatientRecord = (url, patientId) => {
           },
           signal: abortController.signal,
         });
+        if (abortController.signal.aborted) return;
         dispatch({ type: "FETCH_SUCCESS", payload: response.data });
       } catch (err) {
         if (err.name !== "CanceledError") {
           dispatch({ type: "FETCH_ERROR", payload: err.message });
-        } else {
-          dispatch({ type: "FETCH_ERROR", payload: null });
         }
       }
     },

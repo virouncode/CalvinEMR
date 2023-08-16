@@ -7,11 +7,7 @@ const CalendarFilter = ({
   staffInfos,
   hostsIds,
   setHostsIds,
-  setEvents,
-  rangeStart,
-  rangeEnd,
   remainingStaff,
-  setRemainingStaff,
 }) => {
   return (
     <div className="calendar-filter">
@@ -20,11 +16,7 @@ const CalendarFilter = ({
         staffInfos={staffInfos}
         hostsIds={hostsIds}
         setHostsIds={setHostsIds}
-        setEvents={setEvents}
-        rangeStart={rangeStart}
-        rangeEnd={rangeEnd}
         remainingStaff={remainingStaff}
-        setRemainingStaff={setRemainingStaff}
       />
     </div>
   );

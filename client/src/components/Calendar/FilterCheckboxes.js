@@ -9,11 +9,7 @@ const FilterCheckboxes = ({
   staffInfos,
   hostsIds,
   setHostsIds,
-  setEvents,
-  rangeStart,
-  rangeEnd,
   remainingStaff,
-  setRemainingStaff,
 }) => {
   //======================= HOOKS ==========================//
   const { user } = useAuth();
@@ -382,31 +378,6 @@ const FilterCheckboxes = ({
       }
     }
     setHostsIds(newHostsIds);
-    // const hostsToFetch = isSecretary() ? [""] : newHostsIds;
-    // try {
-    //   const appointments = await axiosXano.post(
-    //     "/staff_appointments",
-    //     {
-    //       hosts_ids: hostsToFetch,
-    //       range_start: rangeStart,
-    //       range_end: rangeEnd,
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${auth.authToken}`,
-    //       },
-    //     }
-    //   );
-    //   const eventsInfos = parseToEvents(
-    //     appointments,
-    //     staffInfos,
-    //     isSecretary(),
-    //     user.id
-    //   );
-    //   setEvents(eventsInfos[0]);
-    //   setRemainingStaff(eventsInfos[1]);
-    // } catch (err) {}
   };
 
   const handleCheckCategory = async (category, e) => {
@@ -435,14 +406,6 @@ const FilterCheckboxes = ({
     }
     sethostsCategories(newHostsCategories);
     setHostsIds(newHostsIds);
-    // const hostsToFetch = isSecretary() ? [""] : newHostsIds;
-    // const eventsInfos = parseToEvents(
-    //   await getAppointments(hostsToFetch, rangeStart, rangeEnd),
-    //   staffInfos,
-    //   isSecretary()
-    // );
-    // setEvents(eventsInfos[0]);
-    // setRemainingStaff(eventsInfos[1]);
   };
 
   //======================== FUNCTIONS =====================//

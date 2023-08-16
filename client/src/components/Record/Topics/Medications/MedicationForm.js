@@ -41,6 +41,7 @@ const MedicationForm = ({
           auth.authToken,
           abortController
         );
+        if (abortController.signal.aborted) return;
         setAllergies(allergiesResults);
       } catch (err) {
         setErrAllergies(err.message);

@@ -48,6 +48,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
   const valid = useRef(Array(23).fill(true));
   const datas = useRef({});
   const { auth, user, clinic, setClinic } = useAuth();
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   const handleChange = (e) => {
     let value = e.target.value;
@@ -123,27 +124,36 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (file.size > 20000000) {
-      // setAlertVisible(true);
+      toast.error("File size exceeds 20Mbs, please choose another file", {
+        containerId: "B",
+      });
       return;
     }
+    setIsLoadingFile(true);
     // setting up the reader
     let reader = new FileReader();
     reader.readAsDataURL(file);
     // here we tell the reader what to do when it's done reading...
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
-      let fileToUpload = await axiosXano.post(
-        "/upload/attachment",
-        {
-          content: content,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
+      try {
+        let fileToUpload = await axiosXano.post(
+          "/upload/attachment",
+          {
+            content: content,
           },
-        }
-      );
-      setFormDatas({ ...formDatas, avatar: fileToUpload.data });
+          {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
+        setFormDatas({ ...formDatas, avatar: fileToUpload.data });
+        setIsLoadingFile(false);
+      } catch (err) {
+        toast.error(err.message, { containerId: "B" });
+        setIsLoadingFile(false);
+      }
     };
   };
 
@@ -223,7 +233,11 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                     Edit
                   </button>
                 ) : (
-                  <button type="button" onClick={handleSubmit}>
+                  <button
+                    type="button"
+                    disabled={isLoadingFile}
+                    onClick={handleSubmit}
+                  >
                     Save
                   </button>
                 )}
@@ -603,7 +617,9 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                 </p>
               </div>
               <div className="demographics-card-form-img">
-                {formDatas.avatar ? (
+                {isLoadingFile ? (
+                  <CircularProgress />
+                ) : formDatas.avatar ? (
                   <img
                     src={`${BASE_URL}${formDatas.avatar.path}`}
                     alt="user-avatar"

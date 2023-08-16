@@ -10,7 +10,7 @@ const ConfirmDialog = ({
 }) => {
   return (
     <>
-      <div style={containerStyle}>
+      <div id="confirm-dialog" style={containerStyle}>
         <div className="confirm-dialog">
           <div className="confirm-dialog-header">
             <img src={logo} alt="alpha-emr-logo" width="100px" />
