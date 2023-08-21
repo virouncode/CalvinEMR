@@ -44,7 +44,9 @@ const MedicationForm = ({
         if (abortController.signal.aborted) return;
         setAllergies(allergiesResults);
       } catch (err) {
-        setErrAllergies(err.message);
+        setErrAllergies(
+          `Error: unable to fetch patient allergies: ${err.message}`
+        );
       }
     };
     fetchAllergies();
@@ -83,7 +85,9 @@ const MedicationForm = ({
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to save medication : ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

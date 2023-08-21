@@ -17,6 +17,7 @@ const MessagesToolBar = ({
   msgsSelectedIds,
   setMsgsSelectedIds,
   currentMsgId,
+  setPopUpVisible,
 }) => {
   const { auth, user } = useAuth();
   const [selectAllVisible, setSelectAllVisible] = useState(true);
@@ -136,7 +137,9 @@ const MessagesToolBar = ({
   };
 
   // const handleClickSearch = (e) => {};
-  const handleClickPrint = () => {};
+  const handleClickPrint = () => {
+    setPopUpVisible(true);
+  };
 
   return (
     <div className="messages-toolbar">

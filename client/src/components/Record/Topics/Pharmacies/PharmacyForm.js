@@ -64,7 +64,9 @@ const PharmacyForm = ({
       setPharmaciesList(response.data);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to add pharmacy: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

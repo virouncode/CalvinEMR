@@ -57,7 +57,7 @@ const PharmacyItem = ({
         setEditVisible(false);
         toast.success("Saved successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(err.message, {
+        toast.error(`Error: unable to update pharmacy:${err.message}`, {
           containerId: "B",
         });
       }

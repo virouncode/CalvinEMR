@@ -33,7 +33,9 @@ const MedsSearch = ({ handleMedClick }) => {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      toast.error(err.message, { containerId: "B" });
+      toast.error(`Error: unable to fetch meds database: ${err.message}`, {
+        containerId: "B",
+      });
     }
   };
 

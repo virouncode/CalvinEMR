@@ -11687,6 +11687,11 @@ readers do not read off random characters that represent icons */
   border: solid 0.5px grey;
   border-radius: 2px;
 }
+.progress-notes-err {
+  background: rgba(255, 0, 0, 0.536);
+  padding: 10px;
+  font-size: 0.8rem;
+}
 .progress-notes-header {
   position: sticky;
   top: 0;
@@ -11850,6 +11855,9 @@ readers do not read off random characters that represent icons */
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.progress-notes-card-print p {
+  white-space: pre;
 }
 .progress-notes-form {
   border: solid 0.5px grey;
@@ -12031,25 +12039,30 @@ readers do not read off random characters that represent icons */
 .patient-topic-content-left .patient-demo-content-avatar img {
   width: 100%;
 }
-.patient-topic-content-left .patient-med-history-content, .patient-topic-content-left .patient-fam-history-content, .patient-topic-content-left .patient-risk-content, .patient-topic-content-left .patient-medications-content, .patient-topic-content-left .patient-pharmacies-content, .patient-topic-content-left .patient-measurements-content {
+.patient-topic-content-left .patient-med-history-content, .patient-topic-content-left .patient-fam-history-content, .patient-topic-content-left .patient-risk-content, .patient-topic-content-left .patient-medications-content, .patient-topic-content-left .patient-pharmacies-content, .patient-topic-content-left .patient-soc-history-content, .patient-topic-content-left .patient-relationships-content, .patient-topic-content-left .patient-measurements-content {
   width: 100%;
   display: flex;
   flex-direction: column;
   padding: 5px;
 }
-.patient-topic-content-left .patient-med-history-content-event ul, .patient-topic-content-left .patient-fam-history-content-event ul, .patient-topic-content-left .patient-risk-content-event ul, .patient-topic-content-left .patient-medications-content-event ul, .patient-topic-content-left .patient-pharmacies-content-event ul, .patient-topic-content-left .patient-measurements-content-event ul {
+.patient-topic-content-left .patient-med-history-content-err, .patient-topic-content-left .patient-fam-history-content-err, .patient-topic-content-left .patient-risk-content-err, .patient-topic-content-left .patient-medications-content-err, .patient-topic-content-left .patient-pharmacies-content-err, .patient-topic-content-left .patient-soc-history-content-err, .patient-topic-content-left .patient-relationships-content-err, .patient-topic-content-left .patient-measurements-content-err {
+  background: rgba(255, 0, 0, 0.536);
+  padding: 10px;
+  font-size: 0.8rem;
+}
+.patient-topic-content-left .patient-med-history-content-event ul, .patient-topic-content-left .patient-fam-history-content-event ul, .patient-topic-content-left .patient-risk-content-event ul, .patient-topic-content-left .patient-medications-content-event ul, .patient-topic-content-left .patient-pharmacies-content-event ul, .patient-topic-content-left .patient-soc-history-content-event ul, .patient-topic-content-left .patient-relationships-content-event ul, .patient-topic-content-left .patient-measurements-content-event ul {
   margin-bottom: 5px;
 }
-.patient-topic-content-left .patient-med-history-content-event ul li, .patient-topic-content-left .patient-fam-history-content-event ul li, .patient-topic-content-left .patient-risk-content-event ul li, .patient-topic-content-left .patient-medications-content-event ul li, .patient-topic-content-left .patient-pharmacies-content-event ul li, .patient-topic-content-left .patient-measurements-content-event ul li {
+.patient-topic-content-left .patient-med-history-content-event ul li, .patient-topic-content-left .patient-fam-history-content-event ul li, .patient-topic-content-left .patient-risk-content-event ul li, .patient-topic-content-left .patient-medications-content-event ul li, .patient-topic-content-left .patient-pharmacies-content-event ul li, .patient-topic-content-left .patient-soc-history-content-event ul li, .patient-topic-content-left .patient-relationships-content-event ul li, .patient-topic-content-left .patient-measurements-content-event ul li {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
 }
-.patient-topic-content-left .patient-med-history-content-event ul li label, .patient-topic-content-left .patient-fam-history-content-event ul li label, .patient-topic-content-left .patient-risk-content-event ul li label, .patient-topic-content-left .patient-medications-content-event ul li label, .patient-topic-content-left .patient-pharmacies-content-event ul li label, .patient-topic-content-left .patient-measurements-content-event ul li label {
+.patient-topic-content-left .patient-med-history-content-event ul li label, .patient-topic-content-left .patient-fam-history-content-event ul li label, .patient-topic-content-left .patient-risk-content-event ul li label, .patient-topic-content-left .patient-medications-content-event ul li label, .patient-topic-content-left .patient-pharmacies-content-event ul li label, .patient-topic-content-left .patient-soc-history-content-event ul li label, .patient-topic-content-left .patient-relationships-content-event ul li label, .patient-topic-content-left .patient-measurements-content-event ul li label {
   font-weight: bold;
   margin-right: 5px;
 }
-.patient-topic-content-left .patient-med-history-content-event ul li p, .patient-topic-content-left .patient-fam-history-content-event ul li p, .patient-topic-content-left .patient-risk-content-event ul li p, .patient-topic-content-left .patient-medications-content-event ul li p, .patient-topic-content-left .patient-pharmacies-content-event ul li p, .patient-topic-content-left .patient-measurements-content-event ul li p {
+.patient-topic-content-left .patient-med-history-content-event ul li p, .patient-topic-content-left .patient-fam-history-content-event ul li p, .patient-topic-content-left .patient-risk-content-event ul li p, .patient-topic-content-left .patient-medications-content-event ul li p, .patient-topic-content-left .patient-pharmacies-content-event ul li p, .patient-topic-content-left .patient-soc-history-content-event ul li p, .patient-topic-content-left .patient-relationships-content-event ul li p, .patient-topic-content-left .patient-measurements-content-event ul li p {
   word-break: break-all;
   text-align: justify;
 }
@@ -12078,6 +12091,11 @@ readers do not read off random characters that represent icons */
   display: flex;
   flex-direction: column;
 }
+.patient-topic-content-right .patient-doctors-content-err, .patient-topic-content-right .patient-reminders-content-err, .patient-topic-content-right .patient-pregnancies-content-err, .patient-topic-content-right .patient-allergies-content-err, .patient-topic-content-right .patient-concerns-content-err, .patient-topic-content-right .patient-documents-content-err, .patient-topic-content-right .patient-appointments-content-err, .patient-topic-content-right .patient-vaccines-content-err, .patient-topic-content-right .patient-messages-content-err {
+  background: rgba(255, 0, 0, 0.536);
+  padding: 10px;
+  font-size: 0.8rem;
+}
 .patient-topic-content-right .patient-doctors-content-event ul, .patient-topic-content-right .patient-reminders-content-event ul, .patient-topic-content-right .patient-pregnancies-content-event ul, .patient-topic-content-right .patient-allergies-content-event ul, .patient-topic-content-right .patient-concerns-content-event ul, .patient-topic-content-right .patient-documents-content-event ul, .patient-topic-content-right .patient-appointments-content-event ul, .patient-topic-content-right .patient-vaccines-content-event ul, .patient-topic-content-right .patient-messages-content-event ul {
   margin-bottom: 5px;
 }
@@ -12100,6 +12118,32 @@ readers do not read off random characters that represent icons */
   color: rgba(0, 0, 255, 0.469);
 }
 .patient-topic-content-right .patient-doctors-content-event-link:hover, .patient-topic-content-right .patient-reminders-content-event-link:hover, .patient-topic-content-right .patient-pregnancies-content-event-link:hover, .patient-topic-content-right .patient-allergies-content-event-link:hover, .patient-topic-content-right .patient-concerns-content-event-link:hover, .patient-topic-content-right .patient-documents-content-event-link:hover, .patient-topic-content-right .patient-appointments-content-event-link:hover, .patient-topic-content-right .patient-vaccines-content-event-link:hover, .patient-topic-content-right .patient-messages-content-event-link:hover {
+  color: blue;
+}
+.patient-topic-content-right .patient-messages-content {
+  padding: 5px;
+  width: 100%;
+}
+.patient-topic-content-right .patient-messages-content-item {
+  display: flex;
+  overflow: hidden;
+  justify-content: space-between;
+  border-bottom: solid 0.5px grey;
+  width: 100%;
+  padding: 5px 0;
+}
+.patient-topic-content-right .patient-messages-content-item-overview {
+  width: 70%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.patient-topic-content-right .patient-messages-content-item-date {
+  width: 30%;
+  text-align: end;
+}
+.patient-topic-content-right .patient-messages-content-item-link {
+  text-decoration: underline;
   color: blue;
 }
 
@@ -12401,6 +12445,14 @@ readers do not read off random characters that represent icons */
 .sochistory-card-form input {
   min-width: 30px;
 }
+.sochistory-card-form-btns {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+}
+.sochistory-card-form-btns button {
+  margin-right: 10px;
+}
 
 .risk-title {
   font-size: 1.2rem;
@@ -12589,7 +12641,7 @@ readers do not read off random characters that represent icons */
   border-collapse: collapse;
   border: solid 1px #21201e;
   font-size: 0.8rem;
-  margin: 0 auto;
+  margin: 20px;
 }
 .pharmacies-table thead {
   background-color: #94bae8;
@@ -12647,7 +12699,8 @@ readers do not read off random characters that represent icons */
   border-collapse: collapse;
   border: solid 1px #21201e;
   font-size: 0.8rem;
-  margin: 10px auto 0;
+  margin: 10px 20px;
+  padding: 0 10px;
 }
 .pharmacies-list-table thead {
   background-color: #94bae8;
@@ -13090,6 +13143,13 @@ readers do not read off random characters that represent icons */
   justify-content: space-around;
 }
 
+.vaccines-err {
+  background: rgba(255, 0, 0, 0.536);
+  padding: 10px;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
 .vaccines-title {
   font-size: 1.2rem;
   margin-bottom: 10px;
@@ -13594,6 +13654,7 @@ readers do not read off random characters that represent icons */
   position: sticky;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background: #94bae8;
   border-radius: 4px 4px 0 0;
 }
@@ -13736,7 +13797,31 @@ readers do not read off random characters that represent icons */
 .message-detail-btns button {
   margin-right: 10px;
 }
+.message-detail-print {
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+  border-radius: 4px;
+  border: solid 0.3px grey;
+  margin: 10px;
+  overflow: hidden;
+}
+.message-detail-print-subject, .message-detail-print-patient {
+  border-bottom: solid 0.3px grey;
+  height: 30px;
+  font-size: 0.9rem;
+  background-color: #94bae8;
+}
+.message-detail-print-btn {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
 
+@media print {
+  .message-detail-print-btn {
+    display: none !important;
+  }
+}
 .message {
   padding: 20px;
   border-bottom: solid 0.5px rgb(204, 204, 204);
@@ -13970,6 +14055,9 @@ readers do not read off random characters that represent icons */
 .patients-title {
   margin-bottom: 10px;
 }
+.patients-search-input {
+  margin-bottom: 20px;
+}
 .patients-list-item {
   display: flex;
   align-items: center;
@@ -14051,5 +14139,43 @@ readers do not read off random characters that represent icons */
   align-items: center;
 }
 .forward-form-btns button {
+  margin-right: 10px;
+}
+
+.new-template, .edit-template {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+}
+.new-template-title, .edit-template-title {
+  font-size: 0.9rem;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.new-template-name, .edit-template-name {
+  font-size: 0.9rem;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.new-template-name input, .edit-template-name input {
+  width: 300px;
+}
+.new-template-body, .edit-template-body {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.new-template-body textarea, .edit-template-body textarea {
+  min-height: 300px;
+  width: 100%;
+}
+.new-template-btns, .edit-template-btns {
+  width: 100%;
+  text-align: center;
+}
+.new-template-btns button, .edit-template-btns button {
   margin-right: 10px;
 }/*# sourceMappingURL=index.css.map */

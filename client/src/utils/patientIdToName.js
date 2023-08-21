@@ -1,3 +1,3 @@
-export const patientIdToName = (patientInfos, patientId) => {
-  return patientInfos.find(({ id }) => id === patientId).full_name;
+export const patientIdToName = (patientsInfos, patientId) => {
+  return patientsInfos.find(({ id }) => id === patientId).full_name;
 };

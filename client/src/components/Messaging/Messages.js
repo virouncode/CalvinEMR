@@ -23,6 +23,7 @@ const Messages = () => {
   const [currentMsgId, setCurrentMsgId] = useState(0);
   const [messages, setMessages] = useState(null);
   const { auth, user, clinic } = useAuth();
+  const [popUpVisible, setPopUpVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -91,6 +92,8 @@ const Messages = () => {
     clinic.patientsInfos,
   ]);
 
+  const handlePrint = () => {};
+
   return (
     <div className="messages-container">
       <MessagesToolBar
@@ -105,6 +108,7 @@ const Messages = () => {
         currentMsgId={currentMsgId}
         messages={messages}
         setMessages={setMessages}
+        setPopUpVisible={setPopUpVisible}
       />
       <div className="messages-section">
         <MessagesLeftBar
@@ -124,6 +128,8 @@ const Messages = () => {
           setCurrentMsgId={setCurrentMsgId}
           messages={messages}
           setMessages={setMessages}
+          popUpVisible={popUpVisible}
+          setPopUpVisible={setPopUpVisible}
         />
       </div>
     </div>

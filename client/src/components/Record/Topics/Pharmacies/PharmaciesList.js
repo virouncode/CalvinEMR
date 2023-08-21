@@ -31,7 +31,9 @@ const PharmaciesList = ({
         setPharmaciesList(response.data);
       } catch (err) {
         if (err.name !== "CanceledError") {
-          toast.error(err.message, { containerId: "B" });
+          toast.error(`Error: unable to fetch all pharmacies: ${err.message}`, {
+            containerId: "B",
+          });
         }
       }
     };

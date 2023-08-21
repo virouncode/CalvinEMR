@@ -18,6 +18,8 @@ const MessagesBox = ({
   setCurrentMsgId,
   messages,
   setMessages,
+  popUpVisible,
+  setPopUpVisible,
 }) => {
   const emptySectionMessages = (sectionName) => {
     switch (sectionName) {
@@ -53,6 +55,8 @@ const MessagesBox = ({
                 setMessages={setMessages}
                 setSection={setSection}
                 section={section}
+                popUpVisible={popUpVisible}
+                setPopUpVisible={setPopUpVisible}
               />
             )
           ) : (

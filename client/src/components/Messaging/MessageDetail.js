@@ -12,6 +12,8 @@ import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { NavLink } from "react-router-dom";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import formatName from "../../utils/formatName";
+import MessagesPrintPU from "./MessagesPrintPU";
+import { patientIdToName } from "../../utils/patientIdToName";
 
 const MessageDetail = ({
   setCurrentMsgId,
@@ -19,6 +21,8 @@ const MessageDetail = ({
   setMessages,
   setSection,
   section,
+  popUpVisible,
+  setPopUpVisible,
 }) => {
   const [replyVisible, setReplyVisible] = useState(false);
   const [forwardVisible, setForwardVisible] = useState(false);
@@ -121,6 +125,38 @@ const MessageDetail = ({
 
   return (
     <>
+      {popUpVisible && (
+        <NewWindow
+          title={`Message(s) / Subject: ${message.subject} ${
+            message.related_patient_id &&
+            `/ Patient: ${patientIdToName(
+              clinic.patientsInfos,
+              message.related_patient_id
+            )}`
+          }`}
+          features={{
+            toolbar: "no",
+            scrollbars: "no",
+            menubar: "no",
+            status: "no",
+            directories: "no",
+            width: 793.7,
+            height: 1122.5,
+            left: 320,
+            top: 200,
+          }}
+          onUnload={() => setPopUpVisible(false)}
+        >
+          <MessagesPrintPU
+            message={message}
+            previousMsgs={previousMsgs}
+            author={formatName(
+              staffIdToName(clinic.staffInfos, message.from_id)
+            )}
+            authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+          />
+        </NewWindow>
+      )}
       <div className="message-detail-toolbar">
         <i
           className="fa-solid fa-arrow-left message-detail-toolbar-arrow"
