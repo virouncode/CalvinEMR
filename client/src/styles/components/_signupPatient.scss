@@ -12,6 +12,18 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
+            &-relationship {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                align-items: center;
+                select{
+                    width:40% !important;
+                }
+                &-name {
+                    width : 40%;
+                }
+            }
         }
         label {
             font-size: 0.85rem;

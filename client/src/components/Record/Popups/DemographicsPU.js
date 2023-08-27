@@ -646,11 +646,18 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
               </div>
             </form>
             <p className="demographics-card-sign">
-              {patientInfos.updated_by_name && (
+              {patientInfos.updated_by_name ? (
                 <em>
                   Updated by {patientInfos.updated_by_name.full_name} on{" "}
                   {toLocalDateAndTime(
                     new Date(patientInfos.date_updated).toISOString()
+                  )}
+                </em>
+              ) : (
+                <em>
+                  Created by {patientInfos.created_by_name.full_name} on{" "}
+                  {toLocalDateAndTime(
+                    new Date(patientInfos.date_created).toISOString()
                   )}
                 </em>
               )}

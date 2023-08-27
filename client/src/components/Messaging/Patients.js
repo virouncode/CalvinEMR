@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PatientsList from "./PatientsList";
 
-const Patients = ({ isPatientChecked, handleCheckPatient }) => {
+const Patients = ({ isPatientChecked, handleCheckPatient, label = true }) => {
   const [search, setSearch] = useState("");
   const handleChange = (e) => {
     const value = e.target.value;
@@ -9,7 +9,7 @@ const Patients = ({ isPatientChecked, handleCheckPatient }) => {
   };
   return (
     <div className="patients">
-      <div className="patients-title">Patients</div>
+      {label && <div className="patients-title">Patients</div>}
       <div className="patients-search-input">
         <input
           type="text"

@@ -8,12 +8,15 @@ import { createChartNbr } from "../../utils/createChartNbr";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import { CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
+import RelationshipsForm from "./RelationshipsForm";
+import { toInverseRelation } from "../../utils/toInverseRelation";
 
 const SignupPatientForm = () => {
-  const { auth } = useAuth();
+  const { auth, clinic } = useAuth();
   const [patientAdded, setPatientAdded] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
+  const [relationships, setRelationships] = useState([]);
   const [formDatas, setFormDatas] = useState({
     email: "",
     password: "",
@@ -186,6 +189,53 @@ const SignupPatientForm = () => {
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
+
+      const relationshipsToPost = [...relationships];
+      relationshipsToPost.forEach((relationship) => delete relationship.id);
+      relationshipsToPost.forEach(
+        (relationship) => (relationship.date_created = Date.parse(new Date()))
+      );
+      relationshipsToPost.forEach(
+        (relationship) => (relationship.patient_id = response.data.id)
+      );
+
+      relationshipsToPost.forEach(
+        async (relationship) =>
+          await axiosXano.post("/relationships", relationship, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          })
+      );
+
+      let inverseRelationsToPost = [...relationshipsToPost];
+      inverseRelationsToPost.forEach((item) => {
+        console.log(
+          "item relation id",
+          typeof item.relation_id,
+          item.relation_id
+        );
+        console.log(clinic.patientsInfos);
+        const gender = clinic.patientsInfos.filter(
+          ({ id }) => id === item.relation_id
+        )[0].gender_identification;
+        console.log("gender", gender);
+        item.patient_id = item.relation_id;
+        item.relationship = toInverseRelation(item.relationship, gender);
+        item.relation_id = response.data.id;
+      });
+
+      inverseRelationsToPost.forEach(
+        async (relationship) =>
+          await axiosXano.post("/relationships", relationship, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          })
+      );
+
       setPatientAdded(true);
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
@@ -447,6 +497,12 @@ const SignupPatientForm = () => {
               name="country"
             />
           </div>
+
+          <RelationshipsForm
+            relationships={relationships}
+            setRelationships={setRelationships}
+          />
+
           <div className="signup-patient-form-row">
             <label>Avatar: </label>
             <input

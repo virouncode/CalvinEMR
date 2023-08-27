@@ -4,7 +4,7 @@ import { CircularProgress } from "@mui/material";
 
 const MeasurementsContent = ({ datas, isLoading, errMsg }) => {
   //HOOKS
-  const [lastMeasurement, setLastMeasurement] = useState({});
+  const [lastMeasurement, setLastMeasurement] = useState(null);
   useEffect(() => {
     if (datas) {
       setLastMeasurement(
@@ -18,7 +18,7 @@ const MeasurementsContent = ({ datas, isLoading, errMsg }) => {
       <p className="patient-measurements-content-err">{errMsg}</p>
     ) : (
       <div className="patient-measurements-content">
-        {datas && datas.length >= 1 ? (
+        {datas && datas.length >= 1 && lastMeasurement ? (
           <>
             <p>
               <label>Heigth(cm): </label>

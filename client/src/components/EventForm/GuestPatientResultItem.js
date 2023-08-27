@@ -1,6 +1,5 @@
 //Librairies
 import React from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const GuestPatientResultItem = ({ guest, handleAddGuest }) => {
   return (

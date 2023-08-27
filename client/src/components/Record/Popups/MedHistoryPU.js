@@ -41,7 +41,7 @@ const MedHistoryPU = ({
   const handleSort = (columnName) => {
     direction.current = !direction.current;
     setColumnToSort(columnName);
-    fetchRecord([...datas]);
+    setDatas([...datas]);
   };
 
   const handleClose = async (e) => {

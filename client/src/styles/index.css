@@ -12066,6 +12066,10 @@ readers do not read off random characters that represent icons */
   word-break: break-all;
   text-align: justify;
 }
+.patient-topic-content-left .patient-med-history-content-link, .patient-topic-content-left .patient-fam-history-content-link, .patient-topic-content-left .patient-risk-content-link, .patient-topic-content-left .patient-medications-content-link, .patient-topic-content-left .patient-pharmacies-content-link, .patient-topic-content-left .patient-soc-history-content-link, .patient-topic-content-left .patient-relationships-content-link, .patient-topic-content-left .patient-measurements-content-link {
+  color: blue;
+  text-decoration: underline;
+}
 .patient-topic-content-right {
   max-height: 0;
   font-size: 0.8rem;
@@ -13420,6 +13424,18 @@ readers do not read off random characters that represent icons */
   justify-content: space-between;
   margin-bottom: 10px;
 }
+.signup-patient-form-row-relationship {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  align-items: center;
+}
+.signup-patient-form-row-relationship select {
+  width: 40% !important;
+}
+.signup-patient-form-row-relationship-name {
+  width: 40%;
+}
 .signup-patient-form label {
   font-size: 0.85rem;
   font-weight: bold;
@@ -14178,4 +14194,59 @@ readers do not read off random characters that represent icons */
 }
 .new-template-btns button, .edit-template-btns button {
   margin-right: 10px;
+}
+
+.relationships-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  padding: 10px;
+  text-align: center;
+}
+.relationships-err {
+  background: rgba(255, 0, 0, 0.536);
+  padding: 10px;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+.relationships-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: solid 1px #21201e;
+  font-size: 0.8rem;
+  margin: 0 auto;
+}
+.relationships-table thead {
+  background-color: #94bae8;
+  border: solid 1px #21201e;
+}
+.relationships-table th {
+  min-width: 50px;
+  padding: 2px 5px;
+  border: solid 1px #21201e;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.relationships-btn-container {
+  display: flex;
+  justify-content: space-between;
+  width: 20%;
+  margin: 20px auto 0;
+}
+.relationships-item td, .relationships-form td {
+  text-align: center;
+  border: solid 1px #21201e;
+  padding: 2px 5px;
+  word-wrap: break-word;
+  max-width: 370px;
+}
+.relationships-item input, .relationships-form input {
+  width: 360px;
+}
+.relationships-item input[type=submit], .relationships-form input[type=submit] {
+  width: auto;
+}
+.relationships-item-btn-container, .relationships-form-btn-container {
+  display: flex;
+  justify-content: space-around;
 }/*# sourceMappingURL=index.css.map */
