@@ -5,10 +5,14 @@ import PatientsSelect from "../../../Lists/PatientsSelect";
 import { patientIdToName } from "../../../../utils/patientIdToName";
 import formatName from "../../../../utils/formatName";
 import { toLocalDate } from "../../../../utils/formatDates";
-import { putPatientRecord } from "../../../../api/fetchRecords";
+import {
+  deletePatientRecord,
+  putPatientRecord,
+} from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 import axiosXano from "../../../../api/xano";
 import { toInverseRelation } from "../../../../utils/toInverseRelation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 
 const RelationshipItem = ({
   item,
@@ -52,7 +56,6 @@ const RelationshipItem = ({
           }
         )
       ).data[0].id;
-      console.log("inverseRelationToDeleteId", inverseRelationToDeleteId);
 
       await axiosXano.delete(`/relationships/${inverseRelationToDeleteId}`, {
         headers: {
@@ -88,7 +91,6 @@ const RelationshipItem = ({
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-
       const abortController = new AbortController();
       fetchRecord(abortController);
       editCounter.current -= 1;
@@ -101,12 +103,46 @@ const RelationshipItem = ({
     }
   };
 
-  const handleDeleteClick = (e) => {};
+  const handleDeleteClick = async (e) => {
+    if (
+      await confirmAlertPopUp({
+        content: "Do you really want to delete this item ?",
+      })
+    ) {
+      try {
+        const inverseRelationToDeleteId = (
+          await axiosXano.post(
+            "/relationship_between",
+            { patient_id: item.relation_id, relation_id: item.patient_id },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+            }
+          )
+        ).data[0].id;
+
+        deletePatientRecord(
+          "/relationships",
+          inverseRelationToDeleteId,
+          auth.authToken
+        );
+        deletePatientRecord("/relationships", item.id, auth.authToken);
+        const abortController = new AbortController();
+        fetchRecord(abortController);
+        toast.success("Deleted successfully", { containerId: "B" });
+      } catch (err) {
+        toast.error(`Error unable to delete relationship: ${err.message}`, {
+          containerId: "B",
+        });
+      }
+    }
+  };
 
   return (
     itemInfos && (
       <tr className="relationships-item">
-        {console.log("itemInfos", itemInfos)}
         <td>
           {editVisible ? (
             <RelationshipList
