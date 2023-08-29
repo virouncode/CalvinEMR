@@ -34,6 +34,7 @@ const NewTemplate = ({
   };
 
   const handleSelectCopyTemplate = (e) => {
+    setAlertVisible(false);
     const value = parseInt(e.target.value);
     setCopyTemplateSelectedId(value);
     setNewTemplate({
@@ -42,12 +43,14 @@ const NewTemplate = ({
     });
   };
   const handleChange = (e) => {
+    setAlertVisible(false);
     const value = e.target.value;
     const name = e.target.name;
     setNewTemplate({ ...newTemplate, [name]: value });
   };
 
   const handleCancel = () => {
+    setAlertVisible(false);
     setNewTemplateVisible(false);
   };
 
@@ -91,13 +94,15 @@ const NewTemplate = ({
   };
   return (
     <div className="new-template">
-      <AlertMsg
-        severity="error"
-        title="Error"
-        msg="Please enter a name for this new template"
-        open={alertVisible}
-        setOpen={setAlertVisible}
-      />
+      {alertVisible && (
+        <AlertMsg
+          severity="error"
+          title="Error"
+          msg="Please enter a name for this new template"
+          open={alertVisible}
+          setOpen={setAlertVisible}
+        />
+      )}
       <div className="new-template-title">
         Please write a new template or copy{" "}
         <CopyTemplatesList
