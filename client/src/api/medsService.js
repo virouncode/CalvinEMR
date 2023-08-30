@@ -84,7 +84,6 @@ export const getRoute = async (drugCode, abortController) => {
 };
 
 export const searchByBrandName = async (brandName, abortController) => {
-  console.log(process.env.REACT_APP_MEDS_USER_KEY);
   const init = {
     method: "GET",
     mode: "cors",

@@ -53,6 +53,10 @@ const MyAccountForm = () => {
     setTempFormDatas({ ...tempFormDatas, [name]: value });
   };
 
+  const handleChangeCredentials = (e) => {
+    navigate("/credentials");
+  };
+
   const handleSignChange = async (e) => {
     const file = e.target.files[0];
     if (file.size > 20000000) {
@@ -139,21 +143,6 @@ const MyAccountForm = () => {
   return !infosChanged ? (
     <>
       {errMsg && <p className="myaccount-section-err">{errMsg}</p>}
-      <div className="myaccount-section-btns">
-        {editVisible ? (
-          <>
-            <button onClick={handleSave} disabled={isLoadingFile}>
-              Save
-            </button>
-            <button onClick={handleCancel}>Cancel</button>
-          </>
-        ) : (
-          <>
-            <button onClick={handleEdit}>Edit</button>
-            <button>Change credentials</button>
-          </>
-        )}
-      </div>
 
       {tempFormDatas && (
         <div className="myaccount-section-form">
@@ -405,6 +394,23 @@ const MyAccountForm = () => {
           </div>
         </div>
       )}
+      <div className="myaccount-section-btns">
+        {editVisible ? (
+          <>
+            <button onClick={handleSave} disabled={isLoadingFile}>
+              Save
+            </button>
+            <button onClick={handleCancel}>Cancel</button>
+          </>
+        ) : (
+          <>
+            <button onClick={handleEdit}>Edit</button>
+            <button onClick={handleChangeCredentials}>
+              Change credentials
+            </button>
+          </>
+        )}
+      </div>
     </>
   ) : (
     <p className="myaccount-section-confirm">Infos changed successfully</p>

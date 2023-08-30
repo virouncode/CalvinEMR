@@ -115,6 +115,7 @@ const Messages = () => {
           section={section}
           setSection={setSection}
           setCurrentMsgId={setCurrentMsgId}
+          setMsgsSelectedIds={setMsgsSelectedIds}
         />
         <MessagesBox
           section={section}

@@ -1,5 +1,5 @@
 .prescription {
-  font-family: "Roboto", sans-serif;
+  font-family: $font1, sans-serif;
   &-page {
     width: 21cm;
     height: 29.7cm;
@@ -93,7 +93,7 @@
     }
   }
   &-add {
-    font-family: "Roboto", sans-serif;
+    font-family:$font1, sans-serif;
     font-size: 0.9rem;
     width: 90%;
     margin: 0 auto 10px;

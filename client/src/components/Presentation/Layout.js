@@ -19,7 +19,6 @@ const Layout = () => {
     background: "rgba(0,0,0,0.8)",
     zIndex: "100000",
   };
-  const confirmDialogRef = useRef(null);
   return (
     <>
       <Header />

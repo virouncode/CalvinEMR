@@ -15,6 +15,7 @@ import SignupPageStaff from "./pages/SignupPageStaff";
 import SignupPagePatient from "./pages/SignupPagePatient";
 import MyAccountPage from "./pages/MyAccountPage";
 import MessagesPage from "./pages/MessagesPage";
+import CredentialsPage from "./pages/CredentialsPage";
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
             path="messages/:messageId/:sectionName"
             element={<MessagesPage />}
           />
+          <Route path="credentials" element={<CredentialsPage />} />
         </Route>
         <Route element={<RequireAuth allowedAccesses={["Admin"]} />}>
           <Route path="signup-staff" element={<SignupPageStaff />} />

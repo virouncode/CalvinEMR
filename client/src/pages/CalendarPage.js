@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import Calendar from "../components/Calendar/Calendar";
 import ToggleView from "../components/Calendar/ToggleView";
+import DocumentViewerComponent from "../components/DocumentViewerComponent";
 
 const CalendarPage = () => {
   const [timelineVisible, setTimelineVisible] = useState(false);
 
   return (
     <>
-      <ToggleView
+      <DocumentViewerComponent />
+      {/* <ToggleView
         setTimelineVisible={setTimelineVisible}
         timelineVisible={timelineVisible}
       />
-      <Calendar timelineVisible={timelineVisible} />
+      <Calendar timelineVisible={timelineVisible} /> */}
     </>
   );
 };

@@ -81,7 +81,11 @@ const NewTemplate = ({
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      setTemplates(response2.data);
+      setTemplates(
+        response2.data.sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        )
+      );
       setFormDatas({ ...formDatas, body: newTemplate.body });
       setTemplateSelectedId(response.data.id);
       setNewTemplateVisible(false);

@@ -11,6 +11,7 @@ import useAuth from "../../../hooks/useAuth";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import SocHistoryForm from "../Topics/Social/SocHistoryForm";
+import formatName from "../../../utils/formatName";
 
 const SocHistoryPU = ({
   patientId,
@@ -227,7 +228,8 @@ const SocHistoryPU = ({
                   }}
                 >
                   <em>
-                    Edited by {formDatas.created_by_name.full_name} on{" "}
+                    Created by {formatName(formDatas.created_by_name.full_name)}{" "}
+                    on{" "}
                     {toLocalDateAndTime(
                       new Date(formDatas.date_created).toISOString()
                     )}

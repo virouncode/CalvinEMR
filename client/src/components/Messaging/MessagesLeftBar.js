@@ -1,11 +1,17 @@
 import React from "react";
 import useAuth from "../../hooks/useAuth";
 
-const MessagesLeftBar = ({ section, setSection, setCurrentMsgId }) => {
+const MessagesLeftBar = ({
+  section,
+  setSection,
+  setCurrentMsgId,
+  setMsgsSelectedIds,
+}) => {
   const handleClickSection = (e) => {
     const name = e.target.id;
     setSection(name);
     setCurrentMsgId(0);
+    setMsgsSelectedIds([]);
   };
   const isActive = (id) =>
     section === id

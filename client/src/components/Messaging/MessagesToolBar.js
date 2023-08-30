@@ -126,11 +126,11 @@ const MessagesToolBar = ({
       setSection("Inbox");
       setMsgsSelectedIds([]);
       setSelectAllVisible(true);
-      toast.success("Message(s) moved back to Inbox successfully", {
+      toast.success("Message(s) undeleted successfully", {
         containerId: "A",
       });
     } catch (err) {
-      toast.error(`Error: unable to mve messages back: ${err.message}`, {
+      toast.error(`Error: unable to undelete message(s): ${err.message}`, {
         containerId: "A",
       });
     }
@@ -158,7 +158,7 @@ const MessagesToolBar = ({
       <div className="messages-toolbar-btns">
         <button onClick={handleClickNew}>New</button>
         {section === "Deleted messages" && msgsSelectedIds.length !== 0 && (
-          <button onClick={handleClickMoveBack}>Move back to Inbox</button>
+          <button onClick={handleClickMoveBack}>Undelete</button>
         )}
         {currentMsgId !== 0 && (
           <button onClick={handleClickPrint}>Print</button>

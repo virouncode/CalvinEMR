@@ -18,6 +18,7 @@ import axiosXano from "../../../api/xano";
 import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
+import formatName from "../../../utils/formatName";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
@@ -54,6 +55,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
     let value = e.target.value;
     const name = e.target.name;
     const id = e.target.id;
+    setErrMsgPost(false);
     if (
       name === "assigned_md_id" ||
       name === "assigned_resident_id" ||
@@ -63,8 +65,6 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
     ) {
       value = parseInt(value);
     }
-
-    setErrMsgPost(false);
     if (
       name === "first_name" ||
       name === "middle_name" ||
@@ -648,14 +648,16 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
             <p className="demographics-card-sign">
               {patientInfos.updated_by_name ? (
                 <em>
-                  Updated by {patientInfos.updated_by_name.full_name} on{" "}
+                  Updated by{" "}
+                  {formatName(patientInfos.updated_by_name.full_name)} on{" "}
                   {toLocalDateAndTime(
                     new Date(patientInfos.date_updated).toISOString()
                   )}
                 </em>
               ) : (
                 <em>
-                  Created by {patientInfos.created_by_name.full_name} on{" "}
+                  Created by{" "}
+                  {formatName(patientInfos.created_by_name.full_name)} on{" "}
                   {toLocalDateAndTime(
                     new Date(patientInfos.date_created).toISOString()
                   )}

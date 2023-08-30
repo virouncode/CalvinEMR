@@ -19,7 +19,6 @@ const useOutsideCloser = (
         !eventElement.current.contains(e.target) && //if you click outside the event element
         !fpVisible.current //if flatpicker calendar not visible
       ) {
-        console.log("click outside");
         putForm();
         setFormVisible(false);
         setCalendarSelectable(true);

@@ -29,7 +29,6 @@ const RelationshipsForm = ({ relationships, setRelationships }) => {
     idCounter.current = idCounter.current + 1;
   };
   const handleDeleteRelationship = (e) => {
-    console.log(e.target.getAttribute("data-key"));
     let updatedRelationships = [...relationships];
     updatedRelationships = updatedRelationships.filter(
       ({ id }) => id !== parseInt(e.target.getAttribute("data-key"))

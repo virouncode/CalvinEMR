@@ -74,7 +74,7 @@ const SignupStaffForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formDatas.confirm_password !== formDatas.password) {
-      setErrMsg("You entered two different passwords");
+      setErrMsg("Passwords don't match");
       return;
     }
 

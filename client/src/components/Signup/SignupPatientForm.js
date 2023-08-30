@@ -10,9 +10,10 @@ import { CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import RelationshipsForm from "./RelationshipsForm";
 import { toInverseRelation } from "../../utils/toInverseRelation";
+import { postPatientRecord, putPatientRecord } from "../../api/fetchRecords";
 
 const SignupPatientForm = () => {
-  const { auth, clinic } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [patientAdded, setPatientAdded] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -44,7 +45,7 @@ const SignupPatientForm = () => {
     //DONT FORGET TO GENERATE CHART NUMBER AND POST VACCINES
     e.preventDefault();
     if (formDatas.confirm_password !== formDatas.password) {
-      setErrMsg("You entered two different passwords");
+      setErrMsg("Passwords don't match");
       return;
     }
 
@@ -84,27 +85,28 @@ const SignupPatientForm = () => {
       datasToPost.last_name = firstLetterUpper(datasToPost.last_name);
       datasToPost.full_name = firstLetterUpper(full_name);
       datasToPost.province_state = firstLetterUpper(datasToPost.province_state);
-      datasToPost.date_created = Date.parse(new Date());
       delete datasToPost.confirm_password;
 
-      const response = await axiosXano.post("/patients", datasToPost, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
+      const response = await postPatientRecord(
+        "/patients",
+        user.id,
+        auth.authToken,
+        datasToPost
+      );
+
       datasToPost.chart_nbr = createChartNbr(
         formDatas.date_of_birth,
         formDatas.gender_identification,
         response.data.id
       );
 
-      await axiosXano.put(`/patients/${response.data.id}`, datasToPost, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
+      await putPatientRecord(
+        "/patients",
+        response.data.id,
+        user.id,
+        auth.authToken,
+        datasToPost
+      );
 
       const vaccinesDatas = {
         patient_id: response.data.id,
@@ -191,13 +193,12 @@ const SignupPatientForm = () => {
       });
 
       const relationshipsToPost = [...relationships];
-      relationshipsToPost.forEach((relationship) => delete relationship.id);
-      relationshipsToPost.forEach(
-        (relationship) => (relationship.date_created = Date.parse(new Date()))
-      );
-      relationshipsToPost.forEach(
-        (relationship) => (relationship.patient_id = response.data.id)
-      );
+      relationshipsToPost.forEach((relationship) => {
+        delete relationship.id;
+        relationship.patient_id = response.data.id;
+        relationship.created_by_id = user.id;
+        relationship.date_created = Date.parse(new Date());
+      });
 
       relationshipsToPost.forEach(
         async (relationship) =>
@@ -211,19 +212,15 @@ const SignupPatientForm = () => {
 
       let inverseRelationsToPost = [...relationshipsToPost];
       inverseRelationsToPost.forEach((item) => {
-        console.log(
-          "item relation id",
-          typeof item.relation_id,
-          item.relation_id
-        );
-        console.log(clinic.patientsInfos);
         const gender = clinic.patientsInfos.filter(
           ({ id }) => id === item.relation_id
         )[0].gender_identification;
-        console.log("gender", gender);
+
         item.patient_id = item.relation_id;
         item.relationship = toInverseRelation(item.relationship, gender);
         item.relation_id = response.data.id;
+        item.date_created = Date.parse(new Date());
+        item.created_by_id = user.id;
       });
 
       inverseRelationsToPost.forEach(
@@ -436,13 +433,14 @@ const SignupPatientForm = () => {
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Preferred Phone: </label>
+            <label>Preferred Phone*: </label>
             <input
               type="text"
               value={formDatas.preferred_phone}
               onChange={handleChange}
               name="preferred_phone"
               autoComplete="off"
+              required
             />
           </div>
           <div className="signup-patient-form-row">

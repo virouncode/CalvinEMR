@@ -77,7 +77,11 @@ const EditTemplate = ({
             Authorization: `Bearer ${auth.authToken}`,
           },
         });
-        setTemplates(response.data);
+        setTemplates(
+          response.data.sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          )
+        );
         setEditTemplateVisible(false);
         setTemplateSelectedId("");
         setFormDatas({ ...formDatas, body: "" });
@@ -113,7 +117,11 @@ const EditTemplate = ({
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      setTemplates(response2.data);
+      setTemplates(
+        response2.data.sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        )
+      );
       setFormDatas({ ...formDatas, body: editedTemplate.body });
       setTemplateSelectedId(editTemplateSelectedId);
       setEditTemplateVisible(false);

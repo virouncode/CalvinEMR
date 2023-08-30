@@ -125,6 +125,7 @@ const MessageThumbnail = ({
         );
         setMessages(newMessages);
         toast.success("Message deleted successfully", { containerId: "A" });
+        setMsgsSelectedIds([]);
       } catch (err) {
         toast.error(`Error: unable to delete message: ${err.message}`, {
           containerId: "A",
