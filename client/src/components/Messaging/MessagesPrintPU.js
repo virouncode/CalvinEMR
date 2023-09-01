@@ -5,8 +5,15 @@ import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import useAuth from "../../hooks/useAuth";
 import { patientIdToName } from "../../utils/patientIdToName";
+import MessagesAttachments from "./MessagesAttachments";
 
-const MessagesPrintPU = ({ message, previousMsgs, author, authorTitle }) => {
+const MessagesPrintPU = ({
+  message,
+  previousMsgs,
+  author,
+  authorTitle,
+  attachments,
+}) => {
   const { clinic } = useAuth();
   const handleClickPrint = (e) => {
     e.nativeEvent.view.print();
@@ -15,11 +22,12 @@ const MessagesPrintPU = ({ message, previousMsgs, author, authorTitle }) => {
     <div className="message-detail-print">
       <div className="message-detail-print-title">
         <p className="message-detail-print-subject">
-          Subject: {message.subject}
+          <strong>Subject:{"\u00A0"}</strong>
+          {message.subject}
         </p>
         {message.related_patient_id && (
           <p className="message-detail-print-patient">
-            Patient:{" "}
+            <strong>Patient:{"\u00A0"}</strong>
             {patientIdToName(clinic.patientsInfos, message.related_patient_id)}
           </p>
         )}
@@ -44,6 +52,11 @@ const MessagesPrintPU = ({ message, previousMsgs, author, authorTitle }) => {
               index={index + 1}
             />
           ))}
+        <MessagesAttachments
+          attachments={attachments}
+          deletable={false}
+          cardWidth="20%"
+        />
       </div>
       <div className="message-detail-print-btn">
         <button onClick={handleClickPrint}>Print</button>

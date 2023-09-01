@@ -8,12 +8,12 @@ const CalendarPage = () => {
 
   return (
     <>
-      <DocumentViewerComponent />
-      {/* <ToggleView
+      {/* <DocumentViewerComponent /> */}
+      <ToggleView
         setTimelineVisible={setTimelineVisible}
         timelineVisible={timelineVisible}
       />
-      <Calendar timelineVisible={timelineVisible} /> */}
+      <Calendar timelineVisible={timelineVisible} />
     </>
   );
 };

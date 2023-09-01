@@ -188,6 +188,7 @@ const MessageDetail = ({
               staffIdToName(clinic.staffInfos, message.from_id)
             )}
             authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+            attachments={attachments}
           />
         </NewWindow>
       )}
