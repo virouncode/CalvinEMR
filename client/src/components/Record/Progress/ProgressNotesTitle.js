@@ -31,14 +31,14 @@ const ProgressNotesTitle = ({
         />
         <strong style={{ marginLeft: "10px" }}>PROGRESS NOTES </strong>
       </div>
-      <em>
+      <span>
         {patientInfos.full_name}, {patientInfos.gender_at_birth},{" "}
         {getAge(patientInfos.date_of_birth)}, Chart Nbr:{" "}
         {patientInfos.chart_nbr},{" "}
         <i className="fa-regular fa-envelope fa-sm"></i> {patientInfos.email},{" "}
         <i className="fa-solid fa-phone fa-sm"></i>{" "}
         {patientInfos.preferred_phone}
-      </em>
+      </span>
     </div>
   );
 };

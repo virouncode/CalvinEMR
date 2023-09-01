@@ -14,6 +14,7 @@ import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import formatName from "../../utils/formatName";
 import MessagesPrintPU from "./MessagesPrintPU";
 import { patientIdToName } from "../../utils/patientIdToName";
+import MessagesAttachments from "./MessagesAttachments";
 
 const MessageDetail = ({
   setCurrentMsgId,
@@ -32,6 +33,7 @@ const MessageDetail = ({
   const patient = clinic.patientsInfos.find(
     ({ id }) => id === message.related_patient_id
   );
+  const [attachments, setAttachments] = useState([]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -63,6 +65,38 @@ const MessageDetail = ({
     fetchPreviousMsgs();
     return () => abortController.abort();
   }, [auth.authToken, user.id, message.previous_ids]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const fetchAttachments = async () => {
+      try {
+        const response = (
+          await axiosXano.post(
+            "/attachments_for_message",
+            { attachments_ids: message.attachments_ids },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+              signal: abortController.signal,
+            }
+          )
+        ).data;
+        if (abortController.signal.aborted) return;
+        setAttachments(response);
+      } catch (err) {
+        if (err.name !== "CanceledError")
+          toast.error(`Error: unable to fetch attachments: ${err.message}`, {
+            containerId: "A",
+          });
+      }
+    };
+    fetchAttachments();
+    return () => {
+      abortController.abort();
+    };
+  }, [auth.authToken, message.attachments_ids]);
 
   const handleClickBack = (e) => {
     setCurrentMsgId(0);
@@ -201,6 +235,11 @@ const MessageDetail = ({
               index={index + 1}
             />
           ))}
+        <MessagesAttachments
+          attachments={attachments}
+          deletable={false}
+          cardWidth="15%"
+        />
       </div>
       {replyVisible && (
         <ReplyForm
@@ -213,21 +252,15 @@ const MessageDetail = ({
           patient={patient}
         />
       )}
-      {section !== "Deleted messages" && (
+      {section !== "Deleted messages" && !replyVisible && !forwardVisible && (
         <div className="message-detail-btns">
           {section !== "Sent messages" && (
-            <button onClick={handleClickReply} disabled={replyVisible}>
-              Reply
-            </button>
+            <button onClick={handleClickReply}>Reply</button>
           )}
           {message.to_ids.length >= 2 && section !== "Sent messages" && (
-            <button onClick={handleClickReplyAll} disabled={replyVisible}>
-              Reply all
-            </button>
+            <button onClick={handleClickReplyAll}>Reply all</button>
           )}
-          <button onClick={handleClickTransfer} disabled={forwardVisible}>
-            Forward
-          </button>
+          <button onClick={handleClickTransfer}>Forward</button>
         </div>
       )}
       {forwardVisible && (

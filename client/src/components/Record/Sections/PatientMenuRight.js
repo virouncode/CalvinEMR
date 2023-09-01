@@ -90,6 +90,16 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
         allContentsVisible={allContentsVisible}
         side="right"
       />
+      <PatientTopic
+        // url="/messages_for_patient"
+        textColor="#FEFEFE"
+        backgroundColor="#2acbd6"
+        topic="E-FORMS"
+        patientId={patientId}
+        patientInfos={patientInfos}
+        allContentsVisible={allContentsVisible}
+        side="right"
+      />
     </section>
   );
 };

@@ -92,6 +92,38 @@
             width: 17%;
         }
     }
+    &-attachments {
+        display:flex;
+        padding:15px;
+        flex-wrap: wrap;
+        &-card {
+            border: solid 0.5px grey;
+            width: 30%;
+            margin: 10px 5px 0;
+            &-thumbnail {
+                height: 80px; 
+                overflow: hidden;
+                position:relative;
+                cursor:pointer;
+                iframe {
+                    border:none;
+                    cursor:pointer;
+                }
+            }
+            &-footer {
+                background: rgb(154, 154, 154);
+                padding: 5px;
+                font-size: 0.7rem;
+                display:flex;
+                justify-content: space-between;
+                align-items: center;
+                p {
+                    margin-top: 0;
+                    font-size: 0.7rem;
+                }
+            }
+        }
+    }
 }
 
 .message-thumbnail {
@@ -142,8 +174,8 @@
         text-align: center;
     }
     &-trash {
-        width: 2%;
         cursor:pointer;
+        width: 2%;
     }
 }
 
@@ -299,9 +331,9 @@
         textarea {
             border : none;
             outline: none;
-            padding: 20px;
-            width: 95%;
-            min-height: 300px;
+            padding: 10px 0;
+            width: 100%;
+            min-height: 200px;
         }
     }
     &-history {
@@ -317,13 +349,18 @@
             margin-right: 10px;
         }
     }
-    textarea {
-        border : none;
-        outline: none;
-        padding: 10px 0;
-        width: 100%;
-        min-height: 200px;
-       
+    &-attach {
+        border-bottom: solid 0.3px grey;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        i {
+            cursor: pointer;
+            margin-left: 5px;
+        }
     }
 }
 
@@ -387,9 +424,23 @@
                 text-overflow: ellipsis;
             }
         }
+        &-attach{
+            border-bottom: solid 0.3px grey;
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            i {
+                cursor: pointer;
+                margin-left: 5px;
+            }
+        }
         &-body {
             display: flex;
             justify-content: center;
+            flex-direction: column;
             textarea {
                 border : none;
                 outline: none;
@@ -508,7 +559,7 @@
                 text-overflow: ellipsis;
             }
         }
-        &-object{
+        &-subject{
             border-bottom: solid 0.3px grey;
             height: 30px;
             display: flex;
@@ -528,9 +579,9 @@
             textarea {
                 border : none;
                 outline: none;
-                padding: 20px;
-                width: 95%;
-                min-height: 300px;
+                padding: 10px 0;
+                width: 100%;
+                min-height: 200px;
             }
         }
         &-history {
@@ -545,6 +596,18 @@
             button {
                 margin-right: 10px;
             }
+        }
+    }
+    &-attach {
+        border-bottom: solid 0.3px grey;
+        min-height: 30px;
+        display: flex;
+        align-items: center;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        i {
+            cursor: pointer;
+            margin-left: 5px;
         }
     }
 }

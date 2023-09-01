@@ -1,10 +1,13 @@
 import { useEffect, useRef } from "react";
+import useAuth from "../hooks/useAuth";
 
 const PdfViewerComponent = (props) => {
   const containerRef = useRef(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const container = containerRef.current; // This `useRef` instance will render the PDF.
+    console.log(user.sign?.url);
 
     let PSPDFKit, instance;
 
@@ -13,21 +16,45 @@ const PdfViewerComponent = (props) => {
 
       PSPDFKit.unload(container); // Ensure that there's only one PSPDFKit instance.
 
-      // const instantJSON = {
-      //   format: "https://pspdfkit.com/instant-json/v1",
-      //   formFieldValues: [
-      //     {
-      //       v: 1,
-      //       type: "pspdfkit/form-field-value",
-      //       name: "insuredPSA",
-      //       value: ["Yes"],
-      //     },
-      //   ],
-      // };
+      const instantJSON = {
+        format: "https://pspdfkit.com/instant-json/v1",
+        formFieldValues: [
+          {
+            v: 1,
+            type: "pspdfkit/form-field-value",
+            name: "full_name",
+            value: "Karl Michael Jones",
+          },
+          {
+            v: 1,
+            type: "pspdfkit/form-field-value",
+            name: "date_of_birth",
+            value: "1990-02-27",
+          },
+          {
+            v: 1,
+            type: "pspdfkit/form-field-value",
+            name: "address",
+            value: "45 York Street MJ7-H7V Ontario Toronto Canada",
+          },
+          {
+            v: 1,
+            type: "pspdfkit/form-field-value",
+            name: "health_insurance_nbr",
+            value: "132456789",
+          },
+          {
+            v: 1,
+            type: "pspdfkit/form-field-value",
+            name: "preferred_phone",
+            value: "456-4567-324",
+          },
+        ],
+      };
 
       instance = await PSPDFKit.load({
         // Container where PSPDFKit should be mounted.
-        // instantJSON: instantJSON,
+        instantJSON: instantJSON,
         container,
         // The document to open.
         document: props.document,

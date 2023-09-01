@@ -41,6 +41,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
 
   return (
     <section className="progress-notes">
+      {console.log(progressNotes)}
       <ProgressNotesHeader
         patientInfos={patientInfos}
         allContentsVisible={allContentsVisible}

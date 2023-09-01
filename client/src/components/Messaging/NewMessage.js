@@ -8,14 +8,19 @@ import axiosXano from "../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { patientIdToName } from "../../utils/patientIdToName";
+import MessagesAttachments from "./MessagesAttachments";
+import { CircularProgress } from "@mui/material";
+import { postPatientRecord } from "../../api/fetchRecords";
 
 const NewMessage = ({ setNewVisible, setMessages, section }) => {
   const { auth, user, clinic } = useAuth();
+  const [attachments, setAttachments] = useState([]);
   const [recipientsIds, setRecipientsIds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [patientId, setPatientId] = useState(0);
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   const handleChange = (e) => {
     setBody(e.target.value);
@@ -106,12 +111,26 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
     setNewVisible(false);
   };
 
+  const handleRemoveAttachment = (fileName) => {
+    let updatedAttachments = [...attachments];
+    updatedAttachments = updatedAttachments.filter(
+      (attachment) => attachment.file.name !== fileName
+    );
+    setAttachments(updatedAttachments);
+  };
+
   const handleSend = async (e) => {
     if (!recipientsIds.length) {
       toast.error("Please choose at least one recipient", { containerId: "B" });
       return;
     }
     try {
+      const attach_ids = (
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: attachments,
+        })
+      ).data;
+
       //create the message
       const message = {
         from_id: user.id,
@@ -120,6 +139,7 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
         subject: subject,
         body: body,
         related_patient_id: patientId,
+        attachments_ids: attach_ids,
         date_created: Date.parse(new Date()),
       };
 
@@ -151,6 +171,57 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
     }
   };
 
+  const handleAttach = (e) => {
+    let input = e.nativeEvent.view.document.createElement("input");
+    input.type = "file";
+    input.accept = ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav";
+    input.onchange = (e) => {
+      // getting a hold of the file reference
+      let file = e.target.files[0];
+      if (file.size > 20000000) {
+        alert("The file is too large, please choose another one");
+        return;
+      }
+      setIsLoadingFile(true);
+      // setting up the reader`
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      // here we tell the reader what to do when it's done reading...
+      reader.onload = async (e) => {
+        let content = e.target.result; // this is the content!
+        try {
+          const response = await axiosXano.post(
+            "/upload/attachment",
+            {
+              content: content,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+            }
+          );
+          setAttachments([
+            ...attachments,
+            {
+              file: response.data,
+              alias: file.name,
+              date_created: Date.parse(new Date()),
+              created_by_id: user.id,
+            },
+          ]); //meta, mime, name, path, size, type
+          setIsLoadingFile(false);
+        } catch (err) {
+          toast.error(`Error: unable to load file: ${err.message}`, {
+            containerId: "A",
+          });
+          setIsLoadingFile(false);
+        }
+      };
+    };
+    input.click();
+  };
+
   return (
     <div className="new-message">
       <div className="new-message-contacts">
@@ -164,7 +235,7 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
       </div>
       <div className="new-message-form">
         <div className="new-message-form-recipients">
-          To:{" "}
+          <strong>To: </strong>
           <input
             type="text"
             placeholder="Recipients"
@@ -180,7 +251,7 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
           />
         </div>
         <div className="new-message-form-subject">
-          Subject:{" "}
+          <strong>Subject: </strong>
           <input
             type="text"
             placeholder="Subject"
@@ -189,7 +260,7 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
           />
         </div>
         <div className="new-message-form-patient">
-          About patient:{" "}
+          <strong>About patient: </strong>
           <input
             type="text"
             placeholder="Patient"
@@ -199,12 +270,31 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
             readOnly
           />
         </div>
+        <div className="new-message-form-attach">
+          <strong>Attach files</strong>
+          <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
+          {attachments.map((attachment) => (
+            <span key={attachment.file.name} style={{ marginLeft: "5px" }}>
+              {attachment.alias},
+            </span>
+          ))}
+        </div>
         <div className="new-message-form-body">
           <textarea value={body} onChange={handleChange}></textarea>
+          <MessagesAttachments
+            attachments={attachments}
+            handleRemoveAttachment={handleRemoveAttachment}
+            deletable={true}
+          />
         </div>
         <div className="new-message-form-btns">
-          <button onClick={handleSend}>Send</button>
+          <button onClick={handleSend} disabled={isLoadingFile}>
+            Send
+          </button>
           <button onClick={handleCancel}>Cancel</button>
+          {isLoadingFile && (
+            <CircularProgress size="1rem" style={{ margin: "5px" }} />
+          )}
         </div>
       </div>
       <div className="new-message-patients">

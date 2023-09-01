@@ -1,20 +1,22 @@
 import React from "react";
-import AttachmentCard from "./AttachmentCard";
+import MessageAttachmentCard from "./MessageAttachmentCard";
 
-const ProgressNotesAttachments = ({
+const MessagesAttachments = ({
   attachments,
   deletable,
+  cardWidth,
   handleRemoveAttachment = null,
 }) => {
   return (
     attachments && (
-      <div className="progress-notes-attachments">
+      <div className="messages-attachments">
         {attachments.map((attachment) => (
-          <AttachmentCard
+          <MessageAttachmentCard
             handleRemoveAttachment={handleRemoveAttachment}
             attachment={attachment}
             key={attachment.id}
             deletable={deletable}
+            cardWidth={cardWidth}
           />
         ))}
       </div>
@@ -22,4 +24,4 @@ const ProgressNotesAttachments = ({
   );
 };
 
-export default ProgressNotesAttachments;
+export default MessagesAttachments;

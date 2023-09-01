@@ -49,6 +49,18 @@ const SignupPatientForm = () => {
       return;
     }
 
+    let emptyRelation = false;
+    for (let item of relationships) {
+      if (item.relationship === "" || item.relation_id === "") {
+        emptyRelation = true;
+        break;
+      }
+    }
+    if (emptyRelation) {
+      setErrMsg("Please define all relationships or remove unnecessary lines");
+      return;
+    }
+
     try {
       const patients = await axiosXano.get("/patients", {
         headers: {

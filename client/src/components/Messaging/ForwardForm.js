@@ -9,6 +9,9 @@ import Message from "./Message";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
+import { postPatientRecord } from "../../api/fetchRecords";
+import MessagesAttachments from "./MessagesAttachments";
+import { CircularProgress } from "@mui/material";
 
 const ForwardForm = ({
   setForwardVisible,
@@ -19,9 +22,11 @@ const ForwardForm = ({
   patient,
 }) => {
   const { auth, user, clinic } = useAuth();
+  const [attachments, setAttachments] = useState([]);
   const [recipientsIds, setRecipientsIds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [body, setBody] = useState("");
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   const handleChange = (e) => {
     setBody(e.target.value);
@@ -103,6 +108,14 @@ const ForwardForm = ({
       return;
     }
     try {
+      let attach_ids = (
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: attachments,
+        })
+      ).data;
+
+      attach_ids = [...message.attachments_ids, ...attach_ids];
+
       //create the message
       const forwardMessage = {
         from_id: user.id,
@@ -116,6 +129,7 @@ const ForwardForm = ({
         body: body,
         previous_ids: [...message.previous_ids, message.id],
         related_patient_id: message.related_patient_id || 0,
+        attachments_ids: attach_ids,
         date_created: Date.parse(new Date()),
       };
 
@@ -149,6 +163,65 @@ const ForwardForm = ({
     }
   };
 
+  const handleAttach = (e) => {
+    let input = e.nativeEvent.view.document.createElement("input");
+    input.type = "file";
+    input.accept = ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav";
+    input.onchange = (e) => {
+      // getting a hold of the file reference
+      let file = e.target.files[0];
+      if (file.size > 20000000) {
+        alert("The file is too large, please choose another one");
+        return;
+      }
+      setIsLoadingFile(true);
+      // setting up the reader`
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      // here we tell the reader what to do when it's done reading...
+      reader.onload = async (e) => {
+        let content = e.target.result; // this is the content!
+        try {
+          const response = await axiosXano.post(
+            "/upload/attachment",
+            {
+              content: content,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+            }
+          );
+          setAttachments([
+            ...attachments,
+            {
+              file: response.data,
+              alias: file.name,
+              date_created: Date.parse(new Date()),
+              created_by_id: user.id,
+            },
+          ]); //meta, mime, name, path, size, type
+          setIsLoadingFile(false);
+        } catch (err) {
+          toast.error(`Error: unable to load file: ${err.message}`, {
+            containerId: "A",
+          });
+          setIsLoadingFile(false);
+        }
+      };
+    };
+    input.click();
+  };
+
+  const handleRemoveAttachment = (fileName) => {
+    let updatedAttachments = [...attachments];
+    updatedAttachments = updatedAttachments.filter(
+      (attachment) => attachment.file.name !== fileName
+    );
+    setAttachments(updatedAttachments);
+  };
+
   return (
     <div className="forward">
       <div className="forward-contacts">
@@ -162,7 +235,7 @@ const ForwardForm = ({
       </div>
       <div className="forward-form">
         <div className="forward-form-recipients">
-          To:{" "}
+          <strong>To: </strong>
           <input
             type="text"
             placeholder="Recipients"
@@ -177,19 +250,28 @@ const ForwardForm = ({
             readOnly
           />
         </div>
-        <div className="forward-form-object">
-          Subject:{" "}
+        <div className="forward-form-subject">
+          <strong>Subject:</strong>
           {previousMsgs.length
-            ? `Fwd ${previousMsgs.length + 1}: ${message.subject.slice(
+            ? `\u00A0Fwd ${previousMsgs.length + 1}: ${message.subject.slice(
                 message.subject.indexOf(":") + 1
               )}`
-            : `Fwd: ${message.subject}`}
+            : `\u00A0Fwd: ${message.subject}`}
         </div>
         {patient?.full_name && (
           <div className="forward-form-patient">
-            About patient: {patient.full_name}
+            <strong>About patient: {"\u00A0"}</strong> {patient.full_name}
           </div>
         )}
+        <div className="forward-attach">
+          <strong>Attach files</strong>
+          <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
+          {attachments.map((attachment) => (
+            <span key={attachment.file.name} style={{ marginLeft: "5px" }}>
+              {attachment.alias},
+            </span>
+          ))}
+        </div>
         <div className="forward-form-body">
           <textarea value={body} onChange={handleChange}></textarea>
           <div className="forward-form-history">
@@ -214,10 +296,21 @@ const ForwardForm = ({
               />
             ))}
           </div>
+          <MessagesAttachments
+            attachments={attachments}
+            handleRemoveAttachment={handleRemoveAttachment}
+            deletable={true}
+            cardWidth="30%"
+          />
         </div>
         <div className="forward-form-btns">
-          <button onClick={handleSend}>Send</button>
+          <button onClick={handleSend} disabled={isLoadingFile}>
+            Send
+          </button>
           <button onClick={handleCancel}>Cancel</button>
+          {isLoadingFile && (
+            <CircularProgress size="1rem" style={{ margin: "5px" }} />
+          )}
         </div>
       </div>
       <ToastContainer

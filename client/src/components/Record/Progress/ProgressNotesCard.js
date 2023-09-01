@@ -33,7 +33,7 @@ const ProgressNotesCard = ({
   const [tempFormDatas, setTempFormDatas] = useState(null);
   const [formDatas, setFormDatas] = useState(null);
   const [versions, setVersions] = useState(null);
-  const [files, setFiles] = useState([]);
+  const [attachments, setAttachments] = useState([]);
   const [bodyVisible, setBodyVisible] = useState(true);
   const bodyRef = useRef(null);
   const { auth, user } = useAuth();
@@ -85,9 +85,9 @@ const ProgressNotesCard = ({
 
   useEffect(() => {
     const abortController = new AbortController();
-    const fetchFiles = async () => {
+    const fetchAttachments = async () => {
       try {
-        const attachments = (
+        const response = (
           await axiosXano.post(
             "/attachments_for_progress_note",
             { attachments_ids: progressNote.attachments_ids },
@@ -101,7 +101,7 @@ const ProgressNotesCard = ({
           )
         ).data;
         if (abortController.signal.aborted) return;
-        setFiles(attachments.map(({ file }) => file));
+        setAttachments(response);
       } catch (err) {
         if (err.name !== "CanceledError")
           toast.error(`Error: unable to fetch attachments: ${err.message}`, {
@@ -109,7 +109,7 @@ const ProgressNotesCard = ({
           });
       }
     };
-    fetchFiles();
+    fetchAttachments();
     return () => {
       abortController.abort();
     };
@@ -422,7 +422,10 @@ const ProgressNotesCard = ({
               />
             )}
           </div>
-          <ProgressNotesAttachments files={files} deletable={false} />
+          <ProgressNotesAttachments
+            attachments={attachments}
+            deletable={false}
+          />
           {!editVisible && (
             <div className="progress-notes-card-body-footer">
               {tempFormDatas.updated_by_name?.full_name ? (

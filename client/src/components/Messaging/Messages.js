@@ -92,8 +92,6 @@ const Messages = () => {
     clinic.patientsInfos,
   ]);
 
-  const handlePrint = () => {};
-
   return (
     <div className="messages-container">
       <MessagesToolBar

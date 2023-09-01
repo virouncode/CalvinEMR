@@ -269,7 +269,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
             <p>Sign: </p>
             <div className="prescription-sign-image">
               <img
-                src={auth?.sign?.url}
+                src={user.sign?.url}
                 alt="doctor sign"
                 crossOrigin="Anonymous"
               />

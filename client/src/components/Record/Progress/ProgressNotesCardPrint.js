@@ -6,14 +6,15 @@ import ProgressNotesAttachments from "./ProgressNotesAttachments";
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
+import formatName from "../../../utils/formatName";
 
 const ProgressNotesCardPrint = ({ progressNote }) => {
   const { auth } = useAuth();
-  const [files, setFiles] = useState([]);
+  const [attachments, setAttachments] = useState([]);
 
   useEffect(() => {
     const fetchFiles = async () => {
-      const attachments = (
+      const response = (
         await axiosXano.post(
           "/attachments_for_progress_note",
           { attachments_ids: progressNote.attachments_ids },
@@ -25,7 +26,7 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
           }
         )
       ).data;
-      setFiles(attachments.map(({ file }) => file));
+      setAttachments(response);
     };
     fetchFiles();
   }, [auth.authToken, progressNote.attachments_ids]);
@@ -40,14 +41,28 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
     fontStyle: "italic",
   };
 
+  const getAuthorTitle = () => {
+    if (
+      progressNote.updated_by_title?.title &&
+      progressNote.updated_by_title?.title === "Doctor"
+    ) {
+      return "Dr. ";
+    } else if (progressNote.created_by_title?.title === "Doctor") {
+      return "Dr. ";
+    } else {
+      return "";
+    }
+  };
+
   return (
     <div className="progress-notes-card-print">
       <div className="progress-notes-card-print-header">
         <div className="progress-notes-card-print-header-title">
           <p style={{ margin: "0", padding: "0" }}>
             <strong>From: </strong>
-            {progressNote.updated_by_name?.full_name ||
-              progressNote.created_by_name.full_name}
+            {getAuthorTitle()}{" "}
+            {formatName(progressNote.updated_by_name?.full_name) ||
+              formatName(progressNote.created_by_name.full_name)}
           </p>
           <p style={{ margin: "0", fontSize: "0.7rem", padding: "0 5px" }}>
             Signed on{" "}
@@ -86,7 +101,7 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
           </p>
         </div>
       </div>
-      <ProgressNotesAttachments files={files} deletable={false} />
+      <ProgressNotesAttachments attachments={attachments} deletable={false} />
     </div>
   );
 };

@@ -151,7 +151,10 @@ const MessageThumbnail = ({
             : staffIdListToTitleAndName(clinic.staffInfos, message.to_ids)}
         </div>
         <div className="message-thumbnail-sample">
-          <span>{message.subject}</span> - {message.body}
+          <span>{message.subject}</span> - {message.body}{" "}
+          {message.attachments_ids.length !== 0 && (
+            <i class="fa-solid fa-paperclip" style={{ marginLeft: "5px" }}></i>
+          )}
         </div>
       </div>
       <div className="message-thumbnail-patient">
@@ -167,13 +170,15 @@ const MessageThumbnail = ({
       <div className="message-thumbnail-date">
         {toLocalDateAndTime(message.date_created)}
       </div>
-      {section !== "Deleted messages" && (
-        <i
-          className="fa-solid fa-trash  message-thumbnail-trash"
-          style={{ cursor: "pointer" }}
-          onClick={handleDeleteMsg}
-        ></i>
-      )}
+      <div className="message-thumbnail-logos">
+        {section !== "Deleted messages" && (
+          <i
+            className="fa-solid fa-trash  message-thumbnail-trash"
+            style={{ cursor: "pointer" }}
+            onClick={handleDeleteMsg}
+          ></i>
+        )}
+      </div>
     </div>
   );
 };

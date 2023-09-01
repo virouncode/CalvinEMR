@@ -21,12 +21,12 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
   const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
-    object: "progress note",
+    object: "Progress note",
     body: "",
     version_nbr: 1,
     attachments_ids: [],
   });
-  const [files, setFiles] = useState([]);
+  const [attachments, setAttachments] = useState([]);
   const [templateSelectedId, setTemplateSelectedId] = useState("");
   const [templates, setTemplates] = useState([]);
   const [newTemplateVisible, setNewTemplateVisible] = useState(false);
@@ -74,16 +74,6 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Make an array of objects
-    let attachments = [];
-    for (const file of files) {
-      attachments.push({
-        patient_id: patientId,
-        file: file,
-        date_created: Date.parse(new Date()),
-        created_by_id: user.id,
-      });
-    }
     try {
       const attach_ids = (
         await postPatientRecord("/attachments", user.id, auth.authToken, {
@@ -142,7 +132,16 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
               },
             }
           );
-          setFiles([...files, response.data]); //meta, mime, name, path, size, type
+
+          setAttachments([
+            ...attachments,
+            {
+              file: response.data,
+              alias: file.name,
+              date_created: Date.parse(new Date()),
+              created_by_id: user.id,
+            },
+          ]); //meta, mime, name, path, size, type
           setIsLoadingFile(false);
         } catch (err) {
           toast.error(`Error: unable to load file: ${err.message}`, {
@@ -156,10 +155,11 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
   };
 
   const handleRemoveAttachment = (fileName) => {
-    const updatedFiles = [...files];
-    const indexToRemove = _.findIndex(updatedFiles, { name: fileName });
-    updatedFiles.splice(indexToRemove, 1);
-    setFiles(updatedFiles);
+    let updatedAttachments = [...attachments];
+    updatedAttachments = updatedAttachments.filter(
+      (attachment) => attachment.file.name !== fileName
+    );
+    setAttachments(updatedAttachments);
   };
 
   const handleSelectTemplate = (e) => {
@@ -215,11 +215,11 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
             />
           </div>
           <div>
-            <label htmlFor="file-browser">
+            <label>
               <strong>Attach files: </strong>
             </label>
             <i
-              className="fa-solid fa-upload"
+              className="fa-solid fa-paperclip"
               style={{ cursor: "pointer" }}
               onClick={handleAttach}
             ></i>
@@ -229,7 +229,7 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
       <div className="progress-notes-form-area">
         <textarea name="body" onChange={handleChange} value={formDatas.body} />
         <ProgressNotesAttachments
-          files={files}
+          attachments={attachments}
           handleRemoveAttachment={handleRemoveAttachment}
           deletable={true}
         />

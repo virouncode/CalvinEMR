@@ -3,15 +3,20 @@ import NewWindow from "react-new-window";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
-const AttachmentCard = ({ handleRemoveAttachment, attachment, deletable }) => {
+const MessageAttachmentCard = ({
+  handleRemoveAttachment,
+  attachment,
+  deletable,
+  cardWidth = "30%",
+}) => {
   const [popUpVisible, setPopUpVisible] = useState(false);
   const handleImgClick = () => {
     setPopUpVisible(true);
   };
   return (
     <>
-      <div className="progress-notes-attachments-card">
-        <div className="progress-notes-attachments-card-thumbnail">
+      <div className="messages-attachments-card" style={{ width: cardWidth }}>
+        <div className="messages-attachments-card-thumbnail">
           {attachment.file.mime.includes("image") ? (
             <img
               src={`${BASE_URL}${attachment.file.path}`}
@@ -42,7 +47,7 @@ const AttachmentCard = ({ handleRemoveAttachment, attachment, deletable }) => {
             </div>
           )}
         </div>
-        <div className="progress-notes-attachments-card-footer">
+        <div className="messages-attachments-card-footer">
           <p
             style={{
               overflow: "hidden",
@@ -86,7 +91,7 @@ const AttachmentCard = ({ handleRemoveAttachment, attachment, deletable }) => {
             />
           ) : (
             <iframe
-              title={attachment.alias}
+              title={attachment.aias}
               src={`${BASE_URL}${attachment.file.path}`}
               type={attachment.file.type}
               width="100%"
@@ -100,4 +105,4 @@ const AttachmentCard = ({ handleRemoveAttachment, attachment, deletable }) => {
   );
 };
 
-export default AttachmentCard;
+export default MessageAttachmentCard;

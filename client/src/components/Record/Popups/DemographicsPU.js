@@ -339,19 +339,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                 </p>
                 <p>
                   <label>Chart Nbr: </label>
-                  {editVisible ? (
-                    <input
-                      type="text"
-                      required
-                      value={formDatas.chart_nbr.toString()}
-                      onChange={handleChange}
-                      name="chart_nbr"
-                      id="6"
-                      autoComplete="off"
-                    />
-                  ) : (
-                    patientInfos.chart_nbr
-                  )}
+                  {patientInfos.chart_nbr}
                 </p>
                 <p>
                   <label>Health Insurance Nbr: </label>

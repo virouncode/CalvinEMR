@@ -251,10 +251,11 @@
     &-attachments {
         display:flex;
         padding:15px;
+        flex-wrap: wrap;
         &-card {
             border: solid 0.5px grey;
             width: 20%;
-            margin: 0 5px;
+            margin: 10px 5px 0;
             &-thumbnail {
                 height: 80px; 
                 overflow: hidden;

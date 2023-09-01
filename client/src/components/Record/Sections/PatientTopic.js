@@ -39,6 +39,8 @@ import RelationshipsContent from "../Topics/Relationships/RelationshipsContent";
 import RelationshipsPU from "../Popups/RelationshipsPU";
 import MessagesContent from "../Topics/MessagesAboutPatient/MessagesContent";
 import { usePatientRecord } from "../../../hooks/usePatientRecord";
+import EformsPU from "../Popups/EformsPU";
+import EformsContent from "../Topics/Eforms/EformsContent";
 
 const PatientTopic = ({
   url,
@@ -730,6 +732,37 @@ const PatientTopic = ({
             isLoading={isLoading}
             errMsg={errMsg}
           />
+        )}
+        {/*******************/}
+        {topic === "E-FORMS" && (
+          <EformsContent datas={datas} isLoading={isLoading} errMsg={errMsg} />
+        )}
+        {topic === "E-FORMS" && popUpVisible && (
+          <NewWindow
+            title="Patient Electronic Forms"
+            features={{
+              toolbar: "no",
+              scrollbars: "no",
+              menubar: "no",
+              status: "no",
+              directories: "no",
+              width: 800,
+              height: 600,
+              left: 320,
+              top: 200,
+            }}
+            onUnload={() => setPopUpVisible(false)}
+          >
+            <EformsPU
+              patientId={patientId}
+              datas={datas}
+              setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
+              setPopUpVisible={setPopUpVisible}
+            />
+          </NewWindow>
         )}
         {/*******************/}
       </div>
