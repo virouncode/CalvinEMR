@@ -153,7 +153,10 @@ const MessageThumbnail = ({
         <div className="message-thumbnail-sample">
           <span>{message.subject}</span> - {message.body}{" "}
           {message.attachments_ids.length !== 0 && (
-            <i class="fa-solid fa-paperclip" style={{ marginLeft: "5px" }}></i>
+            <i
+              className="fa-solid fa-paperclip"
+              style={{ marginLeft: "5px" }}
+            ></i>
           )}
         </div>
       </div>

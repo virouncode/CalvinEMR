@@ -42,6 +42,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
       }
     };
     fetchSites();
+    return () => abortController.abort();
   }, [auth.authToken]);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
 
   const handleAddToRecord = async (e) => {
     setProgress(true);
-    const element = printRef.current;
+    const element = printRef.current.contentWindow;
     const canvas = await html2canvas(element, {
       logging: true,
       letterRendering: 1,

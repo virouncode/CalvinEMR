@@ -41,6 +41,7 @@ import MessagesContent from "../Topics/MessagesAboutPatient/MessagesContent";
 import { usePatientRecord } from "../../../hooks/usePatientRecord";
 import EformsPU from "../Popups/EformsPU";
 import EformsContent from "../Topics/Eforms/EformsContent";
+import fillPdfForm from "../../../utils/fillPdfForm";
 
 const PatientTopic = ({
   url,
@@ -81,8 +82,11 @@ const PatientTopic = ({
   };
 
   const showDocument = async (url) => {
+    console.log("show document");
+    console.log(url);
+    const docURL = await fillPdfForm(url);
     const docWindow = window.open(
-      url,
+      docURL,
       "_blank",
       "resizable=no, toolbar=no, scrollbars=no, menubar=no, status=no, directories=no, width=800, height=600, left=320, top=200"
     );
@@ -754,6 +758,7 @@ const PatientTopic = ({
             onUnload={() => setPopUpVisible(false)}
           >
             <EformsPU
+              patientInfos={patientInfos}
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
