@@ -47,7 +47,7 @@
     "url": "^0.11.1",
     "web-vitals": "^2.1.4"
   },
-    "scripts": {
+  "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",

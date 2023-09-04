@@ -1,7 +1,9 @@
 import { PDFDocument } from "pdf-lib";
 import { toLocalDate } from "./formatDates";
 import { getAge } from "./getAge";
+
 export const fillPdfForm = async (url, patientInfos, doctorInfos) => {
+  console.log("patientInfos", patientInfos);
   if (!patientInfos) return;
   const formUrl = url;
   const formPdfBytes = await fetch(formUrl).then((res) => res.arrayBuffer());

@@ -1,144 +1,197 @@
-import React, { useEffect, useRef, useState } from "react";
-import EformsList from "../../Lists/EformsList";
+import React, { useRef, useState } from "react";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import { CircularProgress } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import EformItem from "../Topics/Eforms/EformItem";
+import Eform from "../Topics/Eforms/Eform";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { ToastContainer, toast } from "react-toastify";
-import fillPdfForm from "../../../utils/fillPdfForm";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { postPatientRecord } from "../../../api/fetchRecords";
 
-const EformsPU = ({ patientInfos, setPopUpVisible }) => {
-  const { auth, user, clinic } = useAuth();
-  const [eForms, setEforms] = useState([]);
-  const [formSelected, setFormSelected] = useState("");
-  const [formURL, setFormURL] = useState("");
-  const printRef = useRef();
+const EformsPU = ({
+  patientId,
+  patientInfos,
+  showDocument,
+  setPopUpVisible,
+  datas,
+  setDatas,
+  fetchRecord,
+  errMsg,
+  isLoading,
+}) => {
+  //HOOKS
+  const { auth, user } = useAuth();
+  const [addVisible, setAddVisible] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [columnToSort, setColumnToSort] = useState("date_created");
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
+  const direction = useRef(false);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    const fetchEforms = async () => {
-      try {
-        const response = await axiosXano.get("/eforms_blank", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-          signal: abortController.signal,
-        });
-        if (abortController.signal.aborted) return;
-        setEforms(response.data);
-      } catch (err) {
-        if (err.name !== "CanceledError")
-          toast.error(`Error: unable to fetch eforms: ${err.message}`, {
-            containerId: "B",
-          });
-      }
-    };
-    fetchEforms();
-    return () => abortController.abort();
-  }, [auth.authToken]);
+  //STYLE
+  const DIALOG_CONTAINER_STYLE = {
+    height: "100vh",
+    width: "200vw",
+    fontFamily: "Arial",
+    position: "absolute",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    top: "0px",
+    left: "0px",
+    background: "rgba(0,0,0,0.8)",
+    zIndex: "100000",
+  };
 
-  const handleClose = () => {
+  //HANDLERS
+  const handleSort = (columnName) => {
+    direction.current = !direction.current;
+    setColumnToSort(columnName);
+    setDatas([...datas]);
+  };
+
+  const handleAdd = (e) => {
+    setAddVisible((v) => !v);
+  };
+
+  const handleClose = async (e) => {
     setPopUpVisible(false);
   };
 
-  const handleFormChange = async (e) => {
-    setFormSelected(e.target.value);
-    setFormURL(
-      await fillPdfForm(
-        eForms.find(({ name }) => name === e.target.value).file.url,
-        patientInfos,
-        {
-          full_name: user.name,
-          sign: user.sign,
-          phone: clinic.staffInfos.find(({ id }) => id === user.id).cell_phone,
+  const handleAddToRecord = (e) => {
+    let input = e.nativeEvent.view.document.createElement("input");
+    input.type = "file";
+    input.accept = ".pdf";
+    input.onchange = (e) => {
+      // getting a hold of the file reference
+      let file = e.target.files[0];
+      if (file.size > 20000000) {
+        alert("The file is too large, please choose another one");
+        return;
+      }
+      setIsLoadingFile(true);
+      // setting up the reader`
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      // here we tell the reader what to do when it's done reading...
+      reader.onload = async (e) => {
+        let content = e.target.result; // this is the content!
+        try {
+          const response = await axiosXano.post(
+            "/upload/attachment",
+            {
+              content: content,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+            }
+          );
+
+          await postPatientRecord("/eforms", user.id, auth.authToken, {
+            patient_id: patientId,
+            name: file.name,
+            file: response.data,
+          });
+          const abortController = new AbortController();
+          fetchRecord(abortController);
+          toast.success(`Form successfully added to patient record`, {
+            containerId: "B",
+          });
+          setIsLoadingFile(false);
+        } catch (err) {
+          toast.error(`Error: unable to save file: ${err.message}`, {
+            containerId: "B",
+          });
+          setIsLoadingFile(false);
         }
-      )
-    );
-  };
-
-  const handleAddToRecord = async (e) => {
-    // setProgress(true);
-    window.open(formURL);
-    // console.log(element);
-    // // // element.print();
-    // const canvas = await html2canvas(element);
-    // //   , {
-    // //   logging: true,
-    // //   letterRendering: 1,
-    // //   allowTaint: false,
-    // //   useCORS: true,
-    // // });
-    // const dataURL = canvas.toDataURL("image/png");
-    // const pdf = new jsPDF("portrait", "pt", "a4");
-    // // const imgProperties = pdf.getImageProperties(dataURL);
-    // pdf.addImage(
-    //   dataURL,
-    //   "PNG",
-    //   0,
-    //   0,
-    //   pdf.internal.pageSize.getWidth(),
-    //   pdf.internal.pageSize.getHeight()
-    // );
-    // let fileToUpload = await axiosXano.post(
-    //   "/upload/attachment",
-    //   {
-    //     content: pdf.output("dataurlstring"),
-    //   },
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${auth.authToken}`,
-    //     },
-    //   }
-    // );
-
-    // const datas = {
-    //   patient_id: patientInfos.id,
-    //   name: "Test E-form",
-    //   file: fileToUpload.data,
-    // };
-
-    // try {
-    //   await postPatientRecord("/eforms", user.id, auth.authToken, datas);
-    //   // setProgress(false);
-    //   toast.success("Saved succesfully", { containerId: "B" });
-    // } catch (err) {
-    //   // setProgress(false);
-    //   toast.error(`Error: unable to save e-form: ${err.message}`, {
-    //     containerId: "B",
-    //   });
-    // }
+      };
+    };
+    input.click();
   };
 
   return (
     <>
-      <div className="eforms">
-        <div className="eforms-title">E-forms</div>
-        <div className="eforms-select">
-          <EformsList
-            handleFormChange={handleFormChange}
-            formSelected={formSelected}
-            eforms={eForms}
-          />
-        </div>
-        {formURL && (
-          <div className="eforms-content">
-            <iframe
-              src={formURL}
-              title="form"
-              width="800"
-              height="1000"
-              ref={printRef}
-            />
-          </div>
-        )}
-        <div className="eforms-btns">
-          <button onClick={handleAddToRecord}>Add To Record</button>
-          <button>Fax</button>
-          <button onClick={handleClose}>Close</button>
-        </div>
-      </div>
+      {!isLoading ? (
+        errMsg ? (
+          <p className="electronic-err">{errMsg}</p>
+        ) : (
+          datas && (
+            <>
+              <h1 className="electronic-title">Patient e-forms</h1>
+              <table className="electronic-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort("name")}>Name</th>
+                    <th onClick={() => handleSort("created_by_id")}>
+                      Created By
+                    </th>
+                    <th onClick={() => handleSort("date_created")}>
+                      Created On
+                    </th>
+                    <th style={{ textDecoration: "none", cursor: "default" }}>
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {direction.current
+                    ? datas
+                        .sort((a, b) =>
+                          a[columnToSort]
+                            ?.toString()
+                            .localeCompare(b[columnToSort]?.toString())
+                        )
+                        .map((eform) => (
+                          <EformItem
+                            item={eform}
+                            key={eform.id}
+                            fetchRecord={fetchRecord}
+                            setErrMsgPost={setErrMsgPost}
+                          />
+                        ))
+                    : datas
+                        .sort((a, b) =>
+                          b[columnToSort]
+                            ?.toString()
+                            .localeCompare(a[columnToSort]?.toString())
+                        )
+                        .map((eform) => (
+                          <EformItem
+                            item={eform}
+                            key={eform.id}
+                            fetchRecord={fetchRecord}
+                            showDocument={showDocument}
+                          />
+                        ))}
+                </tbody>
+              </table>
+              <div className="electronic-btn-container">
+                <button onClick={handleAdd} disabled={addVisible}>
+                  Add e-form
+                </button>
+                <button onClick={handleClose} disabled={isLoadingFile}>
+                  Close
+                </button>
+              </div>
+              {addVisible && (
+                <Eform
+                  setAddVisible={setAddVisible}
+                  patientId={patientId}
+                  patientInfos={patientInfos}
+                  fetchRecord={fetchRecord}
+                  setErrMsgPost={setErrMsgPost}
+                  handleAddToRecord={handleAddToRecord}
+                  isLoadingFile={isLoadingFile}
+                />
+              )}
+            </>
+          )
+        )
+      ) : (
+        <CircularProgress />
+      )}
+      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

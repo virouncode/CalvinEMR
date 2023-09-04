@@ -39,9 +39,8 @@ import RelationshipsContent from "../Topics/Relationships/RelationshipsContent";
 import RelationshipsPU from "../Popups/RelationshipsPU";
 import MessagesContent from "../Topics/MessagesAboutPatient/MessagesContent";
 import { usePatientRecord } from "../../../hooks/usePatientRecord";
-import EformsPU from "../Popups/EformsPU";
 import EformsContent from "../Topics/Eforms/EformsContent";
-import fillPdfForm from "../../../utils/fillPdfForm";
+import EformsPU from "../Popups/EformsPU";
 
 const PatientTopic = ({
   url,
@@ -84,9 +83,9 @@ const PatientTopic = ({
   const showDocument = async (url) => {
     console.log("show document");
     console.log(url);
-    const docURL = await fillPdfForm(url);
+
     const docWindow = window.open(
-      docURL,
+      url,
       "_blank",
       "resizable=no, toolbar=no, scrollbars=no, menubar=no, status=no, directories=no, width=800, height=600, left=320, top=200"
     );
@@ -112,7 +111,7 @@ const PatientTopic = ({
       <div
         className={
           allContentsVisible
-            ? topic === "MEASUREMENTS" || topic === "MESSAGES"
+            ? topic === "MEASUREMENTS" || topic === "E-FORMS"
               ? `patient-topic-content-${side} patient-topic-content-${side}-bottom--active`
               : `patient-topic-content-${side} patient-topic-content-${side}--active`
             : `patient-topic-content-${side}`
@@ -739,7 +738,12 @@ const PatientTopic = ({
         )}
         {/*******************/}
         {topic === "E-FORMS" && (
-          <EformsContent datas={datas} isLoading={isLoading} errMsg={errMsg} />
+          <EformsContent
+            datas={datas}
+            isLoading={isLoading}
+            errMsg={errMsg}
+            showDocument={showDocument}
+          />
         )}
         {topic === "E-FORMS" && popUpVisible && (
           <NewWindow
@@ -760,6 +764,7 @@ const PatientTopic = ({
             <EformsPU
               patientInfos={patientInfos}
               patientId={patientId}
+              showDocument={showDocument}
               datas={datas}
               setDatas={setDatas}
               fetchRecord={fetchRecord}

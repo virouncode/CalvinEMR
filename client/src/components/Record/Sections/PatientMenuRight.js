@@ -91,7 +91,7 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
         side="right"
       />
       <PatientTopic
-        // url="/messages_for_patient"
+        url="/eforms"
         textColor="#FEFEFE"
         backgroundColor="#2acbd6"
         topic="E-FORMS"

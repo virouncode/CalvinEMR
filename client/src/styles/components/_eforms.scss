@@ -1,0 +1,76 @@
+.electronic {
+    &-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+    &-err {
+        background:$red;
+        padding: 10px;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+        border-radius: 4px;
+    }
+    &-table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        border: solid 1px $black;
+        font-size: 0.8rem;
+        margin: 0 auto;
+        thead {
+            background-color: $blue;
+            border: solid 1px $black;
+        }
+        th {
+            min-width: 100px;
+            padding: 2px 5px;
+            border: solid 1px $black;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        &-nofilter {
+            text-decoration: none;
+            cursor: default;
+        }
+    }
+    &-btn-container {
+        display: flex;
+        justify-content: space-between;
+        width:20%;
+        margin: 20px auto 0;
+    }
+    &-item {
+        td {
+            text-align: center;
+            border: solid 1px $black;
+            padding: 2px 5px;
+            word-wrap: break-word;
+            max-width: 370px;
+        }
+        &-link {
+            cursor:pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    }
+    &-form {
+        margin-top: 15px;
+        &-explainations {
+            font-size: 0.9rem;
+            border: solid 1px $grey;
+            border-radius: 4px;
+            padding :10px;
+            margin: 0 10px;
+            li {
+                padding: 5px 0;
+            }
+            ul:nth-child(1) {
+                margin-left: 10px;
+                margin-top: 5px;
+            }
+        }
+    }
+}
+
+
