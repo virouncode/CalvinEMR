@@ -31,7 +31,7 @@ const MessageDetail = ({
   const { auth, user, clinic } = useAuth();
   const [previousMsgs, setPreviousMsgs] = useState(null);
   const patient = clinic.patientsInfos.find(
-    ({ id }) => id === message.related_patient_id
+    ({ id }) => id === message?.related_patient_id
   );
   const [attachments, setAttachments] = useState([]);
 
@@ -41,7 +41,7 @@ const MessageDetail = ({
       try {
         const response = await axiosXano.post(
           "/messages_selected",
-          { messages_ids: message.previous_ids },
+          { messages_ids: message?.previous_ids },
           {
             headers: {
               Authorization: `Bearer ${auth.authToken}`,
@@ -64,7 +64,7 @@ const MessageDetail = ({
     };
     fetchPreviousMsgs();
     return () => abortController.abort();
-  }, [auth.authToken, user.id, message.previous_ids]);
+  }, [auth.authToken, user.id, message?.previous_ids]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -73,7 +73,7 @@ const MessageDetail = ({
         const response = (
           await axiosXano.post(
             "/attachments_for_message",
-            { attachments_ids: message.attachments_ids },
+            { attachments_ids: message?.attachments_ids },
             {
               headers: {
                 "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const MessageDetail = ({
     return () => {
       abortController.abort();
     };
-  }, [auth.authToken, message.attachments_ids]);
+  }, [auth.authToken, message?.attachments_ids]);
 
   const handleClickBack = (e) => {
     setCurrentMsgId(0);
@@ -158,139 +158,145 @@ const MessageDetail = ({
   };
 
   return (
-    <>
-      {popUpVisible && (
-        <NewWindow
-          title={`Message(s) / Subject: ${message.subject} ${
-            message.related_patient_id &&
-            `/ Patient: ${patientIdToName(
-              clinic.patientsInfos,
-              message.related_patient_id
-            )}`
-          }`}
-          features={{
-            toolbar: "no",
-            scrollbars: "no",
-            menubar: "no",
-            status: "no",
-            directories: "no",
-            width: 793.7,
-            height: 1122.5,
-            left: 320,
-            top: 200,
-          }}
-          onUnload={() => setPopUpVisible(false)}
-        >
-          <MessagesPrintPU
-            message={message}
-            previousMsgs={previousMsgs}
-            author={formatName(
-              staffIdToName(clinic.staffInfos, message.from_id)
-            )}
-            authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-            attachments={attachments}
-          />
-        </NewWindow>
-      )}
-      <div className="message-detail-toolbar">
-        <i
-          className="fa-solid fa-arrow-left message-detail-toolbar-arrow"
-          style={{ cursor: "pointer" }}
-          onClick={handleClickBack}
-        ></i>
-        <div className="message-detail-toolbar-subject">{message.subject}</div>
-        <div className="message-detail-toolbar-patient">
-          {patient && (
-            <NavLink
-              to={`/patient-record/${patient.id}`}
-              className="message-detail-toolbar-patient-link"
-            >
-              {patient.full_name}
-            </NavLink>
-          )}
-        </div>
-        {section !== "Deleted messages" && (
-          <i
-            className="fa-solid fa-trash  message-detail-toolbar-trash"
-            onClick={handleDeleteMsg}
-          ></i>
-        )}
-      </div>
-      <div className="message-detail-content">
-        <Message
-          message={message}
-          author={formatName(staffIdToName(clinic.staffInfos, message.from_id))}
-          authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-          key={message.id}
-          index={0}
-        />
-        {previousMsgs &&
-          previousMsgs.map((message, index) => (
-            <Message
+    message && (
+      <>
+        {popUpVisible && (
+          <NewWindow
+            title={`Message(s) / Subject: ${message.subject} ${
+              message.related_patient_id &&
+              `/ Patient: ${patientIdToName(
+                clinic.patientsInfos,
+                message.related_patient_id
+              )}`
+            }`}
+            features={{
+              toolbar: "no",
+              scrollbars: "no",
+              menubar: "no",
+              status: "no",
+              directories: "no",
+              width: 793.7,
+              height: 1122.5,
+              left: 320,
+              top: 200,
+            }}
+            onUnload={() => setPopUpVisible(false)}
+          >
+            <MessagesPrintPU
               message={message}
+              previousMsgs={previousMsgs}
               author={formatName(
                 staffIdToName(clinic.staffInfos, message.from_id)
               )}
               authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-              key={message.id}
-              index={index + 1}
+              attachments={attachments}
             />
-          ))}
-        <MessagesAttachments
-          attachments={attachments}
-          deletable={false}
-          cardWidth="15%"
-        />
-      </div>
-      {replyVisible && (
-        <ReplyForm
-          setReplyVisible={setReplyVisible}
-          allPersons={allPersons}
-          message={message}
-          previousMsgs={previousMsgs}
-          setMessages={setMessages}
-          section={section}
-          patient={patient}
-        />
-      )}
-      {section !== "Deleted messages" && !replyVisible && !forwardVisible && (
-        <div className="message-detail-btns">
-          {section !== "Sent messages" && (
-            <button onClick={handleClickReply}>Reply</button>
+          </NewWindow>
+        )}
+        <div className="message-detail-toolbar">
+          <i
+            className="fa-solid fa-arrow-left message-detail-toolbar-arrow"
+            style={{ cursor: "pointer" }}
+            onClick={handleClickBack}
+          ></i>
+          <div className="message-detail-toolbar-subject">
+            {message.subject}
+          </div>
+          <div className="message-detail-toolbar-patient">
+            {patient && (
+              <NavLink
+                to={`/patient-record/${patient.id}`}
+                className="message-detail-toolbar-patient-link"
+              >
+                {patient.full_name}
+              </NavLink>
+            )}
+          </div>
+          {section !== "Deleted messages" && (
+            <i
+              className="fa-solid fa-trash  message-detail-toolbar-trash"
+              onClick={handleDeleteMsg}
+            ></i>
           )}
-          {message.to_ids.length >= 2 && section !== "Sent messages" && (
-            <button onClick={handleClickReplyAll}>Reply all</button>
-          )}
-          <button onClick={handleClickTransfer}>Forward</button>
         </div>
-      )}
-      {forwardVisible && (
-        <NewWindow
-          title="Forward Discussion"
-          features={{
-            toolbar: "no",
-            scrollbars: "no",
-            menubar: "no",
-            status: "no",
-            directories: "no",
-            width: 1000,
-            height: 500,
-            left: 0,
-            top: 0,
-          }}
-          onUnload={() => setForwardVisible(false)}
-        >
-          <ForwardForm
-            setForwardVisible={setForwardVisible}
-            setMessages={setMessages}
-            section={section}
+        <div className="message-detail-content">
+          <Message
+            message={message}
+            author={formatName(
+              staffIdToName(clinic.staffInfos, message.from_id)
+            )}
+            authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+            key={message.id}
+            index={0}
+          />
+          {previousMsgs &&
+            previousMsgs.map((message, index) => (
+              <Message
+                message={message}
+                author={formatName(
+                  staffIdToName(clinic.staffInfos, message.from_id)
+                )}
+                authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+                key={message.id}
+                index={index + 1}
+              />
+            ))}
+          <MessagesAttachments
+            attachments={attachments}
+            deletable={false}
+            cardWidth="15%"
+          />
+        </div>
+        {replyVisible && (
+          <ReplyForm
+            setReplyVisible={setReplyVisible}
+            allPersons={allPersons}
             message={message}
             previousMsgs={previousMsgs}
+            setMessages={setMessages}
+            section={section}
             patient={patient}
           />
-        </NewWindow>
-      )}
-    </>
+        )}
+        {section !== "Deleted messages" && !replyVisible && !forwardVisible && (
+          <div className="message-detail-btns">
+            {section !== "Sent messages" && (
+              <button onClick={handleClickReply}>Reply</button>
+            )}
+            {message.to_ids.length >= 2 && section !== "Sent messages" && (
+              <button onClick={handleClickReplyAll}>Reply all</button>
+            )}
+            <button onClick={handleClickTransfer}>Forward</button>
+          </div>
+        )}
+        {forwardVisible && (
+          <NewWindow
+            title="Forward Discussion"
+            features={{
+              toolbar: "no",
+              scrollbars: "no",
+              menubar: "no",
+              status: "no",
+              directories: "no",
+              width: 1000,
+              height: 500,
+              left: 0,
+              top: 0,
+            }}
+            onUnload={() => setForwardVisible(false)}
+          >
+            <ForwardForm
+              setForwardVisible={setForwardVisible}
+              setMessages={setMessages}
+              section={section}
+              message={message}
+              previousMsgs={previousMsgs}
+              patient={patient}
+            />
+          </NewWindow>
+        )}
+      </>
+    )
   );
 };
 

@@ -19,6 +19,7 @@ const FlatpickrStart = ({
           altInput: true,
           altFormat: "M j, Y, h:i K",
           dateFormat: "Z",
+          shorthandCurrentMonth: true,
         }}
         name="start"
         value={startTime}

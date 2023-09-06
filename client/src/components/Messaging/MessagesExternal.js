@@ -1,19 +1,19 @@
 //Libraries
 import React, { useEffect, useState } from "react";
 //Components
-import MessagesToolBar from "./MessagesToolBar";
 import MessagesLeftBar from "./MessagesLeftBar";
-import MessagesBox from "./MessagesBox";
 //Utils
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
-import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { staffIdToName } from "../../utils/staffIdToName";
+import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
+import MessagesExternalToolBar from "./MessagesExternalToolbar";
+import MessagesExternalBox from "./MessagesExternalBox";
 import { patientIdToName } from "../../utils/patientIdToName";
 
-const Messages = () => {
+const MessagesExternal = () => {
   //HOOKSs
   const { messageId, sectionName } = useParams();
   const [search, setSearch] = useState("");
@@ -38,38 +38,44 @@ const Messages = () => {
     console.log("fetchMessages");
     const fetchMessages = async () => {
       try {
-        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-          signal: abortController.signal,
-        });
+        const response = await axiosXano.get(
+          `/messages_external_for_staff?staff_id=${user.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+            signal: abortController.signal,
+          }
+        );
 
         if (abortController.signal.aborted) return;
 
         //En fonction de la section on filtre les messages
-        let newMessages = filterAndSortMessages(
+        let newMessages = filterAndSortExternalMessages(
           sectionName || section,
           response.data,
-          user.id
+          "staff"
         );
         //FILTER HERE SEARCH
-        newMessages = newMessages.filter(
-          (message) =>
-            staffIdToName(clinic.staffInfos, message.from_id)
-              .toLowerCase()
-              .includes(search.toLowerCase()) ||
-            message.to_ids
-              .map((id) => staffIdToName(clinic.staffInfos, id))
-              .join(", ")
-              .toLowerCase()
-              .includes(search.toLowerCase()) ||
-            message.subject.toLowerCase().includes(search.toLowerCase()) ||
-            message.body.toLowerCase().includes(search.toLowerCase()) ||
-            patientIdToName(clinic.patientsInfos, message.related_patient_id)
-              .toLowerCase()
-              .includes(search.toLowerCase())
+        newMessages = newMessages.filter((message) =>
+          message.from_id.user_type === "staff"
+            ? staffIdToName(clinic.staffInfos, message.from_id.id)
+                .toLowerCase()
+                .includes(search.toLowerCase()) ||
+              patientIdToName(clinic.patientsInfos, message.to_id.id)
+                .toLowerCase()
+                .includes(search.toLowerCase()) ||
+              message.subject.toLowerCase().includes(search.toLowerCase()) ||
+              message.body.toLowerCase().includes(search.toLowerCase())
+            : patientIdToName(clinic.patientsInfos, message.from_id.id)
+                .toLowerCase()
+                .includes(search.toLowerCase()) ||
+              staffIdToName(clinic.staffInfos, message.to_id.id)
+                .toLowerCase()
+                .includes(search.toLowerCase()) ||
+              message.subject.toLowerCase().includes(search.toLowerCase()) ||
+              message.body.toLowerCase().includes(search.toLowerCase())
         );
 
         setMessages(newMessages);
@@ -97,7 +103,7 @@ const Messages = () => {
 
   return (
     <div className="messages-container">
-      <MessagesToolBar
+      <MessagesExternalToolBar
         search={search}
         setSearch={setSearch}
         newVisible={newVisible}
@@ -113,13 +119,13 @@ const Messages = () => {
       />
       <div className="messages-section">
         <MessagesLeftBar
-          msgType="internal"
+          msgType="external"
           section={section}
           setSection={setSection}
           setCurrentMsgId={setCurrentMsgId}
           setMsgsSelectedIds={setMsgsSelectedIds}
         />
-        <MessagesBox
+        <MessagesExternalBox
           section={section}
           newVisible={newVisible}
           setNewVisible={setNewVisible}
@@ -138,4 +144,4 @@ const Messages = () => {
   );
 };
 
-export default Messages;
+export default MessagesExternal;

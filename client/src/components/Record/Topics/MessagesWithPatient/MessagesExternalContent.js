@@ -4,14 +4,16 @@ import { toLocalDate } from "../../../../utils/formatDates";
 import { NavLink } from "react-router-dom";
 import useAuth from "../../../../hooks/useAuth";
 
-const MessagesContent = ({ datas, isLoading, errMsg }) => {
+const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
   const { user } = useAuth();
 
   const getSection = (message) => {
-    if (message.deleted_by_ids.includes(user.id)) {
+    if (message.deleted_by_ids.find(({ user_type }) => user_type === "staff")) {
       return "Deleted messages";
-    } else if (message.from_id === user.id) {
-      //et le cas forward ???
+    } else if (
+      message.from_id.user_type === "staff" &&
+      message.from_id.id === user.id
+    ) {
       return "Sent messages";
     } else {
       return "Inbox";
@@ -25,14 +27,19 @@ const MessagesContent = ({ datas, isLoading, errMsg }) => {
         {datas &&
         datas.filter(
           (message) =>
-            message.from_id === user.id || message.to_ids.includes(user.id)
+            (message.from_id.id === user.id &&
+              message.from_id.user_type === "staff") ||
+            (message.to_id.id === user.id &&
+              message.to_id.user_type === "staff")
         ).length >= 1 ? (
           <ul className="patient-messages-content-list">
             {datas
               .filter(
                 (message) =>
-                  message.from_id === user.id ||
-                  message.to_ids.includes(user.id)
+                  (message.from_id.id === user.id &&
+                    message.from_id.user_type === "staff") ||
+                  (message.to_id.id === user.id &&
+                    message.to_id.user_type === "staff")
               )
               .sort((a, b) => b.date_created - a.date_created)
               .map((message) => (
@@ -42,7 +49,7 @@ const MessagesContent = ({ datas, isLoading, errMsg }) => {
                       className="patient-messages-content-item-link"
                       to={`/messages/${message.id}/${getSection(
                         message
-                      )}/Internal`}
+                      )}/External`}
                     >
                       {message.subject} - {message.body}
                     </NavLink>
@@ -52,7 +59,7 @@ const MessagesContent = ({ datas, isLoading, errMsg }) => {
                       className="patient-messages-content-item-link"
                       to={`/messages/${message.id}/${getSection(
                         message
-                      )}/Internal`}
+                      )}/External`}
                     >
                       {toLocalDate(message.date_created)}
                     </NavLink>
@@ -61,7 +68,7 @@ const MessagesContent = ({ datas, isLoading, errMsg }) => {
               ))}
           </ul>
         ) : (
-          "No messages about patient"
+          "No messages with patient"
         )}
       </div>
     )
@@ -70,4 +77,4 @@ const MessagesContent = ({ datas, isLoading, errMsg }) => {
   );
 };
 
-export default MessagesContent;
+export default MessagesExternalContent;

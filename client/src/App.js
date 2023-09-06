@@ -38,7 +38,7 @@ const App = () => {
           <Route path="my-account" element={<MyAccountPage />} />
           <Route path="messages" element={<MessagesPage />} />
           <Route
-            path="messages/:messageId/:sectionName"
+            path="messages/:messageId/:sectionName/:msgType"
             element={<MessagesPage />}
           />
           <Route path="credentials" element={<CredentialsPage />} />

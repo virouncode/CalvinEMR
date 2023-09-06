@@ -10,6 +10,7 @@ const Shortcutpickr = ({ handleShortcutpickrChange }) => {
         options={{
           inline: true,
           dateFormat: "Z",
+          shorthandCurrentMonth: true,
         }}
         onChange={handleShortcutpickrChange}
       />

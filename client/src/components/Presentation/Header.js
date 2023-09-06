@@ -28,7 +28,7 @@ const Header = () => {
               to="search-patient"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
             >
-              Search Patient
+              Patients
             </NavLink>
           </li>
           <li>

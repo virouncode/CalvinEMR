@@ -3,6 +3,7 @@ import React from "react";
 //Components
 import FilterStaffItem from "./FilterStaffItem";
 import useAuth from "../../hooks/useAuth";
+import { categoryToTitle } from "../../utils/categoryToTitle";
 
 const FilterCheckboxesSection = ({
   isCategoryChecked,
@@ -19,7 +20,7 @@ const FilterCheckboxesSection = ({
       <li>
         <input
           type="checkbox"
-          className="filter-checkbox"
+          className="filter-checkbox-category"
           name={category}
           id={category}
           checked={isCategoryChecked(category)}
@@ -30,7 +31,7 @@ const FilterCheckboxesSection = ({
         <label className="filter-category-label">{category}</label>
       </li>
       {staffInfos
-        .filter(({ title }) => title === category)
+        .filter(({ title }) => title === categoryToTitle(category))
         .map((staff) => (
           <FilterStaffItem
             key={staff.id}

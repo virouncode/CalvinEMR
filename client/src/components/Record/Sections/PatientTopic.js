@@ -41,6 +41,7 @@ import MessagesContent from "../Topics/MessagesAboutPatient/MessagesContent";
 import { usePatientRecord } from "../../../hooks/usePatientRecord";
 import EformsContent from "../Topics/Eforms/EformsContent";
 import EformsPU from "../Popups/EformsPU";
+import MessagesExternalContent from "../Topics/MessagesWithPatient/MessagesExternalContent";
 
 const PatientTopic = ({
   url,
@@ -69,7 +70,7 @@ const PatientTopic = ({
 
   const handleTriangleClick = (e) => {
     e.target.classList.toggle("triangle--active");
-    if (topic === "MEASUREMENTS" || topic === "MESSAGES") {
+    if (topic === "E-FORMS" || topic === "MESSAGES WITH PATIENT") {
       contentRef.current.classList.toggle(
         `patient-topic-content-${side}-bottom--active`
       );
@@ -111,7 +112,7 @@ const PatientTopic = ({
       <div
         className={
           allContentsVisible
-            ? topic === "MEASUREMENTS" || topic === "E-FORMS"
+            ? topic === "E-FORMS" || topic === "MESSAGES WITH PATIENT"
               ? `patient-topic-content-${side} patient-topic-content-${side}-bottom--active`
               : `patient-topic-content-${side} patient-topic-content-${side}--active`
             : `patient-topic-content-${side}`
@@ -439,6 +440,45 @@ const PatientTopic = ({
           </NewWindow>
         )}
         {/*******************/}
+        {/*E-FORMS */}
+        {topic === "E-FORMS" && (
+          <EformsContent
+            datas={datas}
+            isLoading={isLoading}
+            errMsg={errMsg}
+            showDocument={showDocument}
+          />
+        )}
+        {topic === "E-FORMS" && popUpVisible && (
+          <NewWindow
+            title="Patient Electronic Forms"
+            features={{
+              toolbar: "no",
+              scrollbars: "no",
+              menubar: "no",
+              status: "no",
+              directories: "no",
+              width: 800,
+              height: 600,
+              left: 320,
+              top: 200,
+            }}
+            onUnload={() => setPopUpVisible(false)}
+          >
+            <EformsPU
+              patientInfos={patientInfos}
+              patientId={patientId}
+              showDocument={showDocument}
+              datas={datas}
+              setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
+              setPopUpVisible={setPopUpVisible}
+            />
+          </NewWindow>
+        )}
+        {/*******************/}
 
         {/* FAMILY DOCTORS */}
         {topic === "FAMILY DOCTORS/SPECIALISTS" && (
@@ -728,8 +768,8 @@ const PatientTopic = ({
           </NewWindow>
         )}
         {/*******************/}
-        {/* MESSAGES */}
-        {topic === "MESSAGES" && (
+        {/* MESSAGES ABOUT PATIENT */}
+        {topic === "MESSAGES ABOUT PATIENT" && (
           <MessagesContent
             datas={datas}
             isLoading={isLoading}
@@ -737,42 +777,13 @@ const PatientTopic = ({
           />
         )}
         {/*******************/}
-        {topic === "E-FORMS" && (
-          <EformsContent
+        {/* MESSAGES WITH PATIENT */}
+        {topic === "MESSAGES WITH PATIENT" && (
+          <MessagesExternalContent
             datas={datas}
             isLoading={isLoading}
             errMsg={errMsg}
-            showDocument={showDocument}
           />
-        )}
-        {topic === "E-FORMS" && popUpVisible && (
-          <NewWindow
-            title="Patient Electronic Forms"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
-          >
-            <EformsPU
-              patientInfos={patientInfos}
-              patientId={patientId}
-              showDocument={showDocument}
-              datas={datas}
-              setDatas={setDatas}
-              fetchRecord={fetchRecord}
-              isLoading={isLoading}
-              errMsg={errMsg}
-              setPopUpVisible={setPopUpVisible}
-            />
-          </NewWindow>
         )}
         {/*******************/}
       </div>

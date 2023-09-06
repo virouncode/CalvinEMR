@@ -77,7 +77,7 @@
                 }
             }
         }
-        .patient-med-history-content, .patient-fam-history-content, .patient-risk-content, .patient-medications-content, .patient-pharmacies-content,.patient-soc-history-content, .patient-relationships-content,  .patient-measurements-content {
+        .patient-med-history-content, .patient-fam-history-content, .patient-risk-content, .patient-medications-content, .patient-pharmacies-content,.patient-soc-history-content, .patient-relationships-content,  .patient-measurements-content, .patient-electronic-content {
             width: 100%;
             display:flex;
             flex-direction: column;
@@ -131,7 +131,7 @@
             border-right : solid 0.5px grey;
             border-bottom : solid 0.5px grey;
         }
-        .patient-doctors-content, .patient-reminders-content, .patient-pregnancies-content, .patient-allergies-content, .patient-concerns-content, .patient-documents-content, .patient-appointments-content, .patient-vaccines-content, .patient-messages-content, .patient-electronic-content {
+        .patient-doctors-content, .patient-reminders-content, .patient-pregnancies-content, .patient-allergies-content, .patient-concerns-content, .patient-documents-content, .patient-appointments-content, .patient-vaccines-content, .patient-messages-content {
             padding : 5px;
             width: 100%;
             display:flex;

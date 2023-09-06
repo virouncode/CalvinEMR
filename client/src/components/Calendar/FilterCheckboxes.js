@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import FilterCheckboxesSection from "./FilterCheckboxesSection";
 //Utils
 import useAuth from "../../hooks/useAuth";
+import { categoryToTitle } from "../../utils/categoryToTitle";
 
 const FilterCheckboxes = ({
   staffInfos,
@@ -144,17 +145,17 @@ const FilterCheckboxes = ({
   useEffect(() => {
     user.title === "Secretary" &&
       sethostsCategories([
-        "Doctor",
-        "Nurse",
-        "Secretary",
-        "Medical Student",
-        "Nursing Student",
-        "Lab Technician",
-        "Nutritionist",
-        "Ultra Sound Technician",
-        "Physiotherapist",
-        "Psychologist",
-        "Other",
+        "Doctors",
+        "Nurses",
+        "Secretaries",
+        "Medical Students",
+        "Nursing Students",
+        "Lab Techs",
+        "Nutritionists",
+        "Ultra Sound Techs",
+        "Physiotherapists",
+        "Psychologists",
+        "Others",
       ]);
   }, [user.title]);
 
@@ -184,7 +185,7 @@ const FilterCheckboxes = ({
         case "doctor":
           newHostsDoctorsIds = [...newHostsDoctorsIds, id];
           if (newHostsDoctorsIds.length === doctorsLength.current) {
-            newHostsCategories = [...newHostsCategories, "Doctor"];
+            newHostsCategories = [...newHostsCategories, "Doctors"];
             sethostsCategories(newHostsCategories);
           }
           setHostsDoctorsIds(newHostsDoctorsIds);
@@ -192,7 +193,7 @@ const FilterCheckboxes = ({
         case "nurse":
           newHostsNursesIds = [...newHostsNursesIds, id];
           if (newHostsNursesIds.length === nursesLength.current) {
-            newHostsCategories = [...newHostsCategories, "Nurse"];
+            newHostsCategories = [...newHostsCategories, "Nurses"];
             sethostsCategories(newHostsCategories);
           }
           setHostsNursesIds(newHostsNursesIds);
@@ -200,7 +201,7 @@ const FilterCheckboxes = ({
         case "secretary":
           newHostsSecretariesIds = [...newHostsSecretariesIds, id];
           if (newHostsSecretariesIds.length === secretariesLength.current) {
-            newHostsCategories = [...newHostsCategories, "Secretary"];
+            newHostsCategories = [...newHostsCategories, "Secretaries"];
             sethostsCategories(newHostsCategories);
           }
           setHostsSecretariesIds(newHostsSecretariesIds);
@@ -208,7 +209,7 @@ const FilterCheckboxes = ({
         case "medical student":
           newHostsMedStudentsIds = [...newHostsMedStudentsIds, id];
           if (newHostsMedStudentsIds.length === medStudentsLength.current) {
-            newHostsCategories = [...newHostsCategories, "Medical Student"];
+            newHostsCategories = [...newHostsCategories, "Medical Students"];
             sethostsCategories(newHostsCategories);
           }
           setHostsMedStudentsIds(newHostsMedStudentsIds);
@@ -218,7 +219,7 @@ const FilterCheckboxes = ({
           if (
             newHostsNursingStudentsIds.length === nursingStudentsLength.current
           ) {
-            newHostsCategories = [...newHostsCategories, "Nursing Student"];
+            newHostsCategories = [...newHostsCategories, "Nursing Students"];
             sethostsCategories(newHostsCategories);
           }
           setHostsNursingStudentsIds(newHostsNursingStudentsIds);
@@ -226,7 +227,7 @@ const FilterCheckboxes = ({
         case "nutritionist":
           newHostsNutritionistsIds = [...newHostsNutritionistsIds, id];
           if (newHostsNutritionistsIds.length === nutritionistsLength.current) {
-            newHostsCategories = [...newHostsCategories, "Nutritionist"];
+            newHostsCategories = [...newHostsCategories, "Nutritionists"];
             sethostsCategories(newHostsCategories);
           }
           setHostsNutritionistsIds(newHostsNutritionistsIds);
@@ -234,7 +235,7 @@ const FilterCheckboxes = ({
         case "physiotherapist":
           newHostsPhysiosIds = [...newHostsPhysiosIds, id];
           if (newHostsPhysiosIds.length === physiosLength.current) {
-            newHostsCategories = [...newHostsCategories, "Physiotherapist"];
+            newHostsCategories = [...newHostsCategories, "Physiotherapists"];
             sethostsCategories(newHostsCategories);
           }
           setHostsPhysiosIds(newHostsPhysiosIds);
@@ -242,7 +243,7 @@ const FilterCheckboxes = ({
         case "psychologist":
           newHostsPsychosIds = [...newHostsPsychosIds, id];
           if (newHostsPsychosIds.length === psychosLength.current) {
-            newHostsCategories = [...newHostsCategories, "Psychologist"];
+            newHostsCategories = [...newHostsCategories, "Psychologists"];
             sethostsCategories(newHostsCategories);
           }
           setHostsPsychosIds(newHostsPsychosIds);
@@ -250,7 +251,7 @@ const FilterCheckboxes = ({
         case "lab technician":
           newHostsLabTechsIds = [...newHostsLabTechsIds, id];
           if (newHostsLabTechsIds.length === labTechsLength.current) {
-            newHostsCategories = [...newHostsCategories, "Lab Technician"];
+            newHostsCategories = [...newHostsCategories, "Lab Techs"];
             sethostsCategories(newHostsCategories);
           }
           setHostsLabTechsIds(newHostsLabTechsIds);
@@ -258,10 +259,7 @@ const FilterCheckboxes = ({
         case "ultra sound technician":
           newHostsUSTechsIds = [...newHostsUSTechsIds, id];
           if (newHostsUSTechsIds.length === usTechsLength.current) {
-            newHostsCategories = [
-              ...newHostsCategories,
-              "Ultra Sound Technician",
-            ];
+            newHostsCategories = [...newHostsCategories, "Ultra Sound Techs"];
             sethostsCategories(newHostsCategories);
           }
           setHostsUSTechsIds(newHostsUSTechsIds);
@@ -269,7 +267,7 @@ const FilterCheckboxes = ({
         case "other":
           newHostsOthersIds = [...newHostsOthersIds, id];
           if (newHostsOthersIds.length === othersLength.current) {
-            newHostsCategories = [...newHostsCategories, "Other"];
+            newHostsCategories = [...newHostsCategories, "Others"];
             sethostsCategories(newHostsCategories);
           }
           setHostsOthersIds(newHostsOthersIds);
@@ -282,26 +280,29 @@ const FilterCheckboxes = ({
       switch (name) {
         case "doctor":
           newHostsDoctorsIds.splice(newHostsDoctorsIds.indexOf(id), 1);
-          newHostsCategories.splice(newHostsCategories.indexOf("Doctor"), 1);
+          newHostsCategories.splice(newHostsCategories.indexOf("Doctors"), 1);
           sethostsCategories(newHostsCategories);
           setHostsDoctorsIds(newHostsDoctorsIds);
           break;
         case "nurse":
           newHostsNursesIds.splice(newHostsNursesIds.indexOf(id), 1);
-          newHostsCategories.splice(newHostsCategories.indexOf("Nurse"), 1);
+          newHostsCategories.splice(newHostsCategories.indexOf("Nurses"), 1);
           sethostsCategories(newHostsCategories);
           setHostsNursesIds(newHostsNursesIds);
           break;
         case "secretary":
           newHostsSecretariesIds.splice(newHostsSecretariesIds.indexOf(id), 1);
-          newHostsCategories.splice(newHostsCategories.indexOf("Secretary"), 1);
+          newHostsCategories.splice(
+            newHostsCategories.indexOf("Secretaries"),
+            1
+          );
           sethostsCategories(newHostsCategories);
           setHostsSecretariesIds(newHostsSecretariesIds);
           break;
         case "medical student":
           newHostsMedStudentsIds.splice(newHostsMedStudentsIds.indexOf(id), 1);
           newHostsCategories.splice(
-            newHostsCategories.indexOf("Medical Student"),
+            newHostsCategories.indexOf("Medical Students"),
             1
           );
           sethostsCategories(newHostsCategories);
@@ -313,7 +314,7 @@ const FilterCheckboxes = ({
             1
           );
           newHostsCategories.splice(
-            newHostsCategories.indexOf("Nursing Student"),
+            newHostsCategories.indexOf("Nursing Students"),
             1
           );
           sethostsCategories(newHostsCategories);
@@ -325,7 +326,7 @@ const FilterCheckboxes = ({
             1
           );
           newHostsCategories.splice(
-            newHostsCategories.indexOf("Nutritionist"),
+            newHostsCategories.indexOf("Nutritionists"),
             1
           );
           sethostsCategories(newHostsCategories);
@@ -334,7 +335,7 @@ const FilterCheckboxes = ({
         case "physiotherapist":
           newHostsPhysiosIds.splice(newHostsPhysiosIds.indexOf(id), 1);
           newHostsCategories.splice(
-            newHostsCategories.indexOf("Physiotherapist"),
+            newHostsCategories.indexOf("Physiotherapists"),
             1
           );
           sethostsCategories(newHostsCategories);
@@ -343,7 +344,7 @@ const FilterCheckboxes = ({
         case "psychotherapist":
           newHostsPsychosIds.splice(newHostsPsychosIds.indexOf(id), 1);
           newHostsCategories.splice(
-            newHostsCategories.indexOf("Psychologist"),
+            newHostsCategories.indexOf("Psychologists"),
             1
           );
           sethostsCategories(newHostsCategories);
@@ -351,17 +352,14 @@ const FilterCheckboxes = ({
           break;
         case "lab technician":
           newHostsLabTechsIds.splice(newHostsLabTechsIds.indexOf(id), 1);
-          newHostsCategories.splice(
-            newHostsCategories.indexOf("Lab Technician"),
-            1
-          );
+          newHostsCategories.splice(newHostsCategories.indexOf("Lab Techs"), 1);
           sethostsCategories(newHostsCategories);
           setHostsLabTechsIds(newHostsLabTechsIds);
           break;
         case "ultra sound technician":
           newHostsUSTechsIds.splice(newHostsUSTechsIds.indexOf(id), 1);
           newHostsCategories.splice(
-            newHostsCategories.indexOf("Ultra Sound Technician"),
+            newHostsCategories.indexOf("Ultra Sound Techs"),
             1
           );
           sethostsCategories(newHostsCategories);
@@ -369,7 +367,7 @@ const FilterCheckboxes = ({
           break;
         case "other":
           newHostsOthersIds.splice(newHostsOthersIds.indexOf(id), 1);
-          newHostsCategories.splice(newHostsCategories.indexOf("Other"), 1);
+          newHostsCategories.splice(newHostsCategories.indexOf("Others"), 1);
           sethostsCategories(newHostsCategories);
           setHostsOthersIds(newHostsOthersIds);
           break;
@@ -390,14 +388,14 @@ const FilterCheckboxes = ({
 
       //Add all the hosts from the category
       let hostsIdsToAdd = staffInfos
-        .filter(({ title }) => title === category)
+        .filter(({ title }) => title === categoryToTitle(category))
         .filter(({ id }) => !newHostsIds.includes(id))
         .map(({ id }) => id);
       newHostsIds = [...newHostsIds, ...hostsIdsToAdd];
     } else {
       newHostsCategories.splice(newHostsCategories.indexOf(id), 1);
       let hostsIdsToRemove = staffInfos
-        .filter(({ title }) => title === category)
+        .filter(({ title }) => title === categoryToTitle(category))
         .filter(({ id }) => newHostsIds.includes(id))
         .map(({ id }) => id);
       newHostsIds = newHostsIds.filter(
@@ -421,7 +419,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Doctor"
+            category="Doctors"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -434,7 +432,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Nurse"
+            category="Nurses"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -447,7 +445,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Secretary"
+            category="Secretaries"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -460,7 +458,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Lab Technician"
+            category="Lab Techs"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -473,7 +471,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Ultra Sound Technician"
+            category="Ultra Sound Techs"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -486,7 +484,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Nutritionist"
+            category="Nutritionists"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -499,7 +497,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Psychologist"
+            category="Psychologists"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -512,7 +510,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Physiotherapist"
+            category="Physiotherapists"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -525,7 +523,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Medical Student"
+            category="Medical Students"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -538,7 +536,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Nursing Student"
+            category="Nursing Students"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}
@@ -551,7 +549,7 @@ const FilterCheckboxes = ({
           <FilterCheckboxesSection
             isCategoryChecked={isCategoryChecked}
             handleCheckCategory={handleCheckCategory}
-            category="Other"
+            category="Others"
             staffInfos={staffInfos}
             isChecked={isChecked}
             handleCheck={handleCheck}

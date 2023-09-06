@@ -94,6 +94,16 @@ const PatientMenuLeft = ({
         allContentsVisible={allContentsVisible}
         side="left"
       />
+      <PatientTopic
+        url="/eforms"
+        textColor="#FEFEFE"
+        backgroundColor="#2acbd6"
+        topic="E-FORMS"
+        patientId={patientId}
+        patientInfos={patientInfos}
+        allContentsVisible={allContentsVisible}
+        side="left"
+      />
     </section>
   );
 };

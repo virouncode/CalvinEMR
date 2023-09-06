@@ -21,6 +21,7 @@ const FlatpickrEnd = ({
           altFormat: "M j, Y, h:i K",
           dateFormat: "Z",
           minDate: start,
+          shorthandCurrentMonth: true,
         }}
         name="End_Time"
         value={endTime}

@@ -2,10 +2,11 @@ import React from "react";
 import NewMessage from "./NewMessage";
 import NewWindow from "react-new-window";
 import { CircularProgress } from "@mui/material";
-import MessagesOverview from "./MessagesOverview";
-import MessageDetail from "./MessageDetail";
+import MessagesExternalOverview from "./MessagesExternalOverview";
+import MessageExternalDetail from "./MessageExternalDetail";
+import NewMessageExternal from "./NewMessageExternal";
 
-const MessagesBox = ({
+const MessagesExternalBox = ({
   section,
   newVisible,
   setNewVisible,
@@ -19,14 +20,15 @@ const MessagesBox = ({
   popUpVisible,
   setPopUpVisible,
 }) => {
+  console.log("currentMsgId", currentMsgId);
   const emptySectionMessages = (sectionName) => {
     switch (sectionName) {
       case "Inbox":
-        return `No inbox internal messages`;
+        return `No inbox external messages`;
       case "Sent messages":
-        return `No sent internal messages`;
+        return `No sent external messages`;
       case "Deleted messages":
-        return `No deleted internal messages`;
+        return `No deleted external messages`;
       default:
         break;
     }
@@ -38,7 +40,7 @@ const MessagesBox = ({
         {messages ? (
           messages?.length !== 0 ? (
             currentMsgId === 0 ? (
-              <MessagesOverview
+              <MessagesExternalOverview
                 messages={messages}
                 setMessages={setMessages}
                 setCurrentMsgId={setCurrentMsgId}
@@ -47,7 +49,7 @@ const MessagesBox = ({
                 section={section}
               />
             ) : (
-              <MessageDetail
+              <MessageExternalDetail
                 setCurrentMsgId={setCurrentMsgId}
                 message={messages.find(({ id }) => id === currentMsgId)}
                 setMessages={setMessages}
@@ -80,7 +82,7 @@ const MessagesBox = ({
           }}
           onUnload={() => setNewVisible(false)}
         >
-          <NewMessage
+          <NewMessageExternal
             setNewVisible={setNewVisible}
             setMessages={setMessages}
             section={section}
@@ -91,4 +93,4 @@ const MessagesBox = ({
   );
 };
 
-export default MessagesBox;
+export default MessagesExternalBox;

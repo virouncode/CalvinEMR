@@ -84,6 +84,27 @@ const LoginForm = () => {
               } else return accumulator;
             }, 0)
           : 0;
+        // Get user unread external messages
+        const response7 = await axiosXano.get(
+          `/messages_external_for_staff?staff_id=${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        const unreadMessagesExternalNbr = response7.data.filter(
+          ({ to_id }) => to_id.user_type === "staff"
+        ).length
+          ? response7.data
+              .filter(({ to_id }) => to_id.user_type === "staff")
+              .reduce((accumulator, currentValue) => {
+                if (!currentValue.read) {
+                  return accumulator + 1;
+                } else return accumulator;
+              }, 0)
+          : 0;
 
         setUser({
           accessLevel,
@@ -94,6 +115,7 @@ const LoginForm = () => {
           licence_nbr,
           settings,
           unreadMessagesNbr,
+          unreadMessagesExternalNbr,
         });
 
         //================== CLINIC ===================//

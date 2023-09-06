@@ -2,6 +2,7 @@ import React from "react";
 import useAuth from "../../hooks/useAuth";
 
 const MessagesLeftBar = ({
+  msgType,
   section,
   setSection,
   setCurrentMsgId,
@@ -9,6 +10,7 @@ const MessagesLeftBar = ({
 }) => {
   const handleClickSection = (e) => {
     const name = e.target.id;
+    console.log("name", name);
     setSection(name);
     setCurrentMsgId(0);
     setMsgsSelectedIds([]);
@@ -28,8 +30,13 @@ const MessagesLeftBar = ({
           id="Inbox"
           onClick={handleClickSection}
         >
-          {"Inbox" +
-            (user.unreadMessagesNbr ? ` (${user.unreadMessagesNbr})` : "")}
+          {msgType === "internal"
+            ? "Inbox" +
+              (user.unreadMessagesNbr ? ` (${user.unreadMessagesNbr})` : "")
+            : "Inbox" +
+              (user.unreadMessagesExternalNbr
+                ? ` (${user.unreadMessagesExternalNbr})`
+                : "")}
         </li>
         <li
           className={isActive("Sent messages")}

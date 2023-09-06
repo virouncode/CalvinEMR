@@ -51,8 +51,8 @@ export const fillPdfForm = async (url, patientInfos, doctorInfos) => {
     const emailField = form.getFieldMaybe("email");
     emailField.setText(patientInfos.email);
   }
-  if (form.getFieldMaybe("phone")) {
-    const phoneField = form.getFieldMaybe("phone");
+  if (form.getFieldMaybe("preferred_phone")) {
+    const phoneField = form.getFieldMaybe("preferred_phone");
     phoneField.setText(patientInfos.preferred_phone);
   }
   if (form.getFieldMaybe("address")) {
@@ -89,8 +89,8 @@ export const fillPdfForm = async (url, patientInfos, doctorInfos) => {
     const countryField = form.getFieldMaybe("country");
     countryField.setText(patientInfos.country);
   }
-  if (form.getFieldMaybe("doctor_name")) {
-    const doctorNameField = form.getFieldMaybe("doctor_name");
+  if (form.getFieldMaybe("doctor_full_name")) {
+    const doctorNameField = form.getFieldMaybe("doctor_full_name");
     doctorNameField.setText("Dr. " + doctorInfos.full_name);
   }
   if (form.getFieldMaybe("doctor_phone")) {
@@ -98,85 +98,18 @@ export const fillPdfForm = async (url, patientInfos, doctorInfos) => {
     doctorPhoneField.setText(doctorInfos.phone);
   }
 
-  if (form.getFieldMaybe("sign_image")) {
+  if (form.getFieldMaybe("sign")) {
+    console.log("yes");
     const signUrl = doctorInfos.sign.url;
+    console.log(signUrl);
     const signImageBytes = await fetch(signUrl).then((res) =>
       res.arrayBuffer()
     );
     const signImage = await pdfDoc.embedPng(signImageBytes);
-    const signImageField = form.getButton("sign_image");
+    const signImageField = form.getButton("sign");
+    console.log(signImageField);
     signImageField.setImage(signImage);
   }
-  //   const ageField = form.getFieldMaybe('Age')
-  //   const heightField = form.getFieldMaybe('Height')
-  //   const weightField = form.getFieldMaybe('Weight')
-  //   const eyesField = form.getFieldMaybe('Eyes')
-  //   const skinField = form.getFieldMaybe('Skin')
-  //   const hairField = form.getFieldMaybe('Hair')
-
-  //   const alliesField = form.getFieldMaybe('Allies')
-  //   const factionField = form.getFieldMaybe('FactionName')
-  //   const backstoryField = form.getFieldMaybe('Backstory')
-  //   const traitsField = form.getFieldMaybe('Feat+Traits')
-  //   const treasureField = form.getFieldMaybe('Treasure')
-
-  //   const characterImageField = form.getButton('CHARACTER IMAGE')
-  //   const factionImageField = form.getButton('Faction Symbol Image')
-
-  //   nameField.setText('Mario')
-  //   ageField.setText('24 years')
-  //   heightField.setText(`5' 1"`)
-  //   weightField.setText('196 lbs')
-  //   eyesField.setText('blue')
-  //   skinField.setText('white')
-  //   hairField.setText('brown')
-
-  //   characterImageField.setImage(marioImage)
-
-  //   alliesField.setText(
-  //     [
-  //       `Allies:`,
-  //       `  • Princess Daisy`,
-  //       `  • Princess Peach`,
-  //       `  • Rosalina`,
-  //       `  • Geno`,
-  //       `  • Luigi`,
-  //       `  • Donkey Kong`,
-  //       `  • Yoshi`,
-  //       `  • Diddy Kong`,
-  //       ``,
-  //       `Organizations:`,
-  //       `  • Italian Plumbers Association`,
-  //     ].join('\n'),
-  //   )
-
-  //   factionField.setText(`Mario's Emblem`)
-
-  //   factionImageField.setImage(emblemImage)
-
-  //   backstoryField.setText(
-  //     [
-  //       `Mario is a fictional character in the Mario video game franchise, `,
-  //       `owned by Nintendo and created by Japanese video game designer Shigeru `,
-  //       `Miyamoto. Serving as the company's mascot and the eponymous `,
-  //       `protagonist of the series, Mario has appeared in over 200 video games `,
-  //       `since his creation. Depicted as a short, pudgy, Italian plumber who `,
-  //       `resides in the Mushroom Kingdom, his adventures generally center `,
-  //       `upon rescuing Princess Peach from the Koopa villain Bowser. His `,
-  //       `younger brother and sidekick is Luigi.`,
-  //     ].join('\n'),
-  //   )
-
-  //   traitsField.setText(
-  //     [
-  //       `Mario can use three basic three power-ups:`,
-  //       `  • the Super Mushroom, which causes Mario to grow larger`,
-  //       `  • the Fire Flower, which allows Mario to throw fireballs`,
-  //       `  • the Starman, which gives Mario temporary invincibility`,
-  //     ].join('\n'),
-  //   )
-
-  //   treasureField.setText(['• Gold coins', '• Treasure chests'].join('\n'))
 
   const pdfBytes = await pdfDoc.save();
   const docUrl = URL.createObjectURL(

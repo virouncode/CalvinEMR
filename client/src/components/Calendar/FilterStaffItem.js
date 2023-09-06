@@ -1,5 +1,6 @@
 //Librairies
 import React from "react";
+import { categoryToTitle } from "../../utils/categoryToTitle";
 
 const FilterStaffItem = ({
   staff,
@@ -13,13 +14,16 @@ const FilterStaffItem = ({
       <input
         type="checkbox"
         className="filter-checkbox"
-        name={category.toLowerCase()}
+        name={categoryToTitle(category).toLowerCase()}
         id={staff.id}
         checked={isChecked(staff.id)}
         onChange={handleCheck}
         style={{ accentColor: color }}
       />
-      <label>{staff.full_name}</label>
+      <label>
+        {categoryToTitle(category).toLowerCase() === "doctor" ? "Dr. " : null}
+        {staff.full_name}
+      </label>
     </li>
   );
 };
