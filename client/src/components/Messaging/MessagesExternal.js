@@ -35,7 +35,6 @@ const MessagesExternal = () => {
 
   useEffect(() => {
     const abortController = new AbortController();
-    console.log("fetchMessages");
     const fetchMessages = async () => {
       try {
         const response = await axiosXano.get(

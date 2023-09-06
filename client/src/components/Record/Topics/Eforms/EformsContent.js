@@ -8,7 +8,6 @@ const EformsContent = ({ showDocument, datas, isLoading, errMsg }) => {
       <p className="patient-electronic-content-err">{errMsg}</p>
     ) : (
       <div className="patient-electronic-content">
-        {console.log(datas)}
         {datas && datas.length >= 1 ? (
           <ul>
             {datas

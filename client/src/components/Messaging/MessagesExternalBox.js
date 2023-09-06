@@ -20,7 +20,6 @@ const MessagesExternalBox = ({
   popUpVisible,
   setPopUpVisible,
 }) => {
-  console.log("currentMsgId", currentMsgId);
   const emptySectionMessages = (sectionName) => {
     switch (sectionName) {
       case "Inbox":

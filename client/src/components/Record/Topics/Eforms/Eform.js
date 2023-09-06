@@ -54,7 +54,6 @@ const Eform = ({
         }
       )
     );
-    console.log("allo");
   };
 
   const handleClose = () => {
@@ -64,7 +63,6 @@ const Eform = ({
   return (
     <>
       <div className="electronic-form">
-        {console.log(eForms)}
         <div className="electronic-form-explainations">
           <ul>
             <li>

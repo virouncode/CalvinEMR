@@ -3,7 +3,6 @@ import { toLocalDate } from "./formatDates";
 import { getAge } from "./getAge";
 
 export const fillPdfForm = async (url, patientInfos, doctorInfos) => {
-  console.log("patientInfos", patientInfos);
   if (!patientInfos) return;
   const formUrl = url;
   const formPdfBytes = await fetch(formUrl).then((res) => res.arrayBuffer());
@@ -35,7 +34,6 @@ export const fillPdfForm = async (url, patientInfos, doctorInfos) => {
     chartField.setText(patientInfos.chart_nbr.toString());
   }
   if (form.getFieldMaybe("health_insurance_nbr")) {
-    console.log("ok");
     const healthField = form.getFieldMaybe("health_insurance_nbr");
     healthField.setText(patientInfos.health_insurance_nbr);
   }
@@ -99,15 +97,12 @@ export const fillPdfForm = async (url, patientInfos, doctorInfos) => {
   }
 
   if (form.getFieldMaybe("sign")) {
-    console.log("yes");
     const signUrl = doctorInfos.sign.url;
-    console.log(signUrl);
     const signImageBytes = await fetch(signUrl).then((res) =>
       res.arrayBuffer()
     );
     const signImage = await pdfDoc.embedPng(signImageBytes);
     const signImageField = form.getButton("sign");
-    console.log(signImageField);
     signImageField.setImage(signImage);
   }
 
@@ -115,7 +110,6 @@ export const fillPdfForm = async (url, patientInfos, doctorInfos) => {
   const docUrl = URL.createObjectURL(
     new Blob([pdfBytes], { type: "application/pdf" })
   );
-  console.log(docUrl);
   return docUrl;
 };
 

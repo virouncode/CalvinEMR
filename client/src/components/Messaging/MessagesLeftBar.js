@@ -10,7 +10,6 @@ const MessagesLeftBar = ({
 }) => {
   const handleClickSection = (e) => {
     const name = e.target.id;
-    console.log("name", name);
     setSection(name);
     setCurrentMsgId(0);
     setMsgsSelectedIds([]);

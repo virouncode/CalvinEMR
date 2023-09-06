@@ -82,9 +82,6 @@ const PatientTopic = ({
   };
 
   const showDocument = async (url) => {
-    console.log("show document");
-    console.log(url);
-
     const docWindow = window.open(
       url,
       "_blank",
