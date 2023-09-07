@@ -20,6 +20,7 @@ const ReplyFormExternal = ({
   previousMsgs,
   setMessages,
   section,
+  setCurrentMsgId,
 }) => {
   const { auth, user, clinic } = useAuth();
   const [body, setBody] = useState("");
@@ -42,7 +43,7 @@ const ReplyFormExternal = ({
       const replyMessage = {
         from_id: { user_type: "staff", id: user.id },
         to_id: { user_type: "patient", id: message.from_id.id },
-        read: false,
+        read_by_ids: [{ user_type: "staff", id: user.id }],
         subject: previousMsgs.length
           ? `Re ${previousMsgs.length + 1}: ${message.subject.slice(
               message.subject.indexOf(":") + 1
@@ -76,6 +77,7 @@ const ReplyFormExternal = ({
       );
       setMessages(newMessages);
       setReplyVisible(false);
+      setCurrentMsgId(0);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
       toast.error(`Error: unable to send message: ${err.message}`, {

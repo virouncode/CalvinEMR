@@ -7,14 +7,15 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
   return (
     <section className="patient-menu-right">
       <PatientTopic
-        url="/family_doctors"
+        url="/social_history"
         textColor="#FEFEFE"
         backgroundColor="#495867"
-        topic="FAMILY DOCTORS/SPECIALISTS"
+        topic="SOCIAL HISTORY"
         patientId={patientId}
         allContentsVisible={allContentsVisible}
         side="right"
       />
+
       <PatientTopic
         url="/reminders"
         textColor="#FEFEFE"

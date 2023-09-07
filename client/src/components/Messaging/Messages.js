@@ -24,6 +24,7 @@ const Messages = () => {
   const [messages, setMessages] = useState(null);
   const { auth, user, clinic } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
+  const [selectAllVisible, setSelectAllVisible] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +36,6 @@ const Messages = () => {
 
   useEffect(() => {
     const abortController = new AbortController();
-    console.log("fetchMessages");
     const fetchMessages = async () => {
       try {
         const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
@@ -110,6 +110,8 @@ const Messages = () => {
         messages={messages}
         setMessages={setMessages}
         setPopUpVisible={setPopUpVisible}
+        selectAllVisible={selectAllVisible}
+        setSelectAllVisible={setSelectAllVisible}
       />
       <div className="messages-section">
         <MessagesLeftBar
@@ -118,6 +120,7 @@ const Messages = () => {
           setSection={setSection}
           setCurrentMsgId={setCurrentMsgId}
           setMsgsSelectedIds={setMsgsSelectedIds}
+          setSelectAllVisible={setSelectAllVisible}
         />
         <MessagesBox
           section={section}

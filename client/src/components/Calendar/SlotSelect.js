@@ -31,8 +31,9 @@ const SlotSelect = () => {
   };
   return (
     <div className="slot-select">
-      <label>Time Slot Duration</label>
+      <label htmlFor="duration">Time Slot Duration</label>
       <select
+        id="duration"
         name="duration"
         value={user.settings.slot_duration}
         onChange={handleChange}

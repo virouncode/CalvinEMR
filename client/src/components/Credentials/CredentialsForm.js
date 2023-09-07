@@ -61,7 +61,6 @@ const CredentialsForm = () => {
           },
         })
       ).data;
-      console.log(me);
       me.email = credentials.email;
       me.password = credentials.password;
       axiosXano.put(`/staff/${user.id}`, me, {

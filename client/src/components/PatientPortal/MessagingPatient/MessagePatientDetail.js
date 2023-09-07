@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import axiosXano from "../../api/xano";
-import useAuth from "../../hooks/useAuth";
+import axiosXanoPatient from "../../../api/xanoPatient";
+import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { confirmAlert } from "../Confirm/ConfirmGlobal";
-import formatName from "../../utils/formatName";
-import MessagesPrintPU from "./MessagesPrintPU";
-import { patientIdToName } from "../../utils/patientIdToName";
-import MessagesAttachments from "./MessagesAttachments";
-import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
-import MessageExternal from "./MessageExternal";
-import ReplyFormExternal from "./ReplyFormExternal";
+import { staffIdToTitle } from "../../../utils/staffIdToTitle";
+import { staffIdToName } from "../../../utils/staffIdToName";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import formatName from "../../../utils/formatName";
+// import MessagesPrintPU from "./MessagesPrintPU";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import MessagesAttachments from "../../Messaging/MessagesAttachments";
+import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
+import MessageExternal from "../../Messaging/MessageExternal";
+import ReplyFormPatient from "./ReplyFormPatient";
 
-const MessageExternalDetail = ({
+const MessagePatientDetail = ({
   setCurrentMsgId,
   message,
   setMessages,
@@ -33,7 +33,7 @@ const MessageExternalDetail = ({
     const abortController = new AbortController();
     const fetchPreviousMsgs = async () => {
       try {
-        const response = await axiosXano.post(
+        const response = await axiosXanoPatient.post(
           "/messages_external_selected",
           { messages_ids: message.previous_ids },
           {
@@ -65,7 +65,7 @@ const MessageExternalDetail = ({
     const fetchAttachments = async () => {
       try {
         const response = (
-          await axiosXano.post(
+          await axiosXanoPatient.post(
             "/attachments_for_message",
             { attachments_ids: message.attachments_ids },
             {
@@ -103,13 +103,13 @@ const MessageExternalDetail = ({
       })
     ) {
       try {
-        await axiosXano.put(
+        await axiosXanoPatient.put(
           `/messages_external/${message.id}`,
           {
             ...message,
             deleted_by_ids: [
               ...message.deleted_by_ids,
-              { user_type: "staff", id: user.id },
+              { user_type: "patient", id: user.id },
             ],
           },
           {
@@ -119,8 +119,8 @@ const MessageExternalDetail = ({
             },
           }
         );
-        const response2 = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
+        const response2 = await axiosXanoPatient.get(
+          `/messages_external_for_patient?patient_id=${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${auth.authToken}`,
@@ -131,7 +131,7 @@ const MessageExternalDetail = ({
         const newMessages = filterAndSortExternalMessages(
           section,
           response2.data,
-          "staff"
+          "patient"
         );
         setMessages(newMessages);
         setCurrentMsgId(0);
@@ -235,7 +235,7 @@ const MessageExternalDetail = ({
         />
       </div>
       {replyVisible && (
-        <ReplyFormExternal
+        <ReplyFormPatient
           setReplyVisible={setReplyVisible}
           allPersons={allPersons}
           message={message}
@@ -256,4 +256,4 @@ const MessageExternalDetail = ({
   );
 };
 
-export default MessageExternalDetail;
+export default MessagePatientDetail;

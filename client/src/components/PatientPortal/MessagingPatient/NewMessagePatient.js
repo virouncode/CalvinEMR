@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import Patients from "./Patients";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import axiosXanoPatient from "../../../api/xanoPatient";
 import { ToastContainer, toast } from "react-toastify";
-import MessagesAttachments from "./MessagesAttachments";
+import MessagesAttachments from "../../Messaging/MessagesAttachments";
 import { CircularProgress } from "@mui/material";
-import { postPatientRecord } from "../../api/fetchRecords";
-import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
+import { postPatientRecordPatient } from "../../../api/fetchRecords";
+import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
+import { staffIdToTitle } from "../../../utils/staffIdToTitle";
+import formatName from "../../../utils/formatName";
+import { staffIdToName } from "../../../utils/staffIdToName";
+import ContactsForPatient from "./ContactsForPatient";
 
-const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
+const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
   const { auth, user, clinic } = useAuth();
   const [attachments, setAttachments] = useState([]);
   const [recipientId, setRecipientId] = useState(0);
@@ -24,9 +27,9 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
     setSubject(e.target.value);
   };
 
-  const isPatientChecked = (id) => recipientId === id;
+  const isContactChecked = (id) => recipientId === id;
 
-  const handleCheckPatient = (e) => {
+  const handleCheckContact = (e) => {
     const id = parseInt(e.target.id);
     const checked = e.target.checked;
     if (checked) {
@@ -55,31 +58,36 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
     }
     try {
       const attach_ids = (
-        await postPatientRecord("/attachments", user.id, auth.authToken, {
-          attachments_array: attachments,
-        })
+        await postPatientRecordPatient(
+          "/attachments",
+          user.id,
+          auth.authToken,
+          {
+            attachments_array: attachments,
+          }
+        )
       ).data;
 
       //create the message
       const message = {
-        from_id: { user_type: "staff", id: user.id },
-        to_id: { user_type: "patient", id: recipientId },
-        read_by_ids: [{ user_type: "staff", id: user.id }],
+        from_id: { user_type: "patient", id: user.id },
+        to_id: { user_type: "staff", id: recipientId },
+        read_by_ids: [{ user_type: "patient", id: user.id }],
         subject: subject,
         body: body,
         attachments_ids: attach_ids,
         date_created: Date.parse(new Date()),
       };
 
-      await axiosXano.post("/messages_external", message, {
+      await axiosXanoPatient.post("/messages_external", message, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
 
-      const response = await axiosXano.get(
-        `/messages_external_for_staff?staff_id=${user.id}`,
+      const response = await axiosXanoPatient.get(
+        `/messages_external_for_patient?patient_id=${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
@@ -90,7 +98,7 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
       const newMessages = filterAndSortExternalMessages(
         section,
         response.data,
-        "staff"
+        "patient"
       );
       setMessages(newMessages);
       setNewVisible(false);
@@ -121,7 +129,7 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
       reader.onload = async (e) => {
         let content = e.target.result; // this is the content!
         try {
-          const response = await axiosXano.post(
+          const response = await axiosXanoPatient.post(
             "/upload/attachment",
             {
               content: content,
@@ -155,16 +163,23 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
 
   return (
     <div className="new-message">
+      <div className="new-message-contacts">
+        <ContactsForPatient
+          handleCheckContact={handleCheckContact}
+          isContactChecked={isContactChecked}
+        />
+      </div>
       <div className="new-message-form">
         <div className="new-message-form-recipients">
           <strong>To: </strong>
           <input
             type="text"
-            placeholder="Patient"
+            placeholder="Staff member"
             value={
               recipientId
-                ? clinic.patientsInfos.find(({ id }) => recipientId === id)
-                    .full_name
+                ? staffIdToTitle(clinic.staffInfos, recipientId) +
+                  " " +
+                  formatName(staffIdToName(clinic.staffInfos, recipientId))
                 : ""
             }
             readOnly
@@ -206,12 +221,6 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
           )}
         </div>
       </div>
-      <div className="new-message-patients">
-        <Patients
-          handleCheckPatient={handleCheckPatient}
-          isPatientChecked={isPatientChecked}
-        />
-      </div>
       <ToastContainer
         enableMultiContainer
         containerId={"B"}
@@ -231,4 +240,4 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
   );
 };
 
-export default NewMessageExternal;
+export default NewMessagePatient;

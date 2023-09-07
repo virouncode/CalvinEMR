@@ -31,11 +31,12 @@ const FirstDaySelect = () => {
   };
   return (
     <div className="day-select">
-      <label>First day of the week</label>
+      <label htmlFor="firstDay">First day of the week</label>
       <select
-        name="duration"
+        name="firstDay"
         value={user.settings.first_day}
         onChange={handleChange}
+        id="firstDay"
       >
         <option value="0">Sunday</option>
         <option value="1">Monday</option>

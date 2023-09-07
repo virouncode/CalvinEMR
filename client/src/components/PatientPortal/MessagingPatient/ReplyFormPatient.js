@@ -1,24 +1,23 @@
 import React, { useState } from "react";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import axiosXanoPatient from "../../../api/xanoPatient";
 import { ToastContainer, toast } from "react-toastify";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import Message from "./Message";
-import formatName from "../../utils/formatName";
+import { staffIdToTitle } from "../../../utils/staffIdToTitle";
+import { staffIdToName } from "../../../utils/staffIdToName";
+import formatName from "../../../utils/formatName";
 import { CircularProgress } from "@mui/material";
-import MessagesAttachments from "./MessagesAttachments";
-import { postPatientRecord } from "../../api/fetchRecords";
+import MessagesAttachments from "../../Messaging/MessagesAttachments";
+import { postPatientRecordPatient } from "../../../api/fetchRecords";
+import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import MessageExternal from "../../Messaging/MessageExternal";
 
-const ReplyForm = ({
+const ReplyFormPatient = ({
   setReplyVisible,
-  allPersons,
   message,
   previousMsgs,
   setMessages,
   section,
-  patient,
   setCurrentMsgId,
 }) => {
   const { auth, user, clinic } = useAuth();
@@ -32,21 +31,22 @@ const ReplyForm = ({
   const handleSend = async (e) => {
     try {
       let attach_ids = (
-        await postPatientRecord("/attachments", user.id, auth.authToken, {
-          attachments_array: attachments,
-        })
+        await postPatientRecordPatient(
+          "/attachments",
+          user.id,
+          auth.authToken,
+          {
+            attachments_array: attachments,
+          }
+        )
       ).data;
 
       attach_ids = [...message.attachments_ids, ...attach_ids];
 
       const replyMessage = {
-        from_id: user.id,
-        to_ids: allPersons
-          ? [...new Set([...message.to_ids, message.from_id])].filter(
-              (staffId) => staffId !== user.id
-            )
-          : [message.from_id],
-        read_by_ids: [user.id],
+        from_id: { user_type: "patient", id: user.id },
+        to_id: { user_type: "staff", id: message.from_id.id },
+        read_by_ids: [{ user_type: "patient", id: user.id }],
         subject: previousMsgs.length
           ? `Re ${previousMsgs.length + 1}: ${message.subject.slice(
               message.subject.indexOf(":") + 1
@@ -54,27 +54,29 @@ const ReplyForm = ({
           : `Re: ${message.subject}`,
         body: body,
         previous_ids: [...previousMsgs.map(({ id }) => id), message.id],
-        related_patient_id: message.related_patient_id || 0,
         attachments_ids: attach_ids,
         date_created: Date.parse(new Date()),
       };
 
-      await axiosXano.post("/messages", replyMessage, {
+      await axiosXanoPatient.post("/messages_external", replyMessage, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
-      const newMessages = filterAndSortMessages(
+      const response = await axiosXanoPatient.get(
+        `/messages_external_for_patient?patient_id=${user.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        }
+      );
+      const newMessages = filterAndSortExternalMessages(
         section,
         response.data,
-        user.id
+        "patient"
       );
       setMessages(newMessages);
       setReplyVisible(false);
@@ -110,7 +112,7 @@ const ReplyForm = ({
       reader.onload = async (e) => {
         let content = e.target.result; // this is the content!
         try {
-          const response = await axiosXano.post(
+          const response = await axiosXanoPatient.post(
             "/upload/attachment",
             {
               content: content,
@@ -155,17 +157,8 @@ const ReplyForm = ({
       <div className="reply-form-title">
         <p>
           <strong>To: </strong>
-          {allPersons
-            ? [...new Set([...message.to_ids, message.from_id])]
-                .filter((staffId) => staffId !== user.id)
-                .map(
-                  (staffId) =>
-                    staffIdToTitle(clinic.staffInfos, staffId) +
-                    formatName(staffIdToName(clinic.staffInfos, staffId))
-                )
-                .join(", ")
-            : staffIdToTitle(clinic.staffInfos, message.from_id) +
-              formatName(staffIdToName(clinic.staffInfos, message.from_id))}
+          {staffIdToTitle(clinic.staffInfos, message.from_id.id)}{" "}
+          {formatName(staffIdToName(clinic.staffInfos, message.from_id.id))}
         </p>
       </div>
       <div className="reply-form-subject">
@@ -176,12 +169,6 @@ const ReplyForm = ({
             )}`
           : `\u00A0Re: ${message.subject}`}
       </div>
-
-      {patient?.full_name && (
-        <div className="reply-form-patient">
-          <strong>About patient:</strong> {"\u00A0" + patient.full_name}
-        </div>
-      )}
       <div className="reply-form-attach">
         <strong>Attach files</strong>
         <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
@@ -192,28 +179,40 @@ const ReplyForm = ({
         ))}
       </div>
       <div className="reply-form-body">
-        <textarea
-          value={body}
-          onChange={handleChange}
-          id="body-area"
-        ></textarea>
+        <textarea value={body} onChange={handleChange}></textarea>
         <div className="reply-form-history">
-          <Message
+          <MessageExternal
             message={message}
-            author={formatName(
-              staffIdToName(clinic.staffInfos, message.from_id)
-            )}
-            authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+            author={
+              message.from_id.user_type === "staff"
+                ? formatName(
+                    staffIdToName(clinic.staffInfos, message.from_id.id)
+                  )
+                : patientIdToName(clinic.patientsInfos, message.from_id.id)
+            }
+            authorTitle={
+              message.from_id.user_type === "staff"
+                ? staffIdToTitle(clinic.staffInfos, message.from_id)
+                : ""
+            }
             key={message.id}
             index={0}
           />
           {previousMsgs.map((message, index) => (
-            <Message
+            <MessageExternal
               message={message}
-              author={formatName(
-                staffIdToName(clinic.staffInfos, message.from_id)
-              )}
-              authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+              author={
+                message.from_id.user_type === "staff"
+                  ? formatName(
+                      staffIdToName(clinic.staffInfos, message.from_id.id)
+                    )
+                  : patientIdToName(clinic.patientsInfos, message.from_id.id)
+              }
+              authorTitle={
+                message.from_id.user_type === "staff"
+                  ? staffIdToTitle(clinic.staffInfos, message.from_id)
+                  : ""
+              }
               key={message.id}
               index={index + 1}
             />
@@ -254,4 +253,4 @@ const ReplyForm = ({
   );
 };
 
-export default ReplyForm;
+export default ReplyFormPatient;

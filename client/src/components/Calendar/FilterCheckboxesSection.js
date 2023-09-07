@@ -28,7 +28,9 @@ const FilterCheckboxesSection = ({
           style={{ accentColor: "#bfbfbf" }}
           autoComplete="off"
         />
-        <label className="filter-category-label">{category}</label>
+        <label htmlFor={category} className="filter-category-label">
+          {category}
+        </label>
       </li>
       {staffInfos
         .filter(({ title }) => title === categoryToTitle(category))

@@ -218,6 +218,38 @@ const PatientTopic = ({
           </NewWindow>
         )}
         {/*******************/}
+        {/* FAMILY DOCTORS */}
+        {topic === "FAMILY DOCTORS/SPECIALISTS" && (
+          <DoctorsContent datas={datas} isLoading={isLoading} errMsg={errMsg} />
+        )}
+        {topic === "FAMILY DOCTORS/SPECIALISTS" && popUpVisible && (
+          <NewWindow
+            title="Patient's Doctors"
+            features={{
+              toolbar: "no",
+              scrollbars: "no",
+              menubar: "no",
+              status: "no",
+              directories: "no",
+              width: 800,
+              height: 600,
+              left: 320,
+              top: 200,
+            }}
+            onUnload={() => setPopUpVisible(false)}
+          >
+            <DoctorsPU
+              patientId={patientId}
+              datas={datas}
+              setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
+              setPopUpVisible={setPopUpVisible}
+            />
+          </NewWindow>
+        )}
+        {/*******************/}
 
         {/* RELATIONSHIPS */}
         {topic === "RELATIONSHIPS" && (
@@ -244,43 +276,6 @@ const PatientTopic = ({
             onUnload={() => setPopUpVisible(false)}
           >
             <RelationshipsPU
-              patientId={patientId}
-              datas={datas}
-              setDatas={setDatas}
-              fetchRecord={fetchRecord}
-              isLoading={isLoading}
-              errMsg={errMsg}
-              setPopUpVisible={setPopUpVisible}
-            />
-          </NewWindow>
-        )}
-        {/*******************/}
-
-        {/* SOCIAL HISTORY */}
-        {topic === "SOCIAL HISTORY" && (
-          <SocHistoryContent
-            datas={datas}
-            isLoading={isLoading}
-            errMsg={errMsg}
-          />
-        )}
-        {topic === "SOCIAL HISTORY" && popUpVisible && (
-          <NewWindow
-            title="Patient Social History"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
-          >
-            <SocHistoryPU
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}
@@ -476,14 +471,17 @@ const PatientTopic = ({
           </NewWindow>
         )}
         {/*******************/}
-
-        {/* FAMILY DOCTORS */}
-        {topic === "FAMILY DOCTORS/SPECIALISTS" && (
-          <DoctorsContent datas={datas} isLoading={isLoading} errMsg={errMsg} />
+        {/* SOCIAL HISTORY */}
+        {topic === "SOCIAL HISTORY" && (
+          <SocHistoryContent
+            datas={datas}
+            isLoading={isLoading}
+            errMsg={errMsg}
+          />
         )}
-        {topic === "FAMILY DOCTORS/SPECIALISTS" && popUpVisible && (
+        {topic === "SOCIAL HISTORY" && popUpVisible && (
           <NewWindow
-            title="Patient's Doctors"
+            title="Patient Social History"
             features={{
               toolbar: "no",
               scrollbars: "no",
@@ -497,7 +495,7 @@ const PatientTopic = ({
             }}
             onUnload={() => setPopUpVisible(false)}
           >
-            <DoctorsPU
+            <SocHistoryPU
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}

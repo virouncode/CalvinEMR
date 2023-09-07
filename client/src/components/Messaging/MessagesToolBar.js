@@ -18,9 +18,10 @@ const MessagesToolBar = ({
   setMsgsSelectedIds,
   currentMsgId,
   setPopUpVisible,
+  selectAllVisible,
+  setSelectAllVisible,
 }) => {
   const { auth, user } = useAuth();
-  const [selectAllVisible, setSelectAllVisible] = useState(true);
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
@@ -149,6 +150,7 @@ const MessagesToolBar = ({
         placeholder="Search in messages"
         value={search}
         onChange={handleChange}
+        id="search"
       />
       {/* <i
         style={{ marginLeft: "10px", cursor: "pointer" }}

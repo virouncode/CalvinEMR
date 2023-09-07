@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
+import useAuth from "../../..//hooks/useAuth";
+import axiosXanoPatient from "../../../api/xanoPatient";
 import { toast } from "react-toastify";
-import { confirmAlert } from "../Confirm/ConfirmGlobal";
-import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 
-const MessagesExternalToolBar = ({
+const MessagesPatientToolBar = ({
   search,
   setSearch,
   newVisible,
@@ -18,8 +18,8 @@ const MessagesExternalToolBar = ({
   setMsgsSelectedIds,
   currentMsgId,
   setPopUpVisible,
-  setSelectAllVisible,
   selectAllVisible,
+  setSelectAllVisible,
 }) => {
   const { auth, user } = useAuth();
   const handleChange = (e) => {
@@ -54,7 +54,7 @@ const MessagesExternalToolBar = ({
     ) {
       try {
         for (let messageId of msgsSelectedIds) {
-          const response = await axiosXano.get(
+          const response = await axiosXanoPatient.get(
             `/messages_external/${messageId}`,
             {
               headers: {
@@ -67,18 +67,22 @@ const MessagesExternalToolBar = ({
             ...response.data,
             deleted_by_ids: [
               ...response.data.deleted_by_ids,
-              { user_type: "staff", id: user.id },
+              { user_type: "patient", id: user.id },
             ],
           };
-          await axiosXano.put(`/messages_external/${messageId}`, newMessage, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          });
+          await axiosXanoPatient.put(
+            `/messages_external/${messageId}`,
+            newMessage,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+            }
+          );
         }
-        const response = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
+        const response = await axiosXanoPatient.get(
+          `/messages_external_for_patient?patient_id=${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${auth.authToken}`,
@@ -89,7 +93,7 @@ const MessagesExternalToolBar = ({
         const newMessages = filterAndSortExternalMessages(
           section,
           response.data,
-          "staff"
+          "patient"
         );
         setMessages(newMessages);
         setNewVisible(false);
@@ -107,7 +111,7 @@ const MessagesExternalToolBar = ({
   const handleClickMoveBack = async (e) => {
     try {
       const msgsSelected = (
-        await axiosXano.post(
+        await axiosXanoPatient.post(
           "/messages_external_selected",
           { messages_ids: msgsSelectedIds },
           {
@@ -120,18 +124,22 @@ const MessagesExternalToolBar = ({
       ).data;
       for (let message of msgsSelected) {
         const newDeletedByIds = message.deleted_by_ids.filter(
-          (item) => item.user_type !== "staff"
+          (item) => item.user_type !== "patient"
         );
         const newMessage = {
           ...message,
           deleted_by_ids: newDeletedByIds,
         };
-        await axiosXano.put(`/messages_external/${message.id}`, newMessage, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-        });
+        await axiosXanoPatient.put(
+          `/messages_external/${message.id}`,
+          newMessage,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
       }
       setSection("Inbox");
       setMsgsSelectedIds([]);
@@ -184,4 +192,4 @@ const MessagesExternalToolBar = ({
   );
 };
 
-export default MessagesExternalToolBar;
+export default MessagesPatientToolBar;

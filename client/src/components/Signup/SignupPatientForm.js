@@ -22,6 +22,7 @@ const SignupPatientForm = () => {
     email: "",
     password: "",
     confirm_password: "",
+    access_level: "Patient",
     first_name: "",
     middle_name: "",
     last_name: "",
@@ -296,8 +297,9 @@ const SignupPatientForm = () => {
       <form className="signup-patient-form" onSubmit={handleSubmit}>
         <div className="signup-patient-form-column">
           <div className="signup-patient-form-row">
-            <label>Email*: </label>
+            <label htmlFor="email">Email*: </label>
             <input
+              id="email"
               type="email"
               required
               value={formDatas.email}
@@ -307,8 +309,9 @@ const SignupPatientForm = () => {
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Password*: </label>
+            <label htmlFor="pwd">Password*: </label>
             <input
+              id="pwd"
               type="password"
               required
               value={formDatas.password}
@@ -318,8 +321,9 @@ const SignupPatientForm = () => {
             />
           </div>
           <div className="signup-staff-form-row">
-            <label>Confirm Password*: </label>
+            <label htmlFor="pwd2">Confirm Password*: </label>
             <input
+              id="pwd2"
               type="password"
               required
               value={formDatas.confirm_password}
@@ -329,8 +333,9 @@ const SignupPatientForm = () => {
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>First Name*: </label>
+            <label htmlFor="firstname">First Name*: </label>
             <input
+              id="firstname"
               type="text"
               required
               value={formDatas.first_name}
@@ -340,8 +345,9 @@ const SignupPatientForm = () => {
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Middle Name: </label>
+            <label htmlFor="middlename">Middle Name: </label>
             <input
+              id="middlename"
               type="text"
               value={formDatas.middle_name}
               onChange={handleChange}
@@ -350,8 +356,9 @@ const SignupPatientForm = () => {
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Last Name*: </label>
+            <label htmlFor="lastname">Last Name*: </label>
             <input
+              id="lastname"
               type="text"
               required
               value={formDatas.last_name}
@@ -361,11 +368,13 @@ const SignupPatientForm = () => {
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Gender at birth: </label>
+            <label htmlFor="gender_birth">Gender at birth: </label>
             <select
               value={formDatas.gender_at_birth}
               onChange={handleChange}
               name="gender_at_birth"
+              id="gender_birth"
+              autoComplete="off"
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -373,11 +382,15 @@ const SignupPatientForm = () => {
             </select>
           </div>
           <div className="signup-patient-form-row">
-            <label>Gender identification: </label>
+            <label htmlFor="gender_identification">
+              Gender identification:{" "}
+            </label>
             <select
               value={formDatas.gender_identification}
               onChange={handleChange}
               name="gender_identification"
+              id="gender_identification"
+              autoComplete="off"
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -385,7 +398,7 @@ const SignupPatientForm = () => {
             </select>
           </div>
           <div className="signup-patient-form-row">
-            <label>Date of birth*: </label>
+            <label htmlFor="dob">Date of birth*: </label>
             <input
               type="date"
               required
@@ -397,20 +410,23 @@ const SignupPatientForm = () => {
               onChange={handleChange}
               name="date_of_birth"
               max={toLocalDate(new Date().toISOString())}
+              id="dob"
+              autoComplete="off"
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Health Insurance Nbr: </label>
+            <label htmlFor="hin">Health Insurance Nbr: </label>
             <input
               type="text"
               value={formDatas.health_insurance_nbr}
               onChange={handleChange}
               name="health_insurance_nbr"
               autoComplete="off"
+              id="hin"
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Health Card Expiry: </label>
+            <label htmlFor="expiry">Health Card Expiry: </label>
             <input
               type="date"
               value={
@@ -420,32 +436,35 @@ const SignupPatientForm = () => {
               }
               onChange={handleChange}
               name="health_card_expiry"
+              id="expiry"
             />
           </div>
         </div>
         <div className="signup-patient-form-column">
           <div className="signup-patient-form-row">
-            <label>Cell Phone*: </label>
+            <label htmlFor="cell_phone">Cell Phone*: </label>
             <input
               type="tel"
               value={formDatas.cell_phone}
               onChange={handleChange}
               name="cell_phone"
               autoComplete="off"
+              id="cell_phone"
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Home Phone: </label>
+            <label htmlFor="home_phone">Home Phone: </label>
             <input
               type="tel"
               value={formDatas.home_phone}
               onChange={handleChange}
               name="home_phone"
               autoComplete="off"
+              id="home_phone"
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Preferred Phone*: </label>
+            <label htmlFor="preferred_phone">Preferred Phone*: </label>
             <input
               type="text"
               value={formDatas.preferred_phone}
@@ -453,10 +472,11 @@ const SignupPatientForm = () => {
               name="preferred_phone"
               autoComplete="off"
               required
+              id="preferred_phone"
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Address*: </label>
+            <label htmlFor="address">Address*: </label>
             <input
               required
               type="text"
@@ -464,10 +484,11 @@ const SignupPatientForm = () => {
               onChange={handleChange}
               name="address"
               autoComplete="off"
+              id="address"
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Postal Code*: </label>
+            <label htmlFor="postal">Postal Code*: </label>
             <input
               required
               type="text"
@@ -475,20 +496,22 @@ const SignupPatientForm = () => {
               onChange={handleChange}
               name="postal_code"
               autoComplete="off"
+              id="postal"
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Province/State: </label>
+            <label htmlFor="province">Province/State: </label>
             <input
               type="text"
               value={formDatas.province_state}
               onChange={handleChange}
               name="province_state"
               autoComplete="off"
+              id="province"
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>City*: </label>
+            <label htmlFor="city">City*: </label>
             <input
               required
               type="text"
@@ -496,10 +519,11 @@ const SignupPatientForm = () => {
               onChange={handleChange}
               name="city"
               autoComplete="off"
+              id="city"
             />
           </div>
           <div className="signup-patient-form-row">
-            <label>Country*: </label>
+            <label htmlFor="country">Country*: </label>
             <CountriesList
               required
               handleChange={handleChange}
@@ -507,19 +531,18 @@ const SignupPatientForm = () => {
               name="country"
             />
           </div>
-
           <RelationshipsForm
             relationships={relationships}
             setRelationships={setRelationships}
           />
-
           <div className="signup-patient-form-row">
-            <label>Avatar: </label>
+            <label htmlFor="avatar">Avatar: </label>
             <input
               name="avatar"
               type="file"
               accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg"
               onChange={handleAvatarChange}
+              id="avatar"
             />
             {isLoadingFile && (
               <CircularProgress size="1rem" style={{ margin: "5px" }} />

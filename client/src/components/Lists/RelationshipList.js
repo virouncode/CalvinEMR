@@ -19,6 +19,7 @@ const RelationshipList = ({
       onFocus={onFocus}
       onBlur={onBlur}
       data-key={id}
+      id="relationships"
     >
       <option value="" disabled>
         Choose a relation...

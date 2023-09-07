@@ -1,4 +1,5 @@
 import axiosXano from "../api/xano";
+import axiosXanoPatient from "../api/xanoPatient";
 
 export const getPatientRecord = async (
   tableName,
@@ -70,6 +71,32 @@ export const postPatientRecord = async (
 
   try {
     return await axiosXano.post(tableName, datas, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      ...(abortController && { signal: abortController.signal }),
+    });
+  } catch (err) {
+    if (err.name !== "CanceledError") throw err;
+  }
+};
+
+export const postPatientRecordPatient = async (
+  tableName,
+  authId,
+  authToken,
+  datas,
+  abortController = null
+) => {
+  if (tableName !== "/progress_notes_log") {
+    //if it's the log we don't want to change the date of creation, for attachments this is assured by the bulk add
+    datas.created_by_id = authId;
+    datas.date_created = Date.parse(new Date());
+  }
+
+  try {
+    return await axiosXanoPatient.post(tableName, datas, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,

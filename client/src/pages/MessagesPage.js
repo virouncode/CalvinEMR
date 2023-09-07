@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Messages from "../components/Messaging/Messages";
 import MessagesExternal from "../components/Messaging/MessagesExternal";
 import { useParams } from "react-router-dom";
+import MessagingToggle from "../components/Messaging/MessagingToggle";
 
 const MessagesPage = () => {
   const { msgType } = useParams();
@@ -20,28 +21,10 @@ const MessagesPage = () => {
   };
   return (
     <main className="messages">
-      <div className="messages-toggle">
-        <div className="messages-toggle-radio">
-          <input
-            type="radio"
-            value="Internal"
-            name="Internal"
-            checked={isTypeChecked("Internal")}
-            onChange={handleMsgsTypeChanged}
-          />
-          <label>Internal</label>
-        </div>
-        <div className="messages-toggle-radio">
-          <input
-            type="radio"
-            value="External"
-            name="External"
-            checked={isTypeChecked("External")}
-            onChange={handleMsgsTypeChanged}
-          />
-          <label>External</label>
-        </div>
-      </div>
+      <MessagingToggle
+        isTypeChecked={isTypeChecked}
+        handleMsgsTypeChanged={handleMsgsTypeChanged}
+      />
       {msgsType === "Internal" ? <Messages /> : <MessagesExternal />}
     </main>
   );

@@ -16,6 +16,11 @@ import SignupPagePatient from "./pages/SignupPagePatient";
 import MyAccountPage from "./pages/MyAccountPage";
 import MessagesPage from "./pages/MessagesPage";
 import CredentialsPage from "./pages/CredentialsPage";
+import Layout3 from "./components/Presentation/Layout3";
+import PatientMessagesPage from "./pages/PatientMessagesPage";
+import PatientAccountPage from "./pages/PatientAccountPage";
+import PatientAppointmentsPage from "./pages/PatientAppointmentsPage";
+import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
 
 const App = () => {
   return (
@@ -45,6 +50,19 @@ const App = () => {
         </Route>
         <Route element={<RequireAuth allowedAccesses={["Admin"]} />}>
           <Route path="signup-staff" element={<SignupPageStaff />} />
+        </Route>
+      </Route>
+      <Route path="/" element={<Layout3 />}>
+        {/* public routes */}
+        <Route path="patient/unauthorized" element={<UnauthorizedPage />} />
+        {/* protected routes */}
+        <Route element={<RequireAuthPatient allowedAccesses={["Patient"]} />}>
+          <Route path="patient" dex element={<PatientMessagesPage />} />
+          <Route path="patient/my-account" element={<PatientAccountPage />} />
+          <Route
+            path="patient/appointments"
+            element={<PatientAppointmentsPage />}
+          />
         </Route>
       </Route>
     </Routes>

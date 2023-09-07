@@ -49,10 +49,10 @@ const PatientMenuLeft = ({
         side="left"
       />
       <PatientTopic
-        url="/social_history"
+        url="/family_doctors"
         textColor="#FEFEFE"
         backgroundColor="#2c8c99"
-        topic="SOCIAL HISTORY"
+        topic="FAMILY DOCTORS/SPECIALISTS"
         patientId={patientId}
         allContentsVisible={allContentsVisible}
         side="left"

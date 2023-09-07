@@ -20,7 +20,7 @@ const FilterStaffItem = ({
         onChange={handleCheck}
         style={{ accentColor: color }}
       />
-      <label>
+      <label htmlFor={staff.id}>
         {categoryToTitle(category).toLowerCase() === "doctor" ? "Dr. " : null}
         {staff.full_name}
       </label>

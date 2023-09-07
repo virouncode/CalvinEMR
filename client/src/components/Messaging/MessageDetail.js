@@ -256,6 +256,7 @@ const MessageDetail = ({
             setMessages={setMessages}
             section={section}
             patient={patient}
+            setCurrentMsgId={setCurrentMsgId}
           />
         )}
         {section !== "Deleted messages" && !replyVisible && !forwardVisible && (

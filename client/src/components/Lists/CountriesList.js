@@ -2,7 +2,13 @@ import React from "react";
 
 const CountriesList = ({ handleChange, value, name }) => {
   return (
-    <select name={name} onChange={handleChange} value={value}>
+    <select
+      name={name}
+      onChange={handleChange}
+      value={value}
+      autoComplete="off"
+      id="country"
+    >
       <option value="" disabled>
         Choose a Country
       </option>

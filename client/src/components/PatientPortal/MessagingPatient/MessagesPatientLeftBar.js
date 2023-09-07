@@ -1,8 +1,7 @@
 import React from "react";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 
-const MessagesLeftBar = ({
-  msgType,
+const MessagesPatientLeftBar = ({
   section,
   setSection,
   setCurrentMsgId,
@@ -31,13 +30,7 @@ const MessagesLeftBar = ({
           id="Inbox"
           onClick={handleClickSection}
         >
-          {msgType === "internal"
-            ? "Inbox" +
-              (user.unreadMessagesNbr ? ` (${user.unreadMessagesNbr})` : "")
-            : "Inbox" +
-              (user.unreadMessagesExternalNbr
-                ? ` (${user.unreadMessagesExternalNbr})`
-                : "")}
+          {"Inbox" + (user.unreadNbr ? ` (${user.unreadNbr})` : "")}
         </li>
         <li
           className={isActive("Sent messages")}
@@ -58,4 +51,4 @@ const MessagesLeftBar = ({
   );
 };
 
-export default MessagesLeftBar;
+export default MessagesPatientLeftBar;

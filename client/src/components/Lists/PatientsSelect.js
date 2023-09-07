@@ -4,7 +4,13 @@ import useAuth from "../../hooks/useAuth";
 const PatientsSelect = ({ handleChange, value, name, id, patientId = 0 }) => {
   const { clinic } = useAuth();
   return (
-    <select name={name} onChange={handleChange} value={value} data-key={id}>
+    <select
+      name={name}
+      onChange={handleChange}
+      value={value}
+      data-key={id}
+      id="patient-select"
+    >
       <option value="" disabled>
         Choose a patient
       </option>

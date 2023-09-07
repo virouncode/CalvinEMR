@@ -28,7 +28,11 @@ const MessageThumbnail = ({
     //Remove one from the unread messages nbr counter
     if (user.unreadMessagesNbr !== 0) {
       const newUnreadMessagesNbr = user.unreadMessagesNbr - 1;
-      setUser({ ...user, unreadMessagesNbr: newUnreadMessagesNbr });
+      setUser({
+        ...user,
+        unreadMessagesNbr: newUnreadMessagesNbr,
+        unreadNbr: newUnreadMessagesNbr + user.unreadMessagesExternalNbr,
+      });
     }
     setCurrentMsgId(message.id);
 

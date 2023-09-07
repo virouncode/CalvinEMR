@@ -60,8 +60,7 @@ const Header = () => {
               to="messages"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
             >
-              {"Messages" +
-                (user.unreadMessagesNbr ? ` (${user.unreadMessagesNbr})` : "")}
+              {"Messages" + (user.unreadNbr ? ` (${user.unreadNbr})` : "")}
             </NavLink>
           </li>
           <li>

@@ -91,7 +91,6 @@ const ProgressNotesToolBar = ({
             type="radio"
             name="order"
             value="top"
-            id="top"
             onChange={handleChangeOrder}
             checked={order === "top"}
           />
@@ -102,11 +101,10 @@ const ProgressNotesToolBar = ({
             type="radio"
             name="order"
             value="bottom"
-            id="top"
             onChange={handleChangeOrder}
             checked={order === "bottom"}
           />
-          <label>Bottom</label>
+          <label htmlFor="bottom">Bottom</label>
         </div>
       </div>
       <div>

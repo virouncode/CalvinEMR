@@ -1,11 +1,11 @@
 import React from "react";
 import NewWindow from "react-new-window";
 import { CircularProgress } from "@mui/material";
-import MessagesExternalOverview from "./MessagesExternalOverview";
-import MessageExternalDetail from "./MessageExternalDetail";
-import NewMessageExternal from "./NewMessageExternal";
+import MessagesPatientOverview from "./MessagesPatientOverview";
+import MessagePatientDetail from "./MessagePatientDetail";
+import NewMessagePatient from "./NewMessagePatient";
 
-const MessagesExternalBox = ({
+const MessagesPatientBox = ({
   section,
   newVisible,
   setNewVisible,
@@ -22,11 +22,11 @@ const MessagesExternalBox = ({
   const emptySectionMessages = (sectionName) => {
     switch (sectionName) {
       case "Inbox":
-        return `No inbox external messages`;
+        return `No inbox messages`;
       case "Sent messages":
-        return `No sent external messages`;
+        return `No sent messages`;
       case "Deleted messages":
-        return `No deleted external messages`;
+        return `No deleted messages`;
       default:
         break;
     }
@@ -38,7 +38,7 @@ const MessagesExternalBox = ({
         {messages ? (
           messages?.length !== 0 ? (
             currentMsgId === 0 ? (
-              <MessagesExternalOverview
+              <MessagesPatientOverview
                 messages={messages}
                 setMessages={setMessages}
                 setCurrentMsgId={setCurrentMsgId}
@@ -47,7 +47,7 @@ const MessagesExternalBox = ({
                 section={section}
               />
             ) : (
-              <MessageExternalDetail
+              <MessagePatientDetail
                 setCurrentMsgId={setCurrentMsgId}
                 message={messages.find(({ id }) => id === currentMsgId)}
                 setMessages={setMessages}
@@ -80,7 +80,7 @@ const MessagesExternalBox = ({
           }}
           onUnload={() => setNewVisible(false)}
         >
-          <NewMessageExternal
+          <NewMessagePatient
             setNewVisible={setNewVisible}
             setMessages={setMessages}
             section={section}
@@ -91,4 +91,4 @@ const MessagesExternalBox = ({
   );
 };
 
-export default MessagesExternalBox;
+export default MessagesPatientBox;

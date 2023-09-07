@@ -1,23 +1,21 @@
 //Libraries
 import React, { useEffect, useState } from "react";
 //Components
-import MessagesLeftBar from "./MessagesLeftBar";
 //Utils
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
-import { useNavigate, useParams } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
+import axiosXanoPatient from "../../../api/xanoPatient";
 import { toast } from "react-toastify";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
-import MessagesExternalToolBar from "./MessagesExternalToolbar";
-import MessagesExternalBox from "./MessagesExternalBox";
-import { patientIdToName } from "../../utils/patientIdToName";
+import { staffIdToName } from "../../../utils/staffIdToName";
+import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import MessagesPatientToolBar from "./MessagesPatientToolbar";
+import MessagesPatientLeftBar from "./MessagesPatientLeftBar";
+import MessagesPatientBox from "./MessagesPatientBox";
 
-const MessagesExternal = () => {
+const MessagesPatient = () => {
   //HOOKSs
-  const { messageId, sectionName } = useParams();
   const [search, setSearch] = useState("");
-  const [section, setSection] = useState(sectionName || "Inbox");
+  const [section, setSection] = useState("Inbox");
   const [newVisible, setNewVisible] = useState(false);
   const [msgsSelectedIds, setMsgsSelectedIds] = useState([]);
   const [currentMsgId, setCurrentMsgId] = useState(0);
@@ -25,21 +23,13 @@ const MessagesExternal = () => {
   const { auth, user, clinic } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
   const [selectAllVisible, setSelectAllVisible] = useState(true);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (messageId) {
-      setCurrentMsgId(parseInt(messageId));
-      navigate("/messages");
-    }
-  }, [messageId, navigate, setCurrentMsgId]);
 
   useEffect(() => {
     const abortController = new AbortController();
     const fetchMessages = async () => {
       try {
-        const response = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
+        const response = await axiosXanoPatient.get(
+          `/messages_external_for_patient?patient_id=${user.id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -53,9 +43,9 @@ const MessagesExternal = () => {
 
         //En fonction de la section on filtre les messages
         let newMessages = filterAndSortExternalMessages(
-          sectionName || section,
+          section,
           response.data,
-          "staff"
+          "patient"
         );
         //FILTER HERE SEARCH
         newMessages = newMessages.filter((message) =>
@@ -97,13 +87,12 @@ const MessagesExternal = () => {
     clinic.staffInfos,
     search,
     section,
-    sectionName,
     user.id,
   ]);
 
   return (
     <div className="messages-container">
-      <MessagesExternalToolBar
+      <MessagesPatientToolBar
         search={search}
         setSearch={setSearch}
         newVisible={newVisible}
@@ -120,15 +109,14 @@ const MessagesExternal = () => {
         setSelectAllVisible={setSelectAllVisible}
       />
       <div className="messages-section">
-        <MessagesLeftBar
-          msgType="external"
+        <MessagesPatientLeftBar
           section={section}
           setSection={setSection}
           setCurrentMsgId={setCurrentMsgId}
           setMsgsSelectedIds={setMsgsSelectedIds}
           setSelectAllVisible={setSelectAllVisible}
         />
-        <MessagesExternalBox
+        <MessagesPatientBox
           section={section}
           newVisible={newVisible}
           setNewVisible={setNewVisible}
@@ -147,4 +135,4 @@ const MessagesExternal = () => {
   );
 };
 
-export default MessagesExternal;
+export default MessagesPatient;

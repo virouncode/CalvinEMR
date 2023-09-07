@@ -1,15 +1,16 @@
 import React from "react";
-import axiosXano from "../../api/xano";
-import useAuth from "../../hooks/useAuth";
-import { toLocalDateAndTime } from "../../utils/formatDates";
+import axiosXanoPatient from "../../../api/xanoPatient";
+import useAuth from "../../../hooks/useAuth";
+import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { toast } from "react-toastify";
-import { confirmAlert } from "../Confirm/ConfirmGlobal";
-import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
-import { patientIdToName } from "../../utils/patientIdToName";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
-import { staffIdToName } from "../../utils/staffIdToName";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import { staffIdToTitle } from "../../../utils/staffIdToTitle";
+import { staffIdToName } from "../../../utils/staffIdToName";
+import formatName from "../../../utils/formatName";
 
-const MessageExternalThumbnail = ({
+const MessagePatientThumbnail = ({
   message,
   setMessages,
   setCurrentMsgId,
@@ -21,38 +22,37 @@ const MessageExternalThumbnail = ({
 
   const handleMsgClick = async (e) => {
     //Remove one from the unread messages nbr counter
-    if (user.unreadMessagesExternalNbr !== 0) {
-      const newUnreadMessagesExternalNbr = user.unreadMessagesExternalNbr - 1;
+    if (user.unreadNbr !== 0) {
+      const newUnreadNbr = user.unreadNbr - 1;
       setUser({
         ...user,
-        unreadMessagesExternalNbr: newUnreadMessagesExternalNbr,
-      });
-      setUser({
-        ...user,
-        unreadMessagesExternalNbr: newUnreadMessagesExternalNbr,
-        unreadNbr: user.unreadMessagesNbr + newUnreadMessagesExternalNbr,
+        unreadNbr: newUnreadNbr,
       });
     }
     setCurrentMsgId(message.id);
 
-    if (!message.read_by_ids.find(({ user_type }) => user_type === "staff")) {
+    if (!message.read_by_ids.find(({ user_type }) => user_type === "patient")) {
       //create and replace message with read by user id
       try {
         const newMessage = {
           ...message,
           read_by_ids: [
             ...message.read_by_ids,
-            { user_type: "staff", id: user.id },
+            { user_type: "patient", id: user.id },
           ],
         };
-        await axiosXano.put(`/messages_external/${message.id}`, newMessage, {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const response = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
+        await axiosXanoPatient.put(
+          `/messages_external/${message.id}`,
+          newMessage,
+          {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const response = await axiosXanoPatient.get(
+          `/messages_external_for_patient?patient_id=${user.id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const MessageExternalThumbnail = ({
         const newMessages = filterAndSortExternalMessages(
           section,
           response.data,
-          "staff"
+          "patient"
         );
         setMessages(newMessages);
       } catch (err) {
@@ -76,8 +76,8 @@ const MessageExternalThumbnail = ({
 
   const THUMBNAIL_STYLE = {
     fontWeight:
-      !message.read_by_ids.find(({ user_type }) => user_type === "staff") &&
-      message.to_id.user_type === "staff"
+      !message.read_by_ids.find(({ user_type }) => user_type === "patient") &&
+      message.to_id.user_type === "patient"
         ? "bold"
         : "normal",
   };
@@ -109,13 +109,13 @@ const MessageExternalThumbnail = ({
       })
     ) {
       try {
-        await axiosXano.put(
+        await axiosXanoPatient.put(
           `/messages_external/${message.id}`,
           {
             ...message,
             deleted_by_ids: [
               ...message.deleted_by_ids,
-              { user_type: "staff", id: user.id },
+              { user_type: "patient", id: user.id },
             ],
           },
           {
@@ -125,8 +125,8 @@ const MessageExternalThumbnail = ({
             },
           }
         );
-        const response2 = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
+        const response2 = await axiosXanoPatient.get(
+          `/messages_external_for_patientf?patient_id=${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${auth.authToken}`,
@@ -137,7 +137,7 @@ const MessageExternalThumbnail = ({
         const newMessages = filterAndSortExternalMessages(
           section,
           response2.data,
-          "staff"
+          "patient"
         );
         setMessages(newMessages);
         toast.success("Message deleted successfully", { containerId: "A" });
@@ -163,14 +163,16 @@ const MessageExternalThumbnail = ({
         <div className="message-thumbnail-author-external">
           {
             section !== "Sent messages" //messages reçus ou effacés
-              ? message.from_id.user_type === "patient" //le "From" est un patient
+              ? message.from_id.user_type === "patient" //si le from est un patient
                 ? patientIdToName(clinic.patientsInfos, message.from_id.id)
                 : staffIdToTitle(clinic.staffInfos, message.from_id.id) +
-                  staffIdToName(clinic.staffInfos, message.from_id.id)
-              : patientIdToName(
-                  clinic.patientsInfos,
-                  message.to_id.id
-                ) /*messages envoyés, le "To" est un patient*/
+                  formatName(
+                    staffIdToName(clinic.staffInfos, message.from_id.id)
+                  )
+              : staffIdToTitle(clinic.staffInfos, message.to_id.id) +
+                formatName(
+                  staffIdToName(clinic.staffInfos, message.to_id.id)
+                ) /*message envoyé: le "To" est un staff*/
           }
         </div>
         <div className="message-thumbnail-sample-external">
@@ -199,4 +201,4 @@ const MessageExternalThumbnail = ({
   );
 };
 
-export default MessageExternalThumbnail;
+export default MessagePatientThumbnail;

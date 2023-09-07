@@ -5,14 +5,15 @@ import useAuth from "../../hooks/useAuth";
 const RequireAuth = ({ allowedAccesses }) => {
   const { auth, user } = useAuth();
   const location = useLocation();
+  console.log(location);
 
   return allowedAccesses.includes(user.accessLevel) ? (
+    //l'utilisateur a reussi à se connecter et a l'access level => on lui fourni ce qu'il y a à l'intérieur
     <Outlet />
-  ) : auth?.email ? (
-    <Navigate to="/unauthorized" state={{ from: location }} replace />
+  ) : auth?.email ? ( //si l'utilisateur a reussi à se connecter mais n'a pas l'access level
+    <Navigate to="/unauthorized" state={{ from: location }} replace /> //il n'est pas autorisé
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/login" state={{ from: location }} replace /> //il ne s'est pas encore connecté donc on le renvoie à la page de login et on enregistre là où il voulait aller pour le rediriger ensuite
   );
 };
-
 export default RequireAuth;
