@@ -113,7 +113,6 @@ const MyAccountForm = () => {
       datasToPut.speciality = firstLetterUpper(datasToPut.speciality);
       datasToPut.subspeciality = firstLetterUpper(datasToPut.subspeciality);
       datasToPut.date_created = Date.parse(new Date());
-      delete datasToPut.confirm_password;
 
       await axiosXano.put(`/staff/${user.id}`, datasToPut, {
         headers: {
@@ -163,32 +162,6 @@ const MyAccountForm = () => {
               <p>{tempFormDatas.email}</p>
               {/* )} */}
             </div>
-            {/* {editVisible && (
-            <>
-              <div className="myaccount-section-form-row">
-                <label>Password*: </label>
-                <input
-                  type="password"
-                  required
-                  value={tempFormDatas.password}
-                  name="password"
-                  autoComplete="off"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="myaccount-section-form-row">
-                <label>Confirm Password*: </label>
-                <input
-                  type="password"
-                  required
-                  value={tempFormDatas.confirm_password}
-                  name="confirm_password"
-                  autoComplete="off"
-                  onChange={handleChange}
-                />
-              </div>
-            </>
-          )} */}
             <div className="myaccount-section-form-row">
               <label>First Name*: </label>
               {editVisible ? (

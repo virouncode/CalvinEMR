@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,6 @@ const AccountPatientForm = () => {
   const [formDatas, setFormDatas] = useState(user.demographics);
   const [tempFormDatas, setTempFormDatas] = useState(user.demographics);
   const [errMsg, setErrMsg] = useState("");
-  const [errMsgPost, setErrMsgPost] = useState("");
   const navigate = useNavigate();
   const [infosChanged, setInfosChanged] = useState(false);
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -91,7 +90,7 @@ const AccountPatientForm = () => {
       datasToPut.last_name = firstLetterUpper(datasToPut.last_name);
       datasToPut.full_name = firstLetterUpper(full_name);
 
-      await axiosXanoPatient.put(`/staff/${user.id}`, datasToPut, {
+      await axiosXanoPatient.put(`/patients/${user.id}`, datasToPut, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
@@ -122,14 +121,6 @@ const AccountPatientForm = () => {
       {errMsg && <p className="patient-account-err">{errMsg}</p>}
       <form className="patient-account-form">
         <div className="patient-account-form-content">
-          {errMsgPost && editVisible && (
-            <div className="patient-account-form-content-errpost">
-              Unable to save form
-            </div>
-          )}
-          {errMsg && editVisible && (
-            <p className="patient-account-form-content-err">Invalid fields</p>
-          )}
           <div className="patient-account-form-content-column">
             <div className="patient-account-form-content-column-img">
               {isLoadingFile ? (
@@ -498,7 +489,7 @@ const AccountPatientForm = () => {
           </div>
         </div>
       </form>
-      <div className="myaccount-section-btns">
+      <div className="patient-account-btns">
         {editVisible ? (
           <>
             <button onClick={handleSave} disabled={isLoadingFile}>
@@ -517,7 +508,7 @@ const AccountPatientForm = () => {
       </div>
     </>
   ) : (
-    <p className="myaccount-section-confirm">Infos changed successfully</p>
+    <p className="patient-account-confirm">Infos changed successfully</p>
   );
 };
 

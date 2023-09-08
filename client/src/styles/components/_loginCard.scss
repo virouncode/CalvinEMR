@@ -28,11 +28,11 @@
                 margin-bottom: 20px;
             }
             .login-errmsg {
-                color : red;
-                padding: 5px 0;
-                margin-bottom: 5px;
-
                 font-size: 0.8rem;
+                color : red;
+                background-color:rgba(255, 0, 0, 0.403);
+                border-radius: 4px;
+                text-align: center;
             }
             .login-signup {
                 font-size: 0.7rem;
@@ -40,7 +40,7 @@
                 margin: 5px 0;
                 padding : 0;
             }
-            .login-refresh {
+            .login-forgot {
                 font-size: 0.7rem;
                 text-align: end;
                 margin-bottom: 5px;

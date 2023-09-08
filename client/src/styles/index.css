@@ -10645,10 +10645,11 @@ readers do not read off random characters that represent icons */
   margin-bottom: 20px;
 }
 .login-card .login-container .login-content .login-errmsg {
-  color: red;
-  padding: 5px 0;
-  margin-bottom: 5px;
   font-size: 0.8rem;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
+  border-radius: 4px;
+  text-align: center;
 }
 .login-card .login-container .login-content .login-signup {
   font-size: 0.7rem;
@@ -10656,7 +10657,7 @@ readers do not read off random characters that represent icons */
   margin: 5px 0;
   padding: 0;
 }
-.login-card .login-container .login-content .login-refresh {
+.login-card .login-container .login-content .login-forgot {
   font-size: 0.7rem;
   text-align: end;
   margin-bottom: 5px;
@@ -12285,6 +12286,27 @@ readers do not read off random characters that represent icons */
   margin-left: 10px;
 }
 
+.patient-account-section {
+  background: url("../../assets/img/splash.jpg") center/cover;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.patient-account-section-title {
+  width: 50%;
+  margin: 20px auto;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.patient-account-section-title button {
+  margin-left: 10px;
+}
+
 .demographics-card {
   font-size: 0.8rem;
   width: 80%;
@@ -13602,19 +13624,25 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 
+.myaccount-section-confirm {
+  padding: 10px 20px;
+  width: 30%;
+  font-size: 0.9rem;
+  margin: 0 auto;
+  border-radius: 4px;
+  text-align: center;
+  color: forestgreen;
+  background-color: rgba(34, 139, 34, 0.4);
+}
 .myaccount-section-err {
-  padding: 20px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
   width: 30%;
   margin: 0 auto;
   color: red;
+  background-color: rgba(255, 0, 0, 0.403);
+  border-radius: 4px;
   text-align: center;
-}
-.myaccount-section-confirm {
-  padding: 20px;
-  width: 30%;
-  margin: 0 auto;
-  text-align: center;
-  color: forestgreen;
 }
 .myaccount-section-btns {
   width: 50%;
@@ -13676,20 +13704,6 @@ readers do not read off random characters that represent icons */
 }
 .myaccount-section-form-row-submit input[type=submit] {
   width: 100px;
-}
-.myaccount-section-confirm {
-  padding: 20px;
-  width: 30%;
-  margin: 0 auto;
-  text-align: center;
-  color: forestgreen;
-}
-.myaccount-section-err {
-  padding: 20px;
-  width: 30%;
-  margin: 0 auto;
-  color: red;
-  text-align: center;
 }
 
 .messages {
@@ -14602,15 +14616,44 @@ readers do not read off random characters that represent icons */
   margin-top: 5px;
 }
 
+.patient-account-confirm {
+  padding: 10px 20px;
+  width: 30%;
+  font-size: 0.9rem;
+  margin: 0 auto;
+  border-radius: 4px;
+  text-align: center;
+  color: forestgreen;
+  background-color: rgba(34, 139, 34, 0.4);
+}
+.patient-account-err {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 30%;
+  margin: 0 auto;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
+  border-radius: 4px;
+  text-align: center;
+}
+.patient-account-btns {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+.patient-account-btns button {
+  margin-left: 10px;
+}
 .patient-account-form {
   font-size: 0.85rem;
 }
 .patient-account-form-content {
   padding: 20px;
-  width: 85%;
+  width: 75%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 17% 30% 30%;
+  grid-template-columns: 17% 35% 35%;
   justify-content: space-between;
 }
 .patient-account-form-content-column-img {

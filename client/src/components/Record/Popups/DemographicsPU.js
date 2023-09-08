@@ -390,7 +390,10 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                     ? getAge(toLocalDate(formDatas.date_of_birth))
                     : ""}
                 </p>
-                <p>{patientInfos.email}</p>
+                <p>
+                  <label>Email: </label>
+                  {patientInfos.email}
+                </p>
                 <p>
                   <label>Cell Phone: </label>
                   {editVisible ? (

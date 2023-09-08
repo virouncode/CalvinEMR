@@ -1,45 +1,49 @@
-//Librairies
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import axiosXanoPatient from "../../api/xanoPatient";
-import { useLocation, useNavigate } from "react-router-dom";
+import { userSchema } from "../../validation/userValidation";
 
 const LOGIN_URL = "/auth/login";
 const USERINFO_URL = "/auth/me";
 
 const LoginForm = () => {
+  //HOOKS
   const { setAuth, setClinic, setUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [from, setFrom] = useState(location.state?.from?.pathname || "/"); //où on voulait aller
-
-  const emailRef = useRef();
-  const errRef = useRef();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [from, setFrom] = useState(location.state?.from?.pathname || "/"); //où on voulait aller ou calendar staff
   const [errMsg, setErrMsg] = useState("");
-  const [type, setType] = useState("staff");
+  const [formDatas, setFormDatas] = useState({
+    email: "",
+    password: "",
+    type: "staff",
+  });
 
-  useEffect(() => {
-    emailRef.current.focus();
-  }, []);
-
-  useEffect(() => {
-    setErrMsg("");
-  }, [email, password]);
-
+  //HANDLERS
   const handleChange = (e) => {
-    setType(e.target.value);
-    if (e.target.value === "patient")
-      setFrom(location.state?.from?.pathname || "/patient/messages"); //où on voulait aller
+    const value = e.target.value;
+    const name = e.target.name;
+    setErrMsg("");
+    setFormDatas({ ...formDatas, [name]: value });
+    if (value === "patient")
+      setFrom(location.state?.from?.pathname || "/patient/messages"); //où on voulait aller ou messages patient
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (type === "staff") {
-      //STAFF
+    //Validation
+    try {
+      await userSchema.validate(formDatas);
+    } catch (err) {
+      setErrMsg(err.message);
+      return;
+    }
+    //Submission
+    const email = formDatas.email;
+    const password = formDatas.password;
+    if (formDatas.type === "staff") {
       try {
         //=============== AUTH =================//
         const response = await axiosXano.post(
@@ -50,6 +54,7 @@ const LoginForm = () => {
           }
         );
         const authToken = response?.data?.authToken;
+
         setAuth({ email, password, authToken });
 
         //================ USER ===================//
@@ -72,14 +77,14 @@ const LoginForm = () => {
         });
         const settings = response3?.data;
         // Get user unread messages
-        const response6 = await axiosXano.get(`/messages?staff_id=${id}`, {
+        const response4 = await axiosXano.get(`/messages?staff_id=${id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
         });
-        const unreadMessagesNbr = response6.data.length
-          ? response6.data.reduce((accumulator, currentValue) => {
+        const unreadMessagesNbr = response4.data.length
+          ? response4.data.reduce((accumulator, currentValue) => {
               if (
                 !currentValue.read_by_ids.includes(id) &&
                 currentValue.to_ids.includes(id)
@@ -89,7 +94,7 @@ const LoginForm = () => {
             }, 0)
           : 0;
         // Get user unread external messages
-        const response7 = await axiosXano.get(
+        const response5 = await axiosXano.get(
           `/messages_external_for_staff?staff_id=${id}`,
           {
             headers: {
@@ -98,10 +103,10 @@ const LoginForm = () => {
             },
           }
         );
-        const unreadMessagesExternalNbr = response7.data.filter(
+        const unreadMessagesExternalNbr = response5.data.filter(
           ({ to_id }) => to_id.user_type === "staff"
         ).length
-          ? response7.data
+          ? response5.data
               .filter(({ to_id }) => to_id.user_type === "staff")
               .reduce((accumulator, currentValue) => {
                 if (
@@ -130,26 +135,22 @@ const LoginForm = () => {
         });
 
         //================== CLINIC ===================//
-        const response4 = await axiosXano.get("/staff", {
+        const response6 = await axiosXano.get("/staff", {
           headers: {
             Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
         });
-        const staffInfos = response4.data;
+        const staffInfos = response6.data;
 
-        const response5 = await axiosXano.get("/patients", {
+        const response7 = await axiosXano.get("/patients", {
           headers: {
             Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
         });
-        const patientsInfos = response5.data;
+        const patientsInfos = response7.data;
         setClinic({ staffInfos, patientsInfos });
-        //=====================================//
-
-        setEmail("");
-        setPassword("");
         navigate(from, { replace: true }); //on renvoit vers là où on voulait aller
       } catch (err) {
         if (!err?.response) {
@@ -161,7 +162,6 @@ const LoginForm = () => {
         } else {
           setErrMsg("Login failed, please try again");
         }
-        errRef.current.focus();
       }
     } else {
       //PATIENT
@@ -241,10 +241,6 @@ const LoginForm = () => {
         });
         const patientsInfos = response5.data;
         setClinic({ staffInfos, patientsInfos });
-        //=====================================//
-        setEmail("");
-        setPassword("");
-        console.log("from", from);
         navigate(from, { replace: true });
       } catch (err) {
         if (!err?.response) {
@@ -256,7 +252,6 @@ const LoginForm = () => {
         } else {
           setErrMsg("Login failed, please try again");
         }
-        errRef.current.focus();
       }
     }
   };
@@ -264,14 +259,7 @@ const LoginForm = () => {
   return (
     <div className="login-container">
       <div className="login-content">
-        <p className="login-title">Welcome to Alpha EMR</p>
-        <p
-          ref={errRef}
-          className={errMsg ? "login-errmsg" : "login-offscreen"}
-          aria-live="assertive"
-        >
-          {errMsg}
-        </p>
+        <p className="login-title">Welcome to Calvin EMR</p>
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="login-form-row-radio">
             <div className="login-form-row-radio-item">
@@ -280,7 +268,7 @@ const LoginForm = () => {
                 id="staff"
                 name="type"
                 value="staff"
-                checked={type === "staff"}
+                checked={formDatas.type === "staff"}
                 onChange={handleChange}
               />
               <label htmlFor="staff">Staff</label>
@@ -291,22 +279,23 @@ const LoginForm = () => {
                 id="patient"
                 name="type"
                 value="patient"
-                checked={type === "patient"}
+                checked={formDatas.type === "patient"}
                 onChange={handleChange}
               />
               <label htmlFor="patient">Patient</label>
             </div>
           </div>
+          {errMsg && <p className={"login-errmsg"}>{errMsg}</p>}
           <div className="login-form-row">
             <label htmlFor="email">Email</label>
             <input
               type="text"
+              name="email"
               id="email"
-              ref={emailRef}
               autoComplete="off"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              required
+              onChange={handleChange}
+              value={formDatas.email}
+              autoFocus
             />
           </div>
           <div className="login-form-row">
@@ -314,16 +303,15 @@ const LoginForm = () => {
             <input
               type="password"
               id="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              required
+              name="password"
+              onChange={handleChange}
+              value={formDatas.password}
               autoComplete="off"
             />
           </div>
           <button>Sign In</button>
         </form>
-
-        <p className="login-refresh">
+        <p className="login-forgot">
           <span style={{ textDecoration: "underline", cursor: "pointer" }}>
             I forgot my password
           </span>

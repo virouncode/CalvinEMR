@@ -21,6 +21,7 @@ import PatientMessagesPage from "./pages/PatientMessagesPage";
 import PatientAccountPage from "./pages/PatientAccountPage";
 import PatientAppointmentsPage from "./pages/PatientAppointmentsPage";
 import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
+import PatientCredentialsPage from "./pages/PatientCredentialsPage";
 
 const App = () => {
   return (
@@ -57,15 +58,15 @@ const App = () => {
         <Route path="patient/unauthorized" element={<UnauthorizedPage />} />
         {/* protected routes */}
         <Route element={<RequireAuthPatient allowedAccesses={["Patient"]} />}>
-          <Route
-            path="patient/messages"
-            dex
-            element={<PatientMessagesPage />}
-          />
+          <Route path="patient/messages" element={<PatientMessagesPage />} />
           <Route path="patient/my-account" element={<PatientAccountPage />} />
           <Route
             path="patient/appointments"
             element={<PatientAppointmentsPage />}
+          />
+          <Route
+            path="patient/credentials"
+            element={<PatientCredentialsPage />}
           />
         </Route>
       </Route>
