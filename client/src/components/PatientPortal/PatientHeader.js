@@ -11,13 +11,13 @@ const PatientHeader = () => {
     setClinic({});
   };
   return (
-    <header className="header">
+    <header className="header header--patient">
       <div className="logo"></div>
-      <nav className="navigation">
+      <nav className="navigation navigation--patient">
         <ul>
           <li>
             <NavLink
-              to="patient"
+              to="patient/messages"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
             >
               {"Messages" + (user.unreadNbr ? ` (${user.unreadNbr})` : "")}

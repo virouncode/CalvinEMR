@@ -7,7 +7,7 @@ import { CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 
 const SignupStaffForm = () => {
-  const { auth } = useAuth();
+  const { auth, clinic, setClinic } = useAuth();
   const [staffAdded, setStaffAdded] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -185,6 +185,14 @@ const SignupStaffForm = () => {
           },
         }
       );
+      //update patientsInfos
+      const response2 = await axiosXano.get("/staff", {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setClinic({ ...clinic, staffInfos: response2.data });
       setStaffAdded(true);
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {

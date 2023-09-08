@@ -162,15 +162,16 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
   };
 
   return (
-    <div className="new-message">
-      <div className="new-message-contacts">
+    <div className="new-message new-message--patient">
+      <div className="new-message-contacts new-message-contacts--patient">
         <ContactsForPatient
-          handleCheckContact={handleCheckContact}
+          staffInfos={clinic.staffInfos}
           isContactChecked={isContactChecked}
+          handleCheckContact={handleCheckContact}
         />
       </div>
-      <div className="new-message-form">
-        <div className="new-message-form-recipients">
+      <div className="new-message-form new-message-form--patient">
+        <div className="new-message-form-recipients new-message-form-recipients--patient">
           <strong>To: </strong>
           <input
             type="text"
@@ -178,14 +179,13 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
             value={
               recipientId
                 ? staffIdToTitle(clinic.staffInfos, recipientId) +
-                  " " +
                   formatName(staffIdToName(clinic.staffInfos, recipientId))
                 : ""
             }
             readOnly
           />
         </div>
-        <div className="new-message-form-subject">
+        <div className="new-message-form-subject new-message-form-subject--patient">
           <strong>Subject: </strong>
           <input
             type="text"
@@ -194,7 +194,7 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
             value={subject}
           />
         </div>
-        <div className="new-message-form-attach">
+        <div className="new-message-form-attach new-message-form-attach--patient">
           <strong>Attach files</strong>
           <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
           {attachments.map((attachment) => (
@@ -203,7 +203,7 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
             </span>
           ))}
         </div>
-        <div className="new-message-form-body">
+        <div className="new-message-form-body new-message-form-body--patient">
           <textarea value={body} onChange={handleChange}></textarea>
           <MessagesAttachments
             attachments={attachments}
@@ -211,7 +211,7 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
             deletable={true}
           />
         </div>
-        <div className="new-message-form-btns">
+        <div className="new-message-form-btns new-message-form-btns--patient">
           <button onClick={handleSend} disabled={isLoadingFile}>
             Send
           </button>

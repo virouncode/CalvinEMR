@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
+const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const MyAccountForm = () => {
   //HOOKS
@@ -366,30 +367,30 @@ const MyAccountForm = () => {
             </div>
             <div className="myaccount-section-form-row">
               <label>E-sign: </label>
-              {editVisible ? (
-                <>
+              <div className="myaccount-section-form-row-image">
+                {isLoadingFile ? (
+                  <CircularProgress />
+                ) : tempFormDatas.sign ? (
+                  <img
+                    src={`${BASE_URL}${tempFormDatas.sign?.path}`}
+                    alt="e-sign"
+                    width="150px"
+                  />
+                ) : (
+                  <img
+                    src="https://placehold.co/200x100/png?font=roboto&text=Sign"
+                    alt="user-avatar-placeholder"
+                  />
+                )}
+                {editVisible && (
                   <input
                     name="sign"
                     type="file"
                     accept=".jpeg, .jpg, .png, .tif, .pdf, .svg"
                     onChange={handleSignChange}
                   />
-                  {isLoadingFile && (
-                    <CircularProgress size="1rem" style={{ margin: "5px" }} />
-                  )}
-                </>
-              ) : (
-                tempFormDatas.sign?.url && (
-                  <div className="myaccount-section-form-row-image">
-                    <img
-                      src={tempFormDatas.sign?.url}
-                      alt="e-sign"
-                      width="150px"
-                    />
-                    {tempFormDatas.sign?.name}
-                  </div>
-                )
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>

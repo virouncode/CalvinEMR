@@ -57,7 +57,11 @@ const App = () => {
         <Route path="patient/unauthorized" element={<UnauthorizedPage />} />
         {/* protected routes */}
         <Route element={<RequireAuthPatient allowedAccesses={["Patient"]} />}>
-          <Route path="patient" dex element={<PatientMessagesPage />} />
+          <Route
+            path="patient/messages"
+            dex
+            element={<PatientMessagesPage />}
+          />
           <Route path="patient/my-account" element={<PatientAccountPage />} />
           <Route
             path="patient/appointments"

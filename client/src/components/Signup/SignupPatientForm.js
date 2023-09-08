@@ -13,7 +13,7 @@ import { toInverseRelation } from "../../utils/toInverseRelation";
 import { postPatientRecord, putPatientRecord } from "../../api/fetchRecords";
 
 const SignupPatientForm = () => {
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, setClinic } = useAuth();
   const [patientAdded, setPatientAdded] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -246,6 +246,14 @@ const SignupPatientForm = () => {
           })
       );
 
+      //update patientsInfos
+      const response2 = await axiosXano.get("/patients", {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setClinic({ ...clinic, patientsInfos: response2.data });
       setPatientAdded(true);
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {

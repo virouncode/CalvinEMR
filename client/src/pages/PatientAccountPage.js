@@ -1,7 +1,8 @@
 import React from "react";
+import AccountPatientForm from "../components/PatientPortal/AccountPatient/AccountPatientForm";
 
 const PatientAccountPage = () => {
-  return <div>Account</div>;
+  return <AccountPatientForm />;
 };
 
 export default PatientAccountPage;

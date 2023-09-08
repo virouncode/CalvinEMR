@@ -101,20 +101,6 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         if (valid.current.indexOf(false) !== -1) setErrorMsg(true);
       }
     }
-    if (name === "email") {
-      const emailRegex = new RegExp(
-        /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/
-      );
-      if (emailRegex.test(value)) {
-        e.target.style.color = "black";
-        valid.current[parseInt(id) - 1] = true;
-        if (valid.current.indexOf(false) === -1) setErrorMsg(false);
-      } else {
-        e.target.style.color = "red";
-        valid.current[parseInt(id) - 1] = false;
-        if (valid.current.indexOf(false) !== -1) setErrorMsg(true);
-      }
-    }
     if (name === "health_card_expiry" || name === "date_of_birth") {
       value = value === "" ? null : Date.parse(new Date(value));
     }
@@ -404,22 +390,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                     ? getAge(toLocalDate(formDatas.date_of_birth))
                     : ""}
                 </p>
-                <p>
-                  <label>Email: </label>
-                  {editVisible ? (
-                    <input
-                      type="email"
-                      required
-                      value={formDatas.email}
-                      onChange={handleChange}
-                      name="email"
-                      id="10"
-                      autoComplete="off"
-                    />
-                  ) : (
-                    patientInfos.email
-                  )}
-                </p>
+                <p>{patientInfos.email}</p>
                 <p>
                   <label>Cell Phone: </label>
                   {editVisible ? (

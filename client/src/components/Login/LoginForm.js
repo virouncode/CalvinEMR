@@ -32,7 +32,7 @@ const LoginForm = () => {
   const handleChange = (e) => {
     setType(e.target.value);
     if (e.target.value === "patient")
-      setFrom(location.state?.from?.pathname || "/patient"); //où on voulait aller
+      setFrom(location.state?.from?.pathname || "/patient/messages"); //où on voulait aller
   };
 
   const handleSubmit = async (e) => {

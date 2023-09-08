@@ -11,6 +11,9 @@
   @media (max-width: 800px) {
     grid-template-columns: 20% 80%;
   }
+  &--patient {
+    grid-template-columns: 15% 70% 15%;
+  }
   justify-content: space-around;
   align-items: center;
   padding: 10px 15px;
@@ -35,6 +38,15 @@
       transition: 0.2s;
       @media (max-width: 950px) {
         font-size: 0.7rem;
+      }
+    }
+    &--patient {
+      ul{
+        justify-content: flex-end;
+        li {
+          margin-right: 40px;
+        }
+       
       }
     }
   }

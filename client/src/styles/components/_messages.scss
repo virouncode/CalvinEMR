@@ -434,7 +434,9 @@
         margin : 20px auto ;
         font-size: 0.8rem;
         padding : 5px 10px;
-
+        &--patient {
+            width: 20%;
+        }
     }
     &-form {
         min-height: 250px;
@@ -444,6 +446,9 @@
         margin : 20px auto ;
         width : 50%;
         font-size: 0.8rem;
+        &--patient {
+            width:75%;
+        }
         &-recipients{
             border-bottom: solid 0.3px grey;
             height: 30px;
