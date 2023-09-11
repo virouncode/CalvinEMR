@@ -5,6 +5,7 @@ import { toLocalDate, toISOStringNoMs } from "../../../../utils/formatDates";
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { pregnancySchema } from "../../../../validation/pregnancyValidation";
 
 const PregnancyForm = ({
   editCounter,
@@ -26,21 +27,36 @@ const PregnancyForm = ({
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     if (name === "date_of_event") {
       value = value === "" ? null : Date.parse(new Date(value));
+    }
+    if (name === "term_nbr_of_weeks" || name === "term_nbr_of_days") {
+      value = parseInt(value);
     }
     setFormDatas({ ...formDatas, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formDatas.date_of_event === null || formDatas.description === "") {
-      setErrMsgPost(true);
+    //Validation
+    const formDatasForValidation = { ...formDatas };
+    if (formDatasForValidation.term_nbr_of_weeks === "") {
+      formDatasForValidation.term_nbr_of_weeks = 0;
+    }
+    if (formDatasForValidation.term_nbr_of_days === "") {
+      formDatasForValidation.term_nbr_of_days = 0;
+    }
+    console.log(formDatasForValidation);
+    try {
+      await pregnancySchema.validate(formDatasForValidation);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await postPatientRecord(
         "/pregnancies",

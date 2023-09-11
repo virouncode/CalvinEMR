@@ -5,6 +5,8 @@ import RelativesList from "../../../Lists/RelativesList";
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { famHistorySchema } from "../../../../validation/famHistoryValidation";
+import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
 
 const FamHistoryForm = ({
   editCounter,
@@ -24,7 +26,7 @@ const FamHistoryForm = ({
 
   //EVENT HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     if (name === "date_of_event") {
@@ -35,20 +37,25 @@ const FamHistoryForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      formDatas.description === "" ||
-      formDatas.date_of_event === null ||
-      formDatas.family_member_affected === ""
-    ) {
-      setErrMsgPost(true);
+    //Formatting
+    const datasToPost = {
+      ...formDatas,
+      description: firstLetterOfFirstWordUpper(formDatas.description),
+    };
+    //Validation
+    try {
+      await famHistorySchema.validate(datasToPost);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await postPatientRecord(
         "/family_history",
         user.id,
         auth.authToken,
-        formDatas
+        datasToPost
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

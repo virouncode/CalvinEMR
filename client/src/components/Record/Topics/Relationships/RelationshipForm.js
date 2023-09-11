@@ -4,10 +4,10 @@ import RelationshipList from "../../../Lists/RelationshipList";
 import PatientsSelect from "../../../Lists/PatientsSelect";
 import formatName from "../../../../utils/formatName";
 import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
-import axiosXano from "../../../../api/xano";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toInverseRelation } from "../../../../utils/toInverseRelation";
 import { toast } from "react-toastify";
+import { relationshipSchema } from "../../../../validation/relationshipValidation";
 
 const RelationshipForm = ({
   editCounter,
@@ -25,6 +25,7 @@ const RelationshipForm = ({
 
   //HANDLERS
   const handleChange = (e) => {
+    setErrMsgPost("");
     const name = e.target.name;
     let value;
     if (name === "relation_id") {
@@ -37,6 +38,14 @@ const RelationshipForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //Validation
+    try {
+      await relationshipSchema.validate(formDatas);
+    } catch (err) {
+      setErrMsgPost(err.message);
+      return;
+    }
+    //Submission
     try {
       //Post the relationship
       await postPatientRecord(

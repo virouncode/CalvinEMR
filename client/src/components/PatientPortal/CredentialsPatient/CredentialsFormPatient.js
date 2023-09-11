@@ -61,7 +61,7 @@ const CredentialsFormPatient = () => {
           },
         })
       ).data;
-      me.email = credentials.email;
+      me.email = credentials.email.toLowerCase();
       me.password = credentials.password;
       axiosXanoPatient.put(`/patients/${user.id}`, me, {
         headers: {

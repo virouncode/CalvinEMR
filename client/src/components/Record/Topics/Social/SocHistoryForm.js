@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
   const { user, auth } = useAuth();
   const [formDatas, setFormDatas] = useState({});
+  const [errMsgPost, setErrMsgPost] = useState("");
+
   const handleChange = (e) => {
+    setErrMsgPost("");
     const value = e.target.value;
     const name = e.target.name;
     setFormDatas({ ...formDatas, [name]: value });
@@ -17,8 +21,27 @@ const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatasToPost = { ...formDatas };
-    formDatasToPost.patient_id = patientId;
+    const formDatasForValidation = { ...formDatas };
+    const formDatasToPost = {
+      ...formDatas,
+      patient_id: patientId,
+      occupations: firstLetterUpper(formDatas.occupations),
+      religion: firstLetterUpper(formDatas.religion),
+      sexual_orientation: firstLetterUpper(formDatas.sexual_orientation),
+      special_diet: firstLetterUpper(formDatas.special_diet),
+      smoking: firstLetterUpper(formDatas.smoking),
+      alcohol: firstLetterUpper(formDatas.alcohol),
+      recreational_drugs: firstLetterUpper(formDatas.recreational_drugs),
+    };
+
+    //Validation
+    if (
+      !Object.values(formDatasForValidation).some((v) => v) ||
+      !formDatasForValidation
+    ) {
+      setErrMsgPost("Please fill at least one field");
+      return;
+    }
     try {
       await postPatientRecord(
         "/social_history",
@@ -38,7 +61,13 @@ const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
   };
   return (
     <div className="sochistory-card">
+      <div className="sochistory-card-header">
+        <h1>Patient social history</h1>
+      </div>
       <form className="sochistory-card-form">
+        {errMsgPost && (
+          <div className="sochistory-card-form-err">{errMsgPost}</div>
+        )}
         <p>
           <label>Occupations: </label>
           <input

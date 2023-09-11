@@ -4,6 +4,11 @@ import { toLocalDate } from "../../../../utils/formatDates";
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { reminderSchema } from "../../../../validation/reminderValidation";
+import {
+  firstLetterOfFirstWordUpper,
+  firstLetterUpper,
+} from "../../../../utils/firstLetterUpper";
 
 const ReminderForm = ({
   editCounter,
@@ -21,7 +26,7 @@ const ReminderForm = ({
   });
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     if (name === "active") {
@@ -32,12 +37,30 @@ const ReminderForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formDatas.reminder === "") {
-      setErrMsgPost(true);
+    //Formatting
+    setFormDatas({
+      ...formDatas,
+      reminder: firstLetterOfFirstWordUpper(formDatas.reminder),
+    });
+    const datasToPost = {
+      ...formDatas,
+      reminder: firstLetterOfFirstWordUpper(formDatas.reminder),
+    };
+    //Validation
+    try {
+      await reminderSchema.validate(formDatas);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
-      await postPatientRecord("/reminders", user.id, auth.authToken, formDatas);
+      await postPatientRecord(
+        "/reminders",
+        user.id,
+        auth.authToken,
+        datasToPost
+      );
       const abortController = new AbortController();
       fetchRecord(abortController);
       editCounter.current -= 1;

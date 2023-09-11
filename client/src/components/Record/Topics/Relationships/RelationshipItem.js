@@ -25,7 +25,7 @@ const RelationshipItem = ({
   const [itemInfos, setItemInfos] = useState(item);
 
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     let value;
     name === "relation_id"
@@ -36,7 +36,7 @@ const RelationshipItem = ({
 
   const handleEditClick = () => {
     editCounter.current += 1;
-    setErrMsgPost(false);
+    setErrMsgPost("");
     setEditVisible((v) => !v);
   };
 
@@ -104,6 +104,7 @@ const RelationshipItem = ({
   };
 
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",

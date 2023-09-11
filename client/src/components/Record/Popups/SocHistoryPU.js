@@ -12,6 +12,7 @@ import { CircularProgress } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import SocHistoryForm from "../Topics/Social/SocHistoryForm";
 import formatName from "../../../utils/formatName";
+import { firstLetterUpper } from "../../../utils/firstLetterUpper";
 
 const SocHistoryPU = ({
   patientId,
@@ -24,6 +25,7 @@ const SocHistoryPU = ({
   //HOOKS
   const { auth, user } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [formDatas, setFormDatas] = useState(datas ? datas[0] : null);
 
   //STYLES
@@ -43,6 +45,7 @@ const SocHistoryPU = ({
 
   //HANDLERS
   const handleChange = (e) => {
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     setFormDatas({ ...formDatas, [name]: value });
@@ -64,17 +67,54 @@ const SocHistoryPU = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setEditVisible(false);
+    //Validation
+    const formDatasForValidation = { ...formDatas };
+    delete formDatasForValidation.created_by_id;
+    delete formDatasForValidation.created_by_name;
+    delete formDatasForValidation.created_by_title;
+    delete formDatasForValidation.id;
+    delete formDatasForValidation.patient_id;
+    delete formDatasForValidation.date_created;
+    if (
+      !Object.values(formDatasForValidation).some((v) => v !== "") ||
+      !formDatasForValidation
+    ) {
+      setErrMsgPost("Please fill at least one field");
+      return;
+    }
+
+    //Formatting
+    setFormDatas({
+      ...formDatas,
+      occupations: firstLetterUpper(formDatas.occupations),
+      religion: firstLetterUpper(formDatas.religion),
+      sexual_orientation: firstLetterUpper(formDatas.sexual_orientation),
+      special_diet: firstLetterUpper(formDatas.special_diet),
+      smoking: firstLetterUpper(formDatas.smoking),
+      alcohol: firstLetterUpper(formDatas.alcohol),
+      recreational_drugs: firstLetterUpper(formDatas.recreational_drugs),
+    });
+    const datasToPut = {
+      ...formDatas,
+      occupations: firstLetterUpper(formDatas.occupations),
+      religion: firstLetterUpper(formDatas.religion),
+      sexual_orientation: firstLetterUpper(formDatas.sexual_orientation),
+      special_diet: firstLetterUpper(formDatas.special_diet),
+      smoking: firstLetterUpper(formDatas.smoking),
+      alcohol: firstLetterUpper(formDatas.alcohol),
+      recreational_drugs: firstLetterUpper(formDatas.recreational_drugs),
+    };
     try {
       await putPatientRecord(
         "/social_history",
         formDatas.id,
         user.id,
         auth.authToken,
-        formDatas
+        datasToPut
       );
       const abortController = new AbortController();
       fetchRecord(abortController);
+      setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
       toast.error(
@@ -108,6 +148,9 @@ const SocHistoryPU = ({
                 </div>
               </div>
               <form className="sochistory-card-form">
+                {errMsgPost && (
+                  <div className="sochistory-card-form-err">{errMsgPost}</div>
+                )}
                 <p>
                   <label>Occupations: </label>
                   {editVisible ? (

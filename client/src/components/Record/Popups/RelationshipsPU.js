@@ -17,7 +17,7 @@ const RelationshipsPU = ({
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
 
   //STYLES
   const DIALOG_CONTAINER_STYLE = {
@@ -48,6 +48,7 @@ const RelationshipsPU = ({
     }
   };
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -62,9 +63,7 @@ const RelationshipsPU = ({
             <>
               <h1 className="relationships-title">Patient relationships</h1>
               {errMsgPost && (
-                <div className="relationships-err">
-                  Unable to save form : please fill out all fields
-                </div>
+                <div className="relationships-err">{errMsgPost}</div>
               )}
               <table className="relationships-table">
                 <thead>

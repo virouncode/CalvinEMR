@@ -9,6 +9,7 @@ import {
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { medicationSchema } from "../../../../validation/medicationValidation";
 
 const MedicationEvent = ({
   event,
@@ -27,6 +28,7 @@ const MedicationEvent = ({
 
   //HANDLERS
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",
@@ -46,7 +48,7 @@ const MedicationEvent = ({
   };
 
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     let value = e.target.value;
     if (name === "active") {
@@ -60,12 +62,17 @@ const MedicationEvent = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatas = { ...eventInfos };
-    if (formDatas.name === "") {
-      setErrMsgPost(true);
+    //Formatting
+    setEventInfos({ ...eventInfos, name: eventInfos.name.toUpperCase() });
+    const formDatas = { ...eventInfos, name: eventInfos.name.toUpperCase() };
+    //Validation
+    try {
+      await medicationSchema.validate(formDatas);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
-
+    //Submission
     try {
       await putPatientRecord(
         "/medications",
@@ -87,7 +94,7 @@ const MedicationEvent = ({
   };
 
   const handleEditClick = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     editCounter.current += 1;
     setEditVisible((v) => !v);
   };
@@ -206,7 +213,7 @@ const MedicationEvent = ({
             <input
               type="text"
               value={eventInfos.number_of_doses}
-              name="dose"
+              name="number_of_doses"
               onChange={handleChange}
               className="medications-event-input2"
               autoComplete="off"

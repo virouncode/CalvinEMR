@@ -20,7 +20,7 @@ const PregnanciesPU = ({
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_of_event");
   const direction = useRef(false);
 
@@ -60,6 +60,7 @@ const PregnanciesPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -74,10 +75,7 @@ const PregnanciesPU = ({
             <>
               <h1 className="pregnancies-title">Patient pregnancies</h1>
               {errMsgPost && (
-                <div className="pregnancies-err">
-                  Unable to save form : please fill out "Description, Date Of
-                  Event" fields
-                </div>
+                <div className="pregnancies-err">{errMsgPost}</div>
               )}
               <table className="pregnancies-table">
                 <thead>

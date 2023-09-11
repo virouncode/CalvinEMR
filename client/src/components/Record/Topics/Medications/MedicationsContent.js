@@ -15,8 +15,12 @@ const MedicationsContent = ({ datas, isLoading, errMsg }) => {
               .sort((a, b) => b.date_created - a.date_created)
               .map((medication) => (
                 <li key={medication.id}>
-                  - <strong>{medication.name}</strong>, {medication.dose},
-                  active
+                  - <strong>{medication.name}</strong>,{" "}
+                  {medication.dose ? `${medication.dose}, ` : ""}
+                  {medication.number_of_doses
+                    ? `${medication.number_of_doses}, `
+                    : ""}{" "}
+                  during {medication.duration}, active
                 </li>
               ))}
             {datas
@@ -24,8 +28,12 @@ const MedicationsContent = ({ datas, isLoading, errMsg }) => {
               .sort((a, b) => b.date_created - a.date_created)
               .map((medication) => (
                 <li key={medication.id}>
-                  - <strong>{medication.name}</strong>, {medication.dose}, not
-                  active
+                  - <strong>{medication.name}</strong>,{" "}
+                  {medication.dose ? `${medication.dose}, ` : ""}
+                  {medication.number_of_doses
+                    ? `${medication.number_of_doses}, `
+                    : ""}
+                  during {medication.duration},not active
                 </li>
               ))}
           </ul>

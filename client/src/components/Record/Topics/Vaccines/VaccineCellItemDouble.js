@@ -18,7 +18,7 @@ const VaccineCellItemDouble = ({
   fetchRecord,
   editable,
   setEditable,
-  setAlertVisible,
+  setErrMsgPost,
 }) => {
   //HOOKS
   const { auth, user } = useAuth();
@@ -50,6 +50,7 @@ const VaccineCellItemDouble = ({
 
   //HANDLERS
   const handleCheckFirstDose = async (e) => {
+    setErrMsgPost("");
     const checked = e.target.checked;
     if (checked) {
       setFormVisibleFirstDose(true);
@@ -88,10 +89,11 @@ const VaccineCellItemDouble = ({
   };
 
   const handleCheckSecondDose = async (e) => {
+    setErrMsgPost("");
     const checked = e.target.checked;
     if (checked) {
       if (!datas[name][age].length) {
-        setAlertVisible(true);
+        setErrMsgPost("Please check first dose before");
         return;
       } else {
         setFormVisibleSecondDose(true);

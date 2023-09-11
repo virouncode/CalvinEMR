@@ -5,7 +5,6 @@ import DocumentItem from "../Topics/Documents/DocumentItem";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import DocumentForm from "../Topics/Documents/DocumentForm";
 import { CircularProgress } from "@mui/material";
-import AlertMsg from "../../Alert/AlertMsg";
 import { ToastContainer } from "react-toastify";
 
 const DocumentsPU = ({
@@ -21,8 +20,7 @@ const DocumentsPU = ({
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
-  const [alertVisible, setAlertVisible] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
 
@@ -49,6 +47,7 @@ const DocumentsPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -75,18 +74,7 @@ const DocumentsPU = ({
           datas && (
             <>
               <h1 className="documents-title">Patient documents</h1>
-              <AlertMsg
-                severity="error"
-                title="Error"
-                msg="File size exceeds 20Mbs, please choose another file"
-                open={alertVisible}
-                setOpen={setAlertVisible}
-              />
-              {errMsgPost && (
-                <div className="documents-err">
-                  Unable to save document : please fill out "Description" field
-                </div>
-              )}
+              {errMsgPost && <div className="documents-err">{errMsgPost}</div>}
               <table className="documents-table">
                 <thead>
                   <tr>
@@ -121,6 +109,7 @@ const DocumentsPU = ({
                               key={document.id}
                               fetchRecord={fetchRecord}
                               showDocument={showDocument}
+                              setErrMsgPost={setErrMsgPost}
                             />
                           ))
                       : datas
@@ -135,6 +124,7 @@ const DocumentsPU = ({
                               key={document.id}
                               fetchRecord={fetchRecord}
                               showDocument={showDocument}
+                              setErrMsgPost={setErrMsgPost}
                             />
                           ))
                     : direction.current
@@ -150,6 +140,7 @@ const DocumentsPU = ({
                             key={document.id}
                             fetchRecord={fetchRecord}
                             showDocument={showDocument}
+                            setErrMsgPost={setErrMsgPost}
                           />
                         ))
                     : datas
@@ -164,6 +155,7 @@ const DocumentsPU = ({
                             key={document.id}
                             fetchRecord={fetchRecord}
                             showDocument={showDocument}
+                            setErrMsgPost={setErrMsgPost}
                           />
                         ))}
                 </tbody>
@@ -181,7 +173,6 @@ const DocumentsPU = ({
                   setAddVisible={setAddVisible}
                   editCounter={editCounter}
                   setErrMsgPost={setErrMsgPost}
-                  setAlertVisible={setAlertVisible}
                 />
               )}
             </>

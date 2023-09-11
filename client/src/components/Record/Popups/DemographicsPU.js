@@ -19,6 +19,8 @@ import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import formatName from "../../../utils/formatName";
+import { demographicsSchema } from "../../../validation/demographicsValidation";
+import { firstLetterUpper } from "../../../utils/firstLetterUpper";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
@@ -43,10 +45,8 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
 
   //============================= STATES ==============================//
   const [editVisible, setEditVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
-  const [errMsg, setErrorMsg] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [formDatas, setFormDatas] = useState(patientInfos);
-  const valid = useRef(Array(23).fill(true));
   const datas = useRef({});
   const { auth, user, clinic, setClinic } = useAuth();
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -54,8 +54,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
   const handleChange = (e) => {
     let value = e.target.value;
     const name = e.target.name;
-    const id = e.target.id;
-    setErrMsgPost(false);
+    setErrMsgPost("");
     if (
       name === "assigned_md_id" ||
       name === "assigned_resident_id" ||
@@ -65,44 +64,8 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
     ) {
       value = parseInt(value);
     }
-    if (
-      name === "first_name" ||
-      name === "middle_name" ||
-      name === "last_name" ||
-      name === "gender_at_birth" ||
-      name === "gender_identification" ||
-      name === "city" ||
-      name === "province_state"
-    ) {
-      if (/^[a-zA-Z^&()\-;'",./ \u00c0-\u024f\u1e00-\u1eff]*$/.test(value)) {
-        e.target.style.color = "black";
-        valid.current[parseInt(id) - 1] = true;
-        if (valid.current.indexOf(false) === -1) setErrorMsg(false);
-      } else {
-        e.target.style.color = "red";
-        valid.current[parseInt(id) - 1] = false;
-        if (valid.current.indexOf(false) !== -1) setErrorMsg(true);
-      }
-    }
-    if (
-      name === "chart_nbr" ||
-      name === "health_insurance_nbr" ||
-      name === "cell_phone" ||
-      name === "home_phone" ||
-      name === "preferred_phone"
-    ) {
-      if (/^[0-9()_\-'",./ ]*$/.test(value)) {
-        e.target.style.color = "black";
-        valid.current[parseInt(id) - 1] = true;
-        if (valid.current.indexOf(false) === -1) setErrorMsg(false);
-      } else {
-        e.target.style.color = "red";
-        valid.current[parseInt(id) - 1] = false;
-        if (valid.current.indexOf(false) !== -1) setErrorMsg(true);
-      }
-    }
     if (name === "health_card_expiry" || name === "date_of_birth") {
-      value = value === "" ? null : Date.parse(new Date(value));
+      value = !value ? null : Date.parse(new Date(value));
     }
     setFormDatas({ ...formDatas, [name]: value });
   };
@@ -161,53 +124,77 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (valid.current.indexOf(false) !== -1) {
-      setErrMsgPost(true);
-    } else {
-      datas.current = { ...formDatas };
-      datas.current.middle_name !== ""
-        ? (datas.current.full_name =
-            datas.current.first_name +
-            " " +
-            datas.current.middle_name +
-            " " +
-            datas.current.last_name)
-        : (datas.current.full_name =
-            datas.current.first_name + " " + datas.current.last_name);
-      try {
-        await putPatientRecord(
-          "/patients",
-          patientInfos.id,
-          user.id,
-          auth.authToken,
-          datas.current
-        );
-        const response = await axiosXano.get(`/patients/${patientInfos.id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-        });
-        setPatientInfos(response.data);
-        setEditVisible(false);
+    //Formatting
+    setFormDatas({
+      ...formDatas,
+      first_name: firstLetterUpper(formDatas.first_name),
+      middle_name: firstLetterUpper(formDatas.middle_name),
+      last_name: firstLetterUpper(formDatas.last_name),
+      address: firstLetterUpper(formDatas.address),
+      province_state: firstLetterUpper(formDatas.province_state),
+      city: firstLetterUpper(formDatas.city),
+    });
+    datas.current = {
+      ...formDatas,
+      first_name: firstLetterUpper(formDatas.first_name),
+      middle_name: firstLetterUpper(formDatas.middle_name),
+      last_name: firstLetterUpper(formDatas.last_name),
+      address: firstLetterUpper(formDatas.address),
+      province_state: firstLetterUpper(formDatas.province_state),
+      city: firstLetterUpper(formDatas.city),
+    };
+    datas.current.middle_name !== ""
+      ? (datas.current.full_name =
+          datas.current.first_name +
+          " " +
+          datas.current.middle_name +
+          " " +
+          datas.current.last_name)
+      : (datas.current.full_name =
+          datas.current.first_name + " " + datas.current.last_name);
 
-        //update patientsInfos
-        const response2 = await axiosXano.get("/patients", {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        setClinic({ ...clinic, patientsInfos: response2.data });
-        toast.success("Saved successfully", { containerId: "B" });
-      } catch (err) {
-        toast.error(
-          `Error: unable to update patient demographics : ${err.message}`,
-          {
-            containerId: "B",
-          }
-        );
-      }
+    //Validation
+    try {
+      await demographicsSchema.validate(datas.current);
+    } catch (err) {
+      setErrMsgPost(err.message);
+      return;
+    }
+
+    //Submission
+    try {
+      await putPatientRecord(
+        "/patients",
+        patientInfos.id,
+        user.id,
+        auth.authToken,
+        datas.current
+      );
+      const response = await axiosXano.get(`/patients/${patientInfos.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      });
+      setPatientInfos(response.data);
+      setEditVisible(false);
+
+      //update patientsInfos
+      const response2 = await axiosXano.get("/patients", {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setClinic({ ...clinic, patientsInfos: response2.data });
+      toast.success("Saved successfully", { containerId: "B" });
+    } catch (err) {
+      toast.error(
+        `Error: unable to update patient demographics : ${err.message}`,
+        {
+          containerId: "B",
+        }
+      );
     }
   };
 
@@ -238,12 +225,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
             <form className="demographics-card-form">
               <div className="demographics-card-form-content">
                 {errMsgPost && editVisible && (
-                  <div className="demographics-card-form-errpost">
-                    Unable to save form
-                  </div>
-                )}
-                {errMsg && editVisible && (
-                  <p className="demographics-card-form-err">Invalid fields</p>
+                  <p className="demographics-card-form-err">{errMsgPost}</p>
                 )}
                 <p>
                   <label>First Name: </label>
@@ -311,14 +293,16 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                 <p>
                   <label>Gender identification: </label>
                   {editVisible ? (
-                    <input
-                      type="text"
+                    <select
+                      id="5"
                       value={formDatas.gender_identification}
                       onChange={handleChange}
                       name="gender_identification"
-                      id="5"
-                      autoComplete="off"
-                    />
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
                   ) : (
                     patientInfos.gender_identification
                   )}
@@ -470,7 +454,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                   )}
                 </p>
                 <p>
-                  <label>Province State: </label>
+                  <label>Province/State: </label>
                   {editVisible ? (
                     <input
                       type="text"

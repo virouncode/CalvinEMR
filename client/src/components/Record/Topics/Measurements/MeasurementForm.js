@@ -12,6 +12,7 @@ import {
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { measurementSchema } from "../../../../validation/measurementValidation";
 
 const MeasurementForm = ({
   editCounter,
@@ -37,7 +38,7 @@ const MeasurementForm = ({
 
   //HANDLERS
   const handleChange = async (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     const value = e.target.value;
     setFormDatas({ ...formDatas, [name]: value });
@@ -135,16 +136,25 @@ const MeasurementForm = ({
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !formDatas.height_cm &&
-      !formDatas.weight_kg &&
-      !formDatas.blood_pressure_diastolic &&
-      !formDatas.blood_pressure_systolic &&
-      !formDatas.waist_circumference
-    ) {
-      setErrMsgPost(true);
+    //Validation
+    const formDatasForValidation = { ...formDatas };
+    delete formDatasForValidation.patient_id;
+    for (const key in formDatasForValidation) {
+      if (isNaN(formDatasForValidation[key]) || !formDatasForValidation[key]) {
+        formDatasForValidation[key] = 0;
+      }
+    }
+    try {
+      await measurementSchema.validate(formDatasForValidation);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    if (!Object.values(formDatasForValidation).some((v) => v !== 0)) {
+      setErrMsgPost("Please fill at least one field");
+      return;
+    }
+
     try {
       await postPatientRecord(
         "/measurements",

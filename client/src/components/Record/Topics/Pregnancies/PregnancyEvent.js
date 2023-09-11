@@ -14,6 +14,8 @@ import {
 } from "../../../../api/fetchRecords";
 import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
+import { pregnancySchema } from "../../../../validation/pregnancyValidation";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
@@ -23,20 +25,43 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     let value = e.target.value;
     if (name === "date_of_event") {
       value = value === "" ? null : Date.parse(new Date(value));
+    }
+    if (name === "term_nbr_of_weeks" || name === "term_nbr_of_days") {
+      value = parseInt(value);
     }
     setEventInfos({ ...eventInfos, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatas = { ...eventInfos };
-    if (formDatas.date_of_event === null || formDatas.description === "") {
-      setErrMsgPost(true);
+
+    //Fromatting
+    setEventInfos({
+      ...eventInfos,
+      premises: firstLetterUpper(eventInfos.premises),
+    });
+    const formDatas = {
+      ...eventInfos,
+      premises: firstLetterUpper(eventInfos.premises),
+    };
+    //Validation
+    const formDatasForValidation = { ...eventInfos };
+    delete formDatasForValidation.patient_id;
+    if (formDatasForValidation.term_nbr_of_weeks === "") {
+      formDatasForValidation.term_nbr_of_weeks = 0;
+    }
+    if (formDatasForValidation.term_nbr_of_days === "") {
+      formDatasForValidation.term_nbr_of_days = 0;
+    }
+    try {
+      await pregnancySchema.validate(formDatasForValidation);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
     try {
@@ -61,11 +86,12 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
 
   const handleEditClick = (e) => {
     editCounter.current += 1;
-    setErrMsgPost(false);
+    setErrMsgPost("");
     setEditVisible((v) => !v);
   };
 
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",

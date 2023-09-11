@@ -61,7 +61,7 @@ const CredentialsForm = () => {
           },
         })
       ).data;
-      me.email = credentials.email;
+      me.email = credentials.email.toLowerCase();
       me.password = credentials.password;
       axiosXano.put(`/staff/${user.id}`, me, {
         headers: {

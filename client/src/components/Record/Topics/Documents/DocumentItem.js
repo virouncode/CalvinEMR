@@ -7,10 +7,11 @@ import { deletePatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
 
-const DocumentItem = ({ item, fetchRecord, showDocument }) => {
+const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsg }) => {
   const { auth } = useAuth();
 
   const handleDeleteClick = async (e) => {
+    setErrMsg("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",

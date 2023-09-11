@@ -7,7 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
 import VaccineCaption from "../Topics/Vaccines/VaccineCaption";
 import VaccineHeaderAge from "../Topics/Vaccines/VaccineHeaderAge";
-import AlertMsg from "../../Alert/AlertMsg";
 import VaccineItem from "../Topics/Vaccines/VaccineItem";
 import SplittedHeader from "../../Presentation/SplittedHeader";
 
@@ -28,9 +27,9 @@ const VaccinesPU = ({
 }) => {
   //HOOKS
   const { auth, user } = useAuth();
-  const [alertVisible, setAlertVisible] = useState(false);
   const [editable, setEditable] = useState(true);
   const [editVisible, setEditVisible] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
 
   //STYLES
   const DIALOG_CONTAINER_STYLE = {
@@ -48,12 +47,18 @@ const VaccinesPU = ({
   };
 
   const handleChangeObs = (e) => {
+    setErrMsgPost("");
     const value = e.target.value;
     setDatas({ ...datas, observations: value });
   };
 
   const handleEditClick = (e) => {
+    setErrMsgPost("");
     setEditVisible(true);
+  };
+
+  const handleClose = () => {
+    setPopUpVisible(false);
   };
 
   const handleSave = async (e) => {
@@ -83,16 +88,10 @@ const VaccinesPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="vaccines-title">Patient vaccines</h1>
-              {alertVisible && (
-                <AlertMsg
-                  severity="error"
-                  title="Error"
-                  msg="Please check first dose before"
-                  open={alertVisible}
-                  setOpen={setAlertVisible}
-                />
-              )}
+              <h1 className="vaccines-title">
+                Patient vaccines <button onClick={handleClose}>Close</button>
+              </h1>
+              {errMsgPost && <div className="vaccines-err">{errMsgPost}</div>}
               <table className="vaccines-table">
                 <thead>
                   <tr>
@@ -118,7 +117,7 @@ const VaccinesPU = ({
                       patientInfos={patientInfos}
                       setEditable={setEditable}
                       editable={editable}
-                      setAlertVisible={setAlertVisible}
+                      setErrMsgPost={setErrMsgPost}
                     />
                   ))}
                 </tbody>

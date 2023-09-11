@@ -9,6 +9,8 @@ import {
 } from "../../../../api/fetchRecords";
 import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
+import { concernSchema } from "../../../../validation/concernValidation";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
@@ -19,12 +21,13 @@ const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HANDLERS
   const handleEditClick = (e) => {
     editCounter.current += 1;
-    setErrMsgPost(false);
+    setErrMsgPost("");
     setEditVisible((v) => !v);
   };
 
   //HANDLERS
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",
@@ -44,7 +47,7 @@ const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   };
 
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     let value = e.target.value;
     setItemInfos({ ...itemInfos, [name]: value });
@@ -52,9 +55,21 @@ const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatas = { ...itemInfos };
-    if (formDatas.description === "") {
-      setErrMsgPost(true);
+    //Formatting
+    const formDatas = {
+      ...itemInfos,
+      description: firstLetterUpper(itemInfos.description),
+    };
+    setItemInfos({
+      ...itemInfos,
+      description: firstLetterUpper(itemInfos.description),
+    });
+
+    //Validation
+    try {
+      await concernSchema.validate(formDatas);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
     try {

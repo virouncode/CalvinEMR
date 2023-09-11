@@ -4,6 +4,8 @@ import { toLocalDate } from "../../../../utils/formatDates";
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { allergySchema } from "../../../../validation/allergyValidation";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const AllergyForm = ({
   editCounter,
@@ -21,7 +23,7 @@ const AllergyForm = ({
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     setFormDatas({ ...formDatas, [name]: value });
@@ -29,12 +31,30 @@ const AllergyForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formDatas.allergy === "") {
-      setErrMsgPost(true);
+    //Formatting
+    setFormDatas({
+      ...formDatas,
+      allergy: firstLetterUpper(formDatas.allergy),
+    });
+    const datasToPost = {
+      ...formDatas,
+      allergy: firstLetterUpper(formDatas.allergy),
+    };
+    //Validation
+    try {
+      await allergySchema.validate(datasToPost);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
-      await postPatientRecord("/allergies", user.id, auth.authToken, formDatas);
+      await postPatientRecord(
+        "/allergies",
+        user.id,
+        auth.authToken,
+        datasToPost
+      );
       const abortController = new AbortController();
       await fetchRecord(abortController);
       editCounter.current -= 1;

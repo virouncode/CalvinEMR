@@ -19,7 +19,7 @@ const FamHistoryPU = ({
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_of_event");
   const direction = useRef(false);
 
@@ -46,6 +46,7 @@ const FamHistoryPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -72,11 +73,7 @@ const FamHistoryPU = ({
           datas && (
             <>
               <h1 className="famhistory-title">Patient family history</h1>
-              {errMsgPost && (
-                <div className="famhistory-err">
-                  Unable to save form : please fill out all fields
-                </div>
-              )}
+              {errMsgPost && <div className="famhistory-err">{errMsgPost}</div>}
               <table className="famhistory-table">
                 <thead>
                   <tr>

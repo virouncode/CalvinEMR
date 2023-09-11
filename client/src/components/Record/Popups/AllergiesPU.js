@@ -17,7 +17,7 @@ const AllergiesPU = ({
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
 
@@ -57,6 +57,7 @@ const AllergiesPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -70,11 +71,7 @@ const AllergiesPU = ({
           datas && (
             <>
               <h1 className="allergies-title">Patient allergies</h1>
-              {errMsgPost && (
-                <div className="allergies-err">
-                  Unable to save form : please fill out all fields
-                </div>
-              )}
+              {errMsgPost && <div className="allergies-err">{errMsgPost}</div>}
               <table className="allergies-table">
                 <thead>
                   <tr>

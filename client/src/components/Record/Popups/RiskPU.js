@@ -19,7 +19,7 @@ const RiskPU = ({
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
 
@@ -59,6 +59,7 @@ const RiskPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -72,11 +73,7 @@ const RiskPU = ({
           datas && (
             <>
               <h1 className="risk-title">Patient risk factors & prevention</h1>
-              {errMsgPost && (
-                <div className="risk-err">
-                  Unable to save form : please fill out all fields
-                </div>
-              )}
+              {errMsgPost && <div className="risk-err">{errMsgPost}</div>}
               <table className="risk-table">
                 <thead>
                   <tr>

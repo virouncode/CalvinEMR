@@ -12338,16 +12338,6 @@ readers do not read off random characters that represent icons */
 .demographics-card-form-content {
   width: 70%;
 }
-.demographics-card-form-content-err {
-  color: rgba(255, 0, 0, 0.536);
-  font-style: italic;
-}
-.demographics-card-form-content-errpost {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-}
 .demographics-card-form-content label {
   font-weight: bold;
   display: inline-block;
@@ -12372,6 +12362,16 @@ readers do not read off random characters that represent icons */
 .demographics-card-form-img input[type=file]::-webkit-file-upload-button {
   cursor: pointer;
 }
+.demographics-card-form-err {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 98%;
+  margin: 0 auto;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
+  border-radius: 4px;
+  text-align: center;
+}
 .demographics-card-sign {
   padding: 0 5px;
   text-align: right;
@@ -12387,11 +12387,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .medhistory-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .medhistory-table {
   table-layout: fixed;
@@ -12449,11 +12452,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .famhistory-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .famhistory-table {
   table-layout: fixed;
@@ -12540,6 +12546,16 @@ readers do not read off random characters that represent icons */
 .sochistory-card-form-btns button {
   margin-right: 10px;
 }
+.sochistory-card-form-err {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
+  border-radius: 4px;
+  text-align: center;
+}
 
 .risk-title {
   font-size: 1.2rem;
@@ -12548,11 +12564,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .risk-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .risk-table {
   table-layout: fixed;
@@ -12604,11 +12623,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .medications-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .medications-table {
   table-layout: fixed;
@@ -12717,11 +12739,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .pharmacies-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .pharmacies-table {
   table-layout: fixed;
@@ -12815,11 +12840,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .measurements-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .measurements-btn-container {
   display: flex;
@@ -12871,11 +12899,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .reminders-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .reminders-table {
   table-layout: fixed;
@@ -12929,11 +12960,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .pregnancies-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .pregnancies-table {
   table-layout: fixed;
@@ -12989,11 +13023,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .allergies-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .allergies-table {
   table-layout: fixed;
@@ -13044,11 +13081,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .concerns-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .concerns-table {
   table-layout: fixed;
@@ -13095,11 +13135,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .documents-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .documents-table {
   table-layout: fixed;
@@ -13173,11 +13216,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .appointments-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .appointments-table {
   table-layout: fixed;
@@ -13231,11 +13277,14 @@ readers do not read off random characters that represent icons */
 }
 
 .vaccines-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .vaccines-title {
   font-size: 1.2rem;
@@ -14412,11 +14461,14 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 .relationships-err {
-  background: rgba(255, 0, 0, 0.536);
-  padding: 10px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
+  text-align: center;
 }
 .relationships-table {
   table-layout: fixed;

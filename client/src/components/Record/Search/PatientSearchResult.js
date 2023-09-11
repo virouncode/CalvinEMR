@@ -40,7 +40,7 @@ const PatientSearchResult = ({ search, sortedPatientsInfos, handleSort }) => {
             </th> */}
             <th onClick={() => handleSort("address")}>Address</th>
             <th onClick={() => handleSort("postal_code")}>Postal Code</th>
-            <th onClick={() => handleSort("province_state")}>Province State</th>
+            <th onClick={() => handleSort("province_state")}>Province/State</th>
             <th onClick={() => handleSort("city")}>City</th>
             <th onClick={() => handleSort("country")}>Country</th>
           </tr>

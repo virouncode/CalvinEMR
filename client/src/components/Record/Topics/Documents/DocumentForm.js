@@ -4,6 +4,7 @@ import { postPatientRecord } from "../../../../api/fetchRecords";
 import axiosXano from "../../../../api/xano";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const DocumentForm = ({
   patientId,
@@ -11,7 +12,6 @@ const DocumentForm = ({
   setAddVisible,
   editCounter,
   setErrMsgPost,
-  setAlertVisible,
 }) => {
   //HOOKS
   const { auth, user } = useAuth();
@@ -25,7 +25,7 @@ const DocumentForm = ({
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     setFormDatas({ ...formDatas, [name]: value });
@@ -33,12 +33,27 @@ const DocumentForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formDatas.description === "") {
-      setErrMsgPost(true);
+    //Formatting
+    setFormDatas({
+      ...formDatas,
+      description: firstLetterUpper(formDatas.description),
+    });
+    const datasToPost = {
+      ...formDatas,
+      description: firstLetterUpper(formDatas.description),
+    };
+    //Validation
+    if (datasToPost.description === "") {
+      setErrMsgPost("Description field is required");
       return;
     }
     try {
-      await postPatientRecord("/documents", user.id, auth.authToken, formDatas);
+      await postPatientRecord(
+        "/documents",
+        user.id,
+        auth.authToken,
+        datasToPost
+      );
       const abortController = new AbortController();
       fetchRecord(abortController);
       editCounter.current -= 1;
@@ -51,11 +66,11 @@ const DocumentForm = ({
     }
   };
   const handleUpload = async (e) => {
-    setAlertVisible(false);
+    setErrMsgPost("");
     setSaveDisabled(true);
     const file = e.target.files[0];
     if (file.size > 20000000) {
-      setAlertVisible(true);
+      setErrMsgPost("File size exceeds 20Mbs, please choose another file");
       setIsLoadingFile(false);
       return;
     }
@@ -98,7 +113,6 @@ const DocumentForm = ({
           <label>Description</label>
           <input
             name="description"
-            required
             type="text"
             value={formDatas.description}
             onChange={handleChange}

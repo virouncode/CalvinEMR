@@ -4,6 +4,8 @@ import { toLocalDate } from "../../../../utils/formatDates";
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { medHistorySchema } from "../../../../validation/medHistoryValidation";
+import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
 
 const MedHistoryForm = ({
   editCounter,
@@ -23,7 +25,7 @@ const MedHistoryForm = ({
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     if (name === "date_of_event") {
@@ -37,16 +39,25 @@ const MedHistoryForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formDatas.description === "" || formDatas.date_of_event === null) {
-      setErrMsgPost(true);
+    //Formatting
+    const datasToPost = {
+      ...formDatas,
+      description: firstLetterOfFirstWordUpper(formDatas.description),
+    };
+    //Validation
+    try {
+      await medHistorySchema.validate(datasToPost);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await postPatientRecord(
         "/medical_history",
         user.id,
         auth.authToken,
-        formDatas
+        datasToPost
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

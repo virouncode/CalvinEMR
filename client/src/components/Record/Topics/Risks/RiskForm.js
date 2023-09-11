@@ -4,6 +4,8 @@ import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { riskSchema } from "../../../../validation/riskValidation";
+import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
 
 const RiskForm = ({
   editCounter,
@@ -21,7 +23,7 @@ const RiskForm = ({
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     setFormDatas({ ...formDatas, [name]: value });
@@ -29,16 +31,25 @@ const RiskForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formDatas.description === "") {
-      setErrMsgPost(true);
+    //Formatting
+    const datasToPost = {
+      ...formDatas,
+      description: firstLetterOfFirstWordUpper(formDatas.description),
+    };
+    //Validation
+    try {
+      await riskSchema.validate(datasToPost);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await postPatientRecord(
         "/risk_factors",
         user.id,
         auth.authToken,
-        formDatas
+        datasToPost
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

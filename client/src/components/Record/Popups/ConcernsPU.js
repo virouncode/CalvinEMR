@@ -17,7 +17,7 @@ const ConcernsPU = ({
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
 
@@ -56,6 +56,7 @@ const ConcernsPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -69,11 +70,7 @@ const ConcernsPU = ({
           datas && (
             <>
               <h1 className="concerns-title">Patient concerns</h1>
-              {errMsgPost && (
-                <div className="concerns-err">
-                  Unable to save form : please fill out all fields
-                </div>
-              )}
+              {errMsgPost && <div className="concerns-err">{errMsgPost}</div>}
               <table className="concerns-table">
                 <thead>
                   <tr>

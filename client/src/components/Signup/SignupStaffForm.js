@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import { CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
+import { staffSchema } from "../../validation/staffValidation";
 
 const SignupStaffForm = () => {
   const { auth, clinic, setClinic } = useAuth();
@@ -77,7 +78,6 @@ const SignupStaffForm = () => {
       setErrMsg("Passwords don't match");
       return;
     }
-
     try {
       const staff = await axiosXano.get("/staff", {
         headers: {
@@ -108,6 +108,8 @@ const SignupStaffForm = () => {
 
       const datasToPost = { ...formDatas };
 
+      //Formatting
+      datasToPost.email = datasToPost.email.toLowerCase();
       datasToPost.first_name = firstLetterUpper(datasToPost.first_name);
       datasToPost.middle_name = firstLetterUpper(datasToPost.middle_name);
       datasToPost.last_name = firstLetterUpper(datasToPost.last_name);
@@ -116,6 +118,16 @@ const SignupStaffForm = () => {
       datasToPost.subspeciality = firstLetterUpper(datasToPost.subspeciality);
       datasToPost.date_created = Date.parse(new Date());
       delete datasToPost.confirm_password;
+
+      //Validation
+      try {
+        await staffSchema.validate(datasToPost);
+      } catch (err) {
+        setErrMsg(err.message);
+        return;
+      }
+
+      //Submission
 
       const response = await axiosXano.post("/staff", datasToPost, {
         headers: {
@@ -208,7 +220,6 @@ const SignupStaffForm = () => {
             <label>Email*: </label>
             <input
               type="email"
-              required
               value={formDatas.email}
               name="email"
               autoComplete="off"
@@ -219,7 +230,6 @@ const SignupStaffForm = () => {
             <label>Password*: </label>
             <input
               type="password"
-              required
               value={formDatas.password}
               name="password"
               autoComplete="off"
@@ -230,7 +240,6 @@ const SignupStaffForm = () => {
             <label>Confirm Password*: </label>
             <input
               type="password"
-              required
               value={formDatas.confirm_password}
               name="confirm_password"
               autoComplete="off"
@@ -241,7 +250,6 @@ const SignupStaffForm = () => {
             <label>First Name*: </label>
             <input
               type="text"
-              required
               value={formDatas.first_name}
               onChange={handleChange}
               name="first_name"
@@ -262,7 +270,6 @@ const SignupStaffForm = () => {
             <label>Last Name*: </label>
             <input
               type="text"
-              required
               value={formDatas.last_name}
               onChange={handleChange}
               name="last_name"
@@ -272,7 +279,6 @@ const SignupStaffForm = () => {
           <div className="signup-staff-form-row">
             <label>Gender*: </label>
             <select
-              required
               value={formDatas.gender}
               onChange={handleChange}
               name="gender"
@@ -285,7 +291,6 @@ const SignupStaffForm = () => {
           <div className="signup-staff-form-row">
             <label>Occupation*: </label>
             <select
-              required
               value={formDatas.title}
               onChange={handleChange}
               name="title"
@@ -310,7 +315,6 @@ const SignupStaffForm = () => {
           <div className="signup-staff-form-row">
             <label>Access Level*: </label>
             <select
-              required
               value={formDatas.access_level}
               onChange={handleChange}
               name="access_level"
@@ -358,7 +362,6 @@ const SignupStaffForm = () => {
               onChange={handleChange}
               name="cell_phone"
               autoComplete="off"
-              required
             />
           </div>
           <div className="signup-staff-form-row">

@@ -5,7 +5,6 @@ import useAuth from "../../hooks/useAuth";
 const RequireAuth = ({ allowedAccesses }) => {
   const { auth, user } = useAuth();
   const location = useLocation();
-  console.log(location);
 
   return allowedAccesses.includes(user.accessLevel) ? (
     //l'utilisateur a reussi à se connecter et a l'access level => on lui fourni ce qu'il y a à l'intérieur

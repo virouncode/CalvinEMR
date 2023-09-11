@@ -21,6 +21,7 @@ import {
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import formatName from "../../../../utils/formatName";
+import { measurementSchema } from "../../../../validation/measurementValidation";
 
 const MeasurementEvent = ({
   event,
@@ -36,11 +37,12 @@ const MeasurementEvent = ({
   //HANDLERS
   const handleEditClick = (e) => {
     editCounter.current += 1;
-    setErrMsgPost(false);
+    setErrMsgPost("");
     setEditVisible((v) => !v);
   };
 
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",
@@ -62,16 +64,25 @@ const MeasurementEvent = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDatas = { ...eventInfos };
-    if (
-      !formDatas.height_cm &&
-      !formDatas.weight_kg &&
-      !formDatas.blood_pressure_diastolic &&
-      !formDatas.blood_pressure_systolic &&
-      !formDatas.waist_circumference
-    ) {
-      setErrMsgPost(true);
+    //Validation
+    const formDatasForValidation = { ...eventInfos };
+    delete formDatasForValidation.patient_id;
+    for (const key in formDatasForValidation) {
+      if (isNaN(formDatasForValidation[key]) || !formDatasForValidation[key]) {
+        formDatasForValidation[key] = 0;
+      }
+    }
+    try {
+      await measurementSchema.validate(formDatasForValidation);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    if (!Object.values(formDatasForValidation).some((v) => v !== 0)) {
+      setErrMsgPost("Please fill at least one field");
+      return;
+    }
+    //Submission
     try {
       await putPatientRecord(
         "/measurements",

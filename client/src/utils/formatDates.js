@@ -5,7 +5,7 @@ export const toISOStringNoMs = (date) => {
 
 export const toLocalDate = (isoString) => {
   //2022-03-14T14:40:00Z  =>  2022-03-14 (UTC + local offset) formatted for datetime-local input
-  if (isoString === "") return "";
+  if (!isoString) return "";
   const date = new Date(isoString);
   date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
   const newDate = date.toISOString().slice(0, 10);
@@ -14,7 +14,7 @@ export const toLocalDate = (isoString) => {
 
 export const toLocalDateAndTime = (isoString, hour12 = true) => {
   //2022-03-14T14:40:00Z  =>  2022-03-14, 16:40 (UTC + local offset) formatted for datetime-local input
-  if (isoString === "") return "";
+  if (!isoString) return "";
   const date = new Date(isoString);
   date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
 
@@ -27,7 +27,7 @@ export const toLocalDateAndTime = (isoString, hour12 = true) => {
 
 export const toLocalDateAndTimeWithSeconds = (isoString, hour12 = true) => {
   //2022-03-14T14:40:00Z  =>  2022-03-14, 16:40:45 (UTC + local offset) formatted for datetime-local input
-  if (isoString === "") return "";
+  if (!isoString) return "";
   const date = new Date(isoString);
   date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
   const newDate = date.toISOString().slice(0, 10);
@@ -40,7 +40,7 @@ export const toLocalDateAndTimeWithSeconds = (isoString, hour12 = true) => {
 
 export const toLocalTime = (isoString) => {
   //2022-03-14T14:40:00Z  =>  16:40 (UTC + local offset) formatted for datetime-local input
-  if (isoString === "") return "";
+  if (!isoString) return "";
   const date = new Date(isoString);
   date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); //milliseconds in local time zone
   const newTime = date.toISOString().slice(11, 16); //time in local time zone
@@ -49,7 +49,7 @@ export const toLocalTime = (isoString) => {
 
 export const toLocalTimeWithSeconds = (isoString) => {
   //2022-03-14T14:40:00Z  =>  16:40:25 (UTC + local offset) formatted for datetime-local input
-  if (isoString === "") return "";
+  if (!isoString) return "";
   const date = new Date(isoString);
   date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); //milliseconds in local time zone
   const newTime = date.toISOString().slice(11, 19); //time in local time zone
@@ -57,7 +57,7 @@ export const toLocalTimeWithSeconds = (isoString) => {
 };
 
 export const toLocalHours = (isoString, hour12 = true) => {
-  if (isoString === "") {
+  if (!isoString) {
     return "";
   }
   const date = new Date(isoString);
@@ -82,13 +82,13 @@ export const toLocalMinutes = (isoString) => {
 };
 
 export const toLocalSeconds = (isoString) => {
-  if (isoString === "") return "";
+  if (!isoString) return "";
   const newTime = toLocalTimeWithSeconds(isoString);
   return newTime.slice(6, 8);
 };
 
 export const toLocalAMPM = (isoString) => {
-  if (isoString === "") return "";
+  if (!isoString) return "";
   const date = new Date(isoString);
   let localHours = date.getHours();
   const AMPM = localHours < 12 ? "AM" : "PM";
@@ -101,7 +101,7 @@ export const fromLocalToISOStringNoMs = (
   localMinutes,
   localAMPM
 ) => {
-  if (localDate === "") return "";
+  if (!localDate) return "";
   const localYear = localDate.slice(0, 4);
   const localMonth = (parseInt(localDate.slice(5, 7)) - 1).toString();
   const localDay = localDate.slice(8, 10);
@@ -117,7 +117,7 @@ export const fromLocalToISOStringNoMs = (
 };
 
 export const fromLocalDateToISOStringNoMs = (localDate) => {
-  if (localDate === "") return "";
+  if (!localDate) return "";
   const localYear = localDate.slice(0, 4);
   const localMonth = (parseInt(localDate.slice(5, 7)) - 1).toString();
   const localDay = localDate.slice(8, 10);

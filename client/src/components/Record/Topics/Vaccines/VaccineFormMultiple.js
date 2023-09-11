@@ -12,6 +12,7 @@ const VaccineFormMultiple = ({
   age,
   datas,
   fetchRecord,
+  setErrMsgPost,
 }) => {
   //HOOKS
   const { auth, user } = useAuth();
@@ -77,6 +78,7 @@ const VaccineFormMultiple = ({
     }
   };
   const handleChange = (e) => {
+    setErrMsgPost("");
     const value = e.target.value;
     const array = formDatas[name][age];
     array[array.length - 1] = {

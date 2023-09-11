@@ -11,6 +11,8 @@ import {
 } from "../../../../api/fetchRecords";
 import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
+import { reminderSchema } from "../../../../validation/reminderValidation";
+import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
 
 const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
@@ -20,7 +22,7 @@ const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     let value = e.target.value;
     if (name === "active") {
@@ -31,11 +33,23 @@ const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatas = { ...itemInfos };
-    if (formDatas.reminder === "") {
-      setErrMsgPost(true);
+    //Formatting
+    setItemInfos({
+      ...itemInfos,
+      reminder: firstLetterOfFirstWordUpper(itemInfos.reminder),
+    });
+    const formDatas = {
+      ...itemInfos,
+      reminder: firstLetterOfFirstWordUpper(itemInfos.reminder),
+    };
+    //Validation
+    try {
+      await reminderSchema.validate(formDatas);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await putPatientRecord(
         "/reminders",
@@ -58,11 +72,12 @@ const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   const handleEditClick = (e) => {
     editCounter.current += 1;
-    setErrMsgPost(false);
+    setErrMsgPost("");
     setEditVisible((v) => !v);
   };
 
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",

@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import RelationshipsForm from "./RelationshipsForm";
 import { toInverseRelation } from "../../utils/toInverseRelation";
 import { postPatientRecord, putPatientRecord } from "../../api/fetchRecords";
+import { demographicsSchema } from "../../validation/demographicsValidation";
+import { patientSchema } from "../../validation/patientValidation";
 
 const SignupPatientForm = () => {
   const { auth, user, clinic, setClinic } = useAuth();
@@ -85,6 +87,7 @@ const SignupPatientForm = () => {
     }
 
     try {
+      //Formatting
       const full_name =
         formDatas.first_name +
         " " +
@@ -92,14 +95,24 @@ const SignupPatientForm = () => {
         formDatas.last_name;
 
       const datasToPost = { ...formDatas };
-      datasToPost.city = firstLetterUpper(datasToPost.city);
+      datasToPost.email = datasToPost.email.toLowerCase();
       datasToPost.first_name = firstLetterUpper(datasToPost.first_name);
       datasToPost.middle_name = firstLetterUpper(datasToPost.middle_name);
       datasToPost.last_name = firstLetterUpper(datasToPost.last_name);
       datasToPost.full_name = firstLetterUpper(full_name);
       datasToPost.province_state = firstLetterUpper(datasToPost.province_state);
+      datasToPost.city = firstLetterUpper(datasToPost.city);
       delete datasToPost.confirm_password;
 
+      //Validation
+      try {
+        await patientSchema.validate(datasToPost);
+      } catch (err) {
+        setErrMsg(err.message);
+        return;
+      }
+
+      //Submission
       const response = await postPatientRecord(
         "/patients",
         user.id,
@@ -309,7 +322,6 @@ const SignupPatientForm = () => {
             <input
               id="email"
               type="email"
-              required
               value={formDatas.email}
               name="email"
               autoComplete="off"
@@ -321,7 +333,6 @@ const SignupPatientForm = () => {
             <input
               id="pwd"
               type="password"
-              required
               value={formDatas.password}
               name="password"
               autoComplete="off"
@@ -333,7 +344,6 @@ const SignupPatientForm = () => {
             <input
               id="pwd2"
               type="password"
-              required
               value={formDatas.confirm_password}
               name="confirm_password"
               autoComplete="off"
@@ -345,7 +355,6 @@ const SignupPatientForm = () => {
             <input
               id="firstname"
               type="text"
-              required
               value={formDatas.first_name}
               onChange={handleChange}
               name="first_name"
@@ -368,7 +377,6 @@ const SignupPatientForm = () => {
             <input
               id="lastname"
               type="text"
-              required
               value={formDatas.last_name}
               onChange={handleChange}
               name="last_name"
@@ -409,7 +417,6 @@ const SignupPatientForm = () => {
             <label htmlFor="dob">Date of birth*: </label>
             <input
               type="date"
-              required
               value={
                 formDatas.date_of_birth !== null
                   ? toLocalDate(formDatas.date_of_birth)
@@ -479,14 +486,12 @@ const SignupPatientForm = () => {
               onChange={handleChange}
               name="preferred_phone"
               autoComplete="off"
-              required
               id="preferred_phone"
             />
           </div>
           <div className="signup-patient-form-row">
             <label htmlFor="address">Address*: </label>
             <input
-              required
               type="text"
               value={formDatas.address}
               onChange={handleChange}
@@ -498,7 +503,6 @@ const SignupPatientForm = () => {
           <div className="signup-patient-form-row">
             <label htmlFor="postal">Postal Code*: </label>
             <input
-              required
               type="text"
               value={formDatas.postal_code}
               onChange={handleChange}
@@ -521,7 +525,6 @@ const SignupPatientForm = () => {
           <div className="signup-patient-form-row">
             <label htmlFor="city">City*: </label>
             <input
-              required
               type="text"
               value={formDatas.city}
               onChange={handleChange}
@@ -533,7 +536,6 @@ const SignupPatientForm = () => {
           <div className="signup-patient-form-row">
             <label htmlFor="country">Country*: </label>
             <CountriesList
-              required
               handleChange={handleChange}
               value={formDatas.country}
               name="country"

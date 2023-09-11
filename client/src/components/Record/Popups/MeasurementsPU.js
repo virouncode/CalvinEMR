@@ -16,7 +16,7 @@ const MeasurementsPU = ({
   errMsg,
 }) => {
   //HOOKS
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
   const [columnToSort, setColumnToSort] = useState("date_created");
@@ -58,6 +58,7 @@ const MeasurementsPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -72,9 +73,7 @@ const MeasurementsPU = ({
             <>
               <h1 className="measurements-title">Patient measurements</h1>
               {errMsgPost && (
-                <div className="measurements-err">
-                  Unable to save form : please fill out at least one field
-                </div>
+                <div className="measurements-err">{errMsgPost}</div>
               )}
               <table className="measurements-table">
                 <thead>

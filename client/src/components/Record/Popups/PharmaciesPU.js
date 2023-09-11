@@ -21,7 +21,7 @@ const PharmaciesPU = ({
   const editCounter = useRef(0);
   const direction = useRef(false);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
 
   //STYLE
@@ -53,6 +53,7 @@ const PharmaciesPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -95,12 +96,7 @@ const PharmaciesPU = ({
           datas && (
             <>
               <h1 className="pharmacies-title">Patient pharmacies</h1>
-              {errMsgPost && (
-                <div className="pharmacies-err">
-                  Unable to save form : please fill out "Name, Address, City,
-                  Country" fields at least
-                </div>
-              )}
+              {errMsgPost && <div className="pharmacies-err">{errMsgPost}</div>}
               <table className="pharmacies-table">
                 <thead>
                   <tr>

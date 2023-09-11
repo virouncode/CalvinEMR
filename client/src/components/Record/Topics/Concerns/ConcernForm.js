@@ -4,6 +4,8 @@ import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { concernSchema } from "../../../../validation/concernValidation";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const ConcernForm = ({
   editCounter,
@@ -21,6 +23,7 @@ const ConcernForm = ({
 
   //HANDLERS
   const handleChange = (e) => {
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     setFormDatas({ ...formDatas, [name]: value });
@@ -28,8 +31,20 @@ const ConcernForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formDatas.description === "") {
-      setErrMsgPost(true);
+    //Formatting
+    setFormDatas({
+      ...formDatas,
+      description: firstLetterUpper(formDatas.description),
+    });
+    const datasToPost = {
+      ...formDatas,
+      description: firstLetterUpper(formDatas.description),
+    };
+    //Validation
+    try {
+      await concernSchema.validate(datasToPost);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
     try {
@@ -37,7 +52,7 @@ const ConcernForm = ({
         "/ongoing_concerns",
         user.id,
         auth.authToken,
-        formDatas
+        datasToPost
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

@@ -9,6 +9,8 @@ import {
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { medHistorySchema } from "../../../../validation/medHistoryValidation";
+import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
 
 const MedHistoryEvent = ({
   event,
@@ -23,7 +25,7 @@ const MedHistoryEvent = ({
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     let value = e.target.value;
     if (name === "date_of_event") {
@@ -37,11 +39,24 @@ const MedHistoryEvent = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatas = { ...eventInfos };
-    if (formDatas.description === "" || formDatas.date_of_event === null) {
-      setErrMsgPost(true);
+    //Formatting
+    setEventInfos({
+      ...eventInfos,
+      description: firstLetterOfFirstWordUpper(eventInfos.description),
+    });
+    const formDatas = {
+      ...eventInfos,
+      description: firstLetterOfFirstWordUpper(eventInfos.description),
+    };
+
+    //Validation
+    try {
+      await medHistorySchema.validate(formDatas);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await putPatientRecord(
         "/medical_history",
@@ -65,11 +80,12 @@ const MedHistoryEvent = ({
 
   const handleEditClick = (e) => {
     editCounter.current += 1;
-    setErrMsgPost(false);
+    setErrMsgPost("");
     setEditVisible((v) => !v);
   };
 
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",

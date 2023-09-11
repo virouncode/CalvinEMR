@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
+import { myAccountSchema } from "../../validation/myAccountValidation";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const MyAccountForm = () => {
@@ -106,6 +107,7 @@ const MyAccountForm = () => {
 
       const datasToPut = { ...tempFormDatas };
 
+      //Formatting
       datasToPut.first_name = firstLetterUpper(datasToPut.first_name);
       datasToPut.middle_name = firstLetterUpper(datasToPut.middle_name);
       datasToPut.last_name = firstLetterUpper(datasToPut.last_name);
@@ -114,6 +116,15 @@ const MyAccountForm = () => {
       datasToPut.subspeciality = firstLetterUpper(datasToPut.subspeciality);
       datasToPut.date_created = Date.parse(new Date());
 
+      //Validation
+      try {
+        await myAccountSchema.validate(datasToPut);
+      } catch (err) {
+        setErrMsg(err.message);
+        return;
+      }
+
+      //Submission
       await axiosXano.put(`/staff/${user.id}`, datasToPut, {
         headers: {
           "Content-Type": "application/json",
@@ -149,18 +160,7 @@ const MyAccountForm = () => {
           <div className="myaccount-section-form-column">
             <div className="myaccount-section-form-row">
               <label>Email*: </label>
-              {/* {editVisible ? (
-              <input
-                type="email"
-                required
-                value={tempFormDatas.email}
-                name="email"
-                autoComplete="off"
-                onChange={handleChange}
-              />
-            ) : ( */}
               <p>{tempFormDatas.email}</p>
-              {/* )} */}
             </div>
             <div className="myaccount-section-form-row">
               <label>First Name*: </label>

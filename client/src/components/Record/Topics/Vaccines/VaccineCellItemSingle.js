@@ -18,6 +18,7 @@ const VaccineCellItemSingle = ({
   fetchRecord,
   editable,
   setEditable,
+  setErrMsgPost,
 }) => {
   //HOOKS
   const { auth, user } = useAuth();
@@ -31,6 +32,7 @@ const VaccineCellItemSingle = ({
 
   //HANDLERS
   const handleCheck = async (e) => {
+    setErrMsgPost("");
     const checked = e.target.checked;
     if (checked) {
       setFormVisible(true);

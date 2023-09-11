@@ -22,6 +22,7 @@ import formatName from "../../../../utils/formatName";
 import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const AppointmentForm = ({
   fetchRecord,
@@ -30,7 +31,6 @@ const AppointmentForm = ({
   patientInfos,
   setAddVisible,
   setErrMsgPost,
-  setAlertVisible,
 }) => {
   //HOOKS
   const { auth, clinic, user } = useAuth();
@@ -295,12 +295,12 @@ const AppointmentForm = ({
   };
 
   const handleAllDayChange = (e) => {
-    setAlertVisible(false);
+    setErrMsgPost("");
     let value = e.target.value;
     value = value === "true"; //cast to boolean
     if (value) {
       if (formDatas.start === null) {
-        setAlertVisible(true);
+        setErrMsgPost("Please choose a start date first");
         return;
       }
       const startAllDay = formDatas.start.setHours(0, 0, 0, 0);
@@ -325,12 +325,23 @@ const AppointmentForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //Formatting
+    setFormDatas({
+      ...formDatas,
+      reason: firstLetterUpper(formDatas.reason),
+    });
+    const datasToPost = {
+      ...formDatas,
+      reason: firstLetterUpper(formDatas.reason),
+    };
+
+    //Validation
     if (
-      formDatas.start === null ||
-      formDatas.end === null ||
-      formDatas.reason === ""
+      datasToPost.start === null ||
+      datasToPost.end === null ||
+      datasToPost.reason === ""
     ) {
-      setErrMsgPost(true);
+      setErrMsgPost("Please fill all fields");
       return;
     }
     try {
@@ -338,7 +349,7 @@ const AppointmentForm = ({
         "/appointments",
         user.id,
         auth.authToken,
-        formDatas
+        datasToPost
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

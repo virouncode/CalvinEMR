@@ -9,6 +9,8 @@ import {
 } from "../../../../api/fetchRecords";
 import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
+import { allergySchema } from "../../../../validation/allergyValidation";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
@@ -20,6 +22,7 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   //HANDLERS
   const handleChange = (e) => {
+    setErrMsgPost("");
     const name = e.target.name;
     let value = e.target.value;
     setItemInfos({ ...itemInfos, [name]: value });
@@ -27,11 +30,23 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatas = { ...itemInfos };
-    if (formDatas.allergy === "") {
-      setErrMsgPost(true);
+    //Formatting
+    const formDatas = {
+      ...itemInfos,
+      allergy: firstLetterUpper(itemInfos.allery),
+    };
+    setItemInfos({
+      ...itemInfos,
+      allergy: firstLetterUpper(itemInfos.allery),
+    });
+    //Validation
+    try {
+      await allergySchema.validate(formDatas);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await putPatientRecord(
         "/allergies",
@@ -54,11 +69,12 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   const handleEditClick = (e) => {
     editCounter.current += 1;
-    setErrMsgPost(false);
+    setErrMsgPost("");
     setEditVisible((v) => !v);
   };
 
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",

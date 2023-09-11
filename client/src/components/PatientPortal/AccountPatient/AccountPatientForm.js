@@ -11,6 +11,7 @@ import DoctorsList from "../../Lists/DoctorsLists";
 import CountriesList from "../../Lists/CountriesList";
 import StudentsList from "../../Lists/StudentsList";
 import NursesList from "../../Lists/NursesList";
+import { demographicsSchema } from "../../../validation/demographicsValidation";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const AccountPatientForm = () => {
@@ -61,7 +62,6 @@ const AccountPatientForm = () => {
             },
           }
         );
-        console.log(fileToUpload.data);
         setTempFormDatas({ ...tempFormDatas, avatar: fileToUpload.data });
         setIsLoadingFile(false);
       } catch (err) {
@@ -89,6 +89,14 @@ const AccountPatientForm = () => {
       datasToPut.middle_name = firstLetterUpper(datasToPut.middle_name);
       datasToPut.last_name = firstLetterUpper(datasToPut.last_name);
       datasToPut.full_name = firstLetterUpper(full_name);
+
+      //Validation
+      try {
+        await demographicsSchema.validate(datasToPut);
+      } catch (err) {
+        setErrMsg(err.message);
+        return;
+      }
 
       await axiosXanoPatient.put(`/patients/${user.id}`, datasToPut, {
         headers: {
@@ -148,11 +156,10 @@ const AccountPatientForm = () => {
           </div>
           <div className="patient-account-form-content-column">
             <div className="patient-account-form-content-row">
-              <label>First Name: </label>
+              <label>First Name*: </label>
               {editVisible ? (
                 <input
                   type="text"
-                  required
                   value={tempFormDatas.first_name}
                   onChange={handleChange}
                   name="first_name"
@@ -179,11 +186,10 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Last Name: </label>
+              <label>Last Name*: </label>
               {editVisible ? (
                 <input
                   type="text"
-                  required
                   value={tempFormDatas.last_name}
                   onChange={handleChange}
                   name="last_name"
@@ -195,11 +201,11 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Email: </label>
+              <label>Email*: </label>
               {user.demographics.email}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Gender at birth: </label>
+              <label>Gender at birth*: </label>
               {editVisible ? (
                 <select
                   id="4"
@@ -215,7 +221,7 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Gender identification: </label>
+              <label>Gender identification*: </label>
               {editVisible ? (
                 <input
                   type="text"
@@ -269,11 +275,10 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Date of birth: </label>
+              <label>Date of birth*: </label>
               {editVisible ? (
                 <input
                   type="date"
-                  required
                   value={
                     tempFormDatas.date_of_birth !== null
                       ? toLocalDate(tempFormDatas.date_of_birth)
@@ -297,7 +302,7 @@ const AccountPatientForm = () => {
                 : ""}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Cell Phone: </label>
+              <label>Cell Phone*: </label>
               {editVisible ? (
                 <input
                   type="tel"
@@ -327,7 +332,7 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Preferred Phone: </label>
+              <label>Preferred Phone*: </label>
               {editVisible ? (
                 <input
                   type="text"
@@ -344,7 +349,7 @@ const AccountPatientForm = () => {
           </div>
           <div className="patient-account-form-content-column">
             <div className="patient-account-form-content-row">
-              <label>Address: </label>
+              <label>Address*: </label>
               {editVisible ? (
                 <input
                   type="text"
@@ -359,7 +364,7 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Postal Code: </label>
+              <label>Postal Code*: </label>
               {editVisible ? (
                 <input
                   type="text"
@@ -374,7 +379,7 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Province State: </label>
+              <label>Province/State: </label>
               {editVisible ? (
                 <input
                   type="text"
@@ -389,7 +394,7 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>City: </label>
+              <label>City*: </label>
               {editVisible ? (
                 <input
                   type="text"
@@ -404,7 +409,7 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Country: </label>
+              <label>Country*: </label>
               {editVisible ? (
                 <CountriesList
                   id="16"

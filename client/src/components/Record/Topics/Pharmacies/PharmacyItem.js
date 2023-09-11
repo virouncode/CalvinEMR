@@ -6,6 +6,8 @@ import useAuth from "../../../../hooks/useAuth";
 import formatName from "../../../../utils/formatName";
 import { putPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { pharmacySchema } from "../../../../validation/pharmacyValidation";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const PharmacyItem = ({
   patientId,
@@ -21,7 +23,7 @@ const PharmacyItem = ({
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     let value = e.target.value;
     setItemInfos({ ...itemInfos, [name]: value });
@@ -29,15 +31,31 @@ const PharmacyItem = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatas = { ...itemInfos };
-    if (
-      formDatas.name === "" ||
-      formDatas.address === "" ||
-      formDatas.city === ""
-    ) {
-      setErrMsgPost(true);
+    //Formatting
+    setItemInfos({
+      ...itemInfos,
+      name: firstLetterUpper(itemInfos.name),
+      address: firstLetterUpper(itemInfos.address),
+      province_state: firstLetterUpper(itemInfos.province_state),
+      city: firstLetterUpper(itemInfos.city),
+      email: itemInfos.email.toLowerCase(),
+    });
+    const formDatas = {
+      ...itemInfos,
+      name: firstLetterUpper(itemInfos.name),
+      address: firstLetterUpper(itemInfos.address),
+      province_state: firstLetterUpper(itemInfos.province_state),
+      city: firstLetterUpper(itemInfos.city),
+      email: itemInfos.email.toLowerCase(),
+    };
+    //Validation
+    try {
+      await pharmacySchema.validate(formDatas);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+
     if (
       await confirmAlertPopUp({
         content: `You're about to update ${itemInfos.name} infos. This pharmacy will be updated for all patients, proceed ?`,
@@ -66,10 +84,12 @@ const PharmacyItem = ({
 
   const handleEditClick = (e) => {
     editCounter.current += 1;
+    setErrMsgPost("");
     setEditVisible((v) => !v);
   };
 
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",

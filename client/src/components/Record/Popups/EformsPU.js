@@ -22,7 +22,6 @@ const EformsPU = ({
   //HOOKS
   const { auth, user } = useAuth();
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
   const [columnToSort, setColumnToSort] = useState("date_created");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
   const direction = useRef(false);
@@ -147,7 +146,6 @@ const EformsPU = ({
                             item={eform}
                             key={eform.id}
                             fetchRecord={fetchRecord}
-                            setErrMsgPost={setErrMsgPost}
                           />
                         ))
                     : datas
@@ -180,7 +178,6 @@ const EformsPU = ({
                   patientId={patientId}
                   patientInfos={patientInfos}
                   fetchRecord={fetchRecord}
-                  setErrMsgPost={setErrMsgPost}
                   handleAddToRecord={handleAddToRecord}
                   isLoadingFile={isLoadingFile}
                 />

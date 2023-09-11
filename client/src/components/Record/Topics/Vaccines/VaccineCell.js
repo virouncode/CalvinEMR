@@ -16,7 +16,7 @@ const VaccineCell = ({
   setEditable,
   datas,
   fetchRecord,
-  setAlertVisible,
+  setErrMsgPost,
 }) => {
   return vaccineInfos ? (
     <td colSpan={vaccineId === 16 ? "5" : vaccineId === 17 ? "10" : "0"}>
@@ -38,6 +38,7 @@ const VaccineCell = ({
           fetchRecord={fetchRecord}
           editable={editable}
           setEditable={setEditable}
+          setErrMsgPost={setErrMsgPost}
         />
       ) : //double dose
       dose === "double" ? (
@@ -51,7 +52,7 @@ const VaccineCell = ({
           fetchRecord={fetchRecord}
           editable={editable}
           setEditable={setEditable}
-          setAlertVisible={setAlertVisible}
+          setErrMsgPost={setErrMsgPost}
         />
       ) : (
         <VaccineCellItemMultiple
@@ -64,6 +65,7 @@ const VaccineCell = ({
           fetchRecord={fetchRecord}
           editable={editable}
           setEditable={setEditable}
+          setErrMsgPost={setErrMsgPost}
         />
       )}
     </td>

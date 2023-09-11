@@ -59,6 +59,7 @@ const RemindersPU = ({
     }
   };
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -72,11 +73,7 @@ const RemindersPU = ({
           datas && (
             <>
               <h1 className="reminders-title">Patient reminders & alerts</h1>
-              {errMsgPost && (
-                <div className="reminders-err">
-                  Unable to save form : please fill out all fields
-                </div>
-              )}
+              {errMsgPost && <div className="reminders-err">{errMsgPost}</div>}
               <table className="reminders-table">
                 <thead>
                   <tr>

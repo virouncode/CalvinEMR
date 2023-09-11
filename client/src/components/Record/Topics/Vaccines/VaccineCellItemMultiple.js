@@ -13,18 +13,21 @@ const VaccineCellItemMultiple = ({
   setEditable,
   vaccineInfos,
   patientInfos,
+  setErrMsgPost,
 }) => {
   const [formVisible, setFormVisible] = useState(false);
   const [historyVisible, setHistoryVisible] = useState(false);
   const [scrollPosition, setScrollPosition] = useState([0, 0]);
 
   const handleAddClick = (e) => {
+    setErrMsgPost("");
     setScrollPosition([e.nativeEvent.view.scrollX, e.nativeEvent.view.scrollY]);
     setFormVisible((v) => !v);
     setEditable(false);
   };
 
   const handleHistoryClick = () => {
+    setErrMsgPost("");
     setHistoryVisible((v) => !v);
   };
 
@@ -89,6 +92,7 @@ const VaccineCellItemMultiple = ({
           age={age}
           datas={datas}
           fetchRecord={fetchRecord}
+          setErrMsgPost={setErrMsgPost}
         />
       )}
       {historyVisible && (

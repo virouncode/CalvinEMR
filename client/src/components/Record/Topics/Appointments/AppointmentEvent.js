@@ -27,13 +27,13 @@ import {
 } from "../../../../api/fetchRecords";
 import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const AppointmentEvent = ({
   event,
   fetchRecord,
   editCounter,
   setErrMsgPost,
-  setAlertVisible,
 }) => {
   //HOOKS
   const { auth, clinic, user } = useAuth();
@@ -318,13 +318,12 @@ const AppointmentEvent = ({
   };
 
   const handleAllDayChange = (e) => {
-    setAlertVisible(false);
-    setErrMsgPost(false);
+    setErrMsgPost("");
     let value = e.target.value;
     value = value === "true"; //cast to boolean
     if (value) {
       if (eventInfos.start === null) {
-        setAlertVisible(true);
+        setErrMsgPost("Please choose a start date first");
         return;
       }
       const startAllDay = new Date(eventInfos.start).setHours(0, 0, 0, 0);
@@ -349,14 +348,23 @@ const AppointmentEvent = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatas = { ...eventInfos };
+    //Formatting
+    const formDatas = {
+      ...eventInfos,
+      reason: firstLetterUpper(eventInfos.reason),
+    };
+    setEventInfos({
+      ...eventInfos,
+      reason: firstLetterUpper(eventInfos.reason),
+    });
 
+    //Validation
     if (
       formDatas.start === null ||
       formDatas.end === null ||
       formDatas.reason === ""
     ) {
-      setErrMsgPost(true);
+      setErrMsgPost("Please fill all fields");
       return;
     }
     try {

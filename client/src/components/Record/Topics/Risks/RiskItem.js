@@ -11,6 +11,8 @@ import {
 } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
+import { riskSchema } from "../../../../validation/riskValidation";
+import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
 
 const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
@@ -20,7 +22,7 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     const value = e.target.value;
     setItemInfos({ ...itemInfos, [name]: value });
@@ -28,11 +30,23 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDatas = { ...itemInfos };
-    if (formDatas.description === "") {
-      setErrMsgPost(true);
+    //Formatting
+    setItemInfos({
+      ...itemInfos,
+      description: firstLetterOfFirstWordUpper(itemInfos.description),
+    });
+    const formDatas = {
+      ...itemInfos,
+      description: firstLetterOfFirstWordUpper(itemInfos.description),
+    };
+    //Validation
+    try {
+      await riskSchema.validate(formDatas);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await putPatientRecord(
         "/risk_factors",
@@ -55,11 +69,12 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   const handleEditClick = (e) => {
     editCounter.current += 1;
-    setErrMsgPost(false);
+    setErrMsgPost("");
     setEditVisible((v) => !v);
   };
 
   const handleDeleteClick = async (e) => {
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",

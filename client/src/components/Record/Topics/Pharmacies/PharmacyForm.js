@@ -6,6 +6,8 @@ import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import axiosXano from "../../../../api/xano";
 import { toast } from "react-toastify";
+import { pharmacySchema } from "../../../../validation/pharmacyValidation";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const PharmacyForm = ({
   setPharmaciesList,
@@ -30,7 +32,7 @@ const PharmacyForm = ({
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     const name = e.target.name;
     const value = e.target.value;
     setFormDatas({ ...formDatas, [name]: value });
@@ -38,21 +40,29 @@ const PharmacyForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //add pharmacy to list
-    if (
-      formDatas.name === "" ||
-      formDatas.address === "" ||
-      formDatas.city === ""
-    ) {
-      setErrMsgPost(true);
+    //Formatting
+    const datasToPost = {
+      ...formDatas,
+      name: firstLetterUpper(formDatas.name),
+      address: firstLetterUpper(formDatas.address),
+      province_state: firstLetterUpper(formDatas.province_state),
+      email: formDatas.email.toLowerCase(),
+      city: firstLetterUpper(formDatas.city),
+    };
+    //Validation
+    try {
+      await pharmacySchema.validate(datasToPost);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await postPatientRecord(
         "/pharmacies",
         user.id,
         auth.authToken,
-        formDatas
+        datasToPost
       );
       setAddNew(false);
       const response = await axiosXano.get("/all_pharmacies", {

@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import AppointmentEvent from "../Topics/Appointments/AppointmentEvent";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import AppointmentForm from "../Topics/Appointments/AppointmentForm";
-import AlertMsg from "../../Alert/AlertMsg";
+
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
@@ -19,9 +19,8 @@ const AppointmentsPU = ({
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("start");
-  const [alertVisible, setAlertVisible] = useState(false);
   const direction = useRef(false);
 
   //STYLE
@@ -59,6 +58,7 @@ const AppointmentsPU = ({
   };
 
   const handleAdd = async (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -72,17 +72,8 @@ const AppointmentsPU = ({
           datas && (
             <>
               <h1 className="appointments-title">Patient appointments</h1>
-              <AlertMsg
-                severity="error"
-                title="Error"
-                msg="Please choose a start date first"
-                open={alertVisible}
-                setOpen={setAlertVisible}
-              />
               {errMsgPost && (
-                <div className="appointments-err">
-                  Unable to save form : please fill out all fields
-                </div>
+                <div className="appointments-err">{errMsgPost}</div>
               )}
 
               <table className="appointments-table">
@@ -115,7 +106,6 @@ const AppointmentsPU = ({
                       patientInfos={patientInfos}
                       setAddVisible={setAddVisible}
                       setErrMsgPost={setErrMsgPost}
-                      setAlertVisible={setAlertVisible}
                     />
                   )}
                   {direction.current
@@ -132,7 +122,6 @@ const AppointmentsPU = ({
                             fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
-                            setAlertVisible={setAlertVisible}
                           />
                         ))
                     : datas
@@ -148,7 +137,6 @@ const AppointmentsPU = ({
                             fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
-                            setAlertVisible={setAlertVisible}
                           />
                         ))}
                 </tbody>

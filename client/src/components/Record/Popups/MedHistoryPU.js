@@ -19,7 +19,7 @@ const MedHistoryPU = ({
   //HOOKS
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_of_event");
   const direction = useRef(false);
 
@@ -58,6 +58,7 @@ const MedHistoryPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -71,11 +72,7 @@ const MedHistoryPU = ({
           datas && (
             <>
               <h1 className="medhistory-title">Patient medical history</h1>
-              {errMsgPost && (
-                <div className="medhistory-err">
-                  Unable to save form : please fill out all fields
-                </div>
-              )}
+              {errMsgPost && <div className="medhistory-err">{errMsgPost}</div>}
               <table className="medhistory-table">
                 <thead>
                   <tr>

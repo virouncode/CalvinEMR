@@ -7,6 +7,7 @@ import {
   postPatientRecord,
 } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { medicationSchema } from "../../../../validation/medicationValidation";
 
 const MedicationForm = ({
   patientId,
@@ -57,7 +58,7 @@ const MedicationForm = ({
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost(false);
+    setErrMsgPost("");
     let value = e.target.value;
     const name = e.target.name;
     if (name === "start") {
@@ -68,16 +69,22 @@ const MedicationForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formDatas.name === "") {
-      setErrMsgPost(true);
+    //Formatting
+    const datasToPost = { ...formDatas, name: formDatas.name.toUpperCase() };
+    //Validation
+    try {
+      await medicationSchema.validate(datasToPost);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
+    //Submission
     try {
       await postPatientRecord(
         "/medications",
         user.id,
         auth.authToken,
-        formDatas
+        datasToPost
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

@@ -16,7 +16,7 @@ const VaccineItem = ({
   setEditable,
   setFormVisible,
   setScrollPosition,
-  setAlertVisible,
+  setErrMsgPost,
 }) => {
   //HOOKS
 
@@ -46,7 +46,7 @@ const VaccineItem = ({
                 setScrollPosition={setScrollPosition}
                 datas={datas}
                 fetchRecord={fetchRecord}
-                setAlertVisible={setAlertVisible}
+                setErrMsgPost={setErrMsgPost}
               />
             ))
           : ages //Influenza vaccine
@@ -69,7 +69,7 @@ const VaccineItem = ({
                   setScrollPosition={setScrollPosition}
                   datas={datas}
                   fetchRecord={fetchRecord}
-                  setAlertVisible={setAlertVisible}
+                  setErrMsgPost={setErrMsgPost}
                 />
               ))
         : ages //pregnancy vaccine
@@ -90,7 +90,7 @@ const VaccineItem = ({
                 setScrollPosition={setScrollPosition}
                 datas={datas}
                 fetchRecord={fetchRecord}
-                setAlertVisible={setAlertVisible}
+                setErrMsgPost={setErrMsgPost}
               />
             ))}
     </tr>

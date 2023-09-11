@@ -40,10 +40,15 @@ const LoginForm = () => {
       setErrMsg(err.message);
       return;
     }
+
+    const formDatasToPost = {
+      ...formDatas,
+      email: formDatas.email.toLowerCase(),
+    };
     //Submission
-    const email = formDatas.email;
-    const password = formDatas.password;
-    if (formDatas.type === "staff") {
+    const email = formDatasToPost.email;
+    const password = formDatasToPost.password;
+    if (formDatasToPost.type === "staff") {
       try {
         //=============== AUTH =================//
         const response = await axiosXano.post(
@@ -175,7 +180,6 @@ const LoginForm = () => {
           }
         );
         const authToken = response?.data?.authToken;
-        console.log(authToken);
         setAuth({ email, password, authToken });
 
         //================ USER ===================//
@@ -188,7 +192,6 @@ const LoginForm = () => {
         const name = response2?.data?.full_name;
         const accessLevel = response2?.data?.access_level;
         const demographics = response2?.data;
-        console.log(accessLevel);
 
         // Get user unread messages
         const response3 = await axiosXanoPatient.get(

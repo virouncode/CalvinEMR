@@ -83,7 +83,8 @@ const Eform = ({
               <ul>
                 <li>
                   a. Click on download icon <i class="fa-solid fa-download"></i>{" "}
-                  (upper-right corner) and save the document on your computer{" "}
+                  (upper-right corner), name and save the document on your
+                  computer{" "}
                 </li>
                 <li>
                   b. Click{" "}

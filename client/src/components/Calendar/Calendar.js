@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { useEvents } from "../../hooks/useEvents";
+import { firstLetterUpper } from "../../utils/firstLetterUpper";
 
 //Require
 var _ = require("lodash");
@@ -849,7 +850,7 @@ const Calendar = ({ timelineVisible }) => {
       staff_guests: tempFormDatas.staff_guests,
       patients_guests: tempFormDatas.patients_guests,
       status: tempFormDatas.status,
-      reason: tempFormDatas.reason,
+      reason: firstLetterUpper(tempFormDatas.reason),
       room: tempFormDatas.room,
       created_by_id: user.id,
       date_created: Date.parse(new Date()),

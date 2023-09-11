@@ -24,7 +24,7 @@ const MedicationsPU = ({
   const { user } = useAuth();
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
-  const [errMsgPost, setErrMsgPost] = useState(false);
+  const [errMsgPost, setErrMsgPost] = useState("");
   const [presVisible, setPresVisible] = useState(false);
   const [columnToSort, setColumnToSort] = useState("start");
   const [medsRx, setMedsRx] = useState([]);
@@ -53,6 +53,7 @@ const MedicationsPU = ({
   };
 
   const handleAdd = (e) => {
+    setErrMsgPost("");
     editCounter.current += 1;
     setAddVisible((v) => !v);
   };
@@ -80,10 +81,7 @@ const MedicationsPU = ({
             <>
               <h1 className="medications-title">Patient medications</h1>
               {errMsgPost && (
-                <div className="medications-err">
-                  Unable to save form : please fill out "Medication Name" field
-                  at least
-                </div>
+                <div className="medications-err">{errMsgPost}</div>
               )}
               <table className="medications-table">
                 <thead>

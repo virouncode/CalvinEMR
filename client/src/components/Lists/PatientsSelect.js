@@ -20,7 +20,9 @@ const PatientsSelect = ({ handleChange, value, name, id, patientId = 0 }) => {
           .filter(({ id }) => id !== patientId)
           .sort((a, b) => a.full_name.localeCompare(b.full_name))
           .map((patient) => (
-            <option value={patient.id}>{patient.full_name}</option>
+            <option value={patient.id} key={patient.id}>
+              {patient.full_name}
+            </option>
           ))}
     </select>
   );

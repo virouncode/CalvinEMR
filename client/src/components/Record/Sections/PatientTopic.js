@@ -103,7 +103,12 @@ const PatientTopic = ({
           handleTriangleClick={handleTriangleClick}
           handlePopUpClick={handlePopUpClick}
           allContentsVisible={allContentsVisible}
-          popUpButton={topic === "MESSAGES" ? false : true}
+          popUpButton={
+            topic === "MESSAGES WITH PATIENT" ||
+            topic === "MESSAGES ABOUT PATIENT"
+              ? false
+              : true
+          }
         />
       </div>
       <div
