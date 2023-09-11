@@ -89,6 +89,9 @@ const AccountPatientForm = () => {
       datasToPut.middle_name = firstLetterUpper(datasToPut.middle_name);
       datasToPut.last_name = firstLetterUpper(datasToPut.last_name);
       datasToPut.full_name = firstLetterUpper(full_name);
+      datasToPut.address = firstLetterUpper(datasToPut.address);
+      datasToPut.province_state = firstLetterUpper(datasToPut.province_state);
+      datasToPut.city = firstLetterUpper(datasToPut.city);
 
       //Validation
       try {

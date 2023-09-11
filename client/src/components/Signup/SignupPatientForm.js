@@ -100,6 +100,7 @@ const SignupPatientForm = () => {
       datasToPost.middle_name = firstLetterUpper(datasToPost.middle_name);
       datasToPost.last_name = firstLetterUpper(datasToPost.last_name);
       datasToPost.full_name = firstLetterUpper(full_name);
+      datasToPost.address = firstLetterUpper(datasToPost.address);
       datasToPost.province_state = firstLetterUpper(datasToPost.province_state);
       datasToPost.city = firstLetterUpper(datasToPost.city);
       delete datasToPost.confirm_password;
