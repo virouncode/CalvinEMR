@@ -7,6 +7,8 @@ import Eform from "../Topics/Eforms/Eform";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import { postPatientRecord } from "../../../api/fetchRecords";
+import { PDFDocument } from "pdf-lib";
+const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const EformsPU = ({
   patientId,
@@ -64,7 +66,7 @@ const EformsPU = ({
       // getting a hold of the file reference
       let file = e.target.files[0];
       if (file.size > 20000000) {
-        alert("The file is too large, please choose another one");
+        alert("The file is over 20Mb, please choose another one");
         return;
       }
       setIsLoadingFile(true);
@@ -73,7 +75,7 @@ const EformsPU = ({
       reader.readAsDataURL(file);
       // here we tell the reader what to do when it's done reading...
       reader.onload = async (e) => {
-        let content = e.target.result; // this is the content!
+        let content = e.target.result;
         try {
           const response = await axiosXano.post(
             "/upload/attachment",
@@ -86,18 +88,48 @@ const EformsPU = ({
               },
             }
           );
-
-          await postPatientRecord("/eforms", user.id, auth.authToken, {
-            patient_id: patientId,
-            name: file.name,
-            file: response.data,
-          });
-          const abortController = new AbortController();
-          fetchRecord(abortController);
-          toast.success(`Form successfully added to patient record`, {
-            containerId: "B",
-          });
-          setIsLoadingFile(false);
+          //flatten the pdf
+          const formUrl = `${BASE_URL}${response.data.path}`;
+          const formPdfBytes = await fetch(formUrl).then((res) =>
+            res.arrayBuffer()
+          );
+          const pdfDoc = await PDFDocument.load(formPdfBytes);
+          const form = pdfDoc.getForm();
+          form.flatten();
+          const pdfBytes = await pdfDoc.save();
+          //read the new flattened pdf
+          let reader2 = new FileReader();
+          reader2.readAsDataURL(
+            new Blob([pdfBytes], { type: "application/pdf" })
+          );
+          // here we tell the reader what to do when it's done reading...
+          reader2.onload = async (e) => {
+            let content = e.target.result;
+            try {
+              let response2 = await axiosXano.post(
+                "/upload/attachment",
+                {
+                  content: content,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${auth.authToken}`,
+                  },
+                }
+              );
+              await postPatientRecord("/eforms", user.id, auth.authToken, {
+                patient_id: patientId,
+                name: file.name,
+                file: response2.data,
+              });
+              const abortController = new AbortController();
+              fetchRecord(abortController);
+              toast.success(`Form successfully added to patient record`, {
+                containerId: "B",
+              });
+              setIsLoadingFile(false);
+            } catch (err) {}
+          };
         } catch (err) {
           toast.error(`Error: unable to save file: ${err.message}`, {
             containerId: "B",

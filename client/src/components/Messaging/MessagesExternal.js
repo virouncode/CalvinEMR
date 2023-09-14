@@ -7,11 +7,10 @@ import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { staffIdToName } from "../../utils/staffIdToName";
 import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
 import MessagesExternalToolBar from "./MessagesExternalToolbar";
 import MessagesExternalBox from "./MessagesExternalBox";
-import { patientIdToName } from "../../utils/patientIdToName";
+import { searchMessagesExternal } from "../../utils/searchMessagesExternal";
 
 const MessagesExternal = () => {
   //HOOKSs
@@ -55,30 +54,11 @@ const MessagesExternal = () => {
         let newMessages = filterAndSortExternalMessages(
           sectionName || section,
           response.data,
-          "staff"
+          "staff",
+          user.id
         );
-        //FILTER HERE SEARCH
-        newMessages = newMessages.filter((message) =>
-          message.from_id.user_type === "staff"
-            ? staffIdToName(clinic.staffInfos, message.from_id.id)
-                .toLowerCase()
-                .includes(search.toLowerCase()) ||
-              patientIdToName(clinic.patientsInfos, message.to_id.id)
-                .toLowerCase()
-                .includes(search.toLowerCase()) ||
-              message.subject.toLowerCase().includes(search.toLowerCase()) ||
-              message.body.toLowerCase().includes(search.toLowerCase())
-            : patientIdToName(clinic.patientsInfos, message.from_id.id)
-                .toLowerCase()
-                .includes(search.toLowerCase()) ||
-              staffIdToName(clinic.staffInfos, message.to_id.id)
-                .toLowerCase()
-                .includes(search.toLowerCase()) ||
-              message.subject.toLowerCase().includes(search.toLowerCase()) ||
-              message.body.toLowerCase().includes(search.toLowerCase())
-        );
-
-        setMessages(newMessages);
+        //Search
+        setMessages(searchMessagesExternal(newMessages, search, clinic));
       } catch (err) {
         if (err.name !== "CanceledError")
           toast.error(`Error: unable to get messages: ${err.message}`, {
@@ -91,15 +71,7 @@ const MessagesExternal = () => {
       abortController.abort();
       setMessages(null);
     };
-  }, [
-    auth.authToken,
-    clinic.patientsInfos,
-    clinic.staffInfos,
-    search,
-    section,
-    sectionName,
-    user.id,
-  ]);
+  }, [auth.authToken, clinic, search, section, sectionName, user.id]);
 
   return (
     <div className="messages-container">

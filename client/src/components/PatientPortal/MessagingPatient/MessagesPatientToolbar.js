@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import useAuth from "../../..//hooks/useAuth";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import { toast } from "react-toastify";
@@ -65,10 +65,7 @@ const MessagesPatientToolBar = ({
           );
           const newMessage = {
             ...response.data,
-            deleted_by_ids: [
-              ...response.data.deleted_by_ids,
-              { user_type: "patient", id: user.id },
-            ],
+            deleted_by_patient_id: user.id,
           };
           await axiosXanoPatient.put(
             `/messages_external/${messageId}`,
@@ -93,7 +90,8 @@ const MessagesPatientToolBar = ({
         const newMessages = filterAndSortExternalMessages(
           section,
           response.data,
-          "patient"
+          "patient",
+          user.id
         );
         setMessages(newMessages);
         setNewVisible(false);
@@ -123,12 +121,9 @@ const MessagesPatientToolBar = ({
         )
       ).data;
       for (let message of msgsSelected) {
-        const newDeletedByIds = message.deleted_by_ids.filter(
-          (item) => item.user_type !== "patient"
-        );
         const newMessage = {
           ...message,
-          deleted_by_ids: newDeletedByIds,
+          deleted_by_patient_id: user.id,
         };
         await axiosXanoPatient.put(
           `/messages_external/${message.id}`,

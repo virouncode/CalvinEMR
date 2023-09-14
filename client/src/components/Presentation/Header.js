@@ -6,9 +6,15 @@ import useAuth from "../../hooks/useAuth";
 const Header = () => {
   const { user, setUser, setAuth, setClinic } = useAuth();
   const handleLogout = () => {
+    console.log("logout");
     setAuth({});
     setUser({});
     setClinic({});
+    localStorage.removeItem("auth");
+    localStorage.removeItem("user");
+    localStorage.removeItem("clinic");
+    localStorage.setItem("message", "logout");
+    localStorage.removeItem("message");
   };
   return (
     <header className="header">

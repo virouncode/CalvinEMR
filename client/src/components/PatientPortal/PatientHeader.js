@@ -9,6 +9,11 @@ const PatientHeader = () => {
     setAuth({});
     setUser({});
     setClinic({});
+    localStorage.removeItem("auth");
+    localStorage.removeItem("user");
+    localStorage.removeItem("clinic");
+    localStorage.setItem("message", "logout");
+    localStorage.removeItem("message");
   };
   return (
     <header className="header header--patient">

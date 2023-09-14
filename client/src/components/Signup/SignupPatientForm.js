@@ -268,6 +268,10 @@ const SignupPatientForm = () => {
         },
       });
       setClinic({ ...clinic, patientsInfos: response2.data });
+      localStorage.setItem(
+        "clinic",
+        JSON.stringify({ ...clinic, patientsInfos: response2.data })
+      );
       setPatientAdded(true);
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
@@ -285,8 +289,8 @@ const SignupPatientForm = () => {
   };
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
-    if (file.size > 20000000) {
-      alert("File size exceeds 20Mbs, please choose another file");
+    if (file.size > 25000000) {
+      alert("The file is over 25Mb, please choose another file");
       return;
     }
     setIsLoadingFile(true);

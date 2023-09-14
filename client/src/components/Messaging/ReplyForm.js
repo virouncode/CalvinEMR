@@ -4,6 +4,7 @@ import axiosXano from "../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
+import { patientIdToName } from "../../utils/patientIdToName";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import Message from "./Message";
 import formatName from "../../utils/formatName";
@@ -41,21 +42,24 @@ const ReplyForm = ({
 
       const replyMessage = {
         from_id: user.id,
-        to_ids: allPersons
-          ? [...new Set([...message.to_ids, message.from_id])].filter(
-              (staffId) => staffId !== user.id
+        to_staff_ids: allPersons
+          ? [...new Set([...message.to_staff_ids, message.from_id])].filter(
+              (id) => id !== user.id
             )
           : [message.from_id],
-        read_by_ids: [user.id],
         subject: previousMsgs.length
           ? `Re ${previousMsgs.length + 1}: ${message.subject.slice(
               message.subject.indexOf(":") + 1
             )}`
           : `Re: ${message.subject}`,
         body: body,
-        previous_ids: [...previousMsgs.map(({ id }) => id), message.id],
-        related_patient_id: message.related_patient_id || 0,
         attachments_ids: attach_ids,
+        related_patient_id: message.related_patient_id || 0,
+        read_by_staff_ids: [user.id],
+        previous_messages: [
+          ...message.previous_messages,
+          { message_type: message.type, id: message.id },
+        ],
         date_created: Date.parse(new Date()),
       };
 
@@ -71,12 +75,9 @@ const ReplyForm = ({
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      const newMessages = filterAndSortMessages(
-        section,
-        response.data,
-        user.id
+      setMessages(
+        filterAndSortMessages(section, response.data, "staff", user.id)
       );
-      setMessages(newMessages);
       setReplyVisible(false);
       setCurrentMsgId(0);
       toast.success("Message sent successfully", { containerId: "A" });
@@ -94,12 +95,15 @@ const ReplyForm = ({
   const handleAttach = (e) => {
     let input = e.nativeEvent.view.document.createElement("input");
     input.type = "file";
-    input.accept = ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav";
+    input.accept =
+      ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx";
     input.onchange = (e) => {
       // getting a hold of the file reference
       let file = e.target.files[0];
-      if (file.size > 20000000) {
-        alert("The file is too large, please choose another one");
+      if (file.size > 25000000) {
+        alert(
+          "The file is over 25Mb, please choose another one or send a link"
+        );
         return;
       }
       setIsLoadingFile(true);
@@ -156,7 +160,7 @@ const ReplyForm = ({
         <p>
           <strong>To: </strong>
           {allPersons
-            ? [...new Set([...message.to_ids, message.from_id])]
+            ? [...new Set([...message.to_staff_ids, message.from_id])]
                 .filter((staffId) => staffId !== user.id)
                 .map(
                   (staffId) =>
@@ -207,17 +211,37 @@ const ReplyForm = ({
             key={message.id}
             index={0}
           />
-          {previousMsgs.map((message, index) => (
-            <Message
-              message={message}
-              author={formatName(
-                staffIdToName(clinic.staffInfos, message.from_id)
-              )}
-              authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-              key={message.id}
-              index={index + 1}
-            />
-          ))}
+          {previousMsgs.map((message, index) =>
+            message.type === "Internal" ? (
+              <Message
+                message={message}
+                author={formatName(
+                  staffIdToName(clinic.staffInfos, message.from_id)
+                )}
+                authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+                key={message.id}
+                index={index + 1}
+              />
+            ) : (
+              <Message
+                message={message}
+                author={
+                  message.from_user_type === "staff"
+                    ? formatName(
+                        staffIdToName(clinic.staffInfos, message.from_id)
+                      )
+                    : patientIdToName(clinic.patientsInfos, message.from_id)
+                }
+                authorTitle={
+                  message.from_user_type === "staff"
+                    ? staffIdToTitle(clinic.staffInfos, message.from_id)
+                    : ""
+                }
+                key={message.id}
+                index={index + 1}
+              />
+            )
+          )}
         </div>
         <MessagesAttachments
           attachments={attachments}

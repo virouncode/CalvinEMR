@@ -12,7 +12,7 @@ import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExter
 import { patientIdToName } from "../../../utils/patientIdToName";
 import MessageExternal from "../../Messaging/MessageExternal";
 
-const ReplyFormPatient = ({
+const ReplyMessagePatient = ({
   setReplyVisible,
   message,
   previousMsgs,
@@ -44,17 +44,22 @@ const ReplyFormPatient = ({
       attach_ids = [...message.attachments_ids, ...attach_ids];
 
       const replyMessage = {
-        from_id: { user_type: "patient", id: user.id },
-        to_id: { user_type: "staff", id: message.from_id.id },
-        read_by_ids: [{ user_type: "patient", id: user.id }],
+        from_id: user.id,
+        from_user_type: "patient",
+        to_id: message.from_id,
+        to_user_type: "staff",
         subject: previousMsgs.length
           ? `Re ${previousMsgs.length + 1}: ${message.subject.slice(
               message.subject.indexOf(":") + 1
             )}`
           : `Re: ${message.subject}`,
         body: body,
-        previous_ids: [...previousMsgs.map(({ id }) => id), message.id],
         attachments_ids: attach_ids,
+        read_by_patient_id: user.id,
+        previous_messages_ids: [
+          ...previousMsgs.map(({ id }) => id),
+          message.id,
+        ],
         date_created: Date.parse(new Date()),
       };
 
@@ -76,7 +81,8 @@ const ReplyFormPatient = ({
       const newMessages = filterAndSortExternalMessages(
         section,
         response.data,
-        "patient"
+        "patient",
+        user.id
       );
       setMessages(newMessages);
       setReplyVisible(false);
@@ -96,12 +102,15 @@ const ReplyFormPatient = ({
   const handleAttach = (e) => {
     let input = e.nativeEvent.view.document.createElement("input");
     input.type = "file";
-    input.accept = ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav";
+    input.accept =
+      ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx";
     input.onchange = (e) => {
       // getting a hold of the file reference
       let file = e.target.files[0];
-      if (file.size > 20000000) {
-        alert("The file is too large, please choose another one");
+      if (file.size > 25000000) {
+        alert(
+          "The file is over 25Mb, please choose another one or send a link"
+        );
         return;
       }
       setIsLoadingFile(true);
@@ -157,8 +166,8 @@ const ReplyFormPatient = ({
       <div className="reply-form-title">
         <p>
           <strong>To: </strong>
-          {staffIdToTitle(clinic.staffInfos, message.from_id.id)}{" "}
-          {formatName(staffIdToName(clinic.staffInfos, message.from_id.id))}
+          {staffIdToTitle(clinic.staffInfos, message.from_id)}{" "}
+          {formatName(staffIdToName(clinic.staffInfos, message.from_id))}
         </p>
       </div>
       <div className="reply-form-subject">
@@ -184,14 +193,12 @@ const ReplyFormPatient = ({
           <MessageExternal
             message={message}
             author={
-              message.from_id.user_type === "staff"
-                ? formatName(
-                    staffIdToName(clinic.staffInfos, message.from_id.id)
-                  )
-                : patientIdToName(clinic.patientsInfos, message.from_id.id)
+              message.from_user_type === "staff"
+                ? formatName(staffIdToName(clinic.staffInfos, message.from_id))
+                : patientIdToName(clinic.patientsInfos, message.from_id)
             }
             authorTitle={
-              message.from_id.user_type === "staff"
+              message.from_user_type === "staff"
                 ? staffIdToTitle(clinic.staffInfos, message.from_id)
                 : ""
             }
@@ -202,14 +209,14 @@ const ReplyFormPatient = ({
             <MessageExternal
               message={message}
               author={
-                message.from_id.user_type === "staff"
+                message.from_user_type === "staff"
                   ? formatName(
-                      staffIdToName(clinic.staffInfos, message.from_id.id)
+                      staffIdToName(clinic.staffInfos, message.from_id)
                     )
-                  : patientIdToName(clinic.patientsInfos, message.from_id.id)
+                  : patientIdToName(clinic.patientsInfos, message.from_id)
               }
               authorTitle={
-                message.from_id.user_type === "staff"
+                message.from_user_type === "staff"
                   ? staffIdToTitle(clinic.staffInfos, message.from_id)
                   : ""
               }
@@ -253,4 +260,4 @@ const ReplyFormPatient = ({
   );
 };
 
-export default ReplyFormPatient;
+export default ReplyMessagePatient;

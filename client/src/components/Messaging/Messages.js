@@ -10,8 +10,7 @@ import axiosXano from "../../api/xano";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { patientIdToName } from "../../utils/patientIdToName";
+import { searchMessages } from "../../utils/searchMessages";
 
 const Messages = () => {
   //HOOKSs
@@ -47,32 +46,14 @@ const Messages = () => {
         });
 
         if (abortController.signal.aborted) return;
-
         //En fonction de la section on filtre les messages
-        let newMessages = filterAndSortMessages(
+        const newMessages = filterAndSortMessages(
           sectionName || section,
           response.data,
           user.id
         );
-        //FILTER HERE SEARCH
-        newMessages = newMessages.filter(
-          (message) =>
-            staffIdToName(clinic.staffInfos, message.from_id)
-              .toLowerCase()
-              .includes(search.toLowerCase()) ||
-            message.to_ids
-              .map((id) => staffIdToName(clinic.staffInfos, id))
-              .join(", ")
-              .toLowerCase()
-              .includes(search.toLowerCase()) ||
-            message.subject.toLowerCase().includes(search.toLowerCase()) ||
-            message.body.toLowerCase().includes(search.toLowerCase()) ||
-            patientIdToName(clinic.patientsInfos, message.related_patient_id)
-              .toLowerCase()
-              .includes(search.toLowerCase())
-        );
-
-        setMessages(newMessages);
+        //Search
+        setMessages(searchMessages(newMessages, search, clinic));
       } catch (err) {
         if (err.name !== "CanceledError")
           toast.error(`Error: unable to get messages: ${err.message}`, {
@@ -85,15 +66,7 @@ const Messages = () => {
       abortController.abort();
       setMessages(null);
     };
-  }, [
-    auth.authToken,
-    clinic.patientsInfos,
-    clinic.staffInfos,
-    search,
-    section,
-    sectionName,
-    user.id,
-  ]);
+  }, [auth.authToken, clinic, search, section, sectionName, user.id]);
 
   return (
     <div className="messages-container">

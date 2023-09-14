@@ -7,7 +7,10 @@ import { toast } from "react-toastify";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { staffIdToName } from "../../utils/staffIdToName";
-import { staffIdListToTitleAndName } from "../../utils/staffIdListToTitleAndName";
+import {
+  patientIdListToName,
+  staffIdListToTitleAndName,
+} from "../../utils/staffIdListToTitleAndName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import formatName from "../../utils/formatName";
 
@@ -33,15 +36,23 @@ const MessageThumbnail = ({
         unreadMessagesNbr: newUnreadMessagesNbr,
         unreadNbr: newUnreadMessagesNbr + user.unreadMessagesExternalNbr,
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          unreadMessagesNbr: newUnreadMessagesNbr,
+          unreadNbr: newUnreadMessagesNbr + user.unreadMessagesExternalNbr,
+        })
+      );
     }
     setCurrentMsgId(message.id);
 
-    if (!message.read_by_ids.includes(user.id)) {
+    if (!message.read_by_staff_ids.includes(user.id)) {
       //create and replace message with read by user id
       try {
         const newMessage = {
           ...message,
-          read_by_ids: [...message.read_by_ids, user.id],
+          read_by_staff_ids: [...message.read_by_staff_ids, user.id],
         };
         await axiosXano.put(`/messages/${message.id}`, newMessage, {
           headers: {
@@ -55,12 +66,7 @@ const MessageThumbnail = ({
             Authorization: `Bearer ${auth.authToken}`,
           },
         });
-        const newMessages = filterAndSortMessages(
-          section,
-          response.data,
-          user.id
-        );
-        setMessages(newMessages);
+        setMessages(filterAndSortMessages(section, response.data, user.id));
       } catch (err) {
         toast.error(`Error: unable to get messages: ${err.message}`, {
           containerId: "A",
@@ -71,7 +77,8 @@ const MessageThumbnail = ({
 
   const THUMBNAIL_STYLE = {
     fontWeight:
-      !message.read_by_ids.includes(user.id) && message.to_ids.includes(user.id)
+      message.to_staff_ids.includes(user.id) &&
+      !message.read_by_staff_ids.includes(user.id)
         ? "bold"
         : "normal",
   };
@@ -107,7 +114,7 @@ const MessageThumbnail = ({
           `/messages/${message.id}`,
           {
             ...message,
-            deleted_by_ids: [...message.deleted_by_ids, user.id],
+            deleted_by_staff_ids: [...message.deleted_by_staff_ids, user.id],
           },
           {
             headers: {
@@ -116,18 +123,13 @@ const MessageThumbnail = ({
             },
           }
         );
-        const response2 = await axiosXano.get(`/messages?staff_id=${user.id}`, {
+        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
             "Content-Type": "application/json",
           },
         });
-        const newMessages = filterAndSortMessages(
-          section,
-          response2.data,
-          user.id
-        );
-        setMessages(newMessages);
+        setMessages(filterAndSortMessages(section, response.data, user.id));
         toast.success("Message deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
       } catch (err) {
@@ -152,7 +154,10 @@ const MessageThumbnail = ({
           {section !== "Sent messages"
             ? staffIdToTitle(clinic.staffInfos, message.from_id) +
               formatName(staffIdToName(clinic.staffInfos, message.from_id))
-            : staffIdListToTitleAndName(clinic.staffInfos, message.to_ids)}
+            : staffIdListToTitleAndName(
+                clinic.staffInfos,
+                message.to_staff_ids
+              )}
         </div>
         <div className="message-thumbnail-sample">
           <span>{message.subject}</span> - {message.body}{" "}

@@ -11,7 +11,11 @@ const PatientResultItem = ({ patient }) => {
       <td>{patient.first_name}</td>
       <td>{patient.middle_name}</td>
       <td>
-        <NavLink to={`/patient-record/${patient.id}`} className="record-link">
+        <NavLink
+          to={`/patient-record/${patient.id}`}
+          className="record-link"
+          target="_blank"
+        >
           {patient.last_name}
         </NavLink>
       </td>

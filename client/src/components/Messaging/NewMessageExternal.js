@@ -62,12 +62,15 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
 
       //create the message
       const message = {
-        from_id: { user_type: "staff", id: user.id },
-        to_id: { user_type: "patient", id: recipientId },
-        read_by_ids: [{ user_type: "staff", id: user.id }],
+        from_id: user.id,
+        from_user_type: "staff",
+        to_id: recipientId,
+        to_user_type: "patient",
         subject: subject,
         body: body,
         attachments_ids: attach_ids,
+        read_by_staff_id: user.id,
+        read_by_ids: [{ user_type: "staff", id: user.id }],
         date_created: Date.parse(new Date()),
       };
 
@@ -90,11 +93,14 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
       const newMessages = filterAndSortExternalMessages(
         section,
         response.data,
-        "staff"
+        "staff",
+        user.id
       );
       setMessages(newMessages);
       setNewVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
+
+      //EMAIL + SMS pour prévenir le patient qu'il a un nouveau message dans son portail
     } catch (err) {
       toast.error(`Error: unable to send message: ${err.message}`, {
         containerId: "B",
@@ -105,12 +111,15 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
   const handleAttach = (e) => {
     let input = e.nativeEvent.view.document.createElement("input");
     input.type = "file";
-    input.accept = ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav";
+    input.accept =
+      ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx";
     input.onchange = (e) => {
       // getting a hold of the file reference
       let file = e.target.files[0];
-      if (file.size > 20000000) {
-        alert("The file is too large, please choose another one");
+      if (file.size > 25000000) {
+        alert(
+          "The file is over 25Mb, please choose another one or send a link"
+        );
         return;
       }
       setIsLoadingFile(true);

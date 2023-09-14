@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
@@ -54,6 +54,7 @@ const MessagesToolBar = ({
     ) {
       try {
         for (let messageId of msgsSelectedIds) {
+          //get the particular message
           const response = await axiosXano.get(`/messages/${messageId}`, {
             headers: {
               "Content-Type": "application/json",
@@ -62,7 +63,10 @@ const MessagesToolBar = ({
           });
           const newMessage = {
             ...response.data,
-            deleted_by_ids: [...response.data.deleted_by_ids, user.id],
+            deleted_by_staff_ids: [
+              ...response.data.deleted_by_staff_ids,
+              user.id,
+            ],
           };
           await axiosXano.put(`/messages/${messageId}`, newMessage, {
             headers: {
@@ -77,12 +81,7 @@ const MessagesToolBar = ({
             "Content-Type": "application/json",
           },
         });
-        const newMessages = filterAndSortMessages(
-          section,
-          response.data,
-          user.id
-        );
-        setMessages(newMessages);
+        setMessages(filterAndSortMessages(section, response.data, user.id));
         setNewVisible(false);
         toast.success("Message(s) deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
@@ -110,12 +109,12 @@ const MessagesToolBar = ({
         )
       ).data;
       for (let message of msgsSelected) {
-        const newDeletedByIds = message.deleted_by_ids.filter(
+        const newDeletedByStaffIds = message.deleted_by_staff_ids.filter(
           (id) => id !== user.id
         );
         const newMessage = {
           ...message,
-          deleted_by_ids: newDeletedByIds,
+          deleted_by_staff_ids: newDeletedByStaffIds,
         };
         await axiosXano.put(`/messages/${message.id}`, newMessage, {
           headers: {
@@ -152,11 +151,6 @@ const MessagesToolBar = ({
         onChange={handleChange}
         id="search"
       />
-      {/* <i
-        style={{ marginLeft: "10px", cursor: "pointer" }}
-        className="fa-solid fa-magnifying-glass messages-toolbar-magnifying"
-        onClick={handleClickSearch}
-      ></i> */}
       <div className="messages-toolbar-btns">
         <button onClick={handleClickNew}>New</button>
         {section === "Deleted messages" && msgsSelectedIds.length !== 0 && (

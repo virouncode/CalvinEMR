@@ -24,10 +24,10 @@ const MessageExternal = ({ message, author, authorTitle, index }) => {
       </div>
       <div className="message-subtitle">
         to:{" "}
-        {message.to_id.user_type === "staff"
-          ? staffIdToTitle(clinic.staffInfos, message.to_id.id) +
-            formatName(staffIdToName(clinic.staffInfos, message.to_id.id))
-          : patientIdToName(clinic.patientsInfos, message.to_id.id)}
+        {message.to_user_type === "staff"
+          ? staffIdToTitle(clinic.staffInfos, message.to_id) +
+            formatName(staffIdToName(clinic.staffInfos, message.to_id))
+          : patientIdToName(clinic.patientsInfos, message.to_id)}
       </div>
       <div className="message-body">{message.body}</div>
     </div>

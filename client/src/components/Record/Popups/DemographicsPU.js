@@ -187,6 +187,10 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         },
       });
       setClinic({ ...clinic, patientsInfos: response2.data });
+      localStorage.setItem(
+        "clinic",
+        JSON.stringify({ ...clinic, patientsInfos: response2.data })
+      );
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
       toast.error(

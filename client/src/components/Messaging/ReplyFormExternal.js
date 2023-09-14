@@ -4,8 +4,6 @@ import axiosXano from "../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
-import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import Message from "./Message";
 import formatName from "../../utils/formatName";
 import { CircularProgress } from "@mui/material";
 import MessagesAttachments from "./MessagesAttachments";
@@ -41,17 +39,22 @@ const ReplyFormExternal = ({
       attach_ids = [...message.attachments_ids, ...attach_ids];
 
       const replyMessage = {
-        from_id: { user_type: "staff", id: user.id },
-        to_id: { user_type: "patient", id: message.from_id.id },
-        read_by_ids: [{ user_type: "staff", id: user.id }],
+        from_id: user.id,
+        from_user_type: "staff",
+        to_id: message.from_id,
+        to_user_type: "patient",
         subject: previousMsgs.length
           ? `Re ${previousMsgs.length + 1}: ${message.subject.slice(
               message.subject.indexOf(":") + 1
             )}`
           : `Re: ${message.subject}`,
         body: body,
-        previous_ids: [...previousMsgs.map(({ id }) => id), message.id],
         attachments_ids: attach_ids,
+        read_by_staff_id: user.id,
+        previous_messages_ids: [
+          ...previousMsgs.map(({ id }) => id),
+          message.id,
+        ],
         date_created: Date.parse(new Date()),
       };
 
@@ -73,7 +76,8 @@ const ReplyFormExternal = ({
       const newMessages = filterAndSortExternalMessages(
         section,
         response.data,
-        "staff"
+        "staff",
+        user.id
       );
       setMessages(newMessages);
       setReplyVisible(false);
@@ -93,12 +97,15 @@ const ReplyFormExternal = ({
   const handleAttach = (e) => {
     let input = e.nativeEvent.view.document.createElement("input");
     input.type = "file";
-    input.accept = ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav";
+    input.accept =
+      ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx";
     input.onchange = (e) => {
       // getting a hold of the file reference
       let file = e.target.files[0];
-      if (file.size > 20000000) {
-        alert("The file is too large, please choose another one");
+      if (file.size > 25000000) {
+        alert(
+          "The file is over 25Mb, please choose another one or send a link"
+        );
         return;
       }
       setIsLoadingFile(true);
@@ -154,7 +161,7 @@ const ReplyFormExternal = ({
       <div className="reply-form-title">
         <p>
           <strong>To: </strong>
-          {patientIdToName(clinic.patientsInfos, message.from_id.id)}
+          {patientIdToName(clinic.patientsInfos, message.from_id)}
         </p>
       </div>
       <div className="reply-form-subject">
@@ -180,14 +187,12 @@ const ReplyFormExternal = ({
           <MessageExternal
             message={message}
             author={
-              message.from_id.user_type === "staff"
-                ? formatName(
-                    staffIdToName(clinic.staffInfos, message.from_id.id)
-                  )
-                : patientIdToName(clinic.patientsInfos, message.from_id.id)
+              message.from_user_type === "staff"
+                ? formatName(staffIdToName(clinic.staffInfos, message.from_id))
+                : patientIdToName(clinic.patientsInfos, message.from_id)
             }
             authorTitle={
-              message.from_id.user_type === "staff"
+              message.from_user_type === "staff"
                 ? staffIdToTitle(clinic.staffInfos, message.from_id)
                 : ""
             }
@@ -198,14 +203,14 @@ const ReplyFormExternal = ({
             <MessageExternal
               message={message}
               author={
-                message.from_id.user_type === "staff"
+                message.from_user_type === "staff"
                   ? formatName(
-                      staffIdToName(clinic.staffInfos, message.from_id.id)
+                      staffIdToName(clinic.staffInfos, message.from_id)
                     )
-                  : patientIdToName(clinic.patientsInfos, message.from_id.id)
+                  : patientIdToName(clinic.patientsInfos, message.from_id)
               }
               authorTitle={
-                message.from_id.user_type === "staff"
+                message.from_user_type === "staff"
                   ? staffIdToTitle(clinic.staffInfos, message.from_id)
                   : ""
               }

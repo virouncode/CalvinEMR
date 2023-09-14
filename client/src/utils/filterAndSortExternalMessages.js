@@ -1,32 +1,72 @@
-export const filterAndSortExternalMessages = (section, datas, userType) => {
+export const getInboxMessagesExternal = (messages, userType, userId) => {
+  //Les messages qui sont à destination de l'user et qui ne sont pas deleted
+  const messagesToUser = messages.filter(
+    (message) => message.to_user_type === userType && message.to_id === userId
+  );
+  let messagesToUserNonDeleted;
+
+  if (userType === "staff") {
+    messagesToUserNonDeleted = messagesToUser.filter(
+      (message) => message.deleted_by_staff_id !== userId
+    );
+  } else {
+    messagesToUserNonDeleted = messagesToUser.filter(
+      (message) => message.deleted_by_patient_id !== userId
+    );
+  }
+  return messagesToUserNonDeleted;
+};
+
+export const getSentMessagesExternal = (messages, userType, userId) => {
+  //Les messages envoyés par le user non deleted
+  const messagesSentByUser = messages.filter(
+    (message) =>
+      message.from_user_type === userType && message.from_id === userId
+  );
+
+  let messagesSentByUserNonDeleted;
+  if (userType === "staff") {
+    messagesSentByUserNonDeleted = messagesSentByUser.filter(
+      (message) => message.deleted_by_staff_id !== userId
+    );
+  } else {
+    messagesSentByUserNonDeleted = messagesSentByUser.filter(
+      (message) => message.deleted_by_patient_id !== userId
+    );
+  }
+  return messagesSentByUserNonDeleted;
+};
+
+export const getDeletedMessagesExternal = (messages, userType, userId) => {
+  let messagesDeletedByUser;
+  if (userType === "staff") {
+    messagesDeletedByUser = messages.filter(
+      (message) => message.deleted_by_staff_id === userId
+    );
+  } else {
+    messagesDeletedByUser = messages.filter(
+      (message) => message.deleted_by_patient_id === userId
+    );
+  }
+  return messagesDeletedByUser;
+};
+
+export const filterAndSortExternalMessages = (
+  section,
+  datas,
+  userType,
+  userId
+) => {
   let newMessages = [];
   switch (section) {
     case "Inbox":
-      //messages qui proviennent de l'autre userType et non deleted par le user
-      newMessages = datas
-        .filter((message) => message.from_id.user_type !== userType)
-        .filter(
-          (message) =>
-            !message.deleted_by_ids.find(
-              ({ user_type }) => user_type === userType
-            )
-        );
+      newMessages = getInboxMessagesExternal(datas, userType, userId);
       break;
     case "Sent messages":
-      //messages qui proviennent de l'userType et non deleted par le user)
-      newMessages = datas
-        .filter((message) => message.from_id.user_type === userType)
-        .filter(
-          (message) =>
-            !message.deleted_by_ids.find(
-              ({ user_type }) => user_type === userType
-            )
-        );
+      newMessages = getSentMessagesExternal(datas, userType, userId);
       break;
     case "Deleted messages":
-      newMessages = datas.filter(({ deleted_by_ids }) =>
-        deleted_by_ids.find(({ user_type }) => user_type === userType)
-      );
+      newMessages = getDeletedMessagesExternal(datas, userType, userId);
       break;
     default:
       break;

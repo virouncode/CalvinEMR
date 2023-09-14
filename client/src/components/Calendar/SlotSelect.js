@@ -22,6 +22,13 @@ const SlotSelect = () => {
         ...user,
         settings: { ...user.settings, slot_duration: value },
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          settings: { ...user.settings, slot_duration: value },
+        })
+      );
       toast.success("Saved preference", { containerId: "A" });
     } catch (err) {
       toast.success(`Error: unable to save preference: ${err.message}`, {

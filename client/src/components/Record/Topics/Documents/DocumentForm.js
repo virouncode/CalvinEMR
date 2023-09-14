@@ -69,8 +69,8 @@ const DocumentForm = ({
     setErrMsgPost("");
     setSaveDisabled(true);
     const file = e.target.files[0];
-    if (file.size > 20000000) {
-      setErrMsgPost("File size exceeds 20Mbs, please choose another file");
+    if (file.size > 25000000) {
+      setErrMsgPost("The file is over 25Mb, please choose another file");
       setIsLoadingFile(false);
       return;
     }
@@ -126,7 +126,7 @@ const DocumentForm = ({
             required
             type="file"
             onChange={handleUpload}
-            accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav"
+            accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx"
           />
         </div>
         <div className="documents-form-content-row">

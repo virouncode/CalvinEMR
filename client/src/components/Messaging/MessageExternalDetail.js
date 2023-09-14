@@ -6,12 +6,14 @@ import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import formatName from "../../utils/formatName";
-import MessagesPrintPU from "./MessagesPrintPU";
 import { patientIdToName } from "../../utils/patientIdToName";
 import MessagesAttachments from "./MessagesAttachments";
 import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
 import MessageExternal from "./MessageExternal";
 import ReplyFormExternal from "./ReplyFormExternal";
+import NewWindow from "react-new-window";
+import MessagesExternalPrintPU from "./MessagesExternalPrintPU";
+import ForwardMessageExternal from "./ForwardMessageExternal";
 
 const MessageExternalDetail = ({
   setCurrentMsgId,
@@ -23,10 +25,10 @@ const MessageExternalDetail = ({
   setPopUpVisible,
 }) => {
   const [replyVisible, setReplyVisible] = useState(false);
+  const [forwardVisible, setForwardVisible] = useState(false);
   const [allPersons, setAllPersons] = useState(false);
   const { auth, user, clinic } = useAuth();
   const [previousMsgs, setPreviousMsgs] = useState(null);
-
   const [attachments, setAttachments] = useState([]);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const MessageExternalDetail = ({
       try {
         const response = await axiosXano.post(
           "/messages_external_selected",
-          { messages_ids: message.previous_ids },
+          { messages_ids: message.previous_messages_ids },
           {
             headers: {
               Authorization: `Bearer ${auth.authToken}`,
@@ -58,7 +60,7 @@ const MessageExternalDetail = ({
     };
     fetchPreviousMsgs();
     return () => abortController.abort();
-  }, [auth.authToken, user.id, message.previous_ids]);
+  }, [auth.authToken, message.previous_messages_ids]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -96,6 +98,10 @@ const MessageExternalDetail = ({
     setCurrentMsgId(0);
   };
 
+  const handleClickForward = (e) => {
+    setForwardVisible(true);
+  };
+
   const handleDeleteMsg = async (e) => {
     if (
       await confirmAlert({
@@ -107,10 +113,7 @@ const MessageExternalDetail = ({
           `/messages_external/${message.id}`,
           {
             ...message,
-            deleted_by_ids: [
-              ...message.deleted_by_ids,
-              { user_type: "staff", id: user.id },
-            ],
+            deleted_by_staff_id: user.id,
           },
           {
             headers: {
@@ -119,7 +122,7 @@ const MessageExternalDetail = ({
             },
           }
         );
-        const response2 = await axiosXano.get(
+        const response = await axiosXano.get(
           `/messages_external_for_staff?staff_id=${user.id}`,
           {
             headers: {
@@ -128,12 +131,14 @@ const MessageExternalDetail = ({
             },
           }
         );
-        const newMessages = filterAndSortExternalMessages(
-          section,
-          response2.data,
-          "staff"
+        setMessages(
+          filterAndSortExternalMessages(
+            section,
+            response.data,
+            "staff",
+            user.id
+          )
         );
-        setMessages(newMessages);
         setCurrentMsgId(0);
         toast.success("Message deleted successfully", { containerId: "A" });
       } catch (err) {
@@ -151,7 +156,7 @@ const MessageExternalDetail = ({
 
   return (
     <>
-      {/* {popUpVisible && (
+      {popUpVisible && (
         <NewWindow
           title={`Message(s) / Subject: ${message.subject}`}
           features={{
@@ -167,17 +172,23 @@ const MessageExternalDetail = ({
           }}
           onUnload={() => setPopUpVisible(false)}
         >
-          <MessagesPrintPU
+          <MessagesExternalPrintPU
             message={message}
             previousMsgs={previousMsgs}
-            author={formatName(
-              staffIdToName(clinic.staffInfos, message.from_id)
-            )}
-            authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+            author={
+              message.from_user_type === "staff"
+                ? formatName(staffIdToName(clinic.staffInfos, message.from_id))
+                : patientIdToName(clinic.patientsInfos, message.from_id)
+            }
+            authorTitle={
+              message.from_user_type === "staff"
+                ? staffIdToTitle(clinic.staffInfos, message.from_id)
+                : ""
+            }
             attachments={attachments}
           />
         </NewWindow>
-      )} */}
+      )}
       <div className="message-detail-toolbar">
         <i
           className="fa-solid fa-arrow-left message-detail-toolbar-arrow"
@@ -196,12 +207,12 @@ const MessageExternalDetail = ({
         <MessageExternal
           message={message}
           author={
-            message.from_id.user_type === "staff"
-              ? formatName(staffIdToName(clinic.staffInfos, message.from_id.id))
-              : patientIdToName(clinic.patientsInfos, message.from_id.id)
+            message.from_user_type === "staff"
+              ? formatName(staffIdToName(clinic.staffInfos, message.from_id))
+              : patientIdToName(clinic.patientsInfos, message.from_id)
           }
           authorTitle={
-            message.from_id.user_type === "staff"
+            message.from_user_type === "staff"
               ? staffIdToTitle(clinic.staffInfos, message.from_id)
               : ""
           }
@@ -213,14 +224,14 @@ const MessageExternalDetail = ({
             <MessageExternal
               message={message}
               author={
-                message.from_id.user_type === "staff"
+                message.from_user_type === "staff"
                   ? formatName(
-                      staffIdToName(clinic.staffInfos, message.from_id.id)
+                      staffIdToName(clinic.staffInfos, message.from_id)
                     )
-                  : patientIdToName(clinic.patientsInfos, message.from_id.id)
+                  : patientIdToName(clinic.patientsInfos, message.from_id)
               }
               authorTitle={
-                message.from_id.user_type === "staff"
+                message.from_user_type === "staff"
                   ? staffIdToTitle(clinic.staffInfos, message.from_id)
                   : ""
               }
@@ -250,7 +261,33 @@ const MessageExternalDetail = ({
           {section !== "Sent messages" && (
             <button onClick={handleClickReply}>Reply</button>
           )}
+          <button onClick={handleClickForward}>Forward</button>
         </div>
+      )}
+      {forwardVisible && (
+        <NewWindow
+          title="Forward Discussion"
+          features={{
+            toolbar: "no",
+            scrollbars: "no",
+            menubar: "no",
+            status: "no",
+            directories: "no",
+            width: 1000,
+            height: 500,
+            left: 0,
+            top: 0,
+          }}
+          onUnload={() => setForwardVisible(false)}
+        >
+          <ForwardMessageExternal
+            setForwardVisible={setForwardVisible}
+            setMessages={setMessages}
+            section={section}
+            message={message}
+            previousMsgs={previousMsgs}
+          />
+        </NewWindow>
       )}
     </>
   );

@@ -2,47 +2,39 @@ import React, { useState } from "react";
 import Contacts from "./Contacts";
 import { categoryToTitle } from "../../utils/categoryToTitle";
 import formatName from "../../utils/formatName";
-import Patients from "./Patients";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
-import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import { patientIdToName } from "../../utils/patientIdToName";
+import MessageExternal from "./MessageExternal";
+import { staffIdToName } from "../../utils/staffIdToName";
+import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
+import { postPatientRecord } from "../../api/fetchRecords";
 import MessagesAttachments from "./MessagesAttachments";
 import { CircularProgress } from "@mui/material";
-import { postPatientRecord } from "../../api/fetchRecords";
+import { patientIdToName } from "../../utils/patientIdToName";
 
-const NewMessage = ({ setNewVisible, setMessages, section }) => {
+const ForwardMessageExternal = ({
+  setForwardVisible,
+  setMessages,
+  section,
+  message,
+  previousMsgs,
+  patient,
+}) => {
   const { auth, user, clinic } = useAuth();
   const [attachments, setAttachments] = useState([]);
   const [recipientsIds, setRecipientsIds] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
-  const [patientId, setPatientId] = useState(0);
   const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   const handleChange = (e) => {
     setBody(e.target.value);
   };
 
-  const handleChangeSubject = (e) => {
-    setSubject(e.target.value);
-  };
-
   const isContactChecked = (id) => recipientsIds.includes(id);
   const isCategoryChecked = (category) => categories.includes(category);
-  const isPatientChecked = (id) => patientId === id;
-
-  const handleCheckPatient = (e) => {
-    const id = parseInt(e.target.id);
-    const checked = e.target.checked;
-    if (checked) {
-      setPatientId(id);
-    } else {
-      setPatientId(0);
-    }
-  };
 
   const handleCheckContact = (e) => {
     const id = parseInt(e.target.id);
@@ -108,15 +100,7 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
   };
 
   const handleCancel = (e) => {
-    setNewVisible(false);
-  };
-
-  const handleRemoveAttachment = (fileName) => {
-    let updatedAttachments = [...attachments];
-    updatedAttachments = updatedAttachments.filter(
-      (attachment) => attachment.file.name !== fileName
-    );
-    setAttachments(updatedAttachments);
+    setForwardVisible(false);
   };
 
   const handleSend = async (e) => {
@@ -125,48 +109,64 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
       return;
     }
     try {
-      const attach_ids = (
+      let attach_ids = (
         await postPatientRecord("/attachments", user.id, auth.authToken, {
           attachments_array: attachments,
         })
       ).data;
 
+      attach_ids = [...message.attachments_ids, ...attach_ids];
+      console.log("previous_messages_ids", message.previous_messages_ids);
+
       //create the message
-      const message = {
+      const forwardMessage = {
         from_id: user.id,
-        to_staff_ids: recipientsIds,
-        subject: subject,
+        to_staff_ids: recipientsIds.map((recipientId) => recipientId),
+        subject: previousMsgs.length
+          ? `Fwd ${previousMsgs.length + 1}: ${message.subject.slice(
+              message.subject.indexOf(":") + 1
+            )}`
+          : `Fwd: ${message.subject}`,
         body: body,
         attachments_ids: attach_ids,
-        related_patient_id: patientId,
+        related_patient_id:
+          message.from_user_type === "patient"
+            ? message.from_id
+            : message.to_id,
         read_by_staff_ids: [user.id],
+        previous_messages: [
+          ...message.previous_messages_ids.map((id) => {
+            return { message_type: "External", id };
+          }),
+          { message_type: "External", id: message.id },
+        ],
         date_created: Date.parse(new Date()),
       };
 
-      await axiosXano.post("/messages", message, {
+      //post the message
+      await axiosXano.post("/messages", forwardMessage, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
 
-      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const newMessages = filterAndSortMessages(
-        section,
-        response.data,
-        "staff",
-        user.id
+      const response = await axiosXano.get(
+        `/messages_external_for_staff?staff_id=${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
-      setMessages(newMessages);
-      setNewVisible(false);
-      toast.success("Message sent successfully", { containerId: "A" });
+      setMessages(
+        filterAndSortExternalMessages(section, response.data, "staff", user.id)
+      );
+      setForwardVisible(false);
+      toast.success("Transfered successfully", { containerId: "A" });
     } catch (err) {
-      toast.error(`Error: unable to send message: ${err.message}`, {
+      toast.error(`Error: unable to forward message: ${err.message}`, {
         containerId: "B",
       });
     }
@@ -226,9 +226,17 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
     input.click();
   };
 
+  const handleRemoveAttachment = (fileName) => {
+    let updatedAttachments = [...attachments];
+    updatedAttachments = updatedAttachments.filter(
+      (attachment) => attachment.file.name !== fileName
+    );
+    setAttachments(updatedAttachments);
+  };
+
   return (
-    <div className="new-message">
-      <div className="new-message-contacts">
+    <div className="forward">
+      <div className="forward-contacts">
         <Contacts
           staffInfos={clinic.staffInfos}
           handleCheckContact={handleCheckContact}
@@ -237,8 +245,8 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
           isCategoryChecked={isCategoryChecked}
         />
       </div>
-      <div className="new-message-form">
-        <div className="new-message-form-recipients">
+      <div className="forward-form">
+        <div className="forward-form-recipients">
           <strong>To: </strong>
           <input
             type="text"
@@ -254,27 +262,20 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
             readOnly
           />
         </div>
-        <div className="new-message-form-subject">
-          <strong>Subject: </strong>
-          <input
-            type="text"
-            placeholder="Subject"
-            onChange={handleChangeSubject}
-            value={subject}
-          />
+        <div className="forward-form-subject">
+          <strong>Subject:</strong>
+          {previousMsgs.length
+            ? `\u00A0Fwd ${previousMsgs.length + 1}: ${message.subject.slice(
+                message.subject.indexOf(":") + 1
+              )}`
+            : `\u00A0Fwd: ${message.subject}`}
         </div>
-        <div className="new-message-form-patient">
-          <strong>About patient: </strong>
-          <input
-            type="text"
-            placeholder="Patient"
-            value={
-              patientId ? patientIdToName(clinic.patientsInfos, patientId) : ""
-            }
-            readOnly
-          />
-        </div>
-        <div className="new-message-form-attach">
+        {patient?.full_name && (
+          <div className="forward-form-patient">
+            <strong>About patient: {"\u00A0"}</strong> {patient.full_name}
+          </div>
+        )}
+        <div className="forward-attach">
           <strong>Attach files</strong>
           <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
           {attachments.map((attachment) => (
@@ -283,15 +284,54 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
             </span>
           ))}
         </div>
-        <div className="new-message-form-body">
+        <div className="forward-form-body">
           <textarea value={body} onChange={handleChange}></textarea>
+          <div className="forward-form-history">
+            <MessageExternal
+              message={message}
+              author={
+                message.from_user_type === "staff"
+                  ? formatName(
+                      staffIdToName(clinic.staffInfos, message.from_id)
+                    )
+                  : patientIdToName(clinic.patientsInfos, message.from_id)
+              }
+              authorTitle={
+                message.from_user_type === "staff"
+                  ? staffIdToTitle(clinic.staffInfos, message.from_id)
+                  : ""
+              }
+              key={message.id}
+              index={0}
+            />
+            {previousMsgs.map((message, index) => (
+              <MessageExternal
+                message={message}
+                author={
+                  message.from_user_type === "staff"
+                    ? formatName(
+                        staffIdToName(clinic.staffInfos, message.from_id)
+                      )
+                    : patientIdToName(clinic.patientsInfos, message.from_id)
+                }
+                authorTitle={
+                  message.from_user_type === "staff"
+                    ? staffIdToTitle(clinic.staffInfos, message.from_id)
+                    : ""
+                }
+                key={message.id}
+                index={index + 1}
+              />
+            ))}
+          </div>
           <MessagesAttachments
             attachments={attachments}
             handleRemoveAttachment={handleRemoveAttachment}
             deletable={true}
+            cardWidth="30%"
           />
         </div>
-        <div className="new-message-form-btns">
+        <div className="forward-form-btns">
           <button onClick={handleSend} disabled={isLoadingFile}>
             Send
           </button>
@@ -300,12 +340,6 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}
         </div>
-      </div>
-      <div className="new-message-patients">
-        <Patients
-          handleCheckPatient={handleCheckPatient}
-          isPatientChecked={isPatientChecked}
-        />
       </div>
       <ToastContainer
         enableMultiContainer
@@ -326,4 +360,4 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
   );
 };
 
-export default NewMessage;
+export default ForwardMessageExternal;

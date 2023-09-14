@@ -26,24 +26,25 @@ const MessageExternalThumbnail = ({
       setUser({
         ...user,
         unreadMessagesExternalNbr: newUnreadMessagesExternalNbr,
-      });
-      setUser({
-        ...user,
-        unreadMessagesExternalNbr: newUnreadMessagesExternalNbr,
         unreadNbr: user.unreadMessagesNbr + newUnreadMessagesExternalNbr,
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          unreadMessagesExternalNbr: newUnreadMessagesExternalNbr,
+          unreadNbr: user.unreadMessagesNbr + newUnreadMessagesExternalNbr,
+        })
+      );
     }
     setCurrentMsgId(message.id);
 
-    if (!message.read_by_ids.find(({ user_type }) => user_type === "staff")) {
+    if (!message.read_by_staff_id) {
       //create and replace message with read by user id
       try {
         const newMessage = {
           ...message,
-          read_by_ids: [
-            ...message.read_by_ids,
-            { user_type: "staff", id: user.id },
-          ],
+          read_by_staff_id: user.id,
         };
         await axiosXano.put(`/messages_external/${message.id}`, newMessage, {
           headers: {
@@ -60,12 +61,14 @@ const MessageExternalThumbnail = ({
             },
           }
         );
-        const newMessages = filterAndSortExternalMessages(
-          section,
-          response.data,
-          "staff"
+        setMessages(
+          filterAndSortExternalMessages(
+            section,
+            response.data,
+            "staff",
+            user.id
+          )
         );
-        setMessages(newMessages);
       } catch (err) {
         toast.error(`Error: unable to get messages: ${err.message}`, {
           containerId: "A",
@@ -75,11 +78,7 @@ const MessageExternalThumbnail = ({
   };
 
   const THUMBNAIL_STYLE = {
-    fontWeight:
-      !message.read_by_ids.find(({ user_type }) => user_type === "staff") &&
-      message.to_id.user_type === "staff"
-        ? "bold"
-        : "normal",
+    fontWeight: message.read_by_staff_id !== user.id ? "bold" : "normal",
   };
 
   const handleCheckMsg = (e) => {
@@ -113,10 +112,7 @@ const MessageExternalThumbnail = ({
           `/messages_external/${message.id}`,
           {
             ...message,
-            deleted_by_ids: [
-              ...message.deleted_by_ids,
-              { user_type: "staff", id: user.id },
-            ],
+            deleted_by_staff_id: user.id,
           },
           {
             headers: {
@@ -125,7 +121,7 @@ const MessageExternalThumbnail = ({
             },
           }
         );
-        const response2 = await axiosXano.get(
+        const response = await axiosXano.get(
           `/messages_external_for_staff?staff_id=${user.id}`,
           {
             headers: {
@@ -136,8 +132,9 @@ const MessageExternalThumbnail = ({
         );
         const newMessages = filterAndSortExternalMessages(
           section,
-          response2.data,
-          "staff"
+          response.data,
+          "staff",
+          user.id
         );
         setMessages(newMessages);
         toast.success("Message deleted successfully", { containerId: "A" });
@@ -161,17 +158,13 @@ const MessageExternalThumbnail = ({
       />
       <div onClick={handleMsgClick} className="message-thumbnail-link-external">
         <div className="message-thumbnail-author-external">
-          {
-            section !== "Sent messages" //messages reçus ou effacés
-              ? message.from_id.user_type === "patient" //le "From" est un patient
-                ? patientIdToName(clinic.patientsInfos, message.from_id.id)
-                : staffIdToTitle(clinic.staffInfos, message.from_id.id) +
-                  staffIdToName(clinic.staffInfos, message.from_id.id)
-              : patientIdToName(
-                  clinic.patientsInfos,
-                  message.to_id.id
-                ) /*messages envoyés, le "To" est un patient*/
-          }
+          {section !== "Sent messages" //messages reçus ou effacés
+            ? message.from_user_type === "patient" //le "From" est un patient ou un staff
+              ? patientIdToName(clinic.patientsInfos, message.from_id)
+              : staffIdToTitle(clinic.staffInfos, message.from_id) +
+                staffIdToName(clinic.staffInfos, message.from_id)
+            : /*messages envoyés, le "To" est forcément un patient*/
+              patientIdToName(clinic.patientsInfos, message.to_id)}
         </div>
         <div className="message-thumbnail-sample-external">
           <span>{message.subject}</span> - {message.body}{" "}

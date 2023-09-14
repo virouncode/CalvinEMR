@@ -5,7 +5,7 @@ import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import NewWindow from "react-new-window";
-import ForwardForm from "./ForwardForm";
+import ForwardMessage from "./ForwardMessage";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { staffIdToName } from "../../utils/staffIdToName";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
@@ -15,12 +15,12 @@ import formatName from "../../utils/formatName";
 import MessagesPrintPU from "./MessagesPrintPU";
 import { patientIdToName } from "../../utils/patientIdToName";
 import MessagesAttachments from "./MessagesAttachments";
+import MessageExternal from "./MessageExternal";
 
 const MessageDetail = ({
   setCurrentMsgId,
   message,
   setMessages,
-  setSection,
   section,
   popUpVisible,
   setPopUpVisible,
@@ -39,9 +39,14 @@ const MessageDetail = ({
     const abortController = new AbortController();
     const fetchPreviousMsgs = async () => {
       try {
+        //Previous Internal messages
         const response = await axiosXano.post(
           "/messages_selected",
-          { messages_ids: message?.previous_ids },
+          {
+            messages_ids: message.previous_messages
+              .filter((previousMsg) => previousMsg.message_type === "Internal")
+              .map((message) => message.id),
+          },
           {
             headers: {
               Authorization: `Bearer ${auth.authToken}`,
@@ -50,9 +55,28 @@ const MessageDetail = ({
             signal: abortController.signal,
           }
         );
+        //Previous External Messages
+        const response2 = await axiosXano.post(
+          "/messages_external_selected",
+          {
+            messages_ids: message.previous_messages
+              .filter((previousMsg) => previousMsg.message_type === "External")
+              .map((message) => message.id),
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+              "Content-Type": "application/json",
+            },
+            signal: abortController.signal,
+          }
+        );
+
         if (abortController.signal.aborted) return;
         setPreviousMsgs(
-          response.data.sort((a, b) => b.date_created - a.date_created)
+          [...response.data, ...response2.data].sort(
+            (a, b) => b.date_created - a.date_created
+          )
         );
       } catch (err) {
         if (err.name !== "CanceledError")
@@ -64,7 +88,7 @@ const MessageDetail = ({
     };
     fetchPreviousMsgs();
     return () => abortController.abort();
-  }, [auth.authToken, user.id, message?.previous_ids]);
+  }, [auth.authToken, message.id, message.previous_messages]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -113,7 +137,7 @@ const MessageDetail = ({
           `/messages/${message.id}`,
           {
             ...message,
-            deleted_by_ids: [...message.deleted_by_ids, user.id],
+            deleted_by_staff_ids: [...message.deleted_by_staff_ids, user.id],
           },
           {
             headers: {
@@ -122,18 +146,13 @@ const MessageDetail = ({
             },
           }
         );
-        const response2 = await axiosXano.get(`/messages?staff_id=${user.id}`, {
+        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
             "Content-Type": "application/json",
           },
         });
-        const newMessages = filterAndSortMessages(
-          section,
-          response2.data,
-          user.id
-        );
-        setMessages(newMessages);
+        setMessages(filterAndSortMessages(section, response.data, user.id));
         setCurrentMsgId(0);
         toast.success("Message deleted successfully", { containerId: "A" });
       } catch (err) {
@@ -153,7 +172,7 @@ const MessageDetail = ({
     setAllPersons(true);
   };
 
-  const handleClickTransfer = (e) => {
+  const handleClickForward = (e) => {
     setForwardVisible(true);
   };
 
@@ -230,17 +249,40 @@ const MessageDetail = ({
             index={0}
           />
           {previousMsgs &&
-            previousMsgs.map((message, index) => (
-              <Message
-                message={message}
-                author={formatName(
-                  staffIdToName(clinic.staffInfos, message.from_id)
-                )}
-                authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-                key={message.id}
-                index={index + 1}
-              />
-            ))}
+            previousMsgs.map((message, index) =>
+              message.type === "Internal" ? (
+                <Message
+                  message={message}
+                  author={formatName(
+                    staffIdToName(clinic.staffInfos, message.from_id)
+                  )}
+                  authorTitle={staffIdToTitle(
+                    clinic.staffInfos,
+                    message.from_id
+                  )}
+                  key={message.id}
+                  index={index + 1}
+                />
+              ) : (
+                <MessageExternal
+                  message={message}
+                  author={
+                    message.from_user_type === "staff"
+                      ? formatName(
+                          staffIdToName(clinic.staffInfos, message.from_id)
+                        )
+                      : patientIdToName(clinic.patientsInfos, message.from_id)
+                  }
+                  authorTitle={
+                    message.from_user_type === "staff"
+                      ? staffIdToTitle(clinic.staffInfos, message.from_id)
+                      : ""
+                  }
+                  key={message.id}
+                  index={index + 1}
+                />
+              )
+            )}
           <MessagesAttachments
             attachments={attachments}
             deletable={false}
@@ -264,10 +306,11 @@ const MessageDetail = ({
             {section !== "Sent messages" && (
               <button onClick={handleClickReply}>Reply</button>
             )}
-            {message.to_ids.length >= 2 && section !== "Sent messages" && (
-              <button onClick={handleClickReplyAll}>Reply all</button>
-            )}
-            <button onClick={handleClickTransfer}>Forward</button>
+            {message.to_staff_ids.length >= 2 &&
+              section !== "Sent messages" && (
+                <button onClick={handleClickReplyAll}>Reply all</button>
+              )}
+            <button onClick={handleClickForward}>Forward</button>
           </div>
         )}
         {forwardVisible && (
@@ -286,7 +329,7 @@ const MessageDetail = ({
             }}
             onUnload={() => setForwardVisible(false)}
           >
-            <ForwardForm
+            <ForwardMessage
               setForwardVisible={setForwardVisible}
               setMessages={setMessages}
               section={section}

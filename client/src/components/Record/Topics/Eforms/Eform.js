@@ -75,16 +75,16 @@ const Eform = ({
             </li>
             <li>2. Fill-in the form with relevant informations</li>
             <li>
-              3. Click on print icon <i class="fa-solid fa-print"></i>{" "}
+              3. Click on print icon <i className="fa-solid fa-print"></i>{" "}
               (upper-right corner) if you want to print the form
             </li>
             <li>
               4. To Add the completed form to the patient record:
               <ul>
                 <li>
-                  a. Click on download icon <i class="fa-solid fa-download"></i>{" "}
-                  (upper-right corner), name and save the document on your
-                  computer{" "}
+                  a. Click on download icon{" "}
+                  <i className="fa-solid fa-download"></i> (upper-right corner),
+                  name and save the document on your computer{" "}
                 </li>
                 <li>
                   b. Click{" "}

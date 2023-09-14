@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import axiosXanoPatient from "../../api/xanoPatient";
 import { userSchema } from "../../validation/userValidation";
+import {
+  getUnreadMessagesExternalNbr,
+  getUnreadMessagesNbr,
+} from "../../utils/getUnreadMessagesNbr";
 
 const LOGIN_URL = "/auth/login";
 const USERINFO_URL = "/auth/me";
@@ -59,8 +63,13 @@ const LoginForm = () => {
           }
         );
         const authToken = response?.data?.authToken;
+        console.log("auth");
 
         setAuth({ email, password, authToken });
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({ email, password, authToken })
+        );
 
         //================ USER ===================//
         const response2 = await axiosXano.get(USERINFO_URL, {
@@ -68,6 +77,7 @@ const LoginForm = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
+        console.log("user");
         const accessLevel = response2?.data?.access_level;
         const id = response2?.data?.id;
         const name = response2?.data?.full_name;
@@ -88,16 +98,9 @@ const LoginForm = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        const unreadMessagesNbr = response4.data.length
-          ? response4.data.reduce((accumulator, currentValue) => {
-              if (
-                !currentValue.read_by_ids.includes(id) &&
-                currentValue.to_ids.includes(id)
-              ) {
-                return accumulator + 1;
-              } else return accumulator;
-            }, 0)
-          : 0;
+        console.log("unread messages");
+        const unreadMessagesNbr = getUnreadMessagesNbr(response4.data, id);
+
         // Get user unread external messages
         const response5 = await axiosXano.get(
           `/messages_external_for_staff?staff_id=${id}`,
@@ -108,23 +111,14 @@ const LoginForm = () => {
             },
           }
         );
-        const unreadMessagesExternalNbr = response5.data.filter(
-          ({ to_id }) => to_id.user_type === "staff"
-        ).length
-          ? response5.data
-              .filter(({ to_id }) => to_id.user_type === "staff")
-              .reduce((accumulator, currentValue) => {
-                if (
-                  !currentValue.read_by_ids.find(
-                    ({ user_type }) => user_type === "patient"
-                  )
-                ) {
-                  return accumulator + 1;
-                } else return accumulator;
-              }, 0)
-          : 0;
-
+        const unreadMessagesExternalNbr = getUnreadMessagesExternalNbr(
+          response5.data,
+          "staff",
+          id
+        );
+        console.log("unread external messages");
         const unreadNbr = unreadMessagesExternalNbr + unreadMessagesNbr;
+        console.log("unreadNbr", unreadNbr);
 
         setUser({
           accessLevel,
@@ -138,6 +132,21 @@ const LoginForm = () => {
           unreadMessagesExternalNbr,
           unreadNbr,
         });
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            accessLevel,
+            id,
+            name,
+            title,
+            sign,
+            licence_nbr,
+            settings,
+            unreadMessagesNbr,
+            unreadMessagesExternalNbr,
+            unreadNbr,
+          })
+        );
 
         //================== CLINIC ===================//
         const response6 = await axiosXano.get("/staff", {
@@ -154,8 +163,16 @@ const LoginForm = () => {
             "Content-Type": "application/json",
           },
         });
+        console.log("clinic");
         const patientsInfos = response7.data;
         setClinic({ staffInfos, patientsInfos });
+        localStorage.setItem(
+          "clinic",
+          JSON.stringify({
+            staffInfos,
+            patientsInfos,
+          })
+        );
         navigate(from, { replace: true }); //on renvoit vers là où on voulait aller
       } catch (err) {
         if (!err?.response) {
@@ -181,6 +198,10 @@ const LoginForm = () => {
         );
         const authToken = response?.data?.authToken;
         setAuth({ email, password, authToken });
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({ email, password, authToken })
+        );
 
         //================ USER ===================//
         const response2 = await axiosXanoPatient.get(USERINFO_URL, {
@@ -203,21 +224,13 @@ const LoginForm = () => {
             },
           }
         );
-        const unreadNbr = response3.data.filter(
-          ({ to_id }) => to_id.user_type === "patient"
-        ).length
-          ? response3.data
-              .filter(({ to_id }) => to_id.user_type === "patient")
-              .reduce((accumulator, currentValue) => {
-                if (
-                  !currentValue.read_by_ids.find(
-                    ({ user_type }) => user_type === "patient"
-                  )
-                ) {
-                  return accumulator + 1;
-                } else return accumulator;
-              }, 0)
-          : 0;
+        const unreadMessagesExternalNbr = getUnreadMessagesExternalNbr(
+          response3.data,
+          "patient",
+          id
+        );
+        console.log("unreadMessagesExternalNbr", unreadMessagesExternalNbr);
+        const unreadNbr = unreadMessagesExternalNbr;
 
         setUser({
           id,
@@ -226,6 +239,16 @@ const LoginForm = () => {
           demographics,
           unreadNbr,
         });
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id,
+            name,
+            accessLevel,
+            demographics,
+            unreadNbr,
+          })
+        );
 
         //================== CLINIC ===================//
         const response4 = await axiosXanoPatient.get("/staff", {
@@ -244,6 +267,10 @@ const LoginForm = () => {
         });
         const patientsInfos = response5.data;
         setClinic({ staffInfos, patientsInfos });
+        localStorage.setItem(
+          "clinic",
+          JSON.stringify({ staffInfos, patientsInfos })
+        );
         navigate(from, { replace: true });
       } catch (err) {
         if (!err?.response) {

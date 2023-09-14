@@ -28,18 +28,22 @@ const MessagePatientThumbnail = ({
         ...user,
         unreadNbr: newUnreadNbr,
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          unreadNbr: newUnreadNbr,
+        })
+      );
     }
     setCurrentMsgId(message.id);
 
-    if (!message.read_by_ids.find(({ user_type }) => user_type === "patient")) {
+    if (message.read_by_patient_id !== user.id) {
       //create and replace message with read by user id
       try {
         const newMessage = {
           ...message,
-          read_by_ids: [
-            ...message.read_by_ids,
-            { user_type: "patient", id: user.id },
-          ],
+          read_by_patient_id: user.id,
         };
         await axiosXanoPatient.put(
           `/messages_external/${message.id}`,
@@ -63,7 +67,8 @@ const MessagePatientThumbnail = ({
         const newMessages = filterAndSortExternalMessages(
           section,
           response.data,
-          "patient"
+          "patient",
+          user.id
         );
         setMessages(newMessages);
       } catch (err) {
@@ -75,11 +80,7 @@ const MessagePatientThumbnail = ({
   };
 
   const THUMBNAIL_STYLE = {
-    fontWeight:
-      !message.read_by_ids.find(({ user_type }) => user_type === "patient") &&
-      message.to_id.user_type === "patient"
-        ? "bold"
-        : "normal",
+    fontWeight: message.read_by_patient_id !== user.id ? "bold" : "normal",
   };
 
   const handleCheckMsg = (e) => {
@@ -113,10 +114,7 @@ const MessagePatientThumbnail = ({
           `/messages_external/${message.id}`,
           {
             ...message,
-            deleted_by_ids: [
-              ...message.deleted_by_ids,
-              { user_type: "patient", id: user.id },
-            ],
+            deleted_by_patient_id: user.id,
           },
           {
             headers: {
@@ -137,7 +135,8 @@ const MessagePatientThumbnail = ({
         const newMessages = filterAndSortExternalMessages(
           section,
           response2.data,
-          "patient"
+          "patient",
+          user.id
         );
         setMessages(newMessages);
         toast.success("Message deleted successfully", { containerId: "A" });
@@ -161,19 +160,14 @@ const MessagePatientThumbnail = ({
       />
       <div onClick={handleMsgClick} className="message-thumbnail-link-external">
         <div className="message-thumbnail-author-external">
-          {
-            section !== "Sent messages" //messages reçus ou effacés
-              ? message.from_id.user_type === "patient" //si le from est un patient
-                ? patientIdToName(clinic.patientsInfos, message.from_id.id)
-                : staffIdToTitle(clinic.staffInfos, message.from_id.id) +
-                  formatName(
-                    staffIdToName(clinic.staffInfos, message.from_id.id)
-                  )
-              : staffIdToTitle(clinic.staffInfos, message.to_id.id) +
-                formatName(
-                  staffIdToName(clinic.staffInfos, message.to_id.id)
-                ) /*message envoyé: le "To" est un staff*/
-          }
+          {section !== "Sent messages" //messages reçus ou effacés
+            ? message.from_user_type === "patient" //le from est un patient ou un staff
+              ? patientIdToName(clinic.patientsInfos, message.from_id)
+              : staffIdToTitle(clinic.staffInfos, message.from_id) +
+                formatName(staffIdToName(clinic.staffInfos, message.from_id))
+            : /*messages envoyés, le "To" est un staff*/
+              staffIdToTitle(clinic.staffInfos, message.to_id) +
+              staffIdToName(clinic.staffInfos, message.to_id)}
         </div>
         <div className="message-thumbnail-sample-external">
           <span>{message.subject}</span> - {message.body}{" "}

@@ -1,7 +1,7 @@
 //Librairies
-import React from "react";
+import React, { useEffect } from "react";
 import RequireAuth from "./components/Presentation/RequireAuth";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 //Pages Components
 import LoginPage from "./pages/LoginPage";
 import CalendarPage from "./pages/CalendarPage";
@@ -22,8 +22,35 @@ import PatientAccountPage from "./pages/PatientAccountPage";
 import PatientAppointmentsPage from "./pages/PatientAppointmentsPage";
 import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
 import PatientCredentialsPage from "./pages/PatientCredentialsPage";
+import useAuth from "./hooks/useAuth";
 
 const App = () => {
+  const navigate = useNavigate();
+  const { setUser, setClinic, setAuth } = useAuth();
+  useEffect(() => {
+    console.log("useEffect storage listener");
+    const storageListener = (e) => {
+      console.log("storage listener");
+      if (e.key !== "message") return;
+      const message = e.newValue;
+      if (!message) return;
+      if (message === "logout") {
+        setUser({});
+        setClinic({});
+        setAuth({});
+        localStorage.removeItem("user");
+        localStorage.removeItem("auth");
+        localStorage.removeItem("clinic");
+        navigate("/");
+      }
+    };
+    window.addEventListener("storage", storageListener);
+    return () => {
+      console.log("remove storage listener");
+      window.removeEventListener("storage", storageListener);
+    };
+  }, [navigate, setAuth, setClinic, setUser]);
+
   return (
     <Routes>
       <Route path="/" element={<Layout2 />}>

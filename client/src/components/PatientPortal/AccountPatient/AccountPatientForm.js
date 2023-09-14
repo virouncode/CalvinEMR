@@ -11,7 +11,7 @@ import DoctorsList from "../../Lists/DoctorsLists";
 import CountriesList from "../../Lists/CountriesList";
 import StudentsList from "../../Lists/StudentsList";
 import NursesList from "../../Lists/NursesList";
-import { demographicsSchema } from "../../../validation/demographicsValidation";
+import { patientAccountSchema } from "../../../validation/patientAccountValidation";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const AccountPatientForm = () => {
@@ -36,66 +36,28 @@ const AccountPatientForm = () => {
   const handleChangeCredentials = (e) => {
     navigate("/patient/credentials");
   };
-
-  const handleAvatarChange = async (e) => {
-    const file = e.target.files[0];
-    if (file.size > 20000000) {
-      alert("File size exceeds 20Mbs, please choose another file");
-      return;
-    }
-    // setting up the reader
-    setIsLoadingFile(true);
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    // here we tell the reader what to do when it's done reading...
-    reader.onload = async (e) => {
-      let content = e.target.result; // this is the content!
-      try {
-        let fileToUpload = await axiosXanoPatient.post(
-          "/upload/attachment",
-          {
-            content: content,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          }
-        );
-        setTempFormDatas({ ...tempFormDatas, avatar: fileToUpload.data });
-        setIsLoadingFile(false);
-      } catch (err) {
-        toast.error(`Error: unable to load file: ${err.message}`, {
-          containerId: "A",
-        });
-      }
-    };
-  };
   const handleEdit = (e) => {
     setEditVisible(true);
   };
 
   const handleSave = async (e) => {
     try {
-      const full_name =
-        tempFormDatas.first_name +
-        " " +
-        (tempFormDatas.middle_name ? tempFormDatas.middle_name + " " : "") +
-        tempFormDatas.last_name;
-
-      const datasToPut = { ...tempFormDatas };
-
-      datasToPut.first_name = firstLetterUpper(datasToPut.first_name);
-      datasToPut.middle_name = firstLetterUpper(datasToPut.middle_name);
-      datasToPut.last_name = firstLetterUpper(datasToPut.last_name);
-      datasToPut.full_name = firstLetterUpper(full_name);
-      datasToPut.address = firstLetterUpper(datasToPut.address);
-      datasToPut.province_state = firstLetterUpper(datasToPut.province_state);
-      datasToPut.city = firstLetterUpper(datasToPut.city);
+      const datasToPut = {
+        ...tempFormDatas,
+        address: firstLetterUpper(tempFormDatas.address),
+        province_state: firstLetterUpper(tempFormDatas.province_state),
+        city: firstLetterUpper(tempFormDatas.city),
+      };
+      setTempFormDatas({
+        ...tempFormDatas,
+        address: firstLetterUpper(tempFormDatas.address),
+        province_state: firstLetterUpper(tempFormDatas.province_state),
+        city: firstLetterUpper(tempFormDatas.city),
+      });
 
       //Validation
       try {
-        await demographicsSchema.validate(datasToPut);
+        await patientAccountSchema.validate(datasToPut);
       } catch (err) {
         setErrMsg(err.message);
         return;
@@ -108,6 +70,7 @@ const AccountPatientForm = () => {
         },
       });
       setInfosChanged(true);
+      setTimeout(() => setInfosChanged(false), 2000);
       //update clinic context staffInfos
       const response = await axiosXanoPatient.get("/patients", {
         headers: {
@@ -116,7 +79,11 @@ const AccountPatientForm = () => {
         },
       });
       setClinic({ ...clinic, patientInfos: response.data });
-      setTimeout(() => navigate("/login"), 2000);
+      localStorage.setItem(
+        "clinic",
+        JSON.stringify({ ...clinic, patientInfos: response.data })
+      );
+      setEditVisible(false);
     } catch (err) {
       setErrMsg(`Error: unable to save infos: ${err.message}`);
     }
@@ -127,9 +94,13 @@ const AccountPatientForm = () => {
     setEditVisible(false);
   };
 
-  return !infosChanged ? (
+  return (
     <>
       {errMsg && <p className="patient-account-err">{errMsg}</p>}
+      {infosChanged && (
+        <p className="patient-account-confirm">Infos changed successfully</p>
+      )}
+
       <form className="patient-account-form">
         <div className="patient-account-form-content">
           <div className="patient-account-form-content-column">
@@ -147,93 +118,41 @@ const AccountPatientForm = () => {
                   alt="user-avatar-placeholder"
                 />
               )}
-              {editVisible && (
-                <input
-                  name="avatar"
-                  type="file"
-                  accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg"
-                  onChange={handleAvatarChange}
-                />
-              )}
             </div>
           </div>
           <div className="patient-account-form-content-column">
             <div className="patient-account-form-content-row">
               <label>First Name*: </label>
-              {editVisible ? (
-                <input
-                  type="text"
-                  value={tempFormDatas.first_name}
-                  onChange={handleChange}
-                  name="first_name"
-                  id="1"
-                  autoComplete="off"
-                />
-              ) : (
-                tempFormDatas.first_name
-              )}
+              {tempFormDatas.first_name}
             </div>
             <div className="patient-account-form-content-row">
               <label>Middle Name: </label>
-              {editVisible ? (
-                <input
-                  type="text"
-                  value={tempFormDatas.middle_name}
-                  onChange={handleChange}
-                  name="middle_name"
-                  id="2"
-                  autoComplete="off"
-                />
-              ) : (
-                tempFormDatas.middle_name
-              )}
+              {tempFormDatas.middle_name}
             </div>
             <div className="patient-account-form-content-row">
               <label>Last Name*: </label>
-              {editVisible ? (
-                <input
-                  type="text"
-                  value={tempFormDatas.last_name}
-                  onChange={handleChange}
-                  name="last_name"
-                  id="3"
-                  autoComplete="off"
-                />
-              ) : (
-                tempFormDatas.last_name
-              )}
+              {tempFormDatas.last_name}
             </div>
             <div className="patient-account-form-content-row">
               <label>Email*: </label>
-              {user.demographics.email}
+              {tempFormDatas.email}
             </div>
             <div className="patient-account-form-content-row">
               <label>Gender at birth*: </label>
-              {editVisible ? (
-                <select
-                  id="4"
-                  value={tempFormDatas.gender_at_birth}
-                  onChange={handleChange}
-                  name="gender_at_birth"
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              ) : (
-                tempFormDatas.gender_at_birth
-              )}
+              {tempFormDatas.gender_at_birth}
             </div>
             <div className="patient-account-form-content-row">
               <label>Gender identification*: </label>
               {editVisible ? (
-                <input
-                  type="text"
+                <select
                   value={tempFormDatas.gender_identification}
                   onChange={handleChange}
                   name="gender_identification"
-                  id="5"
-                  autoComplete="off"
-                />
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
               ) : (
                 tempFormDatas.gender_identification
               )}
@@ -244,65 +163,21 @@ const AccountPatientForm = () => {
             </div>
             <div className="patient-account-form-content-row">
               <label>Health Insurance Nbr: </label>
-              {editVisible ? (
-                <input
-                  type="text"
-                  value={tempFormDatas.health_insurance_nbr.toString()}
-                  onChange={handleChange}
-                  name="health_insurance_nbr"
-                  id="6"
-                  autoComplete="off"
-                />
-              ) : (
-                tempFormDatas.health_insurance_nbr
-              )}
+              {tempFormDatas.health_insurance_nbr}
             </div>
             <div className="patient-account-form-content-row">
               <label>Health Card Expiry: </label>
-              {editVisible ? (
-                <input
-                  type="date"
-                  value={
-                    tempFormDatas.health_card_expiry !== null
-                      ? toLocalDate(tempFormDatas.health_card_expiry)
-                      : ""
-                  }
-                  onChange={handleChange}
-                  name="health_card_expiry"
-                  id="7"
-                />
-              ) : tempFormDatas.health_card_expiry !== null ? (
-                toLocalDate(tempFormDatas.health_card_expiry)
-              ) : (
-                ""
-              )}
+              {tempFormDatas.health_card_expiry !== null
+                ? toLocalDate(tempFormDatas.health_card_expiry)
+                : ""}
             </div>
             <div className="patient-account-form-content-row">
               <label>Date of birth*: </label>
-              {editVisible ? (
-                <input
-                  type="date"
-                  value={
-                    tempFormDatas.date_of_birth !== null
-                      ? toLocalDate(tempFormDatas.date_of_birth)
-                      : ""
-                  }
-                  onChange={handleChange}
-                  name="date_of_birth"
-                  id="8"
-                  max={toLocalDate(new Date().toISOString())}
-                />
-              ) : tempFormDatas.date_of_birth !== null ? (
-                toLocalDate(tempFormDatas.date_of_birth)
-              ) : (
-                ""
-              )}
+              {toLocalDate(tempFormDatas.date_of_birth)}
             </div>
             <div className="patient-account-form-content-row">
               <label>Age: </label>
-              {tempFormDatas.date_of_birth !== null
-                ? getAge(toLocalDate(tempFormDatas.date_of_birth))
-                : ""}
+              {getAge(toLocalDate(tempFormDatas.date_of_birth))}
             </div>
             <div className="patient-account-form-content-row">
               <label>Cell Phone*: </label>
@@ -494,6 +369,14 @@ const AccountPatientForm = () => {
                 tempFormDatas.assigned_midwife_name?.full_name
               )}
             </div>
+            {editVisible && (
+              <div className="patient-account-form-content-row">
+                <em>
+                  If you want to change further informations please ask a staff
+                  member
+                </em>
+              </div>
+            )}
           </div>
         </div>
       </form>
@@ -515,8 +398,6 @@ const AccountPatientForm = () => {
         )}
       </div>
     </>
-  ) : (
-    <p className="patient-account-confirm">Infos changed successfully</p>
   );
 };
 

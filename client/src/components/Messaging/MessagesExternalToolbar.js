@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
@@ -65,10 +65,7 @@ const MessagesExternalToolBar = ({
           );
           const newMessage = {
             ...response.data,
-            deleted_by_ids: [
-              ...response.data.deleted_by_ids,
-              { user_type: "staff", id: user.id },
-            ],
+            deleted_by_staff_id: user.id,
           };
           await axiosXano.put(`/messages_external/${messageId}`, newMessage, {
             headers: {
@@ -86,12 +83,15 @@ const MessagesExternalToolBar = ({
             },
           }
         );
-        const newMessages = filterAndSortExternalMessages(
-          section,
-          response.data,
-          "staff"
+
+        setMessages(
+          filterAndSortExternalMessages(
+            section,
+            response.data,
+            "staff",
+            user.id
+          )
         );
-        setMessages(newMessages);
         setNewVisible(false);
         toast.success("Message(s) deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
@@ -119,12 +119,9 @@ const MessagesExternalToolBar = ({
         )
       ).data;
       for (let message of msgsSelected) {
-        const newDeletedByIds = message.deleted_by_ids.filter(
-          (item) => item.user_type !== "staff"
-        );
         const newMessage = {
           ...message,
-          deleted_by_ids: newDeletedByIds,
+          deleted_by_staff_id: 0,
         };
         await axiosXano.put(`/messages_external/${message.id}`, newMessage, {
           headers: {

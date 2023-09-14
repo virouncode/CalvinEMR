@@ -11,7 +11,9 @@ import { patientIdToName } from "../../../utils/patientIdToName";
 import MessagesAttachments from "../../Messaging/MessagesAttachments";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import MessageExternal from "../../Messaging/MessageExternal";
-import ReplyFormPatient from "./ReplyFormPatient";
+import ReplyMessagePatient from "./ReplyMessagePatient";
+import NewWindow from "react-new-window";
+import MessagesExternalPrintPU from "../../Messaging/MessagesExternalPrintPU";
 
 const MessagePatientDetail = ({
   setCurrentMsgId,
@@ -26,7 +28,6 @@ const MessagePatientDetail = ({
   const [allPersons, setAllPersons] = useState(false);
   const { auth, user, clinic } = useAuth();
   const [previousMsgs, setPreviousMsgs] = useState(null);
-
   const [attachments, setAttachments] = useState([]);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const MessagePatientDetail = ({
       try {
         const response = await axiosXanoPatient.post(
           "/messages_external_selected",
-          { messages_ids: message.previous_ids },
+          { messages_ids: message.previous_messages_ids },
           {
             headers: {
               Authorization: `Bearer ${auth.authToken}`,
@@ -58,7 +59,7 @@ const MessagePatientDetail = ({
     };
     fetchPreviousMsgs();
     return () => abortController.abort();
-  }, [auth.authToken, user.id, message.previous_ids]);
+  }, [auth.authToken, user.id, message.previous_messages_ids]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -107,10 +108,7 @@ const MessagePatientDetail = ({
           `/messages_external/${message.id}`,
           {
             ...message,
-            deleted_by_ids: [
-              ...message.deleted_by_ids,
-              { user_type: "patient", id: user.id },
-            ],
+            deleted_by_patient_id: user.id,
           },
           {
             headers: {
@@ -131,7 +129,8 @@ const MessagePatientDetail = ({
         const newMessages = filterAndSortExternalMessages(
           section,
           response2.data,
-          "patient"
+          "patient",
+          user.id
         );
         setMessages(newMessages);
         setCurrentMsgId(0);
@@ -151,7 +150,7 @@ const MessagePatientDetail = ({
 
   return (
     <>
-      {/* {popUpVisible && (
+      {popUpVisible && (
         <NewWindow
           title={`Message(s) / Subject: ${message.subject}`}
           features={{
@@ -167,17 +166,23 @@ const MessagePatientDetail = ({
           }}
           onUnload={() => setPopUpVisible(false)}
         >
-          <MessagesPrintPU
+          <MessagesExternalPrintPU
             message={message}
             previousMsgs={previousMsgs}
-            author={formatName(
-              staffIdToName(clinic.staffInfos, message.from_id)
-            )}
-            authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
+            author={
+              message.from_user_type === "staff"
+                ? formatName(staffIdToName(clinic.staffInfos, message.from_idd))
+                : patientIdToName(clinic.patientsInfos, message.from_id)
+            }
+            authorTitle={
+              message.from_user_type === "staff"
+                ? staffIdToTitle(clinic.staffInfos, message.from_id)
+                : ""
+            }
             attachments={attachments}
           />
         </NewWindow>
-      )} */}
+      )}
       <div className="message-detail-toolbar">
         <i
           className="fa-solid fa-arrow-left message-detail-toolbar-arrow"
@@ -196,12 +201,12 @@ const MessagePatientDetail = ({
         <MessageExternal
           message={message}
           author={
-            message.from_id.user_type === "staff"
-              ? formatName(staffIdToName(clinic.staffInfos, message.from_id.id))
-              : patientIdToName(clinic.patientsInfos, message.from_id.id)
+            message.from_user_type === "staff"
+              ? formatName(staffIdToName(clinic.staffInfos, message.from_id))
+              : patientIdToName(clinic.patientsInfos, message.from_id)
           }
           authorTitle={
-            message.from_id.user_type === "staff"
+            message.from_user_type === "staff"
               ? staffIdToTitle(clinic.staffInfos, message.from_id)
               : ""
           }
@@ -213,14 +218,14 @@ const MessagePatientDetail = ({
             <MessageExternal
               message={message}
               author={
-                message.from_id.user_type === "staff"
+                message.from_user_type === "staff"
                   ? formatName(
-                      staffIdToName(clinic.staffInfos, message.from_id.id)
+                      staffIdToName(clinic.staffInfos, message.from_id)
                     )
-                  : patientIdToName(clinic.patientsInfos, message.from_id.id)
+                  : patientIdToName(clinic.patientsInfos, message.from_id)
               }
               authorTitle={
-                message.from_id.user_type === "staff"
+                message.from_user_type === "staff"
                   ? staffIdToTitle(clinic.staffInfos, message.from_id)
                   : ""
               }
@@ -235,7 +240,7 @@ const MessagePatientDetail = ({
         />
       </div>
       {replyVisible && (
-        <ReplyFormPatient
+        <ReplyMessagePatient
           setReplyVisible={setReplyVisible}
           allPersons={allPersons}
           message={message}

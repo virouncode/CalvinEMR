@@ -11,3 +11,11 @@ export const staffIdListToTitleAndName = (staffInfos, staffIdList) => {
     )
     .join(", ");
 };
+
+export const patientIdListToName = (patientsInfos, patientIdList) => {
+  return patientIdList
+    .map(
+      (patientId) => patientsInfos.find(({ id }) => id === patientId).full_name
+    )
+    .join(", ");
+};

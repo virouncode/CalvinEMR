@@ -4,6 +4,7 @@ import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import useAuth from "../../hooks/useAuth";
 import formatName from "../../utils/formatName";
+import { patientIdToName } from "../../utils/patientIdToName";
 
 const Message = ({ message, author, authorTitle, index }) => {
   const { clinic } = useAuth();
@@ -23,13 +24,18 @@ const Message = ({ message, author, authorTitle, index }) => {
       </div>
       <div className="message-subtitle">
         to:{" "}
-        {message.to_ids
-          .map(
-            (staff_id) =>
-              staffIdToTitle(clinic.staffInfos, staff_id) +
-              formatName(staffIdToName(clinic.staffInfos, staff_id))
-          )
-          .join(", ")}
+        {message.type === "Internal"
+          ? message.to_staff_ids
+              .map(
+                (staff_id) =>
+                  staffIdToTitle(clinic.staffInfos, staff_id) +
+                  formatName(staffIdToName(clinic.staffInfos, staff_id))
+              )
+              .join(", ")
+          : message.to_staff_id
+          ? staffIdToTitle(clinic.staffInfos, message.to_staff_id) +
+            formatName(staffIdToName(clinic.staffInfos, message.to_staff_id))
+          : patientIdToName(clinic.patientsInfos, message.to_patient_id)}
       </div>
       <div className="message-body">{message.body}</div>
     </div>

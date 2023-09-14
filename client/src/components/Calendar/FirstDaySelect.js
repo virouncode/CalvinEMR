@@ -22,6 +22,13 @@ const FirstDaySelect = () => {
         ...user,
         settings: { ...user.settings, first_day: value },
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          settings: { ...user.settings, first_day: value },
+        })
+      );
       toast.success("Saved preference", { containerId: "A" });
     } catch (err) {
       toast.success(`Error: unable to save preference: ${err.message}`, {

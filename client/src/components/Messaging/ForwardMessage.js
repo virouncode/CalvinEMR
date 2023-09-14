@@ -7,13 +7,15 @@ import axiosXano from "../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
 import Message from "./Message";
 import { staffIdToName } from "../../utils/staffIdToName";
+import { patientIdToName } from "../../utils/patientIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { postPatientRecord } from "../../api/fetchRecords";
 import MessagesAttachments from "./MessagesAttachments";
 import { CircularProgress } from "@mui/material";
+import MessageExternal from "./MessageExternal";
 
-const ForwardForm = ({
+const ForwardMessage = ({
   setForwardVisible,
   setMessages,
   section,
@@ -119,18 +121,22 @@ const ForwardForm = ({
       //create the message
       const forwardMessage = {
         from_id: user.id,
-        to_ids: recipientsIds,
-        read_by_ids: [user.id],
+        to_staff_ids: recipientsIds,
         subject: previousMsgs.length
           ? `Fwd ${previousMsgs.length + 1}: ${message.subject.slice(
               message.subject.indexOf(":") + 1
             )}`
           : `Fwd: ${message.subject}`,
-        body: body,
-        previous_ids: [...message.previous_ids, message.id],
-        related_patient_id: message.related_patient_id || 0,
         attachments_ids: attach_ids,
+        body: body,
+        related_patient_id: message.related_patient_id || 0,
+        read_by_staff_ids: [user.id],
+        previous_messages: [
+          ...message.previous_messages,
+          { message_type: "Internal", id: message.id },
+        ],
         date_created: Date.parse(new Date()),
+        type: "Internal",
       };
 
       //post the message
@@ -148,12 +154,7 @@ const ForwardForm = ({
         },
       });
 
-      const newMessages = filterAndSortMessages(
-        section,
-        response.data,
-        user.id
-      );
-      setMessages(newMessages);
+      setMessages(filterAndSortMessages(section, response.data, user.id));
       setForwardVisible(false);
       toast.success("Transfered successfully", { containerId: "A" });
     } catch (err) {
@@ -166,12 +167,15 @@ const ForwardForm = ({
   const handleAttach = (e) => {
     let input = e.nativeEvent.view.document.createElement("input");
     input.type = "file";
-    input.accept = ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .wav";
+    input.accept =
+      ".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx";
     input.onchange = (e) => {
       // getting a hold of the file reference
       let file = e.target.files[0];
-      if (file.size > 20000000) {
-        alert("The file is too large, please choose another one");
+      if (file.size > 25000000) {
+        alert(
+          "The file is over 25Mb, please choose another one or send a link"
+        );
         return;
       }
       setIsLoadingFile(true);
@@ -284,17 +288,40 @@ const ForwardForm = ({
               key={message.id}
               index={0}
             />
-            {previousMsgs.map((message, index) => (
-              <Message
-                message={message}
-                author={formatName(
-                  staffIdToName(clinic.staffInfos, message.from_id)
-                )}
-                authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-                key={message.id}
-                index={index + 1}
-              />
-            ))}
+            {previousMsgs.map((message, index) =>
+              message.type === "Internal" ? (
+                <Message
+                  message={message}
+                  author={formatName(
+                    staffIdToName(clinic.staffInfos, message.from_id)
+                  )}
+                  authorTitle={staffIdToTitle(
+                    clinic.staffInfos,
+                    message.from_id
+                  )}
+                  key={message.id}
+                  index={index + 1}
+                />
+              ) : (
+                <MessageExternal
+                  message={message}
+                  author={
+                    message.from_user_type === "staff"
+                      ? formatName(
+                          staffIdToName(clinic.staffInfos, message.from_id)
+                        )
+                      : patientIdToName(clinic.patientsInfos, message.from_id)
+                  }
+                  authorTitle={
+                    message.from_user_type === "staff"
+                      ? staffIdToTitle(clinic.staffInfos, message.from_id)
+                      : ""
+                  }
+                  key={message.id}
+                  index={index + 1}
+                />
+              )
+            )}
           </div>
           <MessagesAttachments
             attachments={attachments}
@@ -332,4 +359,4 @@ const ForwardForm = ({
   );
 };
 
-export default ForwardForm;
+export default ForwardMessage;

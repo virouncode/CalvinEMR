@@ -29,8 +29,9 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
           (message) =>
             (message.from_id.id === user.id &&
               message.from_id.user_type === "staff") ||
-            (message.to_id.id === user.id &&
-              message.to_id.user_type === "staff")
+            message.to_ids
+              .filter(({ user_type }) => user_type === "staff")
+              .find(({ id }) => id === user.id)
         ).length >= 1 ? (
           <ul className="patient-messages-content-list">
             {datas
@@ -38,8 +39,9 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
                 (message) =>
                   (message.from_id.id === user.id &&
                     message.from_id.user_type === "staff") ||
-                  (message.to_id.id === user.id &&
-                    message.to_id.user_type === "staff")
+                  message.to_ids
+                    .filter(({ user_type }) => user_type === "staff")
+                    .find(({ id }) => id === user.id)
               )
               .sort((a, b) => b.date_created - a.date_created)
               .map((message) => (

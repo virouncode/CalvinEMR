@@ -140,6 +140,10 @@ const MyAccountForm = () => {
         },
       });
       setClinic({ ...clinic, staffInfos: response.data });
+      localStorage.setItem(
+        "clinic",
+        JSON.stringify({ ...clinic, staffInfos: response.data })
+      );
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setErrMsg(`Error: unable to save infos: ${err.message}`);

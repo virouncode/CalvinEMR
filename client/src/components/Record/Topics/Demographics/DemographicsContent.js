@@ -45,7 +45,6 @@ const DemographicsContent = ({ patientInfos }) => {
         </p>
         <p>
           <label>Date of birth: </label>
-          {console.log("dob", patientInfos.date_of_birth)}
           {toLocalDate(patientInfos.date_of_birth)}
         </p>
         <p>
