@@ -84,6 +84,7 @@ const MessagesPrintPU = ({
             attachments={attachments}
             deletable={false}
             cardWidth="20%"
+            addable={false}
           />
         </div>
         <div className="message-detail-print-btn">

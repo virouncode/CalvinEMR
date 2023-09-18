@@ -243,6 +243,12 @@ const MessageExternalDetail = ({
           attachments={attachments}
           deletable={false}
           cardWidth="15%"
+          addable={true}
+          patientId={
+            message.from_user_type === "patient"
+              ? message.from_id
+              : message.to_id
+          }
         />
       </div>
       {replyVisible && (

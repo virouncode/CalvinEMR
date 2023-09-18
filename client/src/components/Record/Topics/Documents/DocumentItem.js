@@ -7,11 +7,11 @@ import { deletePatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
 
-const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsg }) => {
+const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
   const { auth } = useAuth();
 
   const handleDeleteClick = async (e) => {
-    setErrMsg("");
+    setErrMsgPost("");
     if (
       await confirmAlertPopUp({
         content: "Do you really want to delete this item ?",
@@ -34,7 +34,7 @@ const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsg }) => {
     <tr className="documents-item">
       <td
         className="documents-item-link"
-        onClick={() => showDocument(item.file.url)}
+        onClick={() => showDocument(item.file.url, item.file.mime)}
       >
         {item.description}
       </td>

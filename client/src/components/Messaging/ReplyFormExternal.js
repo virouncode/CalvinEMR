@@ -128,6 +128,7 @@ const ReplyFormExternal = ({
               },
             }
           );
+          if (!response.data.type) response.data.type = "document";
           setAttachments([
             ...attachments,
             {
@@ -225,6 +226,7 @@ const ReplyFormExternal = ({
           handleRemoveAttachment={handleRemoveAttachment}
           deletable={true}
           cardWidth="17%"
+          addable={false}
         />
       </div>
       <div className="reply-form-btns">

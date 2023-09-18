@@ -126,6 +126,7 @@ const ReplyForm = ({
               },
             }
           );
+          if (!response.data.type) response.data.type = "document";
           setAttachments([
             ...attachments,
             {
@@ -249,6 +250,7 @@ const ReplyForm = ({
           handleRemoveAttachment={handleRemoveAttachment}
           deletable={true}
           cardWidth="17%"
+          addable={false}
         />
       </div>
       <div className="reply-form-btns">

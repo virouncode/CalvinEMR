@@ -142,6 +142,7 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
               },
             }
           );
+          if (!response.data.type) response.data.type = "document";
           setAttachments([
             ...attachments,
             {
@@ -204,6 +205,7 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
             attachments={attachments}
             handleRemoveAttachment={handleRemoveAttachment}
             deletable={true}
+            addable={false}
           />
         </div>
         <div className="new-message-form-btns">

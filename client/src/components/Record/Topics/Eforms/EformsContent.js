@@ -15,7 +15,9 @@ const EformsContent = ({ showDocument, datas, isLoading, errMsg }) => {
               .map((eform) => (
                 <li
                   key={eform.id}
-                  onClick={() => showDocument(eform.file.url)}
+                  onClick={() =>
+                    showDocument(eform.file.url, document.file.mime)
+                  }
                   style={{
                     textDecoration: "underline",
                     color: "blue",

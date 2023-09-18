@@ -4,19 +4,23 @@ import MessageAttachmentCard from "./MessageAttachmentCard";
 const MessagesAttachments = ({
   attachments,
   deletable,
+  addable,
   cardWidth,
   handleRemoveAttachment = null,
+  patientId = null,
 }) => {
   return (
     attachments && (
       <div className="messages-attachments">
         {attachments.map((attachment) => (
           <MessageAttachmentCard
+            patientId={patientId}
             handleRemoveAttachment={handleRemoveAttachment}
             attachment={attachment}
             key={attachment.id}
             deletable={deletable}
             cardWidth={cardWidth}
+            addable={addable}
           />
         ))}
       </div>

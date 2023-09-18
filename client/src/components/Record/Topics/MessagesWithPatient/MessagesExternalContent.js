@@ -8,11 +8,11 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
   const { user } = useAuth();
 
   const getSection = (message) => {
-    if (message.deleted_by_ids.find(({ user_type }) => user_type === "staff")) {
+    if (message.deleted_by_staff_id === user.id) {
       return "Deleted messages";
     } else if (
-      message.from_id.user_type === "staff" &&
-      message.from_id.id === user.id
+      message.from_user_type === "staff" &&
+      message.from_id === user.id
     ) {
       return "Sent messages";
     } else {
@@ -27,21 +27,18 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
         {datas &&
         datas.filter(
           (message) =>
-            (message.from_id.id === user.id &&
-              message.from_id.user_type === "staff") ||
-            message.to_ids
-              .filter(({ user_type }) => user_type === "staff")
-              .find(({ id }) => id === user.id)
+            (message.from_id === user.id &&
+              message.from_user_type === "staff") ||
+            (message.to_id === user.id && message.to_user_type === "staff")
         ).length >= 1 ? (
           <ul className="patient-messages-content-list">
             {datas
               .filter(
                 (message) =>
-                  (message.from_id.id === user.id &&
-                    message.from_id.user_type === "staff") ||
-                  message.to_ids
-                    .filter(({ user_type }) => user_type === "staff")
-                    .find(({ id }) => id === user.id)
+                  (message.from_id === user.id &&
+                    message.from_user_type === "staff") ||
+                  (message.to_id === user.id &&
+                    message.to_user_type === "staff")
               )
               .sort((a, b) => b.date_created - a.date_created)
               .map((message) => (
@@ -52,6 +49,7 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
                       to={`/messages/${message.id}/${getSection(
                         message
                       )}/External`}
+                      target="_blank"
                     >
                       {message.subject} - {message.body}
                     </NavLink>
@@ -62,6 +60,7 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
                       to={`/messages/${message.id}/${getSection(
                         message
                       )}/External`}
+                      target="_blank"
                     >
                       {toLocalDate(message.date_created)}
                     </NavLink>

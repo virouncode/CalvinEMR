@@ -126,12 +126,21 @@
                 background: rgb(154, 154, 154);
                 padding: 5px;
                 font-size: 0.7rem;
-                display:flex;
-                justify-content: space-between;
-                align-items: center;
-                p {
-                    margin-top: 0;
-                    font-size: 0.7rem;
+                display: flex;
+                flex-direction: column;
+                &-title {
+                    display:flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    p {
+                        margin-top: 0;
+                        font-size: 0.7rem;
+                    }
+                }
+                &-btn {
+                    button {
+                        font-size: 0.65rem;
+                    }
                 }
             }
         }

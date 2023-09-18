@@ -2,6 +2,7 @@ import React from "react";
 import AttachmentCard from "./AttachmentCard";
 
 const ProgressNotesAttachments = ({
+  patientId,
   attachments,
   deletable,
   handleRemoveAttachment = null,
@@ -15,6 +16,7 @@ const ProgressNotesAttachments = ({
             attachment={attachment}
             key={attachment.id}
             deletable={deletable}
+            patientId={patientId}
           />
         ))}
       </div>

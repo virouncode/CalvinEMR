@@ -9,6 +9,7 @@ const DocumentsContent = ({ showDocument, datas, isLoading, errMsg }) => {
       <p className="patient-documents-content-err">{errMsg}</p>
     ) : (
       <div className="patient-documents-content">
+        {console.log(datas)}
         {datas && datas.length >= 1 ? (
           <ul>
             {datas
@@ -16,7 +17,9 @@ const DocumentsContent = ({ showDocument, datas, isLoading, errMsg }) => {
               .map((document) => (
                 <li
                   key={document.id}
-                  onClick={() => showDocument(document.file.url)}
+                  onClick={() =>
+                    showDocument(document.file.url, document.file.mime)
+                  }
                   style={{
                     textDecoration: "underline",
                     color: "blue",

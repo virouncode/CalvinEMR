@@ -34,7 +34,7 @@ const EformItem = ({ item, fetchRecord, showDocument }) => {
     <tr className="electronic-item">
       <td
         className="electronic-item-link"
-        onClick={() => showDocument(item.file.url)}
+        onClick={() => showDocument(item.file.url, item.file.mime)}
       >
         {item.name}
       </td>

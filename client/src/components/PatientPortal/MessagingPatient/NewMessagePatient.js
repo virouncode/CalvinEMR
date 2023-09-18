@@ -147,6 +147,7 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
               },
             }
           );
+          if (!response.data.type) response.data.type = "document";
           setAttachments([
             ...attachments,
             {
@@ -216,6 +217,7 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
             attachments={attachments}
             handleRemoveAttachment={handleRemoveAttachment}
             deletable={true}
+            addable={false}
           />
         </div>
         <div className="new-message-form-btns new-message-form-btns--patient">

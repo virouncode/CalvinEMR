@@ -198,6 +198,7 @@ const ForwardMessage = ({
               },
             }
           );
+          if (!response.data.type) response.data.type = "document";
           setAttachments([
             ...attachments,
             {
@@ -329,6 +330,7 @@ const ForwardMessage = ({
             handleRemoveAttachment={handleRemoveAttachment}
             deletable={true}
             cardWidth="30%"
+            addable={false}
           />
         </div>
         <div className="forward-form-btns">

@@ -237,6 +237,7 @@ const MessagePatientDetail = ({
           attachments={attachments}
           deletable={false}
           cardWidth="15%"
+          addable={false}
         />
       </div>
       {replyVisible && (

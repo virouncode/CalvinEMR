@@ -425,6 +425,7 @@ const ProgressNotesCard = ({
           <ProgressNotesAttachments
             attachments={attachments}
             deletable={false}
+            patientId={patientId}
           />
           {!editVisible && (
             <div className="progress-notes-card-body-footer">

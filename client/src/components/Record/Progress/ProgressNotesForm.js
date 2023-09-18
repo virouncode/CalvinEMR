@@ -136,7 +136,7 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
               },
             }
           );
-
+          if (!response.data.type) response.data.type = "document";
           setAttachments([
             ...attachments,
             {
@@ -236,6 +236,7 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
           attachments={attachments}
           handleRemoveAttachment={handleRemoveAttachment}
           deletable={true}
+          addable={false}
         />
       </div>
       <div className="progress-notes-form-submit">

@@ -8,7 +8,7 @@ const MessagesContent = ({ datas, isLoading, errMsg }) => {
   const { user } = useAuth();
 
   const getSection = (message) => {
-    if (message.deleted_by_ids.includes(user.id)) {
+    if (message.deleted_by_staff_ids.includes(user.id)) {
       return "Deleted messages";
     } else if (message.from_id === user.id) {
       //et le cas forward ???
@@ -25,14 +25,15 @@ const MessagesContent = ({ datas, isLoading, errMsg }) => {
         {datas &&
         datas.filter(
           (message) =>
-            message.from_id === user.id || message.to_ids.includes(user.id)
+            message.from_id === user.id ||
+            message.to_staff_ids.includes(user.id)
         ).length >= 1 ? (
           <ul className="patient-messages-content-list">
             {datas
               .filter(
                 (message) =>
                   message.from_id === user.id ||
-                  message.to_ids.includes(user.id)
+                  message.to_staff_ids.includes(user.id)
               )
               .sort((a, b) => b.date_created - a.date_created)
               .map((message) => (
@@ -43,6 +44,7 @@ const MessagesContent = ({ datas, isLoading, errMsg }) => {
                       to={`/messages/${message.id}/${getSection(
                         message
                       )}/Internal`}
+                      target="_blank"
                     >
                       {message.subject} - {message.body}
                     </NavLink>
@@ -53,6 +55,7 @@ const MessagesContent = ({ datas, isLoading, errMsg }) => {
                       to={`/messages/${message.id}/${getSection(
                         message
                       )}/Internal`}
+                      target="_blank"
                     >
                       {toLocalDate(message.date_created)}
                     </NavLink>

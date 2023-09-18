@@ -1,19 +1,40 @@
 import React, { useState } from "react";
 import NewWindow from "react-new-window";
+import { postPatientRecord } from "../../api/fetchRecords";
+import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const MessageAttachmentCard = ({
+  patientId,
   handleRemoveAttachment,
   attachment,
   deletable,
   cardWidth = "30%",
+  addable = true,
 }) => {
+  const { user, auth } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
   const handleImgClick = () => {
-    console.log("img click");
     setPopUpVisible(true);
   };
+
+  const handleAddToRecord = async () => {
+    try {
+      await postPatientRecord("/documents", user.id, auth.authToken, {
+        patient_id: patientId,
+        description: attachment.alias,
+        file: attachment.file,
+      });
+      toast.success("Saved successfully", { containerId: "A" });
+    } catch (err) {
+      toast.error(`Error unable to save document: ${err.message}`, {
+        containerId: "A",
+      });
+    }
+  };
+
   return (
     <>
       <div className="messages-attachments-card" style={{ width: cardWidth }}>
@@ -34,16 +55,19 @@ const MessageAttachmentCard = ({
             </video>
           ) : attachment.file.mime.includes("officedocument") ? (
             <div>
-              <div style={{ color: "blue" }} onClick={handleImgClick}>
-                Preview
+              <div
+                style={{ color: "blue", fontSize: "0.8rem" }}
+                onClick={handleImgClick}
+              >
+                Preview document
               </div>{" "}
-              {/* <iframe
+              <iframe
                 title="office document"
                 src={`https://docs.google.com/gview?url=${BASE_URL}${attachment.file.path}&embedded=true&widget=false`}
                 onClick={handleImgClick}
-                width="100%"
+                width="150%"
                 frameborder="0"
-              ></iframe> */}
+              ></iframe>
             </div>
           ) : (
             <div>
@@ -69,22 +93,29 @@ const MessageAttachmentCard = ({
           )}
         </div>
         <div className="messages-attachments-card-footer">
-          <p
-            style={{
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-              padding: "0",
-            }}
-          >
-            {attachment.alias}
-          </p>
-          {deletable && (
-            <i
-              className="fa-solid fa-xmark"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleRemoveAttachment(attachment.file.name)}
-            ></i>
+          <div className="messages-attachments-card-footer-title">
+            <p
+              style={{
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                padding: "0",
+              }}
+            >
+              {attachment.alias}
+            </p>
+            {deletable && (
+              <i
+                className="fa-solid fa-xmark"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleRemoveAttachment(attachment.file.name)}
+              ></i>
+            )}
+          </div>
+          {addable && (
+            <div className="messages-attachments-card-footer-btn">
+              <button onClick={handleAddToRecord}>Add to patient record</button>
+            </div>
           )}
         </div>
       </div>
