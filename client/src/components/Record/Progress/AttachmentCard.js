@@ -19,6 +19,26 @@ const AttachmentCard = ({ handleRemoveAttachment, attachment, deletable }) => {
               width="100%"
               onClick={handleImgClick}
             />
+          ) : attachment.file.mime.includes("video") ? (
+            <video onClick={handleImgClick} width="100%">
+              <source
+                src={`${BASE_URL}${attachment.file.path}`}
+                type={attachment.file.mime}
+              />
+            </video>
+          ) : attachment.file.mime.includes("officedocument") ? (
+            <div>
+              <div style={{ color: "blue" }} onClick={handleImgClick}>
+                Preview
+              </div>{" "}
+              {/* <iframe
+                title="office document"
+                src={`https://docs.google.com/gview?url=${BASE_URL}${attachment.file.path}&embedded=true&widget=false`}
+                onClick={handleImgClick}
+                width="100%"
+                frameborder="0"
+              ></iframe> */}
+            </div>
           ) : (
             <div>
               <iframe
@@ -84,6 +104,24 @@ const AttachmentCard = ({ handleRemoveAttachment, attachment, deletable }) => {
               alt=""
               width="100%"
             />
+          ) : attachment.file.mime.includes("video") ? (
+            <video controls>
+              <source
+                src={`${BASE_URL}${attachment.file.path}`}
+                type={attachment.file.mime}
+              />
+            </video>
+          ) : attachment.file.mime.includes("officedocument") ? (
+            <div>
+              <iframe
+                title="office document"
+                src={`https://docs.google.com/gview?url=${BASE_URL}${attachment.file.path}&embedded=true&widget=false`}
+                onClick={handleImgClick}
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </div>
           ) : (
             <iframe
               title={attachment.alias}

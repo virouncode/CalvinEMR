@@ -28,9 +28,7 @@ const App = () => {
   const navigate = useNavigate();
   const { setUser, setClinic, setAuth } = useAuth();
   useEffect(() => {
-    console.log("useEffect storage listener");
     const storageListener = (e) => {
-      console.log("storage listener");
       if (e.key !== "message") return;
       const message = e.newValue;
       if (!message) return;
@@ -46,7 +44,6 @@ const App = () => {
     };
     window.addEventListener("storage", storageListener);
     return () => {
-      console.log("remove storage listener");
       window.removeEventListener("storage", storageListener);
     };
   }, [navigate, setAuth, setClinic, setUser]);

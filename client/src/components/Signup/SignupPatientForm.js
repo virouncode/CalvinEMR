@@ -290,7 +290,9 @@ const SignupPatientForm = () => {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file.size > 25000000) {
-      alert("The file is over 25Mb, please choose another file");
+      toast.error("The file is over 25Mb, please choose another file", {
+        containerId: "A",
+      });
       return;
     }
     setIsLoadingFile(true);

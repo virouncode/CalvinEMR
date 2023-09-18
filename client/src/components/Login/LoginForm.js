@@ -63,8 +63,6 @@ const LoginForm = () => {
           }
         );
         const authToken = response?.data?.authToken;
-        console.log("auth");
-
         setAuth({ email, password, authToken });
         localStorage.setItem(
           "auth",
@@ -77,7 +75,6 @@ const LoginForm = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        console.log("user");
         const accessLevel = response2?.data?.access_level;
         const id = response2?.data?.id;
         const name = response2?.data?.full_name;
@@ -98,7 +95,6 @@ const LoginForm = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        console.log("unread messages");
         const unreadMessagesNbr = getUnreadMessagesNbr(response4.data, id);
 
         // Get user unread external messages
@@ -116,9 +112,7 @@ const LoginForm = () => {
           "staff",
           id
         );
-        console.log("unread external messages");
         const unreadNbr = unreadMessagesExternalNbr + unreadMessagesNbr;
-        console.log("unreadNbr", unreadNbr);
 
         setUser({
           accessLevel,
@@ -163,7 +157,6 @@ const LoginForm = () => {
             "Content-Type": "application/json",
           },
         });
-        console.log("clinic");
         const patientsInfos = response7.data;
         setClinic({ staffInfos, patientsInfos });
         localStorage.setItem(
@@ -229,7 +222,6 @@ const LoginForm = () => {
           "patient",
           id
         );
-        console.log("unreadMessagesExternalNbr", unreadMessagesExternalNbr);
         const unreadNbr = unreadMessagesExternalNbr;
 
         setUser({

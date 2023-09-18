@@ -11,6 +11,7 @@ const MessageAttachmentCard = ({
 }) => {
   const [popUpVisible, setPopUpVisible] = useState(false);
   const handleImgClick = () => {
+    console.log("img click");
     setPopUpVisible(true);
   };
   return (
@@ -24,6 +25,26 @@ const MessageAttachmentCard = ({
               width="100%"
               onClick={handleImgClick}
             />
+          ) : attachment.file.mime.includes("video") ? (
+            <video onClick={handleImgClick} width="100%">
+              <source
+                src={`${BASE_URL}${attachment.file.path}`}
+                type={attachment.file.mime}
+              />
+            </video>
+          ) : attachment.file.mime.includes("officedocument") ? (
+            <div>
+              <div style={{ color: "blue" }} onClick={handleImgClick}>
+                Preview
+              </div>{" "}
+              {/* <iframe
+                title="office document"
+                src={`https://docs.google.com/gview?url=${BASE_URL}${attachment.file.path}&embedded=true&widget=false`}
+                onClick={handleImgClick}
+                width="100%"
+                frameborder="0"
+              ></iframe> */}
+            </div>
           ) : (
             <div>
               <iframe
@@ -88,6 +109,21 @@ const MessageAttachmentCard = ({
               src={`${BASE_URL}${attachment.file.path}`}
               alt=""
               width="100%"
+            />
+          ) : attachment.file.mime.includes("video") ? (
+            <video width="100%" controls>
+              <source
+                src={`${BASE_URL}${attachment.file.path}`}
+                type={attachment.file.mime}
+              />
+            </video>
+          ) : attachment.file.mime.includes("officedocument") ? (
+            <iframe
+              title="office document"
+              src={`https://docs.google.com/gview?url=${BASE_URL}${attachment.file.path}&embedded=true&widget=false`}
+              width="100%"
+              height="100%"
+              frameborder="0"
             />
           ) : (
             <iframe

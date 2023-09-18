@@ -65,8 +65,10 @@ const EformsPU = ({
     input.onchange = (e) => {
       // getting a hold of the file reference
       let file = e.target.files[0];
-      if (file.size > 20000000) {
-        alert("The file is over 20Mb, please choose another one");
+      if (file.size > 25000000) {
+        toast.error("The file is over 25Mb, please choose another one", {
+          containerId: "B",
+        });
         return;
       }
       setIsLoadingFile(true);

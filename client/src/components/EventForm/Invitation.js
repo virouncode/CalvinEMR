@@ -73,7 +73,7 @@ const Invitation = ({
       templateSelected !== "[Blank]" &&
       !addressSelected
     ) {
-      alert("Please choose a clinic address first");
+      toast.error("Please choose a clinic address first", { containerId: "A" });
       return;
     }
     const host_title =

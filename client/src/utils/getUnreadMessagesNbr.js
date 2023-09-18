@@ -39,7 +39,6 @@ export const getUnreadMessagesExternalNbr = (messages, userType, userId) => {
       (message) =>
         message.to_user_type === "patient" && message.to_id === userId
     );
-    console.log("messagesForUser", messagesForUser);
     if (messagesForUser.length) {
       unreadMessagesExternalNbr = messagesForUser.reduce(
         (accumulator, currentValue) => {

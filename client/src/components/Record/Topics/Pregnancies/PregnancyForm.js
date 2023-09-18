@@ -49,7 +49,6 @@ const PregnancyForm = ({
     if (formDatasForValidation.term_nbr_of_days === "") {
       formDatasForValidation.term_nbr_of_days = 0;
     }
-    console.log(formDatasForValidation);
     try {
       await pregnancySchema.validate(formDatasForValidation);
     } catch (err) {

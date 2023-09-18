@@ -122,8 +122,9 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
       // getting a hold of the file reference
       let file = e.target.files[0];
       if (file.size > 25000000) {
-        alert(
-          "The file is over 25Mb, please choose another one or send a link"
+        toast.error(
+          "The file is over 25Mb, please choose another one or send a link",
+          { containerId: "B" }
         );
         return;
       }
