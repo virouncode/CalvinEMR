@@ -281,7 +281,7 @@ const LoginForm = () => {
   return (
     <div className="login-container">
       <div className="login-content">
-        <p className="login-title">Welcome to Calvin EMR</p>
+        <p className="login-title">Welcome to Calvin EMR !</p>
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="login-form-row-radio">
             <div className="login-form-row-radio-item">
