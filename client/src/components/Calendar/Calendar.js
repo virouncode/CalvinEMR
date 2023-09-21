@@ -27,6 +27,7 @@ import { staffIdToName } from "../../utils/staffIdToName";
 import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { useEvents } from "../../hooks/useEvents";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
+import Availability from "./Availability";
 
 //Require
 var _ = require("lodash");
@@ -47,8 +48,12 @@ const Calendar = ({ timelineVisible }) => {
   const currentEventElt = useRef(null);
   const currentView = useRef(null);
   const lastCurrentId = useRef("");
-  const [rangeStart, setRangeStart] = useState(Date.parse(getWeekRange()[0]));
-  const [rangeEnd, setRangeEnd] = useState(Date.parse(getWeekRange()[1]));
+  const [rangeStart, setRangeStart] = useState(
+    Date.parse(getWeekRange(user.settings.first_day)[0])
+  );
+  const [rangeEnd, setRangeEnd] = useState(
+    Date.parse(getWeekRange(user.settings.first_day)[1])
+  );
   const isSecretary = useCallback(() => {
     return user.title === "Secretary" ? true : false;
   }, [user.title]);
@@ -886,6 +891,7 @@ const Calendar = ({ timelineVisible }) => {
           <p>Options</p>
           <SlotSelect />
           <FirstDaySelect />
+          <Availability />
         </div>
         <CalendarFilter
           staffInfos={clinic.staffInfos}

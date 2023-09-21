@@ -119,7 +119,6 @@ const SignupStaffForm = () => {
       datasToPost.speciality = firstLetterUpper(datasToPost.speciality);
       datasToPost.subspeciality = firstLetterUpper(datasToPost.subspeciality);
       datasToPost.date_created = Date.parse(new Date());
-      delete datasToPost.confirm_password;
 
       //Validation
       try {
@@ -129,6 +128,7 @@ const SignupStaffForm = () => {
         return;
       }
 
+      delete datasToPost.confirm_password;
       //Submission
 
       const response = await axiosXano.post("/staff", datasToPost, {
@@ -199,7 +199,93 @@ const SignupStaffForm = () => {
           },
         }
       );
-      //update patientsInfos
+
+      await axiosXano.post(
+        "/availability",
+        {
+          staff_id: response.data.id,
+          date_created: Date.parse(new Date()),
+          schedule_morning: {
+            monday: [
+              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "12", min: "00", ampm: "PM" },
+            ],
+            tuesday: [
+              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "12", min: "00", ampm: "PM" },
+            ],
+            wednesday: [
+              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "12", min: "00", ampm: "PM" },
+            ],
+            thursday: [
+              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "12", min: "00", ampm: "PM" },
+            ],
+            friday: [
+              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "12", min: "00", ampm: "PM" },
+            ],
+            saturday: [
+              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "12", min: "00", ampm: "PM" },
+            ],
+            sunday: [
+              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "12", min: "00", ampm: "PM" },
+            ],
+          },
+          schedule_afternoon: {
+            monday: [
+              { hours: "01", min: "00", ampm: "PM" },
+              { hours: "06", min: "00", ampm: "PM" },
+            ],
+            tuesday: [
+              { hours: "01", min: "00", ampm: "PM" },
+              { hours: "06", min: "00", ampm: "PM" },
+            ],
+            wednesday: [
+              { hours: "01", min: "00", ampm: "PM" },
+              { hours: "06", min: "00", ampm: "PM" },
+            ],
+            thursday: [
+              { hours: "01", min: "00", ampm: "PM" },
+              { hours: "06", min: "00", ampm: "PM" },
+            ],
+            friday: [
+              { hours: "01", min: "00", ampm: "PM" },
+              { hours: "06", min: "00", ampm: "PM" },
+            ],
+            saturday: [
+              { hours: "01", min: "00", ampm: "PM" },
+              { hours: "06", min: "00", ampm: "PM" },
+            ],
+            sunday: [
+              { hours: "01", min: "00", ampm: "PM" },
+              { hours: "06", min: "00", ampm: "PM" },
+            ],
+          },
+          unavailability: {
+            monday: false,
+            tuesday: false,
+            wednesday: false,
+            thursday: false,
+            friday: false,
+            saturday: false,
+            sunday: false,
+          },
+          default_duration_hours: 1,
+          default_duration_min: 0,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      //update staffInfos
       const response2 = await axiosXano.get("/staff", {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,

@@ -6,10 +6,11 @@ const DurationPicker = ({
   handleDurationHoursChange,
   handleDurationMinChange,
   disabled,
+  title = true,
 }) => {
   return (
     <>
-      <label>Duration</label>
+      {title && <label>Duration</label>}
       <div
         style={{
           display: "flex",

@@ -112,6 +112,7 @@ const SignupPatientForm = () => {
         setErrMsg(err.message);
         return;
       }
+      delete datasToPost.confirm_password;
 
       //Submission
       const response = await postPatientRecord(

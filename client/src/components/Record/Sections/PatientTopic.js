@@ -82,7 +82,6 @@ const PatientTopic = ({
   };
 
   const showDocument = async (docUrl, docMime) => {
-    console.log(docMime);
     let docWindow;
     if (!docMime.includes("officedocument")) {
       docWindow = window.open(

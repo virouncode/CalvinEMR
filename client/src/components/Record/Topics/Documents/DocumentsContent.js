@@ -9,7 +9,6 @@ const DocumentsContent = ({ showDocument, datas, isLoading, errMsg }) => {
       <p className="patient-documents-content-err">{errMsg}</p>
     ) : (
       <div className="patient-documents-content">
-        {console.log(datas)}
         {datas && datas.length >= 1 ? (
           <ul>
             {datas

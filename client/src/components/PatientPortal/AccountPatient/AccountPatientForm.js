@@ -12,11 +12,15 @@ import CountriesList from "../../Lists/CountriesList";
 import StudentsList from "../../Lists/StudentsList";
 import NursesList from "../../Lists/NursesList";
 import { patientAccountSchema } from "../../../validation/patientAccountValidation";
+import { staffIdToTitle } from "../../../utils/staffIdToTitle";
+import { staffIdToName } from "../../../utils/staffIdToName";
+import formatName from "../../../utils/formatName";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
+const USERINFO_URL = "/auth/me";
 
 const AccountPatientForm = () => {
   //HOOKS
-  const { auth, user, clinic, setClinic } = useAuth();
+  const { auth, user, clinic, setClinic, setUser } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [formDatas, setFormDatas] = useState(user.demographics);
   const [tempFormDatas, setTempFormDatas] = useState(user.demographics);
@@ -28,8 +32,17 @@ const AccountPatientForm = () => {
   //HANDLERS
   const handleChange = (e) => {
     setErrMsg("");
-    const value = e.target.value;
+    let value = e.target.value;
     const name = e.target.name;
+    if (
+      name === "assigned_md_id" ||
+      name === "assigned_resident_id" ||
+      name === "assigned_resident_id" ||
+      name === "assigned_nurse_id" ||
+      name === "assigned_midwife_id"
+    ) {
+      value = parseInt(value);
+    }
     setTempFormDatas({ ...tempFormDatas, [name]: value });
   };
 
@@ -71,7 +84,7 @@ const AccountPatientForm = () => {
       });
       setInfosChanged(true);
       setTimeout(() => setInfosChanged(false), 2000);
-      //update clinic context staffInfos
+      //update clinic context patientInfos
       const response = await axiosXanoPatient.get("/patients", {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
@@ -82,6 +95,17 @@ const AccountPatientForm = () => {
       localStorage.setItem(
         "clinic",
         JSON.stringify({ ...clinic, patientInfos: response.data })
+      );
+      //update user patient demographics
+      const response2 = await axiosXanoPatient.get(USERINFO_URL, {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      });
+      setUser({ ...user, demographics: response2.data });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...user, demographics: response2.data })
       );
       setEditVisible(false);
     } catch (err) {
@@ -310,7 +334,13 @@ const AccountPatientForm = () => {
                   staffInfos={clinic.staffInfos}
                 />
               ) : (
-                tempFormDatas.assigned_md_name?.full_name
+                staffIdToTitle(
+                  clinic.staffInfos,
+                  tempFormDatas.assigned_md_id
+                ) +
+                formatName(
+                  staffIdToName(clinic.staffInfos, tempFormDatas.assigned_md_id)
+                )
               )}
             </div>
             <div className="patient-account-form-content-row">

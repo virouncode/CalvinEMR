@@ -95,6 +95,17 @@ export const toLocalAMPM = (isoString) => {
   return AMPM;
 };
 
+export const AMPMto24 = (hour, ampm) => {
+  if (ampm === "AM") {
+    if (hour === 12) return 0;
+    else return hour;
+  }
+  if (ampm === "PM") {
+    if (hour === 12) return hour;
+    else return hour + 12;
+  }
+};
+
 export const fromLocalToISOStringNoMs = (
   localDate,
   localHours,
@@ -124,8 +135,7 @@ export const fromLocalDateToISOStringNoMs = (localDate) => {
   return toISOStringNoMs(new Date(localYear, localMonth, localDay));
 };
 
-export const getWeekRange = () => {
-  const firstDay = localStorage.firstDay ? parseInt(localStorage.firstDay) : 0;
+export const getWeekRange = (firstDay) => {
   const curr = new Date();
   const currDate = curr.getDate();
   const currDay = curr.getDay();

@@ -21,6 +21,8 @@ import { ToastContainer, toast } from "react-toastify";
 import formatName from "../../../utils/formatName";
 import { demographicsSchema } from "../../../validation/demographicsValidation";
 import { firstLetterUpper } from "../../../utils/firstLetterUpper";
+import { staffIdToTitle } from "../../../utils/staffIdToTitle";
+import { staffIdToName } from "../../../utils/staffIdToName";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
@@ -511,7 +513,13 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                       staffInfos={clinic.staffInfos}
                     />
                   ) : (
-                    patientInfos.assigned_md_name?.full_name
+                    staffIdToTitle(
+                      clinic.staffInfos,
+                      formDatas.assigned_md_id
+                    ) +
+                    formatName(
+                      staffIdToName(clinic.staffInfos, formDatas.assigned_md_id)
+                    )
                   )}
                 </p>
                 <p>

@@ -5,9 +5,15 @@ import { getAge } from "../../../../utils/getAge";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { CircularProgress } from "@mui/material";
 import avatar from "../../../../assets/img/avatar.png";
+import formatName from "../../../../utils/formatName";
+import { staffIdToName } from "../../../../utils/staffIdToName";
+import { staffIdToTitle } from "../../../../utils/staffIdToTitle";
+import useAuth from "../../../../hooks/useAuth";
+
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const DemographicsContent = ({ patientInfos }) => {
+  const { clinic } = useAuth();
   return patientInfos ? (
     <div className="patient-demo-content">
       <div className="patient-demo-content-infos">
@@ -89,7 +95,10 @@ const DemographicsContent = ({ patientInfos }) => {
         </p>
         <p>
           <label>Assigned MD: </label>
-          {patientInfos.assigned_md_name?.full_name}
+          {staffIdToTitle(clinic.staffInfos, patientInfos.assigned_md_id) +
+            formatName(
+              staffIdToName(clinic.staffInfos, patientInfos.assigned_md_id)
+            )}
         </p>
         <p>
           <label>Assigned Resident: </label>

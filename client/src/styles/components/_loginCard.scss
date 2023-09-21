@@ -10,6 +10,10 @@
         height:100%;
         width:50%;
         padding : 20px;
+        img {
+            border-radius: 4px;
+            overflow:hidden;
+        }
         h1 {
             font-size: 1rem;
             font-family: $font1, Arial, Helvetica, sans-serif;
