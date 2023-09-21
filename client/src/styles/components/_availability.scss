@@ -1,4 +1,11 @@
 .availability {
+    padding: 5px;
+    label {
+        font-size: 0.8rem;
+        font-weight: bold;
+
+        margin-right: 10px;
+    }
     &-err {
         padding : 10px 20px;
         font-size: 0.9rem;

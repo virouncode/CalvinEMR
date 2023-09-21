@@ -113,7 +113,7 @@ const NewAppointment = () => {
     setPracticianSelectedId(value);
   };
 
-  const handleClickNext = () => {
+  const handleClickNext = async () => {
     setRangeStart((rs) => rs + 6.048e8);
     setRangeEnd((re) => re + 6.048e8);
     setAppointmentSelected({});

@@ -9,9 +9,13 @@ const Availability = () => {
   };
   return (
     <>
-      <div className="unavailabilty">
-        Availability{" "}
-        <i onClick={handleEdit} className="fa-regular fa-pen-to-square"></i>
+      <div className="availability">
+        <label>Availability</label>
+        <i
+          onClick={handleEdit}
+          style={{ cursor: "pointer" }}
+          className="fa-regular fa-pen-to-square"
+        ></i>
       </div>
       {editVisible && (
         <NewWindow
