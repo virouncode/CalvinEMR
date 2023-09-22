@@ -105,16 +105,28 @@ const DemographicsContent = ({ patientInfos }) => {
           {patientInfos.assigned_resident_name?.full_name}
         </p>
         <p>
-          <label>Assigned Student: </label>
-          {patientInfos.assigned_student_name?.full_name}
-        </p>
-        <p>
           <label>Assigned Nurse: </label>
           {patientInfos.assigned_nurse_name?.full_name}
         </p>
         <p>
           <label>Assigned Midwife: </label>
           {patientInfos.assigned_midwife_name?.full_name}
+        </p>
+        <p>
+          <label>Assigned Ultrasound Tech: </label>
+          {patientInfos.assigned_us_tech_name?.full_name}
+        </p>
+        <p>
+          <label>Assigned Physiotherapist: </label>
+          {patientInfos.assigned_physio_name?.full_name}
+        </p>
+        <p>
+          <label>Assigned Psychologist: </label>
+          {patientInfos.assigned_psycho_name?.full_name}
+        </p>
+        <p>
+          <label>Assigned Nutritionist: </label>
+          {patientInfos.assigned_nutri_name?.full_name}
         </p>
       </div>
       <div className="patient-demo-content-avatar">

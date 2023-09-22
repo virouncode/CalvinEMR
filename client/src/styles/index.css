@@ -10621,6 +10621,10 @@ readers do not read off random characters that represent icons */
   width: 50%;
   padding: 20px;
 }
+.login-card .login-carousel img {
+  border-radius: 4px;
+  overflow: hidden;
+}
 .login-card .login-carousel h1 {
   font-size: 1rem;
   font-family: Lato, sans-serif, Arial, Helvetica, sans-serif;
@@ -12304,6 +12308,15 @@ readers do not read off random characters that represent icons */
   margin-left: 10px;
 }
 
+.patient-appointments-section {
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 49% 49%;
+  justify-content: space-between;
+  padding: 20px;
+}
+
 .demographics-card {
   font-size: 0.8rem;
   width: 80%;
@@ -12338,7 +12351,7 @@ readers do not read off random characters that represent icons */
 .demographics-card-form-content label {
   font-weight: bold;
   display: inline-block;
-  min-width: 150px;
+  min-width: 160px;
 }
 .demographics-card-form-content input, .demographics-card-form-content select {
   width: 160px;
@@ -13882,12 +13895,19 @@ readers do not read off random characters that represent icons */
   padding: 5px;
   font-size: 0.7rem;
   display: flex;
+  flex-direction: column;
+}
+.messages-attachments-card-footer-title {
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.messages-attachments-card-footer p {
+.messages-attachments-card-footer-title p {
   margin-top: 0;
   font-size: 0.7rem;
+}
+.messages-attachments-card-footer-btn button {
+  font-size: 0.65rem;
 }
 .messages-toggle {
   padding: 5px 10px;
@@ -14735,4 +14755,204 @@ readers do not read off random characters that represent icons */
 }
 .patient-account-form-content input, .patient-account-form-content select {
   width: 200px;
+}
+
+.availability {
+  padding: 5px;
+}
+.availability label {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.availability-err {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: 0 auto 10px;
+  color: red;
+  background-color: rgba(255, 0, 0, 0.403);
+  border-radius: 4px;
+  text-align: center;
+}
+.availability-heads {
+  margin: 10px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 66%;
+}
+.availability-heads p {
+  padding: 0;
+  width: 50%;
+  text-align: center;
+}
+.availability-form {
+  font-size: 0.9rem;
+  width: 95%;
+  margin: 20px auto 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.availability-form p {
+  padding: 0;
+}
+.availability-form-row {
+  display: grid;
+  grid-template-columns: 15% 35% 35% 15%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.availability-form-row-time {
+  margin-right: 15px;
+  margin-left: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.availability-form-row-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.availability-form-row-checkbox input[type=checkbox] {
+  margin-right: 5px;
+}
+.availability-form-btn {
+  text-align: center;
+  margin-top: 10px;
+}
+.availability-form-duration {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45%;
+  margin-top: 20px;
+}
+.availability-form-duration p {
+  padding: 0;
+  margin-right: 10px;
+}
+
+.patient-past-appointments {
+  margin-bottom: 10px;
+}
+
+.patient-past-appointments, .patient-next-appointments {
+  width: 100%;
+  border: solid 1px rgb(206, 205, 205);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 0.85rem;
+}
+.patient-past-appointments-title, .patient-next-appointments-title {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  border-bottom: solid 0.5px rgb(206, 205, 205);
+  font-weight: bold;
+}
+.patient-past-appointments-content, .patient-next-appointments-content {
+  height: 30vh;
+  overflow: scroll;
+}
+.patient-past-appointments-content-item, .patient-next-appointments-content-item {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.patient-past-appointments-content-item p, .patient-next-appointments-content-item p {
+  font-size: 0.85rem;
+  width: 25%;
+}
+.patient-past-appointments-content-item-date, .patient-next-appointments-content-item-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+}
+.patient-past-appointments-content-item-date p, .patient-next-appointments-content-item-date p {
+  padding: 0;
+  font-size: 0.85rem;
+  width: 50%;
+}
+.patient-past-appointments-content input[type=checkbox], .patient-next-appointments-content input[type=checkbox] {
+  margin-right: 10px;
+}
+
+.patient-next-appointments-btn {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.new-appointments {
+  width: 100%;
+  border: solid 1px rgb(206, 205, 205);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 0.85rem;
+}
+.new-appointments-title {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  border-bottom: solid 0.5px rgb(206, 205, 205);
+  font-weight: bold;
+}
+.new-appointments .assigned-practicians-list {
+  margin-bottom: 20px;
+}
+.new-appointments-disclaimer {
+  font-style: italic;
+  margin-bottom: 20px;
+}
+.new-appointments-content {
+  height: 25vh;
+  overflow: scroll;
+}
+.new-appointments-content-item {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.new-appointments-content-item input[type=checkbox] {
+  margin-right: 10px;
+}
+.new-appointments-content-item p {
+  font-size: 0.85rem;
+  width: 25%;
+}
+.new-appointments-content-item-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+}
+.new-appointments-content-item-date p {
+  padding: 0;
+  font-size: 0.85rem;
+  width: 50%;
+}
+.new-appointments-content-weekpicker {
+  text-align: center;
+  margin-top: 10px;
+}
+.new-appointments-content-weekpicker label {
+  padding: 10px;
+}
+.new-appointments-submit {
+  text-align: center;
+  margin-top: 20px;
+}
+.new-appointments-confirm {
+  padding: 10px 20px;
+  width: 30%;
+  font-size: 0.9rem;
+  margin: 0 auto;
+  border-radius: 4px;
+  text-align: center;
+  color: forestgreen;
+  background-color: rgba(34, 139, 34, 0.4);
 }/*# sourceMappingURL=index.css.map */

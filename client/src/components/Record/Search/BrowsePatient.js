@@ -27,9 +27,12 @@ const BrowsePatient = () => {
     if (
       columnName === "assigned_md_name" ||
       columnName === "assigned_resident_name" ||
-      columnName === "assigned_student_name" ||
       columnName === "assigned_nurse_name" ||
-      columnName === "assigned_midwife_name"
+      columnName === "assigned_midwife_name" ||
+      columnName === "assigned_us_tech_name" ||
+      columnName === "assigned_physio_name" ||
+      columnName === "assigned_psycho_name" ||
+      columnName === "assigned_nutri_name"
     ) {
       direction.current
         ? sortedPatientsInfos.sort((a, b) =>

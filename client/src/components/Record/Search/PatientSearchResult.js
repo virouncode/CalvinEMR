@@ -25,19 +25,6 @@ const PatientSearchResult = ({ search, sortedPatientsInfos, handleSort }) => {
             <th onClick={() => handleSort("health_insurance_nbr")}>
               Health Insurance Nbr
             </th>
-            {/* <th onClick={() => handleSort("assigned_md_name")}>Assigned MD</th>
-            <th onClick={() => handleSort("assigned_resident_name")}>
-              Assigned Resident
-            </th>
-            <th onClick={() => handleSort("assigned_student_name")}>
-              Assigned Student
-            </th>
-            <th onClick={() => handleSort("assigned_nurse_name")}>
-              Assigned Nurse
-            </th>
-            <th onClick={() => handleSort("assigned_midwife_name")}>
-              Assigned Midwife
-            </th> */}
             <th onClick={() => handleSort("address")}>Address</th>
             <th onClick={() => handleSort("postal_code")}>Postal Code</th>
             <th onClick={() => handleSort("province_state")}>Province/State</th>

@@ -23,6 +23,10 @@ import { demographicsSchema } from "../../../validation/demographicsValidation";
 import { firstLetterUpper } from "../../../utils/firstLetterUpper";
 import { staffIdToTitle } from "../../../utils/staffIdToTitle";
 import { staffIdToName } from "../../../utils/staffIdToName";
+import USTechsList from "../../Lists/USTechsList";
+import PhysiosList from "../../Lists/PhysiosList";
+import PsychosList from "../../Lists/PsychosList";
+import NutritionistsList from "../../Lists/NutritionistsList";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
@@ -60,9 +64,12 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
     if (
       name === "assigned_md_id" ||
       name === "assigned_resident_id" ||
-      name === "assigned_student_id" ||
       name === "assigned_nurse_id" ||
-      name === "assigned_midwife_id"
+      name === "assigned_midwife_id" ||
+      name === "assigned_us_tech_id" ||
+      name === "assigned_physio_id" ||
+      name === "assigned_psycho_id" ||
+      name === "assigned_nutri_id"
     ) {
       value = parseInt(value);
     }
@@ -537,20 +544,6 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                   )}
                 </p>
                 <p>
-                  <label>Assigned Student: </label>
-                  {editVisible ? (
-                    <StudentsList
-                      value={formDatas.assigned_student_id}
-                      handleChange={handleChange}
-                      name="assigned_student_id"
-                      id="21"
-                      staffInfos={clinic.staffInfos}
-                    />
-                  ) : (
-                    patientInfos.assigned_student_name?.full_name
-                  )}
-                </p>
-                <p>
                   <label>Assigned Nurse: </label>
                   {editVisible ? (
                     <NursesList
@@ -576,6 +569,62 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                     />
                   ) : (
                     patientInfos.assigned_midwife_name?.full_name
+                  )}
+                </p>
+                <p>
+                  <label>Assigned Ultrasound Tech: </label>
+                  {editVisible ? (
+                    <USTechsList
+                      value={formDatas.assigned_us_tech_id}
+                      handleChange={handleChange}
+                      name="assigned_us_tech_id"
+                      id="24"
+                      staffInfos={clinic.staffInfos}
+                    />
+                  ) : (
+                    patientInfos.assigned_us_tech_name?.full_name
+                  )}
+                </p>
+                <p>
+                  <label>Assigned Physiotherapist: </label>
+                  {editVisible ? (
+                    <PhysiosList
+                      value={formDatas.assigned_physio_id}
+                      handleChange={handleChange}
+                      name="assigned_physio_id"
+                      id="25"
+                      staffInfos={clinic.staffInfos}
+                    />
+                  ) : (
+                    patientInfos.assigned_physio_name?.full_name
+                  )}
+                </p>
+                <p>
+                  <label>Assigned Psychologist: </label>
+                  {editVisible ? (
+                    <PsychosList
+                      value={formDatas.assigned_psycho_id}
+                      handleChange={handleChange}
+                      name="assigned_psycho_id"
+                      id="26"
+                      staffInfos={clinic.staffInfos}
+                    />
+                  ) : (
+                    patientInfos.assigned_psycho_name?.full_name
+                  )}
+                </p>
+                <p>
+                  <label>Assigned Nutritionist: </label>
+                  {editVisible ? (
+                    <NutritionistsList
+                      value={formDatas.assigned_nutri_id}
+                      handleChange={handleChange}
+                      name="assigned_nutri_id"
+                      id="27"
+                      staffInfos={clinic.staffInfos}
+                    />
+                  ) : (
+                    patientInfos.assigned_nutri_name?.full_name
                   )}
                 </p>
               </div>

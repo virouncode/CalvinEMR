@@ -9,6 +9,7 @@ import WeekPicker from "./WeekPicker";
 import { sendEmail } from "../../../api/sendEmail";
 import { staffIdToName } from "../../../utils/staffIdToName";
 import { staffIdToTitle } from "../../../utils/staffIdToTitle";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
 const optionsDate = {
   weekday: "short",
@@ -125,48 +126,71 @@ const NewAppointment = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(appointmentSelected);
-    const message = `I would like to have an appointment with ${
-      staffIdToTitle(clinic.staffInfos, practicianSelectedId) +
-      staffIdToName(clinic.staffInfos, practicianSelectedId)
-    }:
+    if (
+      await confirmAlert({
+        content: `You are about to request an appointment with ${staffIdToTitle(
+          clinic.staffInfos,
+          practicianSelectedId
+        )} ${staffIdToName(
+          clinic.staffInfos,
+          practicianSelectedId
+        )}, on ${new Date(appointmentSelected.start).toLocaleString(
+          "en-CA",
+          optionsDate
+        )} ${new Date(appointmentSelected.start).toLocaleTimeString(
+          "en-CA",
+          optionsTime
+        )} - ${new Date(appointmentSelected.end).toLocaleTimeString(
+          "en-CA",
+          optionsTime
+        )}, do you confirm ?`,
+      })
+    ) {
+      const message = `I would like to have an appointment with ${
+        staffIdToTitle(clinic.staffInfos, practicianSelectedId) +
+        staffIdToName(clinic.staffInfos, practicianSelectedId)
+      }:
 
       ${new Date(appointmentSelected.start).toLocaleString(
         "en-CA",
         optionsDate
       )} ${new Date(appointmentSelected.start).toLocaleTimeString(
-      "en-CA",
-      optionsTime
-    )} - ${new Date(appointmentSelected.end).toLocaleTimeString(
-      "en-CA",
-      optionsTime
-    )} 
+        "en-CA",
+        optionsTime
+      )} - ${new Date(appointmentSelected.end).toLocaleTimeString(
+        "en-CA",
+        optionsTime
+      )} 
+
+      Patient: ${user.demographics.full_name}
+      Chart Nbr: ${user.demographics.chart_nbr}
+      Phone: ${user.demographics.cell_phone}
 
     Please call me or send me a message to confirm the appointment.`;
-    try {
-      await sendEmail(
-        "virounk@gmail.com", //to be changed to secretary .email
-        staffIdToTitle(clinic.staffInfos, practicianSelectedId) +
-          staffIdToName(clinic.staffInfos, practicianSelectedId),
-        "Appointment Request",
-        "",
-        "",
-        message,
-        `Best wishes, \nPowered by Calvin EMR`
-      );
-      toast.success(
-        `Invitation sent successfully to ${
-          staffIdToTitle(clinic.staffInfos, practicianSelectedId) +
-          staffIdToName(clinic.staffInfos, practicianSelectedId)
-        }`,
-        { containerId: "A" }
-      );
-      setRequestSent(true);
-      setTimeout(() => setRequestSent(false), 6000);
-    } catch (err) {
-      toast.error(`Couldn't send the appointment request : ${err.text}`, {
-        containerId: "A",
-      });
+      try {
+        await sendEmail(
+          "virounk@gmail.com", //to be changed to secretary .email
+          "",
+          "Appointment Request",
+          "",
+          "",
+          message,
+          `Best wishes, \nPowered by Calvin EMR`
+        );
+        toast.success(
+          `Invitation sent successfully to ${
+            staffIdToTitle(clinic.staffInfos, practicianSelectedId) +
+            staffIdToName(clinic.staffInfos, practicianSelectedId)
+          }`,
+          { containerId: "A" }
+        );
+        setRequestSent(true);
+        setTimeout(() => setRequestSent(false), 6000);
+      } catch (err) {
+        toast.error(`Couldn't send the appointment request : ${err.text}`, {
+          containerId: "A",
+        });
+      }
     }
   };
 
@@ -221,7 +245,7 @@ const NewAppointment = () => {
         <p className="new-appointments-confirm">
           Your request has been sent,{" "}
           <strong>
-            Please wait for a secretary to confirm the appointment with{" "}
+            Please wait for a secretary to confirm your appointment with{" "}
             {staffIdToTitle(clinic.staffInfos, practicianSelectedId) +
               staffIdToName(clinic.staffInfos, practicianSelectedId)}
           </strong>

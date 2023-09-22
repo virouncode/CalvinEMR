@@ -15,6 +15,10 @@ import { patientAccountSchema } from "../../../validation/patientAccountValidati
 import { staffIdToTitle } from "../../../utils/staffIdToTitle";
 import { staffIdToName } from "../../../utils/staffIdToName";
 import formatName from "../../../utils/formatName";
+import USTechsList from "../../Lists/USTechsList";
+import PhysiosList from "../../Lists/PhysiosList";
+import PsychosList from "../../Lists/PsychosList";
+import NutritionistsList from "../../Lists/NutritionistsList";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 const USERINFO_URL = "/auth/me";
 
@@ -37,9 +41,12 @@ const AccountPatientForm = () => {
     if (
       name === "assigned_md_id" ||
       name === "assigned_resident_id" ||
-      name === "assigned_resident_id" ||
       name === "assigned_nurse_id" ||
-      name === "assigned_midwife_id"
+      name === "assigned_midwife_id" ||
+      name === "assigned_us_tech_id" ||
+      name === "assigned_physio_id" ||
+      name === "assigned_psycho_id" ||
+      name === "assigned_nutri_id"
     ) {
       value = parseInt(value);
     }
@@ -358,27 +365,13 @@ const AccountPatientForm = () => {
               )}
             </div>
             <div className="patient-account-form-content-row">
-              <label>Assigned Student: </label>
-              {editVisible ? (
-                <StudentsList
-                  value={tempFormDatas.assigned_student_id}
-                  handleChange={handleChange}
-                  name="assigned_student_id"
-                  id="19"
-                  staffInfos={clinic.staffInfos}
-                />
-              ) : (
-                tempFormDatas.assigned_student_name?.full_name
-              )}
-            </div>
-            <div className="patient-account-form-content-row">
               <label>Assigned Nurse: </label>
               {editVisible ? (
                 <NursesList
                   value={tempFormDatas.assigned_nurse_id}
                   handleChange={handleChange}
                   name="assigned_nurse_id"
-                  id="20"
+                  id="19"
                   staffInfos={clinic.staffInfos}
                 />
               ) : (
@@ -392,11 +385,67 @@ const AccountPatientForm = () => {
                   value={tempFormDatas.assigned_midwife_id}
                   handleChange={handleChange}
                   name="assigned_midwife_id"
-                  id="21"
+                  id="20"
                   staffInfos={clinic.staffInfos}
                 />
               ) : (
                 tempFormDatas.assigned_midwife_name?.full_name
+              )}
+            </div>
+            <div className="patient-account-form-content-row">
+              <label>Assigned Ultrasound Tech: </label>
+              {editVisible ? (
+                <USTechsList
+                  value={tempFormDatas.assigned_us_tech_id}
+                  handleChange={handleChange}
+                  name="assigned_us_tech_id"
+                  id="21"
+                  staffInfos={clinic.staffInfos}
+                />
+              ) : (
+                tempFormDatas.assigned_us_tech_name?.full_name
+              )}
+            </div>
+            <div className="patient-account-form-content-row">
+              <label>Assigned Physiotherapist: </label>
+              {editVisible ? (
+                <PhysiosList
+                  value={tempFormDatas.assigned_physio_id}
+                  handleChange={handleChange}
+                  name="assigned_physio_id"
+                  id="22"
+                  staffInfos={clinic.staffInfos}
+                />
+              ) : (
+                tempFormDatas.assigned_physio_name?.full_name
+              )}
+            </div>
+            <div className="patient-account-form-content-row">
+              <label>Assigned Psychologist: </label>
+              {editVisible ? (
+                <PsychosList
+                  value={tempFormDatas.assigned_psycho_id}
+                  handleChange={handleChange}
+                  name="assigned_psycho_id"
+                  id="23"
+                  staffInfos={clinic.staffInfos}
+                />
+              ) : (
+                tempFormDatas.assigned_psycho_name?.full_name
+              )}
+            </div>
+            <div className="patient-account-form-content-row">
+              <label>Assigned Nutritionist: </label>
+              {editVisible ? (
+                <NutritionistsList
+                  value={tempFormDatas.assigned_nutri_id}
+                  handleChange={handleChange}
+                  name="assigned_nutri_id"
+                  id="24"
+                  staffInfos={clinic.staffInfos}
+                />
+              ) : (
+                tempFormDatas.assigned_nutri_name?.full_name
               )}
             </div>
             {editVisible && (

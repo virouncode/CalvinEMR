@@ -27,8 +27,9 @@ const MessagesPatientToolBar = ({
   };
   const handleClickNew = (e) => {
     if (newVisible) {
-      alert(
-        "You already opened a New Message window, please send your message or close the window"
+      toast.error(
+        "You already opened a New Message window, please send your message or close the window",
+        { containerId: "A" }
       );
       return;
     }
