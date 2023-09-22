@@ -10,6 +10,7 @@ import { sendEmail } from "../../../api/sendEmail";
 import { staffIdToName } from "../../../utils/staffIdToName";
 import { staffIdToTitle } from "../../../utils/staffIdToTitle";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+var _ = require("lodash");
 
 const optionsDate = {
   weekday: "short",
@@ -237,7 +238,12 @@ const NewAppointment = () => {
           />
 
           <div className="new-appointments-submit">
-            <button onClick={handleSubmit}>Submit</button>
+            <button
+              onClick={handleSubmit}
+              disabled={_.isEmpty(appointmentSelected)}
+            >
+              Submit
+            </button>
           </div>
         </>
       )}

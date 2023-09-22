@@ -177,11 +177,14 @@ const NextAppointments = () => {
           <CircularProgress />
         )}
       </div>
-      {appointmentSlectedId && (
-        <div className="patient-next-appointments-btn">
-          <button onClick={handleDeleteAppointment}>Cancel Appointment</button>
-        </div>
-      )}
+      <div className="patient-next-appointments-btn">
+        <button
+          onClick={handleDeleteAppointment}
+          disabled={!appointmentSlectedId}
+        >
+          Cancel Appointment
+        </button>
+      </div>
     </div>
   );
 };
