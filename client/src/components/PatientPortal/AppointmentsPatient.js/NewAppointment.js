@@ -213,7 +213,7 @@ const NewAppointment = () => {
       )}
       {practicianSelectedId && (
         <p className="new-appointments-disclaimer">
-          Those time slots are automatically generated, if you want another time
+          These time slots are automatically generated, if you want other time
           slots please call the clinic
         </p>
       )}

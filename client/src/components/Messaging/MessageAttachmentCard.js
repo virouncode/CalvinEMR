@@ -66,7 +66,7 @@ const MessageAttachmentCard = ({
                 src={`https://docs.google.com/gview?url=${BASE_URL}${attachment.file.path}&embedded=true&widget=false`}
                 onClick={handleImgClick}
                 width="150%"
-                frameborder="0"
+                frameBorder="0"
               ></iframe>
             </div>
           ) : (
@@ -154,7 +154,7 @@ const MessageAttachmentCard = ({
               src={`https://docs.google.com/gview?url=${BASE_URL}${attachment.file.path}&embedded=true&widget=false`}
               width="100%"
               height="100%"
-              frameborder="0"
+              frameBorder="0"
             />
           ) : (
             <iframe

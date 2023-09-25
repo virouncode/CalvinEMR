@@ -65,13 +65,13 @@ const VaccineFormFirstDose = ({
     if (array.length) {
       array[0] = {
         vaccine_date: Date.parse(value),
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
         created_by_id: user.id,
       };
     } else {
       array.push({
         vaccine_date: Date.parse(value),
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
         created_by_id: user.id,
       });
     }

@@ -6,7 +6,7 @@ export const postAvailabilities = async (staff_ids, authToken) => {
       "/availability",
       {
         staff_id: staffId,
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
         schedule_morning: {
           monday: [
             { hours: "07", min: "00", ampm: "AM" },

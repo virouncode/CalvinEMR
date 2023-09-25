@@ -54,10 +54,10 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-              to="results"
+              to="doc-inbox"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
             >
-              Results
+              Documents Inbox
             </NavLink>
           </li>
           <li>

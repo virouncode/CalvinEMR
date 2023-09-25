@@ -139,7 +139,7 @@ const ForwardMessageExternal = ({
           }),
           { message_type: "External", id: message.id },
         ],
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
       };
 
       //post the message
@@ -211,7 +211,7 @@ const ForwardMessageExternal = ({
             {
               file: response.data,
               alias: file.name,
-              date_created: Date.parse(new Date()),
+              date_created: Date.now(),
               created_by_id: user.id,
             },
           ]); //meta, mime, name, path, size, type

@@ -98,7 +98,7 @@ const ReminderForm = ({
         <em>{formatName(user.name)}</em>
       </td>
       <td>
-        <em>{toLocalDate(Date.parse(new Date()))}</em>
+        <em>{toLocalDate(Date.now())}</em>
       </td>
       <td style={{ textAlign: "center" }}>
         <input type="submit" value="Save" onClick={handleSubmit} />

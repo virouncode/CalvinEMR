@@ -40,7 +40,7 @@ const PastAppointments = () => {
         if (abortController.signal.aborted) return;
         setAppointments(
           response.data
-            .filter(({ start }) => start < Date.parse(new Date()))
+            .filter(({ start }) => start < Date.now())
             .sort((a, b) => b.date_created - a.date_created)
         );
       } catch (err) {

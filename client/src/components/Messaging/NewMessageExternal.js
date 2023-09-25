@@ -7,6 +7,8 @@ import MessagesAttachments from "./MessagesAttachments";
 import { CircularProgress } from "@mui/material";
 import { postPatientRecord } from "../../api/fetchRecords";
 import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
+import { patientIdToName } from "../../utils/patientIdToName";
+import { sendEmail } from "../../api/sendEmail";
 
 const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
   const { auth, user, clinic } = useAuth();
@@ -71,7 +73,7 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
         attachments_ids: attach_ids,
         read_by_staff_id: user.id,
         read_by_ids: [{ user_type: "staff", id: user.id }],
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
       };
 
       await axiosXano.post("/messages_external", message, {
@@ -98,6 +100,47 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
       );
       setMessages(newMessages);
       setNewVisible(false);
+
+      //send an email and an SMS to patient
+      await sendEmail(
+        "virounk@gmail.com", //to be changed to patient email
+        patientIdToName(clinic.patientsInfos, recipientId),
+        "Calvin EMR New message",
+        "",
+        "",
+        "You have a new message, please login to your patient portal",
+        `Best wishes, \nPowered by Calvin EMR`
+      );
+
+      fetch("/api/twilio/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // from: "New Life",
+          to: "+33683267962", //to be changed to patient cell_phone
+          body: `
+Hello ${patientIdToName(clinic.patientsInfos, recipientId)},
+          
+You have a new message, please login to your patient portal
+          
+Best wishes,
+Powered by Calvin EMR`,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            console.log(data);
+          } else {
+            console.log("error");
+            toast.error(`Couldn't send the sms invitation : $(err.text)`, {
+              containerId: "A",
+            });
+          }
+        });
+
       toast.success("Message sent successfully", { containerId: "A" });
 
       //EMAIL + SMS pour prévenir le patient qu'il a un nouveau message dans son portail
@@ -148,7 +191,7 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
             {
               file: response.data,
               alias: file.name,
-              date_created: Date.parse(new Date()),
+              date_created: Date.now(),
               created_by_id: user.id,
             },
           ]); //meta, mime, name, path, size, type

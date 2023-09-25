@@ -51,7 +51,7 @@ const VaccineCellItemSingle = ({
         const newDatas = { ...datas };
         newDatas[name][age] = {
           vaccine_date: null,
-          date_created: Date.parse(new Date()),
+          date_created: Date.now(),
           created_by_id: user.id,
         };
         try {

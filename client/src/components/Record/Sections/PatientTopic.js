@@ -643,7 +643,7 @@ const PatientTopic = ({
         )}
         {topic === "ONGOING CONCERNS" && popUpVisible && (
           <NewWindow
-            title="Patient Concerns"
+            title="Ongoing concerns"
             features={{
               toolbar: "no",
               scrollbars: "no",

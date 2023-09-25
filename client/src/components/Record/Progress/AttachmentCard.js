@@ -3,6 +3,8 @@ import NewWindow from "react-new-window";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
+import { usePatientRecord } from "../../../hooks/usePatientRecord";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
@@ -18,6 +20,7 @@ const AttachmentCard = ({
   const handleImgClick = () => {
     setPopUpVisible(true);
   };
+  const navigate = useNavigate();
 
   const handleAddToRecord = async () => {
     try {
@@ -27,6 +30,7 @@ const AttachmentCard = ({
         file: attachment.file,
       });
       toast.success("Saved successfully", { containerId: "A" });
+      navigate(0); //to refresh the patient record
     } catch (err) {
       toast.error(`Error unable to save document: ${err.message}`, {
         containerId: "A",
@@ -64,7 +68,7 @@ const AttachmentCard = ({
                 src={`https://docs.google.com/gview?url=${BASE_URL}${attachment.file.path}&embedded=true&widget=false`}
                 onClick={handleImgClick}
                 width="150%"
-                frameborder="0"
+                frameBorder="0"
               ></iframe>
             </div>
           ) : (
@@ -91,25 +95,29 @@ const AttachmentCard = ({
           )}
         </div>
         <div className="progress-notes-attachments-card-footer">
-          <p
-            style={{
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-              padding: "0",
-            }}
-          >
-            {attachment.alias}
-          </p>
-          {deletable && (
-            <i
-              className="fa-solid fa-xmark"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleRemoveAttachment(attachment.file.name)}
-            ></i>
-          )}
+          <div className="progress-notes-attachments-card-footer-title">
+            <p
+              style={{
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                padding: "0",
+              }}
+            >
+              {attachment.alias}
+            </p>
+            {deletable && (
+              <i
+                className="fa-solid fa-xmark"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleRemoveAttachment(attachment.file.name)}
+              ></i>
+            )}
+          </div>
           {addable && (
-            <button onClick={handleAddToRecord}>Add to patient record</button>
+            <div className="progress-notes-attachments-card-footer-btn">
+              <button onClick={handleAddToRecord}>Add to patient record</button>
+            </div>
           )}
         </div>
       </div>
@@ -150,7 +158,7 @@ const AttachmentCard = ({
                 onClick={handleImgClick}
                 width="100%"
                 height="100%"
-                frameborder="0"
+                frameBorder="0"
               ></iframe>
             </div>
           ) : (

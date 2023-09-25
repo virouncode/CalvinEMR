@@ -23,6 +23,7 @@ import PatientAppointmentsPage from "./pages/PatientAppointmentsPage";
 import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
 import PatientCredentialsPage from "./pages/PatientCredentialsPage";
 import useAuth from "./hooks/useAuth";
+import DocInboxPage from "./pages/DocInboxPage";
 
 const App = () => {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ const App = () => {
           <Route path="signup-patient" element={<SignupPagePatient />} />
           <Route path="my-account" element={<MyAccountPage />} />
           <Route path="messages" element={<MessagesPage />} />
+          <Route path="doc-inbox" element={<DocInboxPage />} />
           <Route
             path="messages/:messageId/:sectionName/:msgType"
             element={<MessagesPage />}

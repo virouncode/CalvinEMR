@@ -43,6 +43,9 @@ const EventForm = forwardRef(
       fpVisible,
       remainingStaff,
       setColor,
+      setFormVisible,
+      putForm,
+      setCalendarSelectable,
     },
     ref
   ) => {
@@ -335,6 +338,30 @@ const EventForm = forwardRef(
       },
     }));
 
+    const handleCancel = (e) => {
+      e.preventDefault();
+      setTempFormDatas(formDatas);
+      currentEvent.current.setExtendedProp("host", formDatas.host_id);
+      currentEvent.current.setExtendedProp("reason", formDatas.reason);
+      currentEvent.current.setExtendedProp("status", formDatas.status);
+      currentEvent.current.setStart(formDatas.start);
+      currentEvent.current.setEnd(formDatas.end);
+      currentEvent.current.setAllDay(formDatas.all_day);
+      currentEvent.current.setExtendedProp("room", formDatas.room);
+      currentEvent.current.setResources([
+        rooms[_.findIndex(rooms, { title: formDatas.room })].id,
+      ]);
+      setFormVisible(false);
+      setCalendarSelectable(true);
+    };
+
+    const handleConfirm = (e) => {
+      e.preventDefault();
+      putForm();
+      setFormVisible(false);
+      setCalendarSelectable(true);
+    };
+
     return (
       formDatas && (
         <form
@@ -452,6 +479,8 @@ const EventForm = forwardRef(
             </div>
           </div>
           <div className="form-row form-row-invitation">
+            <button onClick={handleConfirm}>Ok</button>
+            <button onClick={handleCancel}>Cancel</button>
             <button
               onClick={handleInvitation}
               disabled={!staffGuestsInfos.length && !patientsGuestsInfos.length}

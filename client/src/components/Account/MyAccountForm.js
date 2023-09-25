@@ -115,7 +115,7 @@ const MyAccountForm = () => {
       datasToPut.full_name = firstLetterUpper(full_name);
       datasToPut.speciality = firstLetterUpper(datasToPut.speciality);
       datasToPut.subspeciality = firstLetterUpper(datasToPut.subspeciality);
-      datasToPut.date_created = Date.parse(new Date());
+      datasToPut.date_created = Date.now();
 
       //Validation
       try {

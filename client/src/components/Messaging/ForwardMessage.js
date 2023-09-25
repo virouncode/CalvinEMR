@@ -135,7 +135,7 @@ const ForwardMessage = ({
           ...message.previous_messages,
           { message_type: "Internal", id: message.id },
         ],
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
         type: "Internal",
       };
 
@@ -204,7 +204,7 @@ const ForwardMessage = ({
             {
               file: response.data,
               alias: file.name,
-              date_created: Date.parse(new Date()),
+              date_created: Date.now(),
               created_by_id: user.id,
             },
           ]); //meta, mime, name, path, size, type

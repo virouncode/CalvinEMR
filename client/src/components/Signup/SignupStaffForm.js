@@ -118,7 +118,7 @@ const SignupStaffForm = () => {
       datasToPost.full_name = firstLetterUpper(full_name);
       datasToPost.speciality = firstLetterUpper(datasToPost.speciality);
       datasToPost.subspeciality = firstLetterUpper(datasToPost.subspeciality);
-      datasToPost.date_created = Date.parse(new Date());
+      datasToPost.date_created = Date.now();
 
       //Validation
       try {
@@ -204,7 +204,7 @@ const SignupStaffForm = () => {
         "/availability",
         {
           staff_id: response.data.id,
-          date_created: Date.parse(new Date()),
+          date_created: Date.now(),
           schedule_morning: {
             monday: [
               { hours: "07", min: "00", ampm: "AM" },

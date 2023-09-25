@@ -78,7 +78,7 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
         body: body,
         attachments_ids: attach_ids,
         read_by_patient_id: user.id,
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
       };
 
       await axiosXanoPatient.post("/messages_external", message, {
@@ -153,7 +153,7 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
             {
               file: response.data,
               alias: file.name,
-              date_created: Date.parse(new Date()),
+              date_created: Date.now(),
               created_by_id: user.id,
             },
           ]); //meta, mime, name, path, size, type

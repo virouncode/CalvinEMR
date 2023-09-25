@@ -97,7 +97,7 @@ const EditTemplate = ({
   const handleSave = async () => {
     //save template
     const templateToPut = { ...editedTemplate };
-    templateToPut.date_created = Date.parse(new Date());
+    templateToPut.date_created = Date.now();
 
     try {
       await axiosXano.put(

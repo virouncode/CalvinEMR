@@ -30,6 +30,9 @@ const ScrollerWrapper = ({
   fpVisible,
   remainingStaff,
   passingFormRef,
+  setFormVisible,
+  putForm,
+  setCalendarSelectable,
 }) => {
   const [color, setColor] = useState("");
   const wrapperRef = useRef(null);
@@ -57,6 +60,9 @@ const ScrollerWrapper = ({
         remainingStaff={remainingStaff}
         ref={passingFormRef}
         setColor={setColor}
+        setFormVisible={setFormVisible}
+        putForm={putForm}
+        setCalendarSelectable={setCalendarSelectable}
       />
     </div>
   );

@@ -69,7 +69,7 @@ const AvailabilityEditor = ({ setEditVisible }) => {
       unavailability: unavailability,
       default_duration_hours: defaultDurationHours,
       default_duration_min: defaultDurationMin,
-      date_created: Date.parse(new Date()),
+      date_created: Date.now(),
     };
     try {
       await availabilitySchema.validate(datasToPost);

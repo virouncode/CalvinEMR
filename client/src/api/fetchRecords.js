@@ -37,11 +37,11 @@ export const putPatientRecord = async (
     (tableName === "/progress_notes" && datas.version_nbr !== 1)
   ) {
     datas.updated_by_id = authId;
-    datas.date_updated = Date.parse(new Date());
+    datas.date_updated = Date.now();
   } else if (tableName === "/vaccines") {
   } else {
     datas.created_by_id = authId;
-    datas.date_created = Date.parse(new Date());
+    datas.date_created = Date.now();
   }
   try {
     return await axiosXano.put(`${tableName}/${recordId}`, datas, {
@@ -66,7 +66,7 @@ export const postPatientRecord = async (
   if (tableName !== "/progress_notes_log") {
     //if it's the log we don't want to change the date of creation, for attachments this is assured by the bulk add
     datas.created_by_id = authId;
-    datas.date_created = Date.parse(new Date());
+    datas.date_created = Date.now();
   }
 
   try {
@@ -92,7 +92,7 @@ export const postPatientRecordPatient = async (
   if (tableName !== "/progress_notes_log") {
     //if it's the log we don't want to change the date of creation, for attachments this is assured by the bulk add
     datas.created_by_id = authId;
-    datas.date_created = Date.parse(new Date());
+    datas.date_created = Date.now();
   }
 
   try {

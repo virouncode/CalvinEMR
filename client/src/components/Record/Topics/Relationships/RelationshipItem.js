@@ -84,7 +84,7 @@ const RelationshipItem = ({
       );
       inverseRelationToPost.relation_id = itemInfos.patient_id;
       inverseRelationToPost.created_by_id = user.id;
-      inverseRelationToPost.date_created = Date.parse(new Date());
+      inverseRelationToPost.date_created = Date.now();
       await axiosXano.post("/relationships", inverseRelationToPost, {
         headers: {
           "Content-Type": "application/json",

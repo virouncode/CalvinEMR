@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import ReplyForm from "./ReplyForm";
 import axiosXano from "../../api/xano";
@@ -16,6 +16,10 @@ import MessagesPrintPU from "./MessagesPrintPU";
 import { patientIdToName } from "../../utils/patientIdToName";
 import MessagesAttachments from "./MessagesAttachments";
 import MessageExternal from "./MessageExternal";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { toLocalDateAndTimeWithSeconds } from "../../utils/formatDates";
+import { postPatientRecord } from "../../api/fetchRecords";
 
 const MessageDetail = ({
   setCurrentMsgId,
@@ -25,6 +29,7 @@ const MessageDetail = ({
   popUpVisible,
   setPopUpVisible,
 }) => {
+  const messageContentRef = useRef(null);
   const [replyVisible, setReplyVisible] = useState(false);
   const [forwardVisible, setForwardVisible] = useState(false);
   const [allPersons, setAllPersons] = useState(false);
@@ -176,6 +181,73 @@ const MessageDetail = ({
     setForwardVisible(true);
   };
 
+  const handleAddToProgressNotes = async () => {
+    //create the attachment with message content
+    const element = messageContentRef.current;
+    const newContent = element.cloneNode(true);
+    newContent.style.width = "210mm";
+    window.document.body.append(newContent);
+    const canvas = await html2canvas(newContent, {
+      letterRendering: 1,
+      useCORS: true,
+    });
+
+    window.document.body.removeChild(newContent);
+    const dataURL = canvas.toDataURL("image/png");
+    let fileToUpload = await axiosXano.post(
+      "/upload/attachment",
+      {
+        // content: pdf.output("dataurlstring"),
+        content: dataURL,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      }
+    );
+    //post attachment and get id
+    const datasAttachment = [
+      {
+        file: fileToUpload.data,
+        alias: `Message from: ${
+          staffIdToTitle(clinic.staffInfos, message.from_id) +
+          formatName(staffIdToName(clinic.staffInfos, message.from_id))
+        } (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
+        date_created: Date.now(),
+        created_by_id: user.id,
+      },
+    ];
+
+    try {
+      const attach_ids = (
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: datasAttachment,
+        })
+      ).data;
+      await postPatientRecord("/progress_notes", user.id, auth.authToken, {
+        patient_id: message.related_patient_id,
+        object: `Message from: ${
+          staffIdToTitle(clinic.staffInfos, message.from_id) +
+          formatName(staffIdToName(clinic.staffInfos, message.from_id))
+        } (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
+        body: "See attachment",
+        version_nbr: 1,
+        attachments_ids: attach_ids,
+      });
+      toast.success("Message successfuly added to patient progress notes", {
+        containerId: "A",
+      });
+    } catch (err) {
+      toast.error(
+        `Unable to add message to patient progress notes: ${err.message}`,
+        {
+          containerId: "A",
+        }
+      );
+    }
+  };
+
   return (
     message && (
       <>
@@ -223,12 +295,17 @@ const MessageDetail = ({
           </div>
           <div className="message-detail-toolbar-patient">
             {patient && (
-              <NavLink
-                to={`/patient-record/${patient.id}`}
-                className="message-detail-toolbar-patient-link"
-              >
-                {patient.full_name}
-              </NavLink>
+              <>
+                <NavLink
+                  to={`/patient-record/${patient.id}`}
+                  className="message-detail-toolbar-patient-link"
+                >
+                  {patient.full_name}
+                </NavLink>
+                <button onClick={handleAddToProgressNotes}>
+                  Add message to patient progress notes
+                </button>
+              </>
             )}
           </div>
           {section !== "Deleted messages" && (
@@ -238,7 +315,7 @@ const MessageDetail = ({
             ></i>
           )}
         </div>
-        <div className="message-detail-content">
+        <div ref={messageContentRef} className="message-detail-content">
           <Message
             message={message}
             author={formatName(

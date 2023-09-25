@@ -21,7 +21,7 @@ const FamHistoryForm = ({
     patient_id: patientId,
     description: "",
     family_member_affected: "",
-    date_of_event: Date.parse(new Date()),
+    date_of_event: Date.now(),
   });
 
   //EVENT HANDLERS

@@ -225,7 +225,7 @@ const SignupPatientForm = () => {
         delete relationship.id;
         relationship.patient_id = response.data.id;
         relationship.created_by_id = user.id;
-        relationship.date_created = Date.parse(new Date());
+        relationship.date_created = Date.now();
       });
 
       relationshipsToPost.forEach(
@@ -247,7 +247,7 @@ const SignupPatientForm = () => {
         item.patient_id = item.relation_id;
         item.relationship = toInverseRelation(item.relationship, gender);
         item.relation_id = response.data.id;
-        item.date_created = Date.parse(new Date());
+        item.date_created = Date.now();
         item.created_by_id = user.id;
       });
 

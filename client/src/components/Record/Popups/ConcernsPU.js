@@ -69,7 +69,7 @@ const ConcernsPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="concerns-title">Patient concerns</h1>
+              <h1 className="concerns-title">Ongoing concerns</h1>
               {errMsgPost && <div className="concerns-err">{errMsgPost}</div>}
               <table className="concerns-table">
                 <thead>

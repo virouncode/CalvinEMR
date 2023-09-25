@@ -60,7 +60,7 @@ const ReplyForm = ({
           ...message.previous_messages,
           { message_type: message.type, id: message.id },
         ],
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
       };
 
       await axiosXano.post("/messages", replyMessage, {
@@ -132,7 +132,7 @@ const ReplyForm = ({
             {
               file: response.data,
               alias: file.name,
-              date_created: Date.parse(new Date()),
+              date_created: Date.now(),
               created_by_id: user.id,
             },
           ]); //meta, mime, name, path, size, type

@@ -11,6 +11,7 @@ import { postPatientRecord } from "../../api/fetchRecords";
 import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
 import { patientIdToName } from "../../utils/patientIdToName";
 import MessageExternal from "./MessageExternal";
+import { sendEmail } from "../../api/sendEmail";
 
 const ReplyFormExternal = ({
   setReplyVisible,
@@ -55,7 +56,7 @@ const ReplyFormExternal = ({
           ...previousMsgs.map(({ id }) => id),
           message.id,
         ],
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
       };
 
       await axiosXano.post("/messages_external", replyMessage, {
@@ -82,6 +83,46 @@ const ReplyFormExternal = ({
       setMessages(newMessages);
       setReplyVisible(false);
       setCurrentMsgId(0);
+
+      //send an email and an SMS to patient
+      await sendEmail(
+        "virounk@gmail.com", //to be changed to patient email
+        patientIdToName(clinic.patientsInfos, message.from_id),
+        "Calvin EMR New message",
+        "",
+        "",
+        "You have a new message, please login to your patient portal",
+        `Best wishes, \nPowered by Calvin EMR`
+      );
+
+      fetch("/api/twilio/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // from: "New Life",
+          to: "+33683267962", //to be changed to patient cell_phone
+          body: `
+Hello ${patientIdToName(clinic.patientsInfos, message.from_id)},
+          
+You have a new message, please login to your patient portal
+          
+Best wishes,
+Powered by Calvin EMR`,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            console.log(data);
+          } else {
+            console.log("error");
+            toast.error(`Couldn't send the sms invitation : $(err.text)`, {
+              containerId: "A",
+            });
+          }
+        });
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {
       toast.error(`Error: unable to send message: ${err.message}`, {
@@ -134,7 +175,7 @@ const ReplyFormExternal = ({
             {
               file: response.data,
               alias: file.name,
-              date_created: Date.parse(new Date()),
+              date_created: Date.now(),
               created_by_id: user.id,
             },
           ]); //meta, mime, name, path, size, type

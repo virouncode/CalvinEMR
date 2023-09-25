@@ -12,9 +12,10 @@ import axiosXano from "../../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
 import AddressesList from "../../Lists/AddressesList";
+import { patientIdToName } from "../../../utils/patientIdToName";
 
 const PrescriptionPU = ({ medsRx, patientInfos }) => {
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [addNotes, setAddNotes] = useState("");
   const [progress, setProgress] = useState(false);
   const printRef = useRef();
@@ -81,7 +82,8 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
 
   const handleAddToRecord = async (e) => {
     setProgress(true);
-    const element = printRef.current.contentWindow;
+    const element = printRef.current;
+
     const canvas = await html2canvas(element, {
       logging: true,
       letterRendering: 1,
@@ -119,9 +121,12 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
 
     const datasAttachment = [
       {
-        patient_id: patientInfos.id,
         file: fileToUpload.data,
-        date_created: Date.parse(new Date()),
+        alias: `Prescription ${patientIdToName(
+          clinic.patientsInfos,
+          patientInfos.id
+        )} ${toLocalDateAndTimeWithSeconds(new Date())}`,
+        date_created: Date.now(),
         created_by_id: user.id,
       },
     ];
@@ -191,8 +196,8 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
         />
         {progress && <CircularProgress />}
       </div>
-      <div className="prescription-page">
-        <div ref={printRef} className="prescription-container">
+      <div ref={printRef} className="prescription-page">
+        <div className="prescription-container">
           <div className="prescription-header">
             <div className="prescription-logo">
               <div className="prescription-logo-img"></div>

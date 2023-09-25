@@ -448,7 +448,7 @@ const Calendar = ({ timelineVisible }) => {
           reason: newEvent.extendedProps.reason,
           room: newEvent.extendedProps.room,
           created_by_id: user.id,
-          date_created: Date.parse(new Date()),
+          date_created: Date.now(),
         };
 
         try {
@@ -486,7 +486,7 @@ const Calendar = ({ timelineVisible }) => {
         reason: newEvent.extendedProps.reason,
         room: newEvent.extendedProps.room,
         created_by_id: user.id,
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
       };
       try {
         const response = await axiosXano.post(
@@ -562,7 +562,7 @@ const Calendar = ({ timelineVisible }) => {
       status: event.extendedProps.status,
       reason: event.extendedProps.reason,
       created_by_id: user.id,
-      date_created: Date.parse(new Date()),
+      date_created: Date.now(),
     };
 
     if (!timelineVisible) {
@@ -689,7 +689,7 @@ const Calendar = ({ timelineVisible }) => {
         reason: event.extendedProps.reason,
         room: event.extendedProps.room,
         created_by_id: user.id,
-        date_created: Date.parse(new Date()),
+        date_created: Date.now(),
       };
       try {
         await axiosXano.put(`/appointments/${event.id}`, datas, {
@@ -793,15 +793,15 @@ const Calendar = ({ timelineVisible }) => {
         }
       }
       //Vertical
-      if (eventPositionMiddleY + 325 >= window.innerHeight) {
+      if (eventPositionMiddleY + 350 >= window.innerHeight) {
         //325 is form height/2
         setFormTop(eventPosition.top + window.scrollY - 650 + eventHeight);
         setFormClass(`event-form event-form--${arrowSide}bottom`);
-      } else if (eventPositionMiddleY - 325 <= 60) {
+      } else if (eventPositionMiddleY - 350 <= 60) {
         setFormTop(eventPosition.top + window.scrollY);
         setFormClass(`event-form event-form--${arrowSide}top`);
       } else {
-        setFormTop(eventPosition.top + window.scrollY - 325 + eventHeight / 2);
+        setFormTop(eventPosition.top + window.scrollY - 350 + eventHeight / 2);
         setFormClass(`event-form event-form--${arrowSide}center`);
       }
     } else {
@@ -823,16 +823,16 @@ const Calendar = ({ timelineVisible }) => {
         arrowSide = "left";
       }
       //Vertical
-      if (eventPositionMiddleY + 325 >= window.innerHeight) {
+      if (eventPositionMiddleY + 350 >= window.innerHeight) {
         //depasse en bas
         //325 is form height/2
         setFormTop(eventPosition.top + window.scrollY - 650 + eventHeight);
         setFormClass(`event-form event-form--${arrowSide}bottom`);
-      } else if (eventPositionMiddleY - 325 <= 60) {
+      } else if (eventPositionMiddleY - 350 <= 60) {
         setFormTop(eventPosition.top + window.scrollY);
         setFormClass(`event-form event-form--${arrowSide}top`);
       } else {
-        setFormTop(eventPosition.top + window.scrollY - 325 + eventHeight / 2);
+        setFormTop(eventPosition.top + window.scrollY - 350 + eventHeight / 2);
         setFormClass(`event-form event-form--${arrowSide}center`);
       }
     }
@@ -858,7 +858,7 @@ const Calendar = ({ timelineVisible }) => {
       reason: firstLetterUpper(tempFormDatas.reason),
       room: tempFormDatas.room,
       created_by_id: user.id,
-      date_created: Date.parse(new Date()),
+      date_created: Date.now(),
     };
     try {
       await axiosXano.put(`/appointments/${currentEvent.current.id}`, datas, {
@@ -990,6 +990,9 @@ const Calendar = ({ timelineVisible }) => {
               fpVisible={fpVisible}
               remainingStaff={remainingStaff}
               passingFormRef={formStateRef}
+              setFormVisible={setFormVisible}
+              putForm={putForm}
+              setCalendarSelectable={setCalendarSelectable}
             />
           </OutsideWrapper>
         )}

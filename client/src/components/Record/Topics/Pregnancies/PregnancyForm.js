@@ -19,7 +19,7 @@ const PregnancyForm = ({
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
-    date_of_event: Date.parse(new Date()),
+    date_of_event: Date.now(),
     premises: "",
     term_nbr_of_weeks: "",
     term_nbr_of_days: "",

@@ -61,7 +61,7 @@ const NewTemplate = ({
       return;
     }
     const templateToSave = { ...newTemplate };
-    templateToSave.date_created = Date.parse(new Date());
+    templateToSave.date_created = Date.now();
     templateToSave.author_id = user.id;
     try {
       const response = await axiosXano.post(

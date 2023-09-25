@@ -20,7 +20,7 @@ const MedHistoryForm = ({
     patient_id: patientId,
     ongoing: "false",
     description: "",
-    date_of_event: Date.parse(new Date()),
+    date_of_event: Date.now(),
   });
 
   //HANDLERS
@@ -110,7 +110,7 @@ const MedHistoryForm = ({
         <em>{formatName(user.name)}</em>
       </td>
       <td>
-        <em>{toLocalDate(Date.parse(new Date()))}</em>
+        <em>{toLocalDate(Date.now())}</em>
       </td>
       <td>
         <input type="submit" value="Save" onClick={handleSubmit} />

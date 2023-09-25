@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Messages from "../components/Messaging/Messages";
 import MessagesExternal from "../components/Messaging/MessagesExternal";
 import { useParams } from "react-router-dom";
 import MessagingToggle from "../components/Messaging/MessagingToggle";
+import { Helmet } from "react-helmet";
 
 const MessagesPage = () => {
   const { msgType } = useParams();
   const [msgsType, setMsgsType] = useState(msgType || "Internal");
-  // useEffect(() => {
-  //   if (msgType) {
-  //     setMsgsType(msgType);
-  //   }
-  // }, [msgType]);
   const isTypeChecked = (type) => {
     return type === msgsType ? true : false;
   };
@@ -21,6 +17,9 @@ const MessagesPage = () => {
   };
   return (
     <main className="messages">
+      <Helmet>
+        <title>Calvin EMR Messages</title>
+      </Helmet>
       <MessagingToggle
         isTypeChecked={isTypeChecked}
         handleMsgsTypeChanged={handleMsgsTypeChanged}
