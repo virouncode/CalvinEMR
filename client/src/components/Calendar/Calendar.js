@@ -159,7 +159,112 @@ const Calendar = ({ timelineVisible }) => {
   };
   const renderEventContent = (info) => {
     const event = info.event;
-    if (timelineVisible) {
+
+    let staffGuestsNames = event.extendedProps.staffGuestsNames ?? [];
+    let patientsGuestsNames = event.extendedProps.patientsGuestsNames ?? [];
+    let guestsCaption = "";
+    let guestsList = "";
+
+    if (patientsGuestsNames.length === 0) {
+      //no patients
+      if (staffGuestsNames.length === 0) {
+        //no guests
+        guestsCaption = "";
+      } else if (staffGuestsNames.length === 1) {
+        //one guest
+        guestsCaption = "Guest: ";
+        guestsList = staffGuestsNames[0];
+      } else {
+        //several guests
+        guestsCaption = "Guests: ";
+        guestsList = staffGuestsNames.join(", ");
+      }
+    } else if (patientsGuestsNames.length === 1) {
+      //one patient
+      if (staffGuestsNames.length === 0) {
+        //no staff
+        guestsCaption = "Patient: ";
+        guestsList = patientsGuestsNames[0];
+      } else {
+        guestsCaption = "Guests: ";
+        guestsList = [...staffGuestsNames, patientsGuestsNames[0]].join(", ");
+      }
+    } else {
+      //several patients
+      if (staffGuestsNames.length === 0) {
+        //no staff
+        guestsCaption = "Patients: ";
+        guestsList = patientsGuestsNames.join(", ");
+      } else {
+        guestsCaption = "Guests: ";
+        guestsList = [...staffGuestsNames, ...patientsGuestsNames].join(", ");
+      }
+    }
+
+    const hostName = event.extendedProps.host
+      ? formatName(staffIdToName(clinic.staffInfos, event.extendedProps.host))
+      : "";
+
+    const hostNameShort = formatName(hostName);
+
+    let hostCaption = event.extendedProps.host
+      ? staffIdToTitle(clinic.staffInfos, event.extendedProps.host)
+      : "";
+    if (hostCaption === "Doctor") {
+      hostCaption = "Doctor: ";
+    } else {
+      hostCaption = "Host: ";
+    }
+    if (
+      info.view.type === "timeGridWeek" ||
+      info.view.type === "dayGridMonth" ||
+      info.view.type === "multiMonthYear" ||
+      info.view.type === "resourceTimeGridDay"
+    ) {
+      return (
+        <div style={{ fontSize: "0.7rem" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "0 2px",
+            }}
+          >
+            <p
+              style={{
+                padding: "0",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "clip",
+              }}
+            >
+              {event.allDay ? "All Day" : info.timeText} -{" "}
+              {event.extendedProps.reason ?? "Appointment"}
+            </p>
+            <i className="fa-solid fa-trash" onClick={handleDeleteEvent}></i>
+          </div>
+          {guestsCaption && (
+            <div>
+              <strong>{guestsCaption}</strong>
+              {guestsList}
+            </div>
+          )}
+          <div>
+            <strong>{hostCaption}</strong>
+            {hostNameShort}
+          </div>
+          <div>
+            <strong>Room: </strong>
+            {event.extendedProps.room}
+          </div>
+          <div>
+            <strong>Status: </strong>
+            {event.extendedProps.status}
+          </div>
+        </div>
+      );
+    } else if (info.view.type === "timeGrid") {
       return (
         <div
           style={{
@@ -168,207 +273,78 @@ const Calendar = ({ timelineVisible }) => {
             padding: "0 2px",
             alignItems: "center",
             fontSize: "0.7rem",
-            fontWeight: "bold",
-            overflow: "scroll",
           }}
         >
-          <span
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "clip",
-            }}
-          >
-            {event.extendedProps.reason ?? "Appointment"}
-          </span>
-          <i className="fa-solid fa-" onClick={handleDeleteEvent}></i>
+          <div>
+            {event.allDay ? "All Day" : info.timeText}
+            <span style={{ marginLeft: "10px" }}>
+              <strong>Reason: </strong>
+              {event.extendedProps.reason ?? "Appointment"}
+            </span>
+            {guestsCaption && (
+              <span>
+                {" "}
+                / <strong>{guestsCaption}</strong>
+                {guestsList}
+              </span>
+            )}{" "}
+            / <strong>{hostCaption}</strong>
+            {hostNameShort} / <strong>Room: </strong>
+            {event.extendedProps.room} / <strong>Status: </strong>
+            {event.extendedProps.status}
+          </div>
+          <i className="fa-solid fa-trash" onClick={handleDeleteEvent}></i>
         </div>
       );
-    } else {
-      let staffGuestsNames = event.extendedProps.staffGuestsNames ?? [];
-      let patientsGuestsNames = event.extendedProps.patientsGuestsNames ?? [];
-      let guestsCaption = "";
-      let guestsList = "";
-
-      if (patientsGuestsNames.length === 0) {
-        //no patients
-        if (staffGuestsNames.length === 0) {
-          //no guests
-          guestsCaption = "";
-        } else if (staffGuestsNames.length === 1) {
-          //one guest
-          guestsCaption = "Guest: ";
-          guestsList = staffGuestsNames[0];
-        } else {
-          //several guests
-          guestsCaption = "Guests: ";
-          guestsList = staffGuestsNames.join(", ");
-        }
-      } else if (patientsGuestsNames.length === 1) {
-        //one patient
-        if (staffGuestsNames.length === 0) {
-          //no staff
-          guestsCaption = "Patient: ";
-          guestsList = patientsGuestsNames[0];
-        } else {
-          guestsCaption = "Guests: ";
-          guestsList = [...staffGuestsNames, patientsGuestsNames[0]].join(", ");
-        }
-      } else {
-        //several patients
-        if (staffGuestsNames.length === 0) {
-          //no staff
-          guestsCaption = "Patients: ";
-          guestsList = patientsGuestsNames.join(", ");
-        } else {
-          guestsCaption = "Guests: ";
-          guestsList = [...staffGuestsNames, ...patientsGuestsNames].join(", ");
-        }
-      }
-
-      const hostName = event.extendedProps.host
-        ? formatName(staffIdToName(clinic.staffInfos, event.extendedProps.host))
-        : "";
-
-      const hostNameShort = formatName(hostName);
-
-      let hostCaption = event.extendedProps.host
-        ? staffIdToTitle(clinic.staffInfos, event.extendedProps.host)
-        : "";
-      if (hostCaption === "Doctor") {
-        hostCaption = "Doctor: ";
-      } else {
-        hostCaption = "Host: ";
-      }
-      if (
-        info.view.type === "timeGridWeek" ||
-        info.view.type === "dayGridMonth" ||
-        info.view.type === "multiMonthYear"
-      ) {
-        return (
-          <div style={{ fontSize: "0.7rem" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "0 2px",
-              }}
-            >
-              <p
-                style={{
-                  padding: "0",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "clip",
-                }}
-              >
-                {event.allDay ? "All Day" : info.timeText} -{" "}
-                {event.extendedProps.reason ?? "Appointment"}
-              </p>
-              <i className="fa-solid fa-trash" onClick={handleDeleteEvent}></i>
-            </div>
-            {guestsCaption && (
-              <div>
-                <strong>{guestsCaption}</strong>
-                {guestsList}
-              </div>
-            )}
-            <div>
-              <strong>{hostCaption}</strong>
-              {hostNameShort}
-            </div>
-            <div>
-              <strong>Room: </strong>
-              {event.extendedProps.room}
-            </div>
-            <div>
-              <strong>Status: </strong>
-              {event.extendedProps.status}
-            </div>
-          </div>
-        );
-      } else if (info.view.type === "timeGrid") {
-        return (
+    } else if (info.view.type === "listWeek") {
+      return (
+        <>
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
-              padding: "0 2px",
               alignItems: "center",
-              fontSize: "0.7rem",
             }}
           >
-            <div>
-              {event.allDay ? "All Day" : info.timeText}
-              <span style={{ marginLeft: "10px" }}>
-                <strong>Reason: </strong>
-                {event.extendedProps.reason ?? "Appointment"}
-              </span>
-              {guestsCaption && (
-                <span>
-                  {" "}
-                  / <strong>{guestsCaption}</strong>
-                  {guestsList}
-                </span>
-              )}{" "}
-              / <strong>{hostCaption}</strong>
-              {hostNameShort} / <strong>Room: </strong>
-              {event.extendedProps.room} / <strong>Status: </strong>
-              {event.extendedProps.status}
-            </div>
-            <i className="fa-solid fa-trash" onClick={handleDeleteEvent}></i>
-          </div>
-        );
-      } else if (info.view.type === "listWeek") {
-        return (
-          <>
-            <div
+            <p
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                padding: "0",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "clip",
               }}
             >
-              <p
-                style={{
-                  padding: "0",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "clip",
-                }}
-              >
-                <strong>Reason: </strong>
-                {event.extendedProps.reason ?? "Appointment"}
-              </p>
-              <i
-                className="fa-solid fa-trash"
-                onClick={handleDeleteEvent}
-                style={{ cursor: "pointer" }}
-              ></i>
-            </div>
-            {guestsCaption && (
-              <div>
-                <strong>{guestsCaption}</strong>
-                {guestsList}
-              </div>
-            )}
+              <strong>Reason: </strong>
+              {event.extendedProps.reason ?? "Appointment"}
+            </p>
+            <i
+              className="fa-solid fa-trash"
+              onClick={handleDeleteEvent}
+              style={{ cursor: "pointer" }}
+            ></i>
+          </div>
+          {guestsCaption && (
             <div>
-              <strong>{hostCaption}</strong>
-              {hostNameShort}
+              <strong>{guestsCaption}</strong>
+              {guestsList}
             </div>
-            <div>
-              <strong>Room: </strong>
-              {event.extendedProps.room}
-            </div>
-            <div>
-              <strong>Status: </strong>
-              {event.extendedProps.status}
-            </div>
-          </>
-        );
-      }
+          )}
+          <div>
+            <strong>{hostCaption}</strong>
+            {hostNameShort}
+          </div>
+          <div>
+            <strong>Room: </strong>
+            {event.extendedProps.room}
+          </div>
+          <div>
+            <strong>Status: </strong>
+            {event.extendedProps.status}
+          </div>
+        </>
+      );
     }
+    // }
   };
 
   //DATES SET
@@ -775,68 +751,40 @@ const Calendar = ({ timelineVisible }) => {
   ) => {
     //Lateral
     let arrowSide = "";
-    if (timelineVisible) {
-      if (
-        (view.type === "resourceTimelineDay" ||
-          view.type === "resourceTimelineWeek") &&
-        allDay
-      ) {
-        setFormLeft(window.innerWidth / 2 - 225);
-      } else {
-        if (eventPosition.right + 450 <= window.innerWidth) {
-          //450 is form width
-          setFormLeft(eventPosition.right + 2);
-          arrowSide = "left";
-        } else {
-          setFormLeft(eventPosition.right - 450 - eventWidth - 3);
-          arrowSide = "right";
-        }
-      }
-      //Vertical
-      if (eventPositionMiddleY + 350 >= window.innerHeight) {
-        //325 is form height/2
-        setFormTop(eventPosition.top + window.scrollY - 650 + eventHeight);
-        setFormClass(`event-form event-form--${arrowSide}bottom`);
-      } else if (eventPositionMiddleY - 350 <= 60) {
-        setFormTop(eventPosition.top + window.scrollY);
-        setFormClass(`event-form event-form--${arrowSide}top`);
-      } else {
-        setFormTop(eventPosition.top + window.scrollY - 350 + eventHeight / 2);
-        setFormClass(`event-form event-form--${arrowSide}center`);
-      }
-    } else {
-      if (
-        view.type === "timeGridWeek" ||
-        view.type === "dayGridMonth" ||
-        view.type === "multiMonthYear"
-      ) {
-        if (eventPosition.right + 450 <= window.innerWidth) {
-          //450 is form width
-          setFormLeft(eventPosition.right + 2);
-          arrowSide = "left";
-        } else {
-          setFormLeft(eventPosition.right - 450 - eventWidth - 3);
-          arrowSide = "right";
-        }
-      } else if (view.type === "timeGrid" || view.type === "listWeek") {
-        setFormLeft(eventPosition.right - eventWidth / 2);
+
+    if (
+      view.type === "timeGridWeek" ||
+      view.type === "dayGridMonth" ||
+      view.type === "multiMonthYear" ||
+      view.type === "resourceTimeGridDay"
+    ) {
+      if (eventPosition.right + 450 <= window.innerWidth) {
+        //450 is form width
+        setFormLeft(eventPosition.right + 2);
         arrowSide = "left";
-      }
-      //Vertical
-      if (eventPositionMiddleY + 350 >= window.innerHeight) {
-        //depasse en bas
-        //325 is form height/2
-        setFormTop(eventPosition.top + window.scrollY - 650 + eventHeight);
-        setFormClass(`event-form event-form--${arrowSide}bottom`);
-      } else if (eventPositionMiddleY - 350 <= 60) {
-        setFormTop(eventPosition.top + window.scrollY);
-        setFormClass(`event-form event-form--${arrowSide}top`);
       } else {
-        setFormTop(eventPosition.top + window.scrollY - 350 + eventHeight / 2);
-        setFormClass(`event-form event-form--${arrowSide}center`);
+        setFormLeft(eventPosition.right - 450 - eventWidth - 3);
+        arrowSide = "right";
       }
+    } else if (view.type === "timeGrid" || view.type === "listWeek") {
+      setFormLeft(eventPosition.right - eventWidth / 2);
+      arrowSide = "left";
+    }
+    //Vertical
+    if (eventPositionMiddleY + 350 >= window.innerHeight) {
+      //depasse en bas
+      //325 is form height/2
+      setFormTop(eventPosition.top + window.scrollY - 650 + eventHeight);
+      setFormClass(`event-form event-form--${arrowSide}bottom`);
+    } else if (eventPositionMiddleY - 350 <= 60) {
+      setFormTop(eventPosition.top + window.scrollY);
+      setFormClass(`event-form event-form--${arrowSide}top`);
+    } else {
+      setFormTop(eventPosition.top + window.scrollY - 350 + eventHeight / 2);
+      setFormClass(`event-form event-form--${arrowSide}center`);
     }
   };
+  // };
 
   const putForm = async () => {
     const { formDatas, tempFormDatas } = formStateRef.current.getFormState();

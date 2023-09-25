@@ -22,6 +22,14 @@ const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDatasForValidation = { ...formDatas };
+    //Validation
+    if (
+      !Object.values(formDatasForValidation).some((v) => v) ||
+      !formDatasForValidation
+    ) {
+      setErrMsgPost("Please fill at least one field");
+      return;
+    }
     const formDatasToPost = {
       ...formDatas,
       patient_id: patientId,
@@ -34,14 +42,6 @@ const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
       recreational_drugs: firstLetterUpper(formDatas.recreational_drugs),
     };
 
-    //Validation
-    if (
-      !Object.values(formDatasForValidation).some((v) => v) ||
-      !formDatasForValidation
-    ) {
-      setErrMsgPost("Please fill at least one field");
-      return;
-    }
     try {
       await postPatientRecord(
         "/social_history",

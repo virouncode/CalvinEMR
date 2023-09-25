@@ -22,6 +22,7 @@ const ProgressNotesHeader = ({
   setAllBodiesVisible,
   order,
   setOrder,
+  fetchRecord,
 }) => {
   const [selectAllDisabled, setSelectAllDisabled] = useState(true);
   useEffect(() => {
@@ -61,6 +62,7 @@ const ProgressNotesHeader = ({
         setAllBodiesVisible={setAllBodiesVisible}
         order={order}
         setOrder={setOrder}
+        fetchRecord={fetchRecord}
       />
     </div>
   );

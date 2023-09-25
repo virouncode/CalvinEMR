@@ -11,7 +11,7 @@ const PatientCredentialsPage = () => {
       <Helmet>
         <title>Calvin EMR Credentials</title>
       </Helmet>
-      <div className="credentials-title">Change credentials</div>
+      <div className="credentials-title">Change email/password</div>
       {!verified ? (
         <VerifyPasswordPatient setVerified={setVerified} />
       ) : (

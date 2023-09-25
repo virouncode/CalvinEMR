@@ -1,4 +1,5 @@
 export const firstLetterUpper = (str) => {
+  if (!str) return "";
   if (str.includes(" ")) {
     const names = str.split(" ");
     const formattedName = names

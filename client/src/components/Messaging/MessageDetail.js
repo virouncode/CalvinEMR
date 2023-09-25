@@ -17,7 +17,6 @@ import { patientIdToName } from "../../utils/patientIdToName";
 import MessagesAttachments from "./MessagesAttachments";
 import MessageExternal from "./MessageExternal";
 import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { toLocalDateAndTimeWithSeconds } from "../../utils/formatDates";
 import { postPatientRecord } from "../../api/fetchRecords";
 

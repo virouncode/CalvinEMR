@@ -2,7 +2,8 @@
 import React from "react";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import interaction from "@fullcalendar/interaction";
-import resourceTimeline from "@fullcalendar/resource-timeline";
+// import resourceTimeline from "@fullcalendar/resource-timeline";
+import resourceTimeGrid from "@fullcalendar/resource-timegrid";
 //Utils
 import { rooms } from "../../utils/rooms";
 
@@ -23,12 +24,11 @@ const TimelineView = ({
 }) => {
   return (
     <FullCalendar
-      plugins={[resourceTimeline, interaction]}
+      plugins={[resourceTimeGrid, interaction]}
       //===================Design=====================//
       headerToolbar={{
         start: "title",
-        center:
-          "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth",
+        // center: "resourceTimeGridDay",
         end: "prev today next",
       }}
       slotLabelFormat={{
@@ -39,42 +39,39 @@ const TimelineView = ({
       }}
       buttonText={{
         today: "Today",
-        month: "Month",
-        week: "Week",
-        day: "Day",
+        // month: "Month",
+        // week: "Week",
+        // day: "Day",
       }}
-      views={{
-        resourceTimelineDay: {
-          slotLabelFormat: [
-            { weekday: "long" },
-            { hour: "numeric", omitZeroMinute: true, meridiem: "short" },
-          ],
-        },
-        resourceTimelineMonth: {
-          slotDuration: "24:00",
-          slotLabelInterval: "24:00",
-          slotLabelFormat: { day: "numeric", weekday: "short" },
-        },
-        resourceTimelineWeek: {
-          slotDuration: "00:30",
-          slotLabelFormat: [
-            {
-              day: "numeric",
-              weekday: "short",
-              month: "short",
-            },
-            {
-              hour: "numeric",
-              minute: "2-digit",
-              omitZeroMinute: true,
-              meridiem: "short",
-            },
-          ],
-        },
-      }}
+      // views={
+      //   {
+      //     // resourceTimeGridDay: {
+      //     //   slotLabelFormat: [
+      //     //     { weekday: "long" },
+      //     //     { hour: "numeric", omitZeroMinute: true, meridiem: "short" },
+      //     //   ],
+      //     // },
+      //     // resourceTimeGridWeek: {
+      //     //   slotDuration: "00:30",
+      //     //   slotLabelFormat: [
+      //     //     {
+      //     //       day: "numeric",
+      //     //       weekday: "short",
+      //     //       // month: "short",
+      //     //     },
+      //     //     {
+      //     //       hour: "numeric",
+      //     //       minute: "2-digit",
+      //     //       omitZeroMinute: true,
+      //     //       meridiem: "short",
+      //     //     },
+      //     //   ],
+      //     // },
+      //   }
+      // }
       resourceAreaHeaderContent="Rooms"
       resourceAreaWidth="10%"
-      initialView="resourceTimelineDay"
+      initialView="resourceTimeGridDay"
       slotDuration={slotDuration}
       firstDay={firstDay}
       weekNumbers={true}
@@ -84,7 +81,7 @@ const TimelineView = ({
       slotLabelInterval="01:00"
       navLinks={true}
       navLinkDayClick="timeGrid"
-      weekText="Week"
+      // weekText="Week"
       aspectRatio="2"
       expandRows={true}
       eventMinWidth="5"

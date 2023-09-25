@@ -385,7 +385,7 @@ const MyAccountForm = () => {
           <>
             <button onClick={handleEdit}>Edit</button>
             <button onClick={handleChangeCredentials}>
-              Change credentials
+              Change email/password
             </button>
           </>
         )}

@@ -96,7 +96,11 @@ const DocumentForm = ({
         );
         setIsLoadingFile(false);
         setSaveDisabled(false);
-        setFormDatas({ ...formDatas, file: fileToUpload.data });
+        setFormDatas({
+          ...formDatas,
+          file: fileToUpload.data,
+          description: file.name,
+        });
       } catch (err) {
         setIsLoadingFile(false);
         toast.error(`Error unable to load document: ${err.message}`, {

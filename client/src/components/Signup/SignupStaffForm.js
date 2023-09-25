@@ -207,62 +207,62 @@ const SignupStaffForm = () => {
           date_created: Date.now(),
           schedule_morning: {
             monday: [
-              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "09", min: "00", ampm: "AM" },
               { hours: "12", min: "00", ampm: "PM" },
             ],
             tuesday: [
-              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "09", min: "00", ampm: "AM" },
               { hours: "12", min: "00", ampm: "PM" },
             ],
             wednesday: [
-              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "09", min: "00", ampm: "AM" },
               { hours: "12", min: "00", ampm: "PM" },
             ],
             thursday: [
-              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "09", min: "00", ampm: "AM" },
               { hours: "12", min: "00", ampm: "PM" },
             ],
             friday: [
-              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "09", min: "00", ampm: "AM" },
               { hours: "12", min: "00", ampm: "PM" },
             ],
             saturday: [
-              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "09", min: "00", ampm: "AM" },
               { hours: "12", min: "00", ampm: "PM" },
             ],
             sunday: [
-              { hours: "07", min: "00", ampm: "AM" },
+              { hours: "09", min: "00", ampm: "AM" },
               { hours: "12", min: "00", ampm: "PM" },
             ],
           },
           schedule_afternoon: {
             monday: [
               { hours: "01", min: "00", ampm: "PM" },
-              { hours: "06", min: "00", ampm: "PM" },
+              { hours: "04", min: "00", ampm: "PM" },
             ],
             tuesday: [
               { hours: "01", min: "00", ampm: "PM" },
-              { hours: "06", min: "00", ampm: "PM" },
+              { hours: "04", min: "00", ampm: "PM" },
             ],
             wednesday: [
               { hours: "01", min: "00", ampm: "PM" },
-              { hours: "06", min: "00", ampm: "PM" },
+              { hours: "04", min: "00", ampm: "PM" },
             ],
             thursday: [
               { hours: "01", min: "00", ampm: "PM" },
-              { hours: "06", min: "00", ampm: "PM" },
+              { hours: "04", min: "00", ampm: "PM" },
             ],
             friday: [
               { hours: "01", min: "00", ampm: "PM" },
-              { hours: "06", min: "00", ampm: "PM" },
+              { hours: "04", min: "00", ampm: "PM" },
             ],
             saturday: [
               { hours: "01", min: "00", ampm: "PM" },
-              { hours: "06", min: "00", ampm: "PM" },
+              { hours: "04", min: "00", ampm: "PM" },
             ],
             sunday: [
               { hours: "01", min: "00", ampm: "PM" },
-              { hours: "06", min: "00", ampm: "PM" },
+              { hours: "04", min: "00", ampm: "PM" },
             ],
           },
           unavailability: {

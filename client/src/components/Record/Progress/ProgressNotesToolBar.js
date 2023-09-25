@@ -22,6 +22,7 @@ const ProgressNotesToolBar = ({
   setAllBodiesVisible,
   order,
   setOrder,
+  fetchRecord,
 }) => {
   //HOOKS
   const { auth, user } = useAuth();
@@ -69,6 +70,11 @@ const ProgressNotesToolBar = ({
           },
         }
       );
+      const abortController = new AbortController();
+      fetchRecord(abortController, value);
+      toast.success("Saved preference", {
+        containerId: "A",
+      });
     } catch (err) {
       toast.error(`Error: unable to change order: ${err.message}`, {
         containerId: "A",

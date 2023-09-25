@@ -10,7 +10,6 @@ import { getAge } from "../../../utils/getAge";
 import { toLocalDate } from "../../../utils/formatDates";
 import { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import DoctorsList from "../../Lists/DoctorsLists";
-import StudentsList from "../../Lists/StudentsList";
 import NursesList from "../../Lists/NursesList";
 import useAuth from "../../../hooks/useAuth";
 import { putPatientRecord } from "../../../api/fetchRecords";
@@ -643,12 +642,15 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                   />
                 )}
                 {editVisible && (
-                  <input
-                    name="avatar"
-                    type="file"
-                    accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg"
-                    onChange={handleAvatarChange}
-                  />
+                  <>
+                    <p>Choose a picture</p>
+                    <input
+                      name="avatar"
+                      type="file"
+                      accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg"
+                      onChange={handleAvatarChange}
+                    />
+                  </>
                 )}
               </div>
             </form>
