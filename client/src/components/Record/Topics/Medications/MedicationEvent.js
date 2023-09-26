@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import { toLocalDate } from "../../../../utils/formatDates";
 import useAuth from "../../../../hooks/useAuth";
-import formatName from "../../../../utils/formatName";
 import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 import { medicationSchema } from "../../../../validation/medicationValidation";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const MedicationEvent = ({
   event,
@@ -22,7 +22,7 @@ const MedicationEvent = ({
   setMedsRx,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -237,7 +237,13 @@ const MedicationEvent = ({
           )}
         </td>
         <td>
-          <em>{formatName(eventInfos.created_by_name.full_name)}</em>
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              eventInfos.created_by_id,
+              true
+            )}
+          </em>
         </td>
         <td>
           <em>{toLocalDate(eventInfos.date_created)}</em>

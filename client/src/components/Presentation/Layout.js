@@ -3,7 +3,6 @@ import Header from "./Header";
 import Welcome from "./Welcome";
 import ConfirmGlobal from "../Confirm/ConfirmGlobal";
 import { ToastContainer } from "react-toastify";
-import { useRef } from "react";
 
 const Layout = () => {
   const DIALOG_CONTAINER_STYLE = {

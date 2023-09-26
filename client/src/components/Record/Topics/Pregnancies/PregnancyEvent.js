@@ -12,14 +12,14 @@ import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
-import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
 import { pregnancySchema } from "../../../../validation/pregnancyValidation";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -193,7 +193,13 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
           )}
         </td>
         <td>
-          <em>{formatName(eventInfos.created_by_name.full_name)}</em>{" "}
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              eventInfos.created_by_id,
+              true
+            )}
+          </em>{" "}
         </td>
         <td>
           <em>{toLocalDate(eventInfos.date_created)}</em>

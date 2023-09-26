@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 import RelationshipsForm from "./RelationshipsForm";
 import { toInverseRelation } from "../../utils/toInverseRelation";
 import { postPatientRecord, putPatientRecord } from "../../api/fetchRecords";
-import { demographicsSchema } from "../../validation/demographicsValidation";
 import { patientSchema } from "../../validation/patientValidation";
 
 const SignupPatientForm = () => {

@@ -57,11 +57,13 @@ const Calendar = ({ timelineVisible }) => {
   const isSecretary = useCallback(() => {
     return user.title === "Secretary" ? true : false;
   }, [user.title]);
-  const [
-    { events, remainingStaff, isLoading, errMsg },
-    fetchEvents,
-    setEvents,
-  ] = useEvents(hostsIds, rangeStart, rangeEnd, isSecretary(), user.id);
+  const [{ events, remainingStaff }, fetchEvents, setEvents] = useEvents(
+    hostsIds,
+    rangeStart,
+    rangeEnd,
+    isSecretary(),
+    user.id
+  );
 
   useEffect(() => {
     if (lastCurrentId.current) {

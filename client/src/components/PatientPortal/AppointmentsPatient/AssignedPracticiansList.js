@@ -1,7 +1,7 @@
 import React from "react";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
 import { staffIdToName } from "../../../utils/staffIdToName";
 import formatName from "../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const AssignedPracticiansList = ({
   assignedStaff,
@@ -23,8 +23,7 @@ const AssignedPracticiansList = ({
         {assignedStaff.map((staff) => (
           <option key={staff.id} value={staff.id}>
             {staff.category === "Doctor"
-              ? staffIdToTitle(staffInfos, staff.id) +
-                formatName(staffIdToName(staffInfos, staff.id))
+              ? staffIdToTitleAndName(staffInfos, staff.id, true)
               : formatName(staffIdToName(staffInfos, staff.id)) +
                 `(${staff.category})`}
           </option>

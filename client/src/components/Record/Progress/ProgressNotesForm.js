@@ -14,7 +14,6 @@ import NewTemplate from "./NewTemplate";
 import EditTemplate from "./EditTemplate";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
-var _ = require("lodash");
 
 const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
   //hooks

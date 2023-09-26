@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import { toast } from "react-toastify";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
-import formatName from "../../../utils/formatName";
-import { staffIdToName } from "../../../utils/staffIdToName";
 import { CircularProgress } from "@mui/material";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const PastAppointments = () => {
   const { user, auth, clinic } = useAuth();
@@ -99,10 +97,11 @@ const PastAppointments = () => {
                 )}
                 <p>Reason : {appointment.reason}</p>
                 <p>
-                  {staffIdToTitle(clinic.staffInfos, appointment.host_id) +
-                    formatName(
-                      staffIdToName(clinic.staffInfos, appointment.host_id)
-                    )}
+                  {staffIdToTitleAndName(
+                    clinic.staffInfos,
+                    appointment.host_id,
+                    true
+                  )}
                 </p>
               </div>
             ))

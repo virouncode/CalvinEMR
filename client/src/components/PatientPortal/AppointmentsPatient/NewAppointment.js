@@ -6,10 +6,9 @@ import axiosXanoPatient from "../../../api/xanoPatient";
 import { toast } from "react-toastify";
 import AppointmentsSlots from "./AppointmentsSlots";
 import WeekPicker from "./WeekPicker";
-import { sendEmail } from "../../../api/sendEmail";
 import { staffIdToName } from "../../../utils/staffIdToName";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 var _ = require("lodash");
 
 const optionsDate = {
@@ -129,10 +128,7 @@ const NewAppointment = () => {
   const handleSubmit = async () => {
     if (
       await confirmAlert({
-        content: `You are about to request an appointment with ${staffIdToTitle(
-          clinic.staffInfos,
-          practicianSelectedId
-        )} ${staffIdToName(
+        content: `You are about to request an appointment with ${staffIdToTitleAndName(
           clinic.staffInfos,
           practicianSelectedId
         )}, on ${new Date(appointmentSelected.start).toLocaleString(
@@ -147,44 +143,63 @@ const NewAppointment = () => {
         )}, do you confirm ?`,
       })
     ) {
-      const message = `I would like to have an appointment with ${
-        staffIdToTitle(clinic.staffInfos, practicianSelectedId) +
-        staffIdToName(clinic.staffInfos, practicianSelectedId)
-      }:
+      //get all secretaries id
+      const secretariesIds = clinic.staffInfos
+        .filter(({ title }) => title === "Secretary")
+        .map(({ id }) => id);
+      console.log("secretariesIds", secretariesIds);
+      //create the message
 
-      ${new Date(appointmentSelected.start).toLocaleString(
-        "en-CA",
-        optionsDate
-      )} ${new Date(appointmentSelected.start).toLocaleTimeString(
-        "en-CA",
-        optionsTime
-      )} - ${new Date(appointmentSelected.end).toLocaleTimeString(
-        "en-CA",
-        optionsTime
-      )} 
-
-      Patient: ${user.demographics.full_name}
-      Chart Nbr: ${user.demographics.chart_nbr}
-      Phone: ${user.demographics.cell_phone}
-
-    Please call me or send me a message to confirm the appointment.`;
       try {
-        await sendEmail(
-          "virounk@gmail.com", //to be changed to secretary .email
-          "",
-          "Appointment Request",
-          "",
-          "",
-          message,
-          `Best wishes, \nPowered by Calvin EMR`
+        for (const secretaryId of secretariesIds) {
+          console.log(secretaryId);
+          const message = {
+            from_id: user.id,
+            from_user_type: "patient",
+            to_id: secretaryId,
+            to_user_type: "staff",
+            subject: "Appointment request",
+            body: `Hello ${staffIdToName(clinic.staffInfos, secretaryId)},
+
+I would like to have an appointment with ${staffIdToTitleAndName(
+              clinic.staffInfos,
+              practicianSelectedId
+            )} on:
+
+${new Date(appointmentSelected.start).toLocaleString(
+  "en-CA",
+  optionsDate
+)} ${new Date(appointmentSelected.start).toLocaleTimeString(
+              "en-CA",
+              optionsTime
+            )} - ${new Date(appointmentSelected.end).toLocaleTimeString(
+              "en-CA",
+              optionsTime
+            )} 
+  
+Please call me or send me a message to confirm the appointment.
+
+Patient: ${user.demographics.full_name}
+Chart Nbr: ${user.demographics.chart_nbr}
+Cellphone: ${user.demographics.cell_phone}`,
+
+            read_by_patient_id: user.id,
+            date_created: Date.now(),
+            type: "External",
+          };
+          await axiosXanoPatient.post("/messages_external", message, {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+        }
+        window.alert(
+          "YOUR APPOINTMENT IS NOT CONFIRMED YET, a secretary will contact you to confirm the appointment"
         );
-        toast.success(
-          `Invitation sent successfully to ${
-            staffIdToTitle(clinic.staffInfos, practicianSelectedId) +
-            staffIdToName(clinic.staffInfos, practicianSelectedId)
-          }`,
-          { containerId: "A" }
-        );
+        toast.success(`Appointment request sent successfully`, {
+          containerId: "A",
+        });
         setRequestSent(true);
         setTimeout(() => setRequestSent(false), 6000);
       } catch (err) {
@@ -252,8 +267,7 @@ const NewAppointment = () => {
           Your request has been sent,{" "}
           <strong>
             Please wait for a secretary to confirm your appointment with{" "}
-            {staffIdToTitle(clinic.staffInfos, practicianSelectedId) +
-              staffIdToName(clinic.staffInfos, practicianSelectedId)}
+            {staffIdToTitleAndName(clinic.staffInfos, practicianSelectedId)}
           </strong>
         </p>
       )}

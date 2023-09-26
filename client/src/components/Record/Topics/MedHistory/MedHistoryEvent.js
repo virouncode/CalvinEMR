@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import useAuth from "../../../../hooks/useAuth";
-import formatName from "../../../../utils/formatName";
 import {
   deletePatientRecord,
   putPatientRecord,
@@ -11,6 +10,7 @@ import {
 import { toast } from "react-toastify";
 import { medHistorySchema } from "../../../../validation/medHistoryValidation";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const MedHistoryEvent = ({
   event,
@@ -19,7 +19,7 @@ const MedHistoryEvent = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -163,7 +163,13 @@ const MedHistoryEvent = ({
           )}
         </td>
         <td>
-          <em>{formatName(eventInfos.created_by_name.full_name)}</em>
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              eventInfos.created_by_id,
+              true
+            )}
+          </em>
         </td>
         <td>
           <em>{toLocalDate(eventInfos.date_created)}</em>

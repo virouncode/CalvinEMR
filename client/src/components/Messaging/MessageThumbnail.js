@@ -4,15 +4,10 @@ import useAuth from "../../hooks/useAuth";
 import { NavLink } from "react-router-dom";
 import { toLocalDateAndTime } from "../../utils/formatDates";
 import { toast } from "react-toastify";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import { staffIdToName } from "../../utils/staffIdToName";
-import {
-  patientIdListToName,
-  staffIdListToTitleAndName,
-} from "../../utils/staffIdListToTitleAndName";
+import { staffIdListToTitleAndName } from "../../utils/staffIdListToTitleAndName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
-import formatName from "../../utils/formatName";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 
 const MessageThumbnail = ({
   message,
@@ -152,8 +147,7 @@ const MessageThumbnail = ({
       <div onClick={handleMsgClick} className="message-thumbnail-link">
         <div className="message-thumbnail-author">
           {section !== "Sent messages"
-            ? staffIdToTitle(clinic.staffInfos, message.from_id) +
-              formatName(staffIdToName(clinic.staffInfos, message.from_id))
+            ? staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)
             : staffIdListToTitleAndName(
                 clinic.staffInfos,
                 message.to_staff_ids

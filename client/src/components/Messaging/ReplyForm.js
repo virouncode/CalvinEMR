@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { patientIdToName } from "../../utils/patientIdToName";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import Message from "./Message";
-import formatName from "../../utils/formatName";
 import { CircularProgress } from "@mui/material";
 import MessagesAttachments from "./MessagesAttachments";
 import { postPatientRecord } from "../../api/fetchRecords";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 
 const ReplyForm = ({
   setReplyVisible,
@@ -164,14 +161,11 @@ const ReplyForm = ({
           {allPersons
             ? [...new Set([...message.to_staff_ids, message.from_id])]
                 .filter((staffId) => staffId !== user.id)
-                .map(
-                  (staffId) =>
-                    staffIdToTitle(clinic.staffInfos, staffId) +
-                    formatName(staffIdToName(clinic.staffInfos, staffId))
+                .map((staffId) =>
+                  staffIdToTitleAndName(clinic.staffInfos, staffId, true)
                 )
                 .join(", ")
-            : staffIdToTitle(clinic.staffInfos, message.from_id) +
-              formatName(staffIdToName(clinic.staffInfos, message.from_id))}
+            : staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)}
         </p>
       </div>
       <div className="reply-form-subject">
@@ -204,44 +198,12 @@ const ReplyForm = ({
           id="body-area"
         ></textarea>
         <div className="reply-form-history">
-          <Message
-            message={message}
-            author={formatName(
-              staffIdToName(clinic.staffInfos, message.from_id)
-            )}
-            authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-            key={message.id}
-            index={0}
-          />
+          <Message message={message} key={message.id} index={0} />
           {previousMsgs.map((message, index) =>
             message.type === "Internal" ? (
-              <Message
-                message={message}
-                author={formatName(
-                  staffIdToName(clinic.staffInfos, message.from_id)
-                )}
-                authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-                key={message.id}
-                index={index + 1}
-              />
+              <Message message={message} key={message.id} index={index + 1} />
             ) : (
-              <Message
-                message={message}
-                author={
-                  message.from_user_type === "staff"
-                    ? formatName(
-                        staffIdToName(clinic.staffInfos, message.from_id)
-                      )
-                    : patientIdToName(clinic.patientsInfos, message.from_id)
-                }
-                authorTitle={
-                  message.from_user_type === "staff"
-                    ? staffIdToTitle(clinic.staffInfos, message.from_id)
-                    : ""
-                }
-                key={message.id}
-                index={index + 1}
-              />
+              <Message message={message} key={message.id} index={index + 1} />
             )
           )}
         </div>

@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import { toast } from "react-toastify";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
-import formatName from "../../../utils/formatName";
 import { staffIdToName } from "../../../utils/staffIdToName";
 import { CircularProgress } from "@mui/material";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const NextAppointments = () => {
   const { user, auth, clinic } = useAuth();
   const [appointments, setAppointments] = useState(null);
-  const [appointmentSlectedId, setAppointmentSelectedId] = useState(null);
+  const [appointmentSelectedId, setAppointmentSelectedId] = useState(null);
 
   const optionsDate = {
     weekday: "short",
@@ -59,7 +58,7 @@ const NextAppointments = () => {
     return () => abortController.abort();
   }, [auth.authToken, user.id]);
 
-  const isAppointmentSelected = (id) => appointmentSlectedId === id;
+  const isAppointmentSelected = (id) => appointmentSelectedId === id;
   const handleCheck = (e) => {
     const checked = e.target.checked;
     const id = parseInt(e.target.id);
@@ -73,42 +72,63 @@ const NextAppointments = () => {
       })
     ) {
       try {
-        await axiosXanoPatient.delete(`/appointments/${appointmentSlectedId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-        });
-        toast.success("Appointment canceled successfully", {
+        //get all secretaries id
+        const secretariesIds = clinic.staffInfos
+          .filter(({ title }) => title === "Secretary")
+          .map(({ id }) => id);
+        //create the message
+        //send to all secretaries
+        const appointment = appointments.find(
+          ({ id }) => id === appointmentSelectedId
+        );
+
+        for (const secretaryId of secretariesIds) {
+          const message = {
+            from_id: user.id,
+            from_user_type: "patient",
+            to_id: secretaryId,
+            to_user_type: "staff",
+            subject: "Appointment cancelation",
+            body: `Hello ${staffIdToName(clinic.staffInfos, secretaryId)},
+
+I would like to cancel my appointment with ${staffIdToTitleAndName(
+              clinic.staffInfos,
+              appointment.host_id
+            )} on:
+
+${new Date(appointment.start).toLocaleString("en-CA", optionsDate)} ${new Date(
+              appointment.start
+            ).toLocaleTimeString("en-CA", optionsTime)} - ${new Date(
+              appointment.end
+            ).toLocaleTimeString("en-CA", optionsTime)}
+
+Please contact me to confirm cancelation
+
+Patient: ${user.demographics.full_name}
+Chart Nbr: ${user.demographics.chart_nbr}
+Cellphone: ${user.demographics.cell_phone}`,
+            read_by_patient_id: user.id,
+            date_created: Date.now(),
+            type: "External",
+          };
+          await axiosXanoPatient.post("/messages_external", message, {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+        }
+        window.alert(
+          "YOUR CANCELATION IS NOT CONFIRMED YET. A secretary will contact you"
+        );
+
+        toast.success("Appointment cancelation request sent successfully", {
           containerId: "A",
         });
-        try {
-          const response = await axiosXanoPatient.get(
-            `/patient_appointments?patient_id=${user.id}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${auth.authToken}`,
-              },
-            }
-          );
-          setAppointments(
-            response.data
-              .filter(({ start }) => start >= Date.now())
-              .sort((a, b) => b.date_created - a.date_created)
-          );
-          setAppointmentSelectedId(null);
-        } catch (err) {
-          if (err.name !== "CanceledError")
-            toast.error(
-              `Error : unable fetch your account infos: ${err.message}`,
-              {
-                containerId: "A",
-              }
-            );
-        }
+
+        setAppointmentSelectedId(null);
       } catch (err) {
-        toast.err(`Unable to cancel appointment: ${err.message}`, {
+        toast.err(`Unable to send appointment cancelation: ${err.message}`, {
           containerId: "A",
         });
       }
@@ -163,10 +183,11 @@ const NextAppointments = () => {
                 )}
                 <p>Reason : {appointment.reason}</p>
                 <p>
-                  {staffIdToTitle(clinic.staffInfos, appointment.host_id) +
-                    formatName(
-                      staffIdToName(clinic.staffInfos, appointment.host_id)
-                    )}
+                  {staffIdToTitleAndName(
+                    clinic.staffInfos,
+                    appointment.host_id,
+                    true
+                  )}
                 </p>
               </div>
             ))
@@ -180,7 +201,7 @@ const NextAppointments = () => {
       <div className="patient-next-appointments-btn">
         <button
           onClick={handleDeleteAppointment}
-          disabled={!appointmentSlectedId}
+          disabled={!appointmentSelectedId}
         >
           Cancel Appointment
         </button>

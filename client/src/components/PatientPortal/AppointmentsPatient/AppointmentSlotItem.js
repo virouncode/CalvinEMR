@@ -1,7 +1,5 @@
 import React from "react";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
-import formatName from "../../../utils/formatName";
-import { staffIdToName } from "../../../utils/staffIdToName";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const optionsDate = {
   weekday: "short",
@@ -42,10 +40,7 @@ const AppointmentSlotItem = ({
         </p>
       </div>
       <p>Reason : {appointment.reason}</p>
-      <p>
-        {staffIdToTitle(staffInfos, appointment.host_id) +
-          formatName(staffIdToName(staffInfos, appointment.host_id))}
-      </p>
+      <p>{staffIdToTitleAndName(staffInfos, appointment.host_id, true)}</p>
     </div>
   );
 };

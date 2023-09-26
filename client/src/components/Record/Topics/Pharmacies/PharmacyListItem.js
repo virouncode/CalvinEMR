@@ -1,8 +1,11 @@
 import React from "react";
 import { toLocalDate } from "../../../../utils/formatDates";
 import formatName from "../../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import useAuth from "../../../../hooks/useAuth";
 
 const PharmacyListItem = ({ item, handleAddItemClick }) => {
+  const { clinic } = useAuth();
   return (
     <tr className="pharmacies-list-item">
       <td>{item.name}</td>
@@ -15,7 +18,9 @@ const PharmacyListItem = ({ item, handleAddItemClick }) => {
       <td>{item.fax}</td>
       <td>{item.email}</td>
       <td>
-        <em>{formatName(item.created_by_name.full_name)}</em>
+        <em>
+          {staffIdToTitleAndName(clinic.staffInfos, item.created_by_id, true)}
+        </em>
       </td>
       <td>
         <em>{toLocalDate(item.date_created)}</em>

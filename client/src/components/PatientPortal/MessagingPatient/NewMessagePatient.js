@@ -6,10 +6,8 @@ import MessagesAttachments from "../../Messaging/MessagesAttachments";
 import { CircularProgress } from "@mui/material";
 import { postPatientRecordPatient } from "../../../api/fetchRecords";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
-import formatName from "../../../utils/formatName";
-import { staffIdToName } from "../../../utils/staffIdToName";
 import ContactsForPatient from "./ContactsForPatient";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
   const { auth, user, clinic } = useAuth();
@@ -186,8 +184,7 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
             placeholder="Staff member"
             value={
               recipientId
-                ? staffIdToTitle(clinic.staffInfos, recipientId) +
-                  formatName(staffIdToName(clinic.staffInfos, recipientId))
+                ? staffIdToTitleAndName(clinic.staffInfos, recipientId, true)
                 : ""
             }
             readOnly

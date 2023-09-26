@@ -7,14 +7,14 @@ import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
-import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
 import { concernSchema } from "../../../../validation/concernValidation";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -109,7 +109,13 @@ const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
           )}
         </td>
         <td>
-          <em>{formatName(itemInfos.created_by_name.full_name)}</em>
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              itemInfos.created_by_id,
+              true
+            )}
+          </em>
         </td>
         <td>
           <em>{toLocalDate(itemInfos.date_created)}</em>

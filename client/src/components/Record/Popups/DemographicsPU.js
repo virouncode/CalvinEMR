@@ -20,12 +20,11 @@ import { ToastContainer, toast } from "react-toastify";
 import formatName from "../../../utils/formatName";
 import { demographicsSchema } from "../../../validation/demographicsValidation";
 import { firstLetterUpper } from "../../../utils/firstLetterUpper";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
-import { staffIdToName } from "../../../utils/staffIdToName";
 import USTechsList from "../../Lists/USTechsList";
 import PhysiosList from "../../Lists/PhysiosList";
 import PsychosList from "../../Lists/PsychosList";
 import NutritionistsList from "../../Lists/NutritionistsList";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
@@ -519,12 +518,10 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                       staffInfos={clinic.staffInfos}
                     />
                   ) : (
-                    staffIdToTitle(
+                    staffIdToTitleAndName(
                       clinic.staffInfos,
-                      formDatas.assigned_md_id
-                    ) +
-                    formatName(
-                      staffIdToName(clinic.staffInfos, formDatas.assigned_md_id)
+                      formDatas.assigned_md_id,
+                      true
                     )
                   )}
                 </p>
@@ -658,7 +655,12 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
               {patientInfos.updated_by_name ? (
                 <em>
                   Updated by{" "}
-                  {formatName(patientInfos.updated_by_name.full_name)} on{" "}
+                  {staffIdToTitleAndName(
+                    clinic.staffInfos,
+                    patientInfos.updated_by_id,
+                    true
+                  )}{" "}
+                  on{" "}
                   {toLocalDateAndTime(
                     new Date(patientInfos.date_updated).toISOString()
                   )}
@@ -666,7 +668,12 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
               ) : (
                 <em>
                   Created by{" "}
-                  {formatName(patientInfos.created_by_name.full_name)} on{" "}
+                  {staffIdToTitleAndName(
+                    clinic.staffInfos,
+                    patientInfos.created_by_id,
+                    true
+                  )}{" "}
+                  on{" "}
                   {toLocalDateAndTime(
                     new Date(patientInfos.date_created).toISOString()
                   )}

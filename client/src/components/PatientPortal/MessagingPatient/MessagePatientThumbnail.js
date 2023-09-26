@@ -6,9 +6,7 @@ import { toast } from "react-toastify";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { patientIdToName } from "../../../utils/patientIdToName";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
-import { staffIdToName } from "../../../utils/staffIdToName";
-import formatName from "../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const MessagePatientThumbnail = ({
   message,
@@ -163,11 +161,9 @@ const MessagePatientThumbnail = ({
           {section !== "Sent messages" //messages reçus ou effacés
             ? message.from_user_type === "patient" //le from est un patient ou un staff
               ? patientIdToName(clinic.patientsInfos, message.from_id)
-              : staffIdToTitle(clinic.staffInfos, message.from_id) +
-                formatName(staffIdToName(clinic.staffInfos, message.from_id))
+              : staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)
             : /*messages envoyés, le "To" est un staff*/
-              staffIdToTitle(clinic.staffInfos, message.to_id) +
-              staffIdToName(clinic.staffInfos, message.to_id)}
+              staffIdToTitleAndName(clinic.staffInfos, message.to_id, true)}
         </div>
         <div className="message-thumbnail-sample-external">
           <span>{message.subject}</span> - {message.body}{" "}

@@ -6,12 +6,9 @@ import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import NewWindow from "react-new-window";
 import ForwardMessage from "./ForwardMessage";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
-import { staffIdToName } from "../../utils/staffIdToName";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { NavLink } from "react-router-dom";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
-import formatName from "../../utils/formatName";
 import MessagesPrintPU from "./MessagesPrintPU";
 import { patientIdToName } from "../../utils/patientIdToName";
 import MessagesAttachments from "./MessagesAttachments";
@@ -19,6 +16,7 @@ import MessageExternal from "./MessageExternal";
 import html2canvas from "html2canvas";
 import { toLocalDateAndTimeWithSeconds } from "../../utils/formatDates";
 import { postPatientRecord } from "../../api/fetchRecords";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 
 const MessageDetail = ({
   setCurrentMsgId,
@@ -209,10 +207,11 @@ const MessageDetail = ({
     const datasAttachment = [
       {
         file: fileToUpload.data,
-        alias: `Message from: ${
-          staffIdToTitle(clinic.staffInfos, message.from_id) +
-          formatName(staffIdToName(clinic.staffInfos, message.from_id))
-        } (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
+        alias: `Message from: ${staffIdToTitleAndName(
+          clinic.staffInfos,
+          message.from_id,
+          true
+        )} (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
         date_created: Date.now(),
         created_by_id: user.id,
       },
@@ -226,10 +225,11 @@ const MessageDetail = ({
       ).data;
       await postPatientRecord("/progress_notes", user.id, auth.authToken, {
         patient_id: message.related_patient_id,
-        object: `Message from: ${
-          staffIdToTitle(clinic.staffInfos, message.from_id) +
-          formatName(staffIdToName(clinic.staffInfos, message.from_id))
-        } (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
+        object: `Message from: ${staffIdToTitleAndName(
+          clinic.staffInfos,
+          message.from_id,
+          true
+        )} (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
         body: "See attachment",
         version_nbr: 1,
         attachments_ids: attach_ids,
@@ -244,6 +244,23 @@ const MessageDetail = ({
           containerId: "A",
         }
       );
+    }
+  };
+
+  const handleAddAllAttachments = async () => {
+    try {
+      for (const attachment of attachments) {
+        await postPatientRecord("/documents", user.id, auth.authToken, {
+          patient_id: message.related_patient_id,
+          description: attachment.alias,
+          file: attachment.file,
+        });
+      }
+      toast.success("Attachments added successfully", { containerId: "A" });
+    } catch (err) {
+      toast.error(`Error unable to addattachments: ${err.message}`, {
+        containerId: "A",
+      });
     }
   };
 
@@ -275,10 +292,6 @@ const MessageDetail = ({
             <MessagesPrintPU
               message={message}
               previousMsgs={previousMsgs}
-              author={formatName(
-                staffIdToName(clinic.staffInfos, message.from_id)
-              )}
-              authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
               attachments={attachments}
             />
           </NewWindow>
@@ -315,45 +328,14 @@ const MessageDetail = ({
           )}
         </div>
         <div ref={messageContentRef} className="message-detail-content">
-          <Message
-            message={message}
-            author={formatName(
-              staffIdToName(clinic.staffInfos, message.from_id)
-            )}
-            authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-            key={message.id}
-            index={0}
-          />
+          <Message message={message} key={message.id} index={0} />
           {previousMsgs &&
             previousMsgs.map((message, index) =>
               message.type === "Internal" ? (
-                <Message
-                  message={message}
-                  author={formatName(
-                    staffIdToName(clinic.staffInfos, message.from_id)
-                  )}
-                  authorTitle={staffIdToTitle(
-                    clinic.staffInfos,
-                    message.from_id
-                  )}
-                  key={message.id}
-                  index={index + 1}
-                />
+                <Message message={message} key={message.id} index={index + 1} />
               ) : (
                 <MessageExternal
                   message={message}
-                  author={
-                    message.from_user_type === "staff"
-                      ? formatName(
-                          staffIdToName(clinic.staffInfos, message.from_id)
-                        )
-                      : patientIdToName(clinic.patientsInfos, message.from_id)
-                  }
-                  authorTitle={
-                    message.from_user_type === "staff"
-                      ? staffIdToTitle(clinic.staffInfos, message.from_id)
-                      : ""
-                  }
                   key={message.id}
                   index={index + 1}
                 />
@@ -389,6 +371,11 @@ const MessageDetail = ({
                 <button onClick={handleClickReplyAll}>Reply all</button>
               )}
             <button onClick={handleClickForward}>Forward</button>
+            {message.related_patient_id ? (
+              <button onClick={handleAddAllAttachments}>
+                Add all attachments to patient record
+              </button>
+            ) : null}
           </div>
         )}
         {forwardVisible && (

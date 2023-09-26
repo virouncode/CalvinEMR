@@ -6,10 +6,10 @@ import ProgressNotesAttachments from "./ProgressNotesAttachments";
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import formatName from "../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const ProgressNotesCardPrint = ({ progressNote }) => {
-  const { auth } = useAuth();
+  const { auth, clinic } = useAuth();
   const [attachments, setAttachments] = useState([]);
 
   useEffect(() => {
@@ -61,8 +61,16 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
           <p style={{ margin: "0", padding: "0" }}>
             <strong>From: </strong>
             {getAuthorTitle()}{" "}
-            {formatName(progressNote.updated_by_name?.full_name) ||
-              formatName(progressNote.created_by_name.full_name)}
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              progressNote.updated_by_id,
+              true
+            ) ||
+              staffIdToTitleAndName(
+                clinic.staffInfos,
+                progressNote.created_by_id,
+                true
+              )}
           </p>
           <p style={{ margin: "0", fontSize: "0.7rem", padding: "0 5px" }}>
             Signed on{" "}
@@ -89,15 +97,25 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
       <div style={BODY_STYLE}>
         <p>{progressNote.body}</p>
         <div style={FOOTER_STYLE}>
-          {progressNote.updated_by_name?.full_name ? (
+          {progressNote.updated_by_id ? (
             <p style={{ margin: "0" }}>
-              Updated by {progressNote.updated_by_name.full_name} on{" "}
-              {toLocalDateAndTimeWithSeconds(progressNote.date_updated)}
+              Updated by{" "}
+              {staffIdToTitleAndName(
+                clinic.staffInfos,
+                progressNote.updated_by_id,
+                true
+              )}{" "}
+              on {toLocalDateAndTimeWithSeconds(progressNote.date_updated)}
             </p>
           ) : null}
           <p style={{ margin: "0" }}>
-            Created by {progressNote.created_by_name.full_name} on{" "}
-            {toLocalDateAndTimeWithSeconds(progressNote.date_created)}
+            Created by{" "}
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              progressNote.created_by_id,
+              true
+            )}{" "}
+            on {toLocalDateAndTimeWithSeconds(progressNote.date_created)}
           </p>
         </div>
       </div>

@@ -6,9 +6,6 @@ import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
 import Message from "./Message";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { patientIdToName } from "../../utils/patientIdToName";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { postPatientRecord } from "../../api/fetchRecords";
 import MessagesAttachments from "./MessagesAttachments";
@@ -281,44 +278,13 @@ const ForwardMessage = ({
         <div className="forward-form-body">
           <textarea value={body} onChange={handleChange}></textarea>
           <div className="forward-form-history">
-            <Message
-              message={message}
-              author={formatName(
-                staffIdToName(clinic.staffInfos, message.from_id)
-              )}
-              authorTitle={staffIdToTitle(clinic.staffInfos, message.from_id)}
-              key={message.id}
-              index={0}
-            />
+            <Message message={message} key={message.id} index={0} />
             {previousMsgs.map((message, index) =>
               message.type === "Internal" ? (
-                <Message
-                  message={message}
-                  author={formatName(
-                    staffIdToName(clinic.staffInfos, message.from_id)
-                  )}
-                  authorTitle={staffIdToTitle(
-                    clinic.staffInfos,
-                    message.from_id
-                  )}
-                  key={message.id}
-                  index={index + 1}
-                />
+                <Message message={message} key={message.id} index={index + 1} />
               ) : (
                 <MessageExternal
                   message={message}
-                  author={
-                    message.from_user_type === "staff"
-                      ? formatName(
-                          staffIdToName(clinic.staffInfos, message.from_id)
-                        )
-                      : patientIdToName(clinic.patientsInfos, message.from_id)
-                  }
-                  authorTitle={
-                    message.from_user_type === "staff"
-                      ? staffIdToTitle(clinic.staffInfos, message.from_id)
-                      : ""
-                  }
                   key={message.id}
                   index={index + 1}
                 />

@@ -6,8 +6,7 @@ import { toast } from "react-toastify";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
 import { patientIdToName } from "../../utils/patientIdToName";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
-import { staffIdToName } from "../../utils/staffIdToName";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 
 const MessageExternalThumbnail = ({
   message,
@@ -161,8 +160,7 @@ const MessageExternalThumbnail = ({
           {section !== "Sent messages" //messages reçus ou effacés
             ? message.from_user_type === "patient" //le "From" est un patient ou un staff
               ? patientIdToName(clinic.patientsInfos, message.from_id)
-              : staffIdToTitle(clinic.staffInfos, message.from_id) +
-                staffIdToName(clinic.staffInfos, message.from_id)
+              : staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)
             : /*messages envoyés, le "To" est forcément un patient*/
               patientIdToName(clinic.patientsInfos, message.to_id)}
         </div>

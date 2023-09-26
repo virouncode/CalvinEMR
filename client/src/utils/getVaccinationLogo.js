@@ -5,7 +5,7 @@ export const getVaccinationLogo = (type) => {
       logo = "\u25C6";
       break;
     case "intramuscular/subcutaneous":
-      logo = "\u25C6" + "/" + "\u25A0";
+      logo = `\u25C6/\u25A0`;
       break;
     case "subcutaneous":
       logo = "\u25A0";

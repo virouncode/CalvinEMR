@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import { ToastContainer, toast } from "react-toastify";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
-import { staffIdToName } from "../../../utils/staffIdToName";
-import formatName from "../../../utils/formatName";
 import { CircularProgress } from "@mui/material";
 import MessagesAttachments from "../../Messaging/MessagesAttachments";
 import { postPatientRecordPatient } from "../../../api/fetchRecords";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
-import { patientIdToName } from "../../../utils/patientIdToName";
 import MessageExternal from "../../Messaging/MessageExternal";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const ReplyMessagePatient = ({
   setReplyVisible,
@@ -168,8 +165,7 @@ const ReplyMessagePatient = ({
       <div className="reply-form-title">
         <p>
           <strong>To: </strong>
-          {staffIdToTitle(clinic.staffInfos, message.from_id)}{" "}
-          {formatName(staffIdToName(clinic.staffInfos, message.from_id))}
+          {staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)}
         </p>
       </div>
       <div className="reply-form-subject">
@@ -192,36 +188,10 @@ const ReplyMessagePatient = ({
       <div className="reply-form-body">
         <textarea value={body} onChange={handleChange}></textarea>
         <div className="reply-form-history">
-          <MessageExternal
-            message={message}
-            author={
-              message.from_user_type === "staff"
-                ? formatName(staffIdToName(clinic.staffInfos, message.from_id))
-                : patientIdToName(clinic.patientsInfos, message.from_id)
-            }
-            authorTitle={
-              message.from_user_type === "staff"
-                ? staffIdToTitle(clinic.staffInfos, message.from_id)
-                : ""
-            }
-            key={message.id}
-            index={0}
-          />
+          <MessageExternal message={message} key={message.id} index={0} />
           {previousMsgs.map((message, index) => (
             <MessageExternal
               message={message}
-              author={
-                message.from_user_type === "staff"
-                  ? formatName(
-                      staffIdToName(clinic.staffInfos, message.from_id)
-                    )
-                  : patientIdToName(clinic.patientsInfos, message.from_id)
-              }
-              authorTitle={
-                message.from_user_type === "staff"
-                  ? staffIdToTitle(clinic.staffInfos, message.from_id)
-                  : ""
-              }
               key={message.id}
               index={index + 1}
             />

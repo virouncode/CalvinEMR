@@ -3,22 +3,17 @@ import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../../utils/firstLetterUpper";
-import { toast } from "react-toastify";
-import { CircularProgress } from "@mui/material";
 import { toLocalDate } from "../../../utils/formatDates";
 import { getAge } from "../../../utils/getAge";
 import DoctorsList from "../../Lists/DoctorsLists";
 import CountriesList from "../../Lists/CountriesList";
-import StudentsList from "../../Lists/StudentsList";
 import NursesList from "../../Lists/NursesList";
 import { patientAccountSchema } from "../../../validation/patientAccountValidation";
-import { staffIdToTitle } from "../../../utils/staffIdToTitle";
-import { staffIdToName } from "../../../utils/staffIdToName";
-import formatName from "../../../utils/formatName";
 import USTechsList from "../../Lists/USTechsList";
 import PhysiosList from "../../Lists/PhysiosList";
 import PsychosList from "../../Lists/PsychosList";
 import NutritionistsList from "../../Lists/NutritionistsList";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 const USERINFO_URL = "/auth/me";
 
@@ -26,12 +21,11 @@ const AccountPatientForm = () => {
   //HOOKS
   const { auth, user, clinic, setClinic, setUser } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [formDatas, setFormDatas] = useState(user.demographics);
+  const [formDatas] = useState(user.demographics);
   const [tempFormDatas, setTempFormDatas] = useState(user.demographics);
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
   const [infosChanged, setInfosChanged] = useState(false);
-  const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -136,9 +130,7 @@ const AccountPatientForm = () => {
         <div className="patient-account-form-content">
           <div className="patient-account-form-content-column">
             <div className="patient-account-form-content-column-img">
-              {isLoadingFile ? (
-                <CircularProgress />
-              ) : tempFormDatas.avatar ? (
+              {tempFormDatas.avatar ? (
                 <img
                   src={`${BASE_URL}${tempFormDatas.avatar.path}`}
                   alt="user-avatar"
@@ -341,12 +333,10 @@ const AccountPatientForm = () => {
                   staffInfos={clinic.staffInfos}
                 />
               ) : (
-                staffIdToTitle(
+                staffIdToTitleAndName(
                   clinic.staffInfos,
-                  tempFormDatas.assigned_md_id
-                ) +
-                formatName(
-                  staffIdToName(clinic.staffInfos, tempFormDatas.assigned_md_id)
+                  tempFormDatas.assigned_md_id,
+                  true
                 )
               )}
             </div>
@@ -462,9 +452,7 @@ const AccountPatientForm = () => {
       <div className="patient-account-btns">
         {editVisible ? (
           <>
-            <button onClick={handleSave} disabled={isLoadingFile}>
-              Save
-            </button>
+            <button onClick={handleSave}>Save</button>
             <button onClick={handleCancel}>Cancel</button>
           </>
         ) : (

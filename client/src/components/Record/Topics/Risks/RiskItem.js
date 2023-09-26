@@ -4,7 +4,6 @@ import React, { useState } from "react";
 //Utils
 import { toLocalDate } from "../../../../utils/formatDates";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import formatName from "../../../../utils/formatName";
 import {
   deletePatientRecord,
   putPatientRecord,
@@ -13,10 +12,11 @@ import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { riskSchema } from "../../../../validation/riskValidation";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -110,7 +110,13 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
           )}
         </td>
         <td>
-          <em>{formatName(itemInfos.created_by_name.full_name)}</em>
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              itemInfos.created_by_id,
+              true
+            )}
+          </em>
         </td>
         <td>
           <em>{toLocalDate(itemInfos.date_created)}</em>

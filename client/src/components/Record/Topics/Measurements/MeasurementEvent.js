@@ -20,8 +20,8 @@ import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
-import formatName from "../../../../utils/formatName";
 import { measurementSchema } from "../../../../validation/measurementValidation";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const MeasurementEvent = ({
   event,
@@ -30,7 +30,7 @@ const MeasurementEvent = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -320,7 +320,13 @@ const MeasurementEvent = ({
           )}
         </td>
         <td>
-          <em>{formatName(eventInfos.created_by_name.full_name)}</em>{" "}
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              eventInfos.created_by_id,
+              true
+            )}
+          </em>{" "}
         </td>
         <td>
           <em>{toLocalDate(eventInfos.date_created)}</em>

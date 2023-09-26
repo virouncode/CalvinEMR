@@ -3,11 +3,11 @@ import { toLocalDate } from "../../../../utils/formatDates";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import CountriesList from "../../../Lists/CountriesList";
 import useAuth from "../../../../hooks/useAuth";
-import formatName from "../../../../utils/formatName";
 import { putPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 import { pharmacySchema } from "../../../../validation/pharmacyValidation";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const PharmacyItem = ({
   patientId,
@@ -17,7 +17,7 @@ const PharmacyItem = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -247,7 +247,13 @@ const PharmacyItem = ({
           )}
         </td>
         <td>
-          <em>{formatName(itemInfos.created_by_name.full_name)}</em>
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              itemInfos.created_by_id,
+              true
+            )}
+          </em>
         </td>
         <td>
           <em>{toLocalDate(itemInfos.date_created)}</em>

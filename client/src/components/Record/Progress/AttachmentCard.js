@@ -3,8 +3,7 @@ import NewWindow from "react-new-window";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
-import { usePatientRecord } from "../../../hooks/usePatientRecord";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 

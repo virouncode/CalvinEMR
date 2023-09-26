@@ -1,12 +1,10 @@
 import React from "react";
 import { toLocalDateAndTime } from "../../utils/formatDates";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import useAuth from "../../hooks/useAuth";
-import formatName from "../../utils/formatName";
 import { patientIdToName } from "../../utils/patientIdToName";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 
-const MessageExternal = ({ message, author, authorTitle, index }) => {
+const MessageExternal = ({ message, index }) => {
   const { clinic } = useAuth();
   return (
     <div
@@ -15,8 +13,10 @@ const MessageExternal = ({ message, author, authorTitle, index }) => {
     >
       <div className="message-title">
         <div className="message-title-author">
-          {authorTitle}
-          {author}
+          From:{" "}
+          {message.from_user_type === "staff"
+            ? staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)
+            : patientIdToName(clinic.patientsInfos, message.from_id)}
         </div>
         <div className="message-title-date">
           <div>{toLocalDateAndTime(message.date_created)}</div>
@@ -25,8 +25,7 @@ const MessageExternal = ({ message, author, authorTitle, index }) => {
       <div className="message-subtitle">
         to:{" "}
         {message.to_user_type === "staff"
-          ? staffIdToTitle(clinic.staffInfos, message.to_id) +
-            formatName(staffIdToName(clinic.staffInfos, message.to_id))
+          ? staffIdToTitleAndName(clinic.staffInfos, message.to_id, true)
           : patientIdToName(clinic.patientsInfos, message.to_id)}
       </div>
       <div className="message-body">{message.body}</div>

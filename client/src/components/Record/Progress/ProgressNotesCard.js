@@ -15,6 +15,8 @@ import axiosXano from "../../../api/xano";
 import formatName from "../../../utils/formatName";
 import TriangleButtonProgress from "./../Buttons/TriangleButtonProgress";
 import { toast } from "react-toastify";
+import { staffIdListToTitleAndName } from "../../../utils/staffIdListToTitleAndName";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 var _ = require("lodash");
 
 const ProgressNotesCard = ({
@@ -36,7 +38,7 @@ const ProgressNotesCard = ({
   const [attachments, setAttachments] = useState([]);
   const [bodyVisible, setBodyVisible] = useState(true);
   const bodyRef = useRef(null);
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
 
   useEffect(() => {
     if (progressNote) {
@@ -281,8 +283,16 @@ const ProgressNotesCard = ({
                 <p>
                   <strong>From: </strong>
                   {getAuthorTitle()}{" "}
-                  {formatName(tempFormDatas.updated_by_name?.full_name) ||
-                    formatName(tempFormDatas.created_by_name.full_name)}
+                  {staffIdToTitleAndName(
+                    clinic.staffInfos,
+                    tempFormDatas.updated_by_id,
+                    true
+                  ) ||
+                    staffIdToTitleAndName(
+                      clinic.staffInfos,
+                      tempFormDatas.created_by_id,
+                      true
+                    )}
                   {tempFormDatas.updated_by_name?.full_name
                     ? ` (${toLocalDateAndTimeWithSeconds(
                         tempFormDatas.date_updated
@@ -376,8 +386,16 @@ const ProgressNotesCard = ({
                 <strong>From: </strong>
               </label>
               {getAuthorTitle()}{" "}
-              {formatName(tempFormDatas.updated_by_name?.full_name) ||
-                formatName(tempFormDatas.created_by_name.full_name)}
+              {staffIdToTitleAndName(
+                clinic.staffInfos,
+                tempFormDatas.updated_by_id,
+                true
+              ) ||
+                staffIdToTitleAndName(
+                  clinic.staffInfos,
+                  tempFormDatas.created_by_id,
+                  true
+                )}
               {tempFormDatas.updated_by_name?.full_name
                 ? ` (${toLocalDateAndTimeWithSeconds(
                     tempFormDatas.date_updated
@@ -429,15 +447,25 @@ const ProgressNotesCard = ({
           />
           {!editVisible && (
             <div className="progress-notes-card-body-footer">
-              {tempFormDatas.updated_by_name?.full_name ? (
+              {tempFormDatas.updated_by_id ? (
                 <p style={{ padding: "0 10px" }}>
-                  Updated by {tempFormDatas.updated_by_name.full_name} on{" "}
-                  {toLocalDateAndTimeWithSeconds(tempFormDatas.date_updated)}
+                  Updated by{" "}
+                  {staffIdToTitleAndName(
+                    clinic.staffInfos,
+                    tempFormDatas.updated_by_id,
+                    true
+                  )}{" "}
+                  on {toLocalDateAndTimeWithSeconds(tempFormDatas.date_updated)}
                 </p>
               ) : null}
               <p style={{ padding: "0 10px" }}>
-                Created by {tempFormDatas.created_by_name.full_name} on{" "}
-                {toLocalDateAndTimeWithSeconds(tempFormDatas.date_created)}
+                Created by{" "}
+                {staffIdToTitleAndName(
+                  clinic.staffInfos,
+                  tempFormDatas.created_by_id,
+                  true
+                )}{" "}
+                on {toLocalDateAndTimeWithSeconds(tempFormDatas.date_created)}
               </p>
             </div>
           )}

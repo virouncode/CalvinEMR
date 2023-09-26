@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { ToastContainer, toast } from "react-toastify";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
-import { staffIdToName } from "../../utils/staffIdToName";
-import formatName from "../../utils/formatName";
 import { CircularProgress } from "@mui/material";
 import MessagesAttachments from "./MessagesAttachments";
 import { postPatientRecord } from "../../api/fetchRecords";
@@ -227,36 +224,10 @@ Powered by Calvin EMR`,
       <div className="reply-form-body">
         <textarea value={body} onChange={handleChange}></textarea>
         <div className="reply-form-history">
-          <MessageExternal
-            message={message}
-            author={
-              message.from_user_type === "staff"
-                ? formatName(staffIdToName(clinic.staffInfos, message.from_id))
-                : patientIdToName(clinic.patientsInfos, message.from_id)
-            }
-            authorTitle={
-              message.from_user_type === "staff"
-                ? staffIdToTitle(clinic.staffInfos, message.from_id)
-                : ""
-            }
-            key={message.id}
-            index={0}
-          />
+          <MessageExternal message={message} key={message.id} index={0} />
           {previousMsgs.map((message, index) => (
             <MessageExternal
               message={message}
-              author={
-                message.from_user_type === "staff"
-                  ? formatName(
-                      staffIdToName(clinic.staffInfos, message.from_id)
-                    )
-                  : patientIdToName(clinic.patientsInfos, message.from_id)
-              }
-              authorTitle={
-                message.from_user_type === "staff"
-                  ? staffIdToTitle(clinic.staffInfos, message.from_id)
-                  : ""
-              }
               key={message.id}
               index={index + 1}
             />

@@ -28,6 +28,7 @@ import {
 import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const AppointmentEvent = ({
   event,
@@ -432,7 +433,11 @@ const AppointmentEvent = ({
           ) : (
             <p>
               {eventInfos.host_title.title === "Doctor" ? "Dr. " : ""}{" "}
-              {formatName(eventInfos.host_name.full_name)}
+              {staffIdToTitleAndName(
+                clinic.staffInfos,
+                eventInfos.host_id,
+                true
+              )}
             </p>
           )}
         </td>
@@ -560,7 +565,13 @@ const AppointmentEvent = ({
           )}
         </td>
         <td>
-          <em>{formatName(eventInfos.created_by_name.full_name)} </em>
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              eventInfos.created_by_id,
+              true
+            )}{" "}
+          </em>
         </td>
         <td>
           <em> {toLocalDate(eventInfos.date_created)} </em>

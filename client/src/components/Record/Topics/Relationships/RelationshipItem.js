@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import axiosXano from "../../../../api/xano";
 import { toInverseRelation } from "../../../../utils/toInverseRelation";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const RelationshipItem = ({
   item,
@@ -169,7 +170,13 @@ const RelationshipItem = ({
           )}
         </td>
         <td>
-          <em>{formatName(itemInfos.created_by_name.full_name)} </em>
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              itemInfos.created_by_id,
+              true
+            )}{" "}
+          </em>
         </td>
         <td>
           <em>{toLocalDate(itemInfos.date_created)}</em>

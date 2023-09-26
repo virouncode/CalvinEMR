@@ -11,8 +11,8 @@ import useAuth from "../../../hooks/useAuth";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import SocHistoryForm from "../Topics/Social/SocHistoryForm";
-import formatName from "../../../utils/formatName";
 import { firstLetterUpper } from "../../../utils/firstLetterUpper";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const SocHistoryPU = ({
   patientId,
@@ -23,7 +23,7 @@ const SocHistoryPU = ({
   errMsg,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
   const [formDatas, setFormDatas] = useState(datas ? datas[0] : null);
@@ -271,7 +271,12 @@ const SocHistoryPU = ({
                   }}
                 >
                   <em>
-                    Created by {formatName(formDatas.created_by_name.full_name)}{" "}
+                    Created by{" "}
+                    {staffIdToTitleAndName(
+                      clinic.staffInfos,
+                      formDatas.created_by_id,
+                      true
+                    )}{" "}
                     on{" "}
                     {toLocalDateAndTime(
                       new Date(formDatas.date_created).toISOString()

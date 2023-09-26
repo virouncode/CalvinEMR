@@ -5,10 +5,7 @@ import useAuth from "../../../../hooks/useAuth";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
 import { reminderSchema } from "../../../../validation/reminderValidation";
-import {
-  firstLetterOfFirstWordUpper,
-  firstLetterUpper,
-} from "../../../../utils/firstLetterUpper";
+import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
 
 const ReminderForm = ({
   editCounter,

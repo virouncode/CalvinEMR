@@ -1,14 +1,14 @@
 //Librairies
 import React from "react";
 import { toLocalDate } from "../../../../utils/formatDates";
-import formatName from "../../../../utils/formatName";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import { deletePatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
-  const { auth } = useAuth();
+  const { auth, clinic } = useAuth();
 
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
@@ -41,13 +41,14 @@ const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
       <td>{item.file.name}</td>
       <td>{item.file.type}</td>
       <td>
-        <em>{formatName(item.created_by_name.full_name)}</em>
+        <em>
+          {staffIdToTitleAndName(clinic.staffInfos, item.created_by_id, true)}
+        </em>
       </td>
       <td>
         <em>{toLocalDate(item.date_created)}</em>
       </td>
       <td>
-        <button>E-mail</button>
         <button>Fax</button>
         <button onClick={handleDeleteClick}>Delete</button>
       </td>

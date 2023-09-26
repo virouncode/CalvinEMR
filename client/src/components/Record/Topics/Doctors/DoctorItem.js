@@ -1,7 +1,11 @@
 //Librairies
 import React from "react";
+import useAuth from "../../../../hooks/useAuth";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { toLocalTimeWithSeconds } from "../../../../utils/formatDates";
 
 const DoctorItem = ({ item }) => {
+  const { clinic } = useAuth();
   return (
     <div className="patient-doctors-content-event">
       <ul>
@@ -23,8 +27,9 @@ const DoctorItem = ({ item }) => {
         </li>
       </ul>
       <p className="patient-doctors-content-event-sign">
-        Created by {item.created_by_name.full_name} on{" "}
-        {item.date_created.slice(0, 10)}
+        Created by{" "}
+        {staffIdToTitleAndName(clinic.staffInfos, item.created_by_id, true)} on{" "}
+        {toLocalTimeWithSeconds(item.date_created)}
       </p>
     </div>
   );

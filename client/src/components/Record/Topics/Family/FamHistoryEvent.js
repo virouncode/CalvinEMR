@@ -6,7 +6,6 @@ import RelativesList from "../../../Lists/RelativesList";
 import { toLocalDate } from "../../../../utils/formatDates";
 
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import formatName from "../../../../utils/formatName";
 import {
   deletePatientRecord,
   putPatientRecord,
@@ -15,6 +14,7 @@ import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { famHistorySchema } from "../../../../validation/famHistoryValidation";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const FamHistoryEvent = ({
   event,
@@ -23,7 +23,7 @@ const FamHistoryEvent = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -152,7 +152,13 @@ const FamHistoryEvent = ({
           )}
         </td>
         <td>
-          <em>{formatName(eventInfos.created_by_name.full_name)}</em>
+          <em>
+            {staffIdToTitleAndName(
+              clinic.staffInfos,
+              eventInfos.created_by_id,
+              true
+            )}
+          </em>
         </td>
         <td>
           <em>{toLocalDate(eventInfos.date_created)}</em>

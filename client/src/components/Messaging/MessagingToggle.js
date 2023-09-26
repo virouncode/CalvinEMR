@@ -15,12 +15,7 @@ const MessagingToggle = ({ isTypeChecked, handleMsgsTypeChanged }) => {
           id="internal"
         />
         <label htmlFor="internal">
-          Internal
-          {user.unreadMessagesNbr ? (
-            <sup>{`(${user.unreadMessagesNbr})`}</sup>
-          ) : (
-            ""
-          )}
+          Internal {user.unreadMessagesNbr ? `(${user.unreadMessagesNbr})` : ""}
         </label>
       </div>
       <div className="messages-toggle-radio">
@@ -34,11 +29,9 @@ const MessagingToggle = ({ isTypeChecked, handleMsgsTypeChanged }) => {
         />
         <label htmlFor="external">
           External
-          {user.unreadMessagesExternalNbr ? (
-            <sup>{`(${user.unreadMessagesExternalNbr})`}</sup>
-          ) : (
-            ""
-          )}
+          {user.unreadMessagesExternalNbr
+            ? `(${user.unreadMessagesExternalNbr})`
+            : ""}
         </label>
       </div>
     </div>

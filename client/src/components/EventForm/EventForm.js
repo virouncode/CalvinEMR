@@ -29,6 +29,7 @@ import useAuth from "../../hooks/useAuth";
 import formatName from "../../utils/formatName";
 import { useEventForm } from "../../hooks/useEventForm";
 import { toast } from "react-toastify";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 
 var _ = require("lodash");
 
@@ -49,13 +50,11 @@ const EventForm = forwardRef(
     },
     ref
   ) => {
-    const [
-      { formDatas, tempFormDatas, isLoading, errMsg },
-      fetchEventFormDatas,
-      setTempFormDatas,
-    ] = useEventForm(currentEvent.current.id);
+    const [{ formDatas, tempFormDatas }, , setTempFormDatas] = useEventForm(
+      currentEvent.current.id
+    );
     const [availableRooms, setAvailableRooms] = useState([]);
-    const { auth, user } = useAuth();
+    const { auth, user, clinic } = useAuth();
     const fpStart = useRef(null); //flatpickr start date
     const fpEnd = useRef(null); //flatpickr end date
     const previousStart = useRef(currentEvent.current.start);
@@ -382,8 +381,10 @@ const EventForm = forwardRef(
                 />
               ) : (
                 <p>
-                  {tempFormDatas.host_title.title === "Doctor" ? "Dr. " : ""}{" "}
-                  {formatName(tempFormDatas.host_name.full_name)}
+                  {staffIdToTitleAndName(
+                    clinic.staffInfos,
+                    tempFormDatas.host_id
+                  )}
                 </p>
               )}
             </div>

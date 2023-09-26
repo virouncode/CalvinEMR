@@ -1,9 +1,5 @@
 import React from "react";
-import formatName from "../../utils/formatName";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
 import useAuth from "../../hooks/useAuth";
-import { patientIdToName } from "../../utils/patientIdToName";
 import MessagesAttachments from "./MessagesAttachments";
 import MessageExternal from "./MessageExternal";
 
@@ -39,18 +35,6 @@ const MessagesExternalPrintPU = ({
             previousMsgs.map((message, index) => (
               <MessageExternal
                 message={message}
-                author={
-                  message.from_user_type === "staff"
-                    ? formatName(
-                        staffIdToName(clinic.staffInfos, message.from_id)
-                      )
-                    : patientIdToName(clinic.patientsInfos, message.from_id)
-                }
-                authorTitle={
-                  message.from_user_type === "staff"
-                    ? staffIdToTitle(clinic.staffInfos, message.from_id)
-                    : ""
-                }
                 key={message.id}
                 index={index + 1}
               />

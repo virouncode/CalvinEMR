@@ -1,7 +1,7 @@
 import React from "react";
-import PastAppointments from "../components/PatientPortal/AppointmentsPatient.js/PastAppointments";
-import NextAppointments from "../components/PatientPortal/AppointmentsPatient.js/NextAppointments";
-import NewAppointment from "../components/PatientPortal/AppointmentsPatient.js/NewAppointment";
+import PastAppointments from "../components/PatientPortal/AppointmentsPatient/PastAppointments";
+import NextAppointments from "../components/PatientPortal/AppointmentsPatient/NextAppointments";
+import NewAppointment from "../components/PatientPortal/AppointmentsPatient/NewAppointment";
 import { Helmet } from "react-helmet";
 
 const PatientAppointmentsPage = () => {

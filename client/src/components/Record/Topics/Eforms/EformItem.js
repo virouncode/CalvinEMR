@@ -4,12 +4,12 @@ import { toLocalDate } from "../../../../utils/formatDates";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import useAuth from "../../../../hooks/useAuth";
 import { deletePatientRecord } from "../../../../api/fetchRecords";
-import formatName from "../../../../utils/formatName";
 import { toast } from "react-toastify";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const EformItem = ({ item, fetchRecord, showDocument }) => {
   //HOOKS
-  const { auth } = useAuth();
+  const { auth, clinic } = useAuth();
 
   const handleDeleteClick = async (e) => {
     if (
@@ -39,13 +39,14 @@ const EformItem = ({ item, fetchRecord, showDocument }) => {
         {item.name}
       </td>
       <td>
-        <em>{formatName(item.created_by_name.full_name)} </em>
+        <em>
+          {staffIdToTitleAndName(clinic.staffInfos, item.created_by_id, true)}
+        </em>
       </td>
       <td>
         <em>{toLocalDate(item.date_created)}</em>
       </td>
       <td>
-        <button>E-mail</button>
         <button>Fax</button>
         <button onClick={handleDeleteClick}>Delete</button>
       </td>
