@@ -25,7 +25,7 @@ const PharmacyListItem = ({ item, handleAddItemClick }) => {
         <em>{toLocalDate(item.date_created)}</em>
       </td>
       <td>
-        <button onClick={() => handleAddItemClick(item)}>Add</button>
+        <button onClick={() => handleAddItemClick(item)}>Add To Patient</button>
       </td>
     </tr>
   );

@@ -2,10 +2,7 @@
 import React, { useState } from "react";
 import useAuth from "../../../../hooks/useAuth";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
-import {
-  toLocalDate,
-  toLocalTimeWithSeconds,
-} from "../../../../utils/formatDates";
+import { toLocalDate } from "../../../../utils/formatDates";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { doctorSchema } from "../../../../validation/doctorValidation";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
