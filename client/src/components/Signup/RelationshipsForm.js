@@ -3,19 +3,28 @@ import RelationshipRow from "./RelationshipRow.js";
 
 const RelationshipsForm = ({ relationships, setRelationships }) => {
   const idCounter = useRef(0);
-  const handleChange = (e) => {
-    const name = e.target.name;
-    let value;
-    name === "relation_id"
-      ? (value = parseInt(e.target.value))
-      : (value = e.target.value);
 
+  const handleChange = (e) => {
+    console.log(e.target.id);
+    const value = parseInt(e.target.value);
     let updatedRelationships = [...relationships];
     //ne pas prendre l'index mais filtrer sur l'id
     updatedRelationships = updatedRelationships.map((item) => {
-      if (item.id === parseInt(e.target.getAttribute("data-key"))) {
-        return { ...item, [name]: value };
+      if (item.id === parseInt(e.target.id)) {
+        return { ...item, relation_id: value };
       } else return item;
+    });
+    setRelationships(updatedRelationships);
+  };
+
+  const handleRelationshipChange = (value, itemId) => {
+    let updatedRelationships = [...relationships];
+    updatedRelationships = updatedRelationships.map((item) => {
+      if (item.id === parseInt(itemId)) {
+        return { ...item, relationship: value };
+      } else {
+        return item;
+      }
     });
     setRelationships(updatedRelationships);
   };
@@ -28,10 +37,11 @@ const RelationshipsForm = ({ relationships, setRelationships }) => {
     ]);
     idCounter.current = idCounter.current + 1;
   };
+
   const handleDeleteRelationship = (e) => {
     let updatedRelationships = [...relationships];
     updatedRelationships = updatedRelationships.filter(
-      ({ id }) => id !== parseInt(e.target.getAttribute("data-key"))
+      ({ id }) => id !== parseInt(e.target.id)
     );
     setRelationships(updatedRelationships);
   };
@@ -47,6 +57,7 @@ const RelationshipsForm = ({ relationships, setRelationships }) => {
             item={item}
             handleChange={handleChange}
             handleDeleteRelationship={handleDeleteRelationship}
+            handleRelationshipChange={handleRelationshipChange}
             key={item.id}
           />
         ))}

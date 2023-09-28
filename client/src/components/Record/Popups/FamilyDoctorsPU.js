@@ -1,15 +1,16 @@
 import React, { useRef, useState } from "react";
-import PharmacyItem from "../Topics/Pharmacies/PharmacyItem";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
-import PharmaciesList from "../Topics/Pharmacies/PharmaciesList";
-import { putPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
-import { CircularProgress } from "@mui/material";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import { putPatientRecord } from "../../../api/fetchRecords";
 import { ToastContainer, toast } from "react-toastify";
+import FamilyDoctorItem from "../Topics/FamilyDoctors/FamilyDoctorItem";
+import FamilyDoctorsList from "../Topics/FamilyDoctors/FamilyDoctorsList";
+import { CircularProgress } from "@mui/material";
 
-const PharmaciesPU = ({
+const FamilyDoctorsPU = ({
   patientId,
   setPopUpVisible,
+  patientInfos,
   datas,
   setDatas,
   fetchRecord,
@@ -23,7 +24,6 @@ const PharmaciesPU = ({
   const [addVisible, setAddVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
-
   //STYLE
   const DIALOG_CONTAINER_STYLE = {
     height: "100vh",
@@ -38,7 +38,6 @@ const PharmaciesPU = ({
     background: "rgba(0,0,0,0.8)",
     zIndex: "100000",
   };
-
   //HANDLERS
   const handleClose = async (e) => {
     if (
@@ -60,22 +59,22 @@ const PharmaciesPU = ({
 
   const handleAddItemClick = async (item, e) => {
     //add patient id in pharmacies list
-    const pharmacy = { ...item };
-    const patients = [...pharmacy.patients, patientId];
-    pharmacy.patients = patients;
+    const doctor = { ...item };
+    const patients = [...doctor.patients, patientId];
+    doctor.patients = patients;
     try {
       await putPatientRecord(
-        "/pharmacies",
+        "/doctors",
         item.id,
         user.id,
         auth.authToken,
-        pharmacy
+        doctor
       );
       const abortController = new AbortController();
       fetchRecord(abortController);
-      toast.success("Pharmacy added to patient", { containerId: "B" });
+      toast.success("Doctor added to patient", { containerId: "B" });
     } catch (err) {
-      toast.error(`Error: unable to add pharmacy: ${err.message}`, {
+      toast.error(`Error: unable to add doctor: ${err.message}`, {
         containerId: "B",
       });
     }
@@ -86,21 +85,24 @@ const PharmaciesPU = ({
     setColumnToSort(columnName);
     setDatas([...datas]);
   };
-
   return (
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="pharmacies-err">{errMsg}</p>
+          <p className="doctors-err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="pharmacies-title">Patient pharmacies</h1>
-              {errMsgPost && <div className="pharmacies-err">{errMsgPost}</div>}
-              <table className="pharmacies-table">
+              <h1 className="doctors-title"> Patient Doctors</h1>
+              {errMsgPost && <div className="doctors-err">{errMsgPost}</div>}
+              <table className="doctors-table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("name")}>Name</th>
+                    <th onClick={() => handleSort("speciality")}>Speciality</th>
+                    <th onClick={() => handleSort("licence_nbr")}>
+                      Licence nbr
+                    </th>
                     <th onClick={() => handleSort("address")}>Address</th>
                     <th onClick={() => handleSort("province_state")}>
                       Province/State
@@ -133,7 +135,7 @@ const PharmaciesPU = ({
                             .localeCompare(b[columnToSort]?.toString())
                         )
                         .map((item) => (
-                          <PharmacyItem
+                          <FamilyDoctorItem
                             item={item}
                             key={item.id}
                             fetchRecord={fetchRecord}
@@ -149,7 +151,7 @@ const PharmaciesPU = ({
                             .localeCompare(a[columnToSort]?.toString())
                         )
                         .map((item) => (
-                          <PharmacyItem
+                          <FamilyDoctorItem
                             item={item}
                             key={item.id}
                             fetchRecord={fetchRecord}
@@ -160,14 +162,14 @@ const PharmaciesPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="pharmacies-btn-container">
+              <div className="doctors-btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
-                  Add a Pharmacy to patient
+                  Add Doctor for patient
                 </button>
                 <button onClick={handleClose}>Close</button>
               </div>
               {addVisible && (
-                <PharmaciesList
+                <FamilyDoctorsList
                   datas={datas}
                   handleAddItemClick={handleAddItemClick}
                   setErrMsgPost={setErrMsgPost}
@@ -200,4 +202,4 @@ const PharmaciesPU = ({
   );
 };
 
-export default PharmaciesPU;
+export default FamilyDoctorsPU;

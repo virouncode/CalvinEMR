@@ -1,13 +1,15 @@
 import React from "react";
-import { toLocalDate } from "../../../../utils/formatDates";
-import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import useAuth from "../../../../hooks/useAuth";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { toLocalDate } from "../../../../utils/formatDates";
 
-const PharmacyListItem = ({ item, handleAddItemClick }) => {
+const FamilyDoctorListItem = ({ item, handleAddItemClick }) => {
   const { clinic } = useAuth();
   return (
-    <tr className="pharmacies-list-item">
+    <tr className="doctors-list-item">
       <td>{item.name}</td>
+      <td>{item.speciality}</td>
+      <td>{item.licence_nbr}</td>
       <td>{item.address}</td>
       <td>{item.province_state}</td>
       <td>{item.postal_code}</td>
@@ -31,4 +33,4 @@ const PharmacyListItem = ({ item, handleAddItemClick }) => {
   );
 };
 
-export default PharmacyListItem;
+export default FamilyDoctorListItem;

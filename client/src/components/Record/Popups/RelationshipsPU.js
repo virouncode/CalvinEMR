@@ -68,8 +68,8 @@ const RelationshipsPU = ({
               <table className="relationships-table">
                 <thead>
                   <tr>
-                    <th style={{ textDecoration: "none" }}>Relation with</th>
-                    <th style={{ textDecoration: "none" }}>Patient</th>
+                    <th style={{ textDecoration: "none" }}>Relation</th>
+                    <th style={{ textDecoration: "none" }}>With Patient</th>
                     <th style={{ textDecoration: "none" }}>Created By</th>
                     <th style={{ textDecoration: "none" }}>Created On</th>
                     <th style={{ textDecoration: "none" }}>Action</th>

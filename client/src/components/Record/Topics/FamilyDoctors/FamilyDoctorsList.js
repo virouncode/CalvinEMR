@@ -1,43 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
-import PharmacyListItem from "./PharmacyListItem";
-import PharmacyForm from "./PharmacyForm";
-import axiosXano from "../../../../api/xano";
 import useAuth from "../../../../hooks/useAuth";
+import axiosXano from "../../../../api/xano";
 import { toast } from "react-toastify";
+import FamilyDoctorListItem from "./FamilyDoctorListItem";
+import FamilyDoctorForm from "./FamilyDoctorForm";
 var _ = require("lodash");
 
-const PharmaciesList = ({
+const FamilyDoctorsList = ({
   handleAddItemClick,
   datas,
   patientId,
   setErrMsgPost,
 }) => {
-  //HOOKS
   const { auth } = useAuth();
   const direction = useRef(true);
-  const [pharmaciesList, setPharmaciesList] = useState(null);
+  const [doctorsList, setDoctorsList] = useState(null);
   const [addNew, setAddNew] = useState(false);
   useEffect(() => {
     const abortController = new AbortController();
-    const fetchAllPharmacies = async () => {
+    const fetchAllDoctors = async () => {
       try {
-        const response = await axiosXano.get("/all_pharmacies", {
+        const response = await axiosXano.get("/all_doctors", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
           },
           signal: abortController.signal,
         });
-        setPharmaciesList(response.data);
+        setDoctorsList(response.data);
       } catch (err) {
         if (err.name !== "CanceledError") {
-          toast.error(`Error: unable to fetch all pharmacies: ${err.message}`, {
+          toast.error(`Error: unable to fetch all doctors: ${err.message}`, {
             containerId: "B",
           });
         }
       }
     };
-    fetchAllPharmacies();
+    fetchAllDoctors();
     return () => {
       abortController.abort();
     };
@@ -45,16 +44,16 @@ const PharmaciesList = ({
 
   //HANDLERS
   const handleSort = (columnName) => {
-    let sortedPharmacies = [...pharmaciesList];
+    let sortedDoctors = [...doctorsList];
     direction.current = !direction.current;
     direction.current
-      ? sortedPharmacies.sort((a, b) =>
+      ? sortedDoctors.sort((a, b) =>
           a[columnName]?.toString().localeCompare(b[columnName]?.toString())
         )
-      : sortedPharmacies.sort((a, b) =>
+      : sortedDoctors.sort((a, b) =>
           b[columnName]?.toString().localeCompare(a[columnName]?.toString())
         );
-    setPharmaciesList(sortedPharmacies);
+    setDoctorsList(sortedDoctors);
   };
 
   const handleAddNewClick = () => {
@@ -63,14 +62,16 @@ const PharmaciesList = ({
 
   return (
     <>
-      <div className="pharmacies-list-title">
-        Pharmacies List
-        <button onClick={handleAddNewClick}>Add a new Pharmacy to list</button>
+      <div className="doctors-list-title">
+        Doctors List
+        <button onClick={handleAddNewClick}>Add a new Doctor to list</button>
       </div>
-      <table className="pharmacies-list-table">
+      <table className="doctors-list-table">
         <thead>
           <tr>
             <th onClick={() => handleSort("name")}>Name</th>
+            <th onClick={() => handleSort("speciality")}>Speciality</th>
+            <th onClick={() => handleSort("licence_nbr")}>Licence Nbr</th>
             <th onClick={() => handleSort("address")}>Adress</th>
             <th onClick={() => handleSort("province_state")}>Province/State</th>
             <th onClick={() => handleSort("postal_code")}>Postal Code</th>
@@ -88,20 +89,20 @@ const PharmaciesList = ({
         </thead>
         <tbody>
           {addNew && (
-            <PharmacyForm
-              setPharmaciesList={setPharmaciesList}
+            <FamilyDoctorForm
+              setDoctorsList={setDoctorsList}
               setAddNew={setAddNew}
               patientId={patientId}
               setErrMsgPost={setErrMsgPost}
             />
           )}
-          {pharmaciesList &&
-            pharmaciesList
+          {doctorsList &&
+            doctorsList
               .filter(({ id }) => _.findIndex(datas, { id: id }) === -1)
-              .map((pharmacy) => (
-                <PharmacyListItem
-                  key={pharmacy.id}
-                  item={pharmacy}
+              .map((doctor) => (
+                <FamilyDoctorListItem
+                  key={doctor.id}
+                  item={doctor}
                   handleAddItemClick={handleAddItemClick}
                 />
               ))}
@@ -111,4 +112,4 @@ const PharmaciesList = ({
   );
 };
 
-export default PharmaciesList;
+export default FamilyDoctorsList;

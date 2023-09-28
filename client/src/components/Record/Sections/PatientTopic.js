@@ -9,7 +9,7 @@ import RiskContent from "../Topics/Risks/RiskContent";
 import MedicationsContent from "../Topics/Medications/MedicationsContent";
 import PharmaciesContent from "../Topics/Pharmacies/PharmaciesContent";
 import MeasurementsContent from "../Topics/Measurements/MeasurementsContent";
-import DoctorsContent from "../Topics/Doctors/DoctorsContent";
+import DoctorsContent from "../Topics/FamilyDoctors/FamilyDoctorsContent";
 import RemindersContent from "../Topics/Reminders/RemindersContent";
 import PregnanciesContent from "../Topics/Pregnancies/PregnanciesContent";
 import AllergiesContent from "../Topics/Allergies/AllergiesContent";
@@ -24,7 +24,6 @@ import SocHistoryPU from "../Popups/SocHistoryPU";
 import RiskPU from "../Popups/RiskPU";
 import MedicationsPU from "../Popups/MedicationsPU";
 import PharmaciesPU from "../Popups/PharmaciesPU";
-import DoctorsPU from "../Popups/DoctorsPU";
 import RemindersPU from "../Popups/RemindersPU";
 import PregnanciesPU from "../Popups/PregnanciesPU";
 import AllergiesPU from "../Popups/AllergiesPU";
@@ -42,6 +41,7 @@ import { usePatientRecord } from "../../../hooks/usePatientRecord";
 import EformsContent from "../Topics/Eforms/EformsContent";
 import EformsPU from "../Popups/EformsPU";
 import MessagesExternalContent from "../Topics/MessagesWithPatient/MessagesExternalContent";
+import FamilyDoctorsPU from "../Popups/FamilyDoctorsPU";
 
 const PatientTopic = ({
   url,
@@ -238,21 +238,21 @@ const PatientTopic = ({
         )}
         {topic === "FAMILY DOCTORS/SPECIALISTS" && popUpVisible && (
           <NewWindow
-            title="Patient's Doctors"
+            title="Patient Doctors"
             features={{
               toolbar: "no",
               scrollbars: "no",
               menubar: "no",
               status: "no",
               directories: "no",
-              width: 800,
+              width: 1200,
               height: 600,
               left: 320,
               top: 200,
             }}
             onUnload={() => setPopUpVisible(false)}
           >
-            <DoctorsPU
+            <FamilyDoctorsPU
               patientId={patientId}
               datas={datas}
               setDatas={setDatas}

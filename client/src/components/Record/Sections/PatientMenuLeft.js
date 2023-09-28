@@ -49,7 +49,7 @@ const PatientMenuLeft = ({
         side="left"
       />
       <PatientTopic
-        url="/family_doctors"
+        url="/doctors"
         textColor="#FEFEFE"
         backgroundColor="#2c8c99"
         topic="FAMILY DOCTORS/SPECIALISTS"

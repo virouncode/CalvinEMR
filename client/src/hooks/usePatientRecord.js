@@ -41,6 +41,7 @@ export const usePatientRecord = (url, patientId) => {
           signal: abortController.signal,
         });
         if (abortController.signal.aborted) return;
+        console.log("fetch record response", response.data);
         dispatch({ type: "FETCH_SUCCESS", payload: response.data });
       } catch (err) {
         if (err.name !== "CanceledError") {

@@ -102,7 +102,6 @@ const SignupPatientForm = () => {
       datasToPost.address = firstLetterUpper(datasToPost.address);
       datasToPost.province_state = firstLetterUpper(datasToPost.province_state);
       datasToPost.city = firstLetterUpper(datasToPost.city);
-      delete datasToPost.confirm_password;
 
       //Validation
       try {
@@ -249,6 +248,9 @@ const SignupPatientForm = () => {
         item.date_created = Date.now();
         item.created_by_id = user.id;
       });
+      inverseRelationsToPost = inverseRelationsToPost.filter(
+        ({ relationship }) => relationship !== "Undefined"
+      );
 
       inverseRelationsToPost.forEach(
         async (relationship) =>

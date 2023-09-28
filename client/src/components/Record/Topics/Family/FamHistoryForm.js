@@ -35,6 +35,10 @@ const FamHistoryForm = ({
     setFormDatas({ ...formDatas, [name]: value });
   };
 
+  const handleMemberChange = (value) => {
+    setFormDatas({ ...formDatas, family_member_affected: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Formatting
@@ -83,7 +87,7 @@ const FamHistoryForm = ({
       <td>
         <RelativesList
           name="family_member_affected"
-          handleChange={handleChange}
+          handleChange={handleMemberChange}
           value={formDatas.family_member_affected}
         />
       </td>

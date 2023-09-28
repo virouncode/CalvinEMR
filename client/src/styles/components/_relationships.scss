@@ -48,9 +48,18 @@
             word-wrap: break-word;
             max-width: 370px;
         }
-        input {
-            width: 360px;
+        &-relationship {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            span {
+                margin-left: 10px;
+            }
+
         }
+        // input {
+        //     width: 360px;
+        // }
         input[type="submit"] {
             width: auto;
         }

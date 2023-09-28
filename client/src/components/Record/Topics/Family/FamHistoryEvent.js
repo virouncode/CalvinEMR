@@ -38,6 +38,10 @@ const FamHistoryEvent = ({
     setEventInfos({ ...eventInfos, [name]: value });
   };
 
+  const handleMemberChange = (value) => {
+    setEventInfos({ ...eventInfos, family_member_affected: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Formatting
@@ -124,8 +128,7 @@ const FamHistoryEvent = ({
         <td>
           {editVisible ? (
             <RelativesList
-              name="family_member_affected"
-              handleChange={handleChange}
+              handleChange={handleMemberChange}
               value={eventInfos.family_member_affected}
             />
           ) : (

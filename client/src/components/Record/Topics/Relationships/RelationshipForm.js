@@ -8,6 +8,7 @@ import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toInverseRelation } from "../../../../utils/toInverseRelation";
 import { toast } from "react-toastify";
 import { relationshipSchema } from "../../../../validation/relationshipValidation";
+import "react-widgets/scss/styles.scss";
 
 const RelationshipForm = ({
   editCounter,
@@ -26,14 +27,12 @@ const RelationshipForm = ({
   //HANDLERS
   const handleChange = (e) => {
     setErrMsgPost("");
-    const name = e.target.name;
-    let value;
-    if (name === "relation_id") {
-      value = parseInt(e.target.value);
-    } else {
-      value = e.target.value;
-    }
-    setFormDatas({ ...formDatas, [name]: value });
+    let value = parseInt(e.target.value);
+    setFormDatas({ ...formDatas, relation_id: value });
+  };
+
+  const handleRelationshipChange = (value, itemId) => {
+    setFormDatas({ ...formDatas, relationship: value });
   };
 
   const handleSubmit = async (e) => {
@@ -67,13 +66,14 @@ const RelationshipForm = ({
       );
       inverseRelationToPost.relation_id = formDatas.patient_id;
 
-      await postPatientRecord(
-        "/relationships",
-        user.id,
-        auth.authToken,
-        inverseRelationToPost
-      );
-
+      if (inverseRelationToPost.relationship !== "Undefined") {
+        await postPatientRecord(
+          "/relationships",
+          user.id,
+          auth.authToken,
+          inverseRelationToPost
+        );
+      }
       const abortController = new AbortController();
       fetchRecord(abortController);
       editCounter.current -= 1;
@@ -89,13 +89,15 @@ const RelationshipForm = ({
   return (
     <tr className="relationships-form">
       <td>
-        <RelationshipList
-          value={formDatas.relationship}
-          name="relationship"
-          handleChange={handleChange}
-        />{" "}
-        of
+        <div className="relationships-form-relationship">
+          <RelationshipList
+            value={formDatas.relationship}
+            handleChange={handleRelationshipChange}
+          />
+          <span>of</span>
+        </div>
       </td>
+
       <td>
         <PatientsSelect
           handleChange={handleChange}

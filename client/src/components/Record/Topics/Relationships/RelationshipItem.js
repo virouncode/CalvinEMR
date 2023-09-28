@@ -3,7 +3,6 @@ import useAuth from "../../../../hooks/useAuth";
 import RelationshipList from "../../../Lists/RelationshipList";
 import PatientsSelect from "../../../Lists/PatientsSelect";
 import { patientIdToName } from "../../../../utils/patientIdToName";
-import formatName from "../../../../utils/formatName";
 import { toLocalDate } from "../../../../utils/formatDates";
 import {
   deletePatientRecord,
@@ -14,6 +13,8 @@ import axiosXano from "../../../../api/xano";
 import { toInverseRelation } from "../../../../utils/toInverseRelation";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import "react-widgets/scss/styles.scss";
+import { relations } from "../../../../utils/relations";
 
 const RelationshipItem = ({
   item,
@@ -27,12 +28,13 @@ const RelationshipItem = ({
 
   const handleChange = (e) => {
     setErrMsgPost("");
-    const name = e.target.name;
-    let value;
-    name === "relation_id"
-      ? (value = parseInt(e.target.value))
-      : (value = e.target.value);
-    setItemInfos({ ...itemInfos, [name]: value });
+    let value = parseInt(e.target.value);
+    setItemInfos({ ...itemInfos, relation_id: value });
+  };
+
+  const handleRelationshipChange = (value, itemId) => {
+    setErrMsgPost("");
+    setItemInfos({ ...itemInfos, relationship: value });
   };
 
   const handleEditClick = () => {
@@ -86,12 +88,15 @@ const RelationshipItem = ({
       inverseRelationToPost.relation_id = itemInfos.patient_id;
       inverseRelationToPost.created_by_id = user.id;
       inverseRelationToPost.date_created = Date.now();
-      await axiosXano.post("/relationships", inverseRelationToPost, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
+
+      if (inverseRelationToPost.relationship !== "Undefined") {
+        await axiosXano.post("/relationships", inverseRelationToPost, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        });
+      }
       const abortController = new AbortController();
       fetchRecord(abortController);
       editCounter.current -= 1;
@@ -112,25 +117,28 @@ const RelationshipItem = ({
       })
     ) {
       try {
-        const inverseRelationToDeleteId = (
-          await axiosXano.post(
-            "/relationship_between",
-            { patient_id: item.relation_id, relation_id: item.patient_id },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${auth.authToken}`,
-              },
-            }
-          )
-        ).data[0].id;
+        if (relations.includes(itemInfos.relationship)) {
+          const inverseRelationToDeleteId = (
+            await axiosXano.post(
+              "/relationship_between",
+              { patient_id: item.relation_id, relation_id: item.patient_id },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${auth.authToken}`,
+                },
+              }
+            )
+          ).data[0].id;
 
-        deletePatientRecord(
-          "/relationships",
-          inverseRelationToDeleteId,
-          auth.authToken
-        );
+          deletePatientRecord(
+            "/relationships",
+            inverseRelationToDeleteId,
+            auth.authToken
+          );
+        }
         deletePatientRecord("/relationships", item.id, auth.authToken);
+        console.log("fetchRecord");
         const abortController = new AbortController();
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
@@ -146,16 +154,17 @@ const RelationshipItem = ({
     itemInfos && (
       <tr className="relationships-item">
         <td>
-          {editVisible ? (
-            <RelationshipList
-              value={itemInfos.relationship}
-              name="relationship"
-              handleChange={handleChange}
-            />
-          ) : (
-            itemInfos.relationship
-          )}{" "}
-          of
+          <div className="relationships-item-relationship">
+            {editVisible ? (
+              <RelationshipList
+                value={itemInfos.relationship}
+                handleChange={handleRelationshipChange}
+              />
+            ) : (
+              itemInfos.relationship
+            )}
+            <span>of</span>
+          </div>
         </td>
         <td>
           {editVisible ? (

@@ -22,6 +22,8 @@ export const toInverseRelation = (relation, gender) => {
       return gender === "Female" || gender === "Other" ? "Mother" : "Father";
     case "Father":
       return gender === "Female" || gender === "Other" ? "Daughter" : "Son";
+    case "Friend":
+      return "Friend";
     case "Girlfriend":
       return gender === "Female" || gender === "Other"
         ? "Girlfriend"
@@ -85,6 +87,6 @@ export const toInverseRelation = (relation, gender) => {
     case "Wife":
       return gender === "Female" || gender === "Other" ? "Wife" : "Husband";
     default:
-      break;
+      return "Undefined";
   }
 };

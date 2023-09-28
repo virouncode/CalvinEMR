@@ -1,9 +1,7 @@
-//Librairies
-//Librairies
 import { CircularProgress } from "@mui/material";
 import React from "react";
 
-const DoctorsContent = ({ datas, isLoading, errMsg }) => {
+const FamilyDoctorsContent = ({ datas, isLoading, errMsg }) => {
   return !isLoading ? (
     errMsg ? (
       <p className="patient-doctors-content-err">{errMsg}</p>
@@ -30,4 +28,4 @@ const DoctorsContent = ({ datas, isLoading, errMsg }) => {
   );
 };
 
-export default DoctorsContent;
+export default FamilyDoctorsContent;

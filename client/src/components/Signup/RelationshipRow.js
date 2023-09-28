@@ -2,13 +2,17 @@ import React from "react";
 import RelationshipList from "../Lists/RelationshipList";
 import PatientsSelect from "../Lists/PatientsSelect";
 
-const RelationshipRow = ({ item, handleChange, handleDeleteRelationship }) => {
+const RelationshipRow = ({
+  item,
+  handleChange,
+  handleDeleteRelationship,
+  handleRelationshipChange,
+}) => {
   return (
     <div className="signup-patient-form-row-relationship">
       <RelationshipList
-        id={item.id}
-        name="relationship"
-        handleChange={handleChange}
+        itemId={item.id}
+        handleChange={handleRelationshipChange}
         value={item.relationship}
       />{" "}
       of{" "}
@@ -19,7 +23,7 @@ const RelationshipRow = ({ item, handleChange, handleDeleteRelationship }) => {
         name="relation_id"
       />
       <i
-        data-key={item.id}
+        id={item.id}
         className="fa-solid fa-trash"
         onClick={handleDeleteRelationship}
         style={{ cursor: "pointer" }}

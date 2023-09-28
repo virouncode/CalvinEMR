@@ -1,15 +1,19 @@
+//Librairies
 import React, { useState } from "react";
-import { toLocalDate } from "../../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import CountriesList from "../../../Lists/CountriesList";
 import useAuth from "../../../../hooks/useAuth";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import {
+  toLocalDate,
+  toLocalTimeWithSeconds,
+} from "../../../../utils/formatDates";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { doctorSchema } from "../../../../validation/doctorValidation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import { putPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
-import { pharmacySchema } from "../../../../validation/pharmacyValidation";
-import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
-import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import CountriesList from "../../../Lists/CountriesList";
 
-const PharmacyItem = ({
+const FamilyDoctorItem = ({
   patientId,
   item,
   fetchRecord,
@@ -35,6 +39,7 @@ const PharmacyItem = ({
     setItemInfos({
       ...itemInfos,
       name: firstLetterUpper(itemInfos.name),
+      speciality: firstLetterUpper(itemInfos.speciality),
       address: firstLetterUpper(itemInfos.address),
       province_state: firstLetterUpper(itemInfos.province_state),
       city: firstLetterUpper(itemInfos.city),
@@ -43,6 +48,7 @@ const PharmacyItem = ({
     const formDatas = {
       ...itemInfos,
       name: firstLetterUpper(itemInfos.name),
+      speciality: firstLetterUpper(itemInfos.speciality),
       address: firstLetterUpper(itemInfos.address),
       province_state: firstLetterUpper(itemInfos.province_state),
       city: firstLetterUpper(itemInfos.city),
@@ -50,7 +56,7 @@ const PharmacyItem = ({
     };
     //Validation
     try {
-      await pharmacySchema.validate(formDatas);
+      await doctorSchema.validate(formDatas);
     } catch (err) {
       setErrMsgPost(err.message);
       return;
@@ -58,12 +64,12 @@ const PharmacyItem = ({
 
     if (
       await confirmAlertPopUp({
-        content: `You're about to update ${itemInfos.name} infos. This pharmacy will be updated for all patients, proceed ?`,
+        content: `You're about to update ${itemInfos.name} infos. This doctor will be updated for all patients, proceed ?`,
       })
     ) {
       try {
         await putPatientRecord(
-          "/pharmacies",
+          "/doctors",
           item.id,
           user.id,
           auth.authToken,
@@ -75,7 +81,7 @@ const PharmacyItem = ({
         setEditVisible(false);
         toast.success("Saved successfully", { containerId: "B" });
       } catch (err) {
-        toast.error(`Error: unable to update pharmacy:${err.message}`, {
+        toast.error(`Error: unable to update doctor:${err.message}`, {
           containerId: "B",
         });
       }
@@ -93,22 +99,22 @@ const PharmacyItem = ({
     if (
       await confirmAlertPopUp({
         content:
-          "Do you really want to remove this pharmacy from the patient record ?",
+          "Do you really want to remove this doctor from the patient record ?",
       })
     ) {
-      //delete pharmacy for patient only
-      //Get the pharmacy itemInfos
-      const pharmacy = { ...itemInfos };
-      const patients = [...pharmacy.patients];
+      //delete doctor for patient only
+      //Get the doctor itemInfos
+      const doctor = { ...itemInfos };
+      const patients = [...doctor.patients];
       const patientsFiltered = patients.filter((id) => id !== patientId);
-      pharmacy.patients = patientsFiltered;
+      doctor.patients = patientsFiltered;
       try {
         await putPatientRecord(
-          "/pharmacies",
+          "/doctors",
           item.id,
           user.id,
           auth.authToken,
-          pharmacy
+          doctor
         );
         const abortController = new AbortController();
         fetchRecord(abortController);
@@ -118,16 +124,15 @@ const PharmacyItem = ({
       }
     }
   };
-
   return (
     itemInfos && (
-      <tr className="pharmacies-item">
+      <tr className="doctors-item">
         <td>
           {editVisible ? (
             <input
               type="text"
               name="name"
-              className="pharmacies-item-input3"
+              className="doctors-item-input3"
               value={itemInfos.name}
               onChange={handleChange}
               autoComplete="off"
@@ -139,8 +144,36 @@ const PharmacyItem = ({
         <td>
           {editVisible ? (
             <input
+              type="text"
+              name="speciality"
+              className="doctors-item-input3"
+              value={itemInfos.speciality}
+              onChange={handleChange}
+              autoComplete="off"
+            />
+          ) : (
+            itemInfos.speciality
+          )}
+        </td>
+        <td>
+          {editVisible ? (
+            <input
+              type="text"
+              name="licence_nbr"
+              className="doctors-item-input3"
+              value={itemInfos.licence_nbr}
+              onChange={handleChange}
+              autoComplete="off"
+            />
+          ) : (
+            itemInfos.licence_nbr
+          )}
+        </td>
+        <td>
+          {editVisible ? (
+            <input
               name="address"
-              className="pharmacies-item-input1"
+              className="doctors-item-input1"
               type="text"
               value={itemInfos.address}
               onChange={handleChange}
@@ -154,7 +187,7 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="province_state"
-              className="pharmacies-item-input2"
+              className="doctors-item-input2"
               type="text"
               value={itemInfos.province_state}
               onChange={handleChange}
@@ -168,7 +201,7 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="postal_code"
-              className="pharmacies-item-input4"
+              className="doctors-item-input4"
               type="text"
               value={itemInfos.postal_code}
               onChange={handleChange}
@@ -182,7 +215,7 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="city"
-              className="pharmacies-item-input2"
+              className="doctors-item-input2"
               type="text"
               value={itemInfos.city}
               onChange={handleChange}
@@ -207,7 +240,7 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="phone"
-              className="pharmacies-item-input2"
+              className="doctors-item-input2"
               type="text"
               value={itemInfos.phone}
               onChange={handleChange}
@@ -221,7 +254,7 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="fax"
-              className="pharmacies-item-input2"
+              className="doctors-item-input2"
               type="text"
               value={itemInfos.fax}
               onChange={handleChange}
@@ -235,7 +268,7 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="email"
-              className="pharmacies-item-input3"
+              className="doctors-item-input3"
               type="email"
               value={itemInfos.email}
               onChange={handleChange}
@@ -258,7 +291,7 @@ const PharmacyItem = ({
           <em>{toLocalDate(itemInfos.date_created)}</em>
         </td>
         <td>
-          <div className="pharmacies-item-btn-container">
+          <div className="doctors-item-btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (
@@ -272,4 +305,4 @@ const PharmacyItem = ({
   );
 };
 
-export default PharmacyItem;
+export default FamilyDoctorItem;

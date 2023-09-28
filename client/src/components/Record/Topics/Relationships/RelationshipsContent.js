@@ -19,6 +19,7 @@ const RelationshipsContent = ({ datas, isLoading, errMsg }) => {
                 <NavLink
                   to={`/patient-record/${item.relation_id}`}
                   className="patient-relationships-content-link"
+                  target="_blank"
                 >
                   {patientIdToName(clinic.patientsInfos, item.relation_id)}
                 </NavLink>
