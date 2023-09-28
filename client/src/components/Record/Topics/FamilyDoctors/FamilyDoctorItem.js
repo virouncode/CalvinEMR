@@ -124,20 +124,7 @@ const FamilyDoctorItem = ({
   return (
     itemInfos && (
       <tr className="doctors-item">
-        <td>
-          {/* {editVisible ? (
-            <input
-              type="text"
-              name="name"
-              className="doctors-item-input3"
-              value={itemInfos.name}
-              onChange={handleChange}
-              autoComplete="off"
-            />
-          ) : ( */}
-          {itemInfos.name}
-          {/* )} */}
-        </td>
+        <td>{itemInfos.name}</td>
         <td>
           {editVisible ? (
             <input

@@ -122,20 +122,7 @@ const PharmacyItem = ({
   return (
     itemInfos && (
       <tr className="pharmacies-item">
-        <td>
-          {/* {editVisible ? (
-            <input
-              type="text"
-              name="name"
-              className="pharmacies-item-input3"
-              value={itemInfos.name}
-              onChange={handleChange}
-              autoComplete="off"
-            />
-          ) : ( */}
-          {itemInfos.name}
-          {/* )} */}
-        </td>
+        <td>{itemInfos.name}</td>
         <td>
           {editVisible ? (
             <input
