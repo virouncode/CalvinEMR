@@ -123,7 +123,7 @@ const PharmacyItem = ({
     itemInfos && (
       <tr className="pharmacies-item">
         <td>
-          {editVisible ? (
+          {/* {editVisible ? (
             <input
               type="text"
               name="name"
@@ -132,9 +132,9 @@ const PharmacyItem = ({
               onChange={handleChange}
               autoComplete="off"
             />
-          ) : (
-            itemInfos.name
-          )}
+          ) : ( */}
+          {itemInfos.name}
+          {/* )} */}
         </td>
         <td>
           {editVisible ? (
