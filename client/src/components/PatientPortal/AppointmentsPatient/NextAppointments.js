@@ -29,7 +29,7 @@ const NextAppointments = () => {
     const fetchAppointments = async () => {
       try {
         const response = await axiosXanoPatient.get(
-          `/patient_appointments?patient_id=${user.id}`,
+          `/appointments_for_patient?patient_id=${user.id}`,
           {
             headers: {
               "Content-Type": "application/json",

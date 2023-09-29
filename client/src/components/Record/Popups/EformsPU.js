@@ -121,8 +121,10 @@ const EformsPU = ({
               );
               await postPatientRecord("/eforms", user.id, auth.authToken, {
                 patient_id: patientId,
+                assigned_id: user.id,
                 name: file.name,
                 file: response2.data,
+                aknowledged: true,
               });
               const abortController = new AbortController();
               fetchRecord(abortController);

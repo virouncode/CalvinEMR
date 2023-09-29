@@ -52,7 +52,9 @@ const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
         );
         const abortController = new AbortController();
         fetchRecord(abortController);
-        toast.success("Document aknowledge successfully", { containerId: "A" });
+        toast.success("Document aknowledged successfully", {
+          containerId: "A",
+        });
       } catch (err) {
         toast.error(`Unable to aknowledge document : ${err.message}`, {
           containerId: "A",

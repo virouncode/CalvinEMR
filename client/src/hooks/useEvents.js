@@ -49,7 +49,7 @@ export const useEvents = (
       try {
         dispatch({ type: "FETCH_START" });
         const response = await axiosXano.post(
-          "/staff_appointments",
+          "/appointments_for_staff",
           {
             hosts_ids: hostsIds,
             range_start: rangeStart,

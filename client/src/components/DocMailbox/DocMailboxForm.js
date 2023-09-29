@@ -5,10 +5,10 @@ import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
-import DocInboxPatients from "./DocInboxPatients";
+import DocMailboxPatients from "./DocMailboxPatients";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
-const DocInboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
+const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
   //HOOKS
   const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
@@ -83,7 +83,7 @@ const DocInboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
         }
       );
       setDocuments(response.data.filter(({ aknowledged }) => !aknowledged));
-      toast.success("Saved successfully", { containerId: "B" });
+      toast.success("Posted successfully", { containerId: "B" });
     } catch (err) {
       toast.error(`Error unable to save document: ${err.message}`, {
         containerId: "B",
@@ -124,7 +124,6 @@ const DocInboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
         setFormDatas({
           ...formDatas,
           file: fileToUpload.data,
-          description: file.name,
         });
       } catch (err) {
         setIsLoadingFile(false);
@@ -139,7 +138,7 @@ const DocInboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
     <div className="docinbox-form">
       <form className="docinbox-form-content" onSubmit={handleSubmit}>
         <div className="docinbox-form-content-row">
-          <input type="submit" value="Submit" disabled={saveDisabled} />
+          <input type="submit" value="Post" disabled={saveDisabled} />
         </div>
         <div className="docinbox-form-content-row">
           <label>Description</label>
@@ -153,7 +152,7 @@ const DocInboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
         </div>
         <div className="docinbox-form-content-row docinbox-form-content-row--patients">
           <label>Related patient</label>
-          <DocInboxPatients
+          <DocMailboxPatients
             isPatientChecked={isPatientChecked}
             handleCheckPatient={handleCheckPatient}
             label={false}
@@ -174,6 +173,8 @@ const DocInboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}
         </div>
+      </form>
+      <div className="docinbox-form-content-preview">
         {formDatas.file && formDatas.file.mime.includes("image") ? (
           <img src={`${BASE_URL}${formDatas.file.path}`} alt="" width="100%" />
         ) : formDatas.file && formDatas.file.mime.includes("video") ? (
@@ -190,7 +191,6 @@ const DocInboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
               src={`https://docs.google.com/gview?url=${BASE_URL}${formDatas.file.path}&embedded=true&widget=false`}
               width="100%"
               height="500px"
-              frameBorder="0"
             />
           </div>
         ) : (
@@ -205,9 +205,9 @@ const DocInboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
             />
           )
         )}
-      </form>
+      </div>
     </div>
   );
 };
 
-export default DocInboxForm;
+export default DocMailboxForm;

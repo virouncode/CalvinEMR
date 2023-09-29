@@ -305,7 +305,7 @@ const SignupPatientForm = () => {
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
       try {
-        let fileToUpload = await axiosXano.post("/upload/attachment_register", {
+        let fileToUpload = await axiosXano.post("/upload/attachment", {
           content: content,
         });
         setFormDatas({ ...formDatas, avatar: fileToUpload.data });

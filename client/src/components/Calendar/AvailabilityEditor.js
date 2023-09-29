@@ -30,7 +30,7 @@ const AvailabilityEditor = ({ setEditVisible }) => {
     const fetchAvailability = async () => {
       try {
         const response = await axiosXano.get(
-          `/availability_for_staff?staff_id=${user.id}`,
+          `/availability?staff_id=${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${auth.authToken}`,

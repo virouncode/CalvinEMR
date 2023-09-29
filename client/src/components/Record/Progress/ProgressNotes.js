@@ -32,7 +32,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
     { datas: progressNotes, isLoading, errMsg },
     fetchRecord,
     setProgressNotes,
-  ] = useProgressNotes("/patient_progress_notes", patientId);
+  ] = useProgressNotes("/progress_notes", patientId);
 
   const checkAllNotes = () => {
     const allNotesIds = progressNotes.map(({ id }) => id);

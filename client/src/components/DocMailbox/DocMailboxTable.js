@@ -1,16 +1,16 @@
 //Librairies
 import React, { useEffect, useRef, useState } from "react";
 //Components
-import DocInboxItem from "../DocInbox/DocInboxItem";
+import DocMailboxItem from "./DocMailboxItem";
 import ConfirmPopUp from "../Confirm/ConfirmPopUp";
 import { CircularProgress } from "@mui/material";
-import DocInboxForm from "./DocInboxForm";
+import DocMailboxForm from "./DocMailboxForm";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
 import ConfirmGlobal from "../Confirm/ConfirmGlobal";
 
-const DocInboxTable = () => {
+const DocMailboxTable = () => {
   //HOOKS
   const { user, auth, clinic } = useAuth();
   const editCounter = useRef(0);
@@ -74,7 +74,7 @@ const DocInboxTable = () => {
 
   useEffect(() => {
     const abortController = new AbortController();
-    const fetchDocInbox = async () => {
+    const fetchDocMailbox = async () => {
       try {
         const response = await axiosXano.get(
           `/documents_for_staff?staff_id=${user.id}`,
@@ -95,7 +95,7 @@ const DocInboxTable = () => {
           });
       }
     };
-    fetchDocInbox();
+    fetchDocMailbox();
     return () => abortController.abort();
   }, [auth.authToken, user.id]);
 
@@ -104,7 +104,7 @@ const DocInboxTable = () => {
       {!isLoading ? (
         documents && (
           <>
-            <h1 className="docinbox-title">Documents Inbox</h1>
+            <h1 className="docinbox-title">Documents Mailbox</h1>
             {errMsg && <div className="docinbox-err">{errMsg}</div>}
             <table className="docinbox-table">
               <thead>
@@ -134,7 +134,7 @@ const DocInboxTable = () => {
                             .localeCompare(b.file[columnToSort]?.toString())
                         )
                         .map((document) => (
-                          <DocInboxItem
+                          <DocMailboxItem
                             item={document}
                             key={document.id}
                             showDocument={showDocument}
@@ -149,7 +149,7 @@ const DocInboxTable = () => {
                             .localeCompare(a.file[columnToSort]?.toString())
                         )
                         .map((document) => (
-                          <DocInboxItem
+                          <DocMailboxItem
                             item={document}
                             key={document.id}
                             showDocument={showDocument}
@@ -165,7 +165,7 @@ const DocInboxTable = () => {
                           .localeCompare(b[columnToSort]?.toString())
                       )
                       .map((document) => (
-                        <DocInboxItem
+                        <DocMailboxItem
                           item={document}
                           key={document.id}
                           showDocument={showDocument}
@@ -180,7 +180,7 @@ const DocInboxTable = () => {
                           .localeCompare(a[columnToSort]?.toString())
                       )
                       .map((document) => (
-                        <DocInboxItem
+                        <DocMailboxItem
                           item={document}
                           key={document.id}
                           showDocument={showDocument}
@@ -196,7 +196,7 @@ const DocInboxTable = () => {
               </button>
             </div>
             {addVisible && (
-              <DocInboxForm
+              <DocMailboxForm
                 setAddVisible={setAddVisible}
                 setErrMsg={setErrMsg}
                 setDocuments={setDocuments}
@@ -211,4 +211,4 @@ const DocInboxTable = () => {
   );
 };
 
-export default DocInboxTable;
+export default DocMailboxTable;

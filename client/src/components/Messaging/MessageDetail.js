@@ -252,6 +252,7 @@ const MessageDetail = ({
       for (const attachment of attachments) {
         await postPatientRecord("/documents", user.id, auth.authToken, {
           patient_id: message.related_patient_id,
+          assigned_id: user.id,
           description: attachment.alias,
           file: attachment.file,
         });

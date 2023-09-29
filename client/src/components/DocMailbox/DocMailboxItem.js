@@ -8,7 +8,7 @@ import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
 
-const DocInboxItem = ({ item, showDocument, setDocuments }) => {
+const DocMailboxItem = ({ item, showDocument, setDocuments }) => {
   const { clinic, auth, user } = useAuth();
 
   const handleAknowledge = async () => {
@@ -36,7 +36,9 @@ const DocInboxItem = ({ item, showDocument, setDocuments }) => {
           }
         );
         setDocuments(response.data.filter(({ aknowledged }) => !aknowledged));
-        toast.success("Document aknowledge successfully", { containerId: "A" });
+        toast.success("Document aknowledged successfully", {
+          containerId: "A",
+        });
       } catch (err) {
         toast.error(`Unable to aknowledge document : ${err.message}`, {
           containerId: "A",
@@ -75,4 +77,4 @@ const DocInboxItem = ({ item, showDocument, setDocuments }) => {
   );
 };
 
-export default DocInboxItem;
+export default DocMailboxItem;

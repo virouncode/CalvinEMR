@@ -25,8 +25,10 @@ const AttachmentCard = ({
     try {
       await postPatientRecord("/documents", user.id, auth.authToken, {
         patient_id: patientId,
+        assigned_id: user.id,
         description: attachment.alias,
         file: attachment.file,
+        aknowledged: true,
       });
       toast.success("Saved successfully", { containerId: "A" });
       navigate(0); //to refresh the patient record

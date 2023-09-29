@@ -49,7 +49,7 @@ const NewAppointment = () => {
     const fetchAppointmentsInRange = async () => {
       try {
         const response = await axiosXanoPatient.post(
-          "/staff_appointments",
+          "/appointments_for_staff",
           {
             hosts_ids: [practicianSelectedId],
             range_start: rangeStart + 86400000, //+1 day
@@ -85,7 +85,7 @@ const NewAppointment = () => {
     const fetchAvailability = async () => {
       try {
         const response = await axiosXanoPatient.get(
-          `/availability_for_staff?staff_id=${practicianSelectedId}`,
+          `/availability?staff_id=${practicianSelectedId}`,
           {
             headers: {
               Authorization: `Bearer ${auth.authToken}`,

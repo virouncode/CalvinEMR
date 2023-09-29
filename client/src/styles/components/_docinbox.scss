@@ -59,9 +59,14 @@
     }
     &-form {
         font-size: 0.8rem;
-        padding: 40px;  
+        padding: 40px; 
+        display: flex;
+        justify-content: space-between; 
         &-content {
-            width:50%;
+            width:45%;
+            &-preview {
+                width:45%;
+            }
             &-row {
                 display: flex;
                 justify-content: space-between;
@@ -80,6 +85,32 @@
                 &--patients{
                     align-items: flex-start;
                  
+                }
+                .practicians {
+                    width:100%;
+                    align-items: center;
+                    margin-bottom: 10px;
+                    display: flex;
+                    justify-content: space-between;
+                    &-list {
+                        width:70%;
+                        border: solid 1px $grey;
+                        border-radius: 4px;
+                        padding: 10px;
+                        input[type="checkbox"] {
+                            margin-right: 5px;
+                            width:auto;
+                        }
+                        i {
+                            margin-right: 5px;
+                        }
+                    }
+                    &-category-list {
+                        margin: 10px 0;
+                        padding-left: 20px;
+
+                    }
+
                 }
             }
         } 

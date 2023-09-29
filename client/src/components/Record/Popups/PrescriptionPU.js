@@ -115,8 +115,10 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
 
     const datas = {
       patient_id: patientInfos.id,
+      assigned_id: user.id,
       description: `Prescription ${toLocalDateAndTimeWithSeconds(new Date())}`,
       file: fileToUpload.data,
+      aknowledged: true,
     };
 
     const datasAttachment = [

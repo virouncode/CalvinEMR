@@ -24,6 +24,7 @@ const MessageAttachmentCard = ({
     try {
       await postPatientRecord("/documents", user.id, auth.authToken, {
         patient_id: patientId,
+        assigned_id: user.id,
         description: attachment.alias,
         file: attachment.file,
       });

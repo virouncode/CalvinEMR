@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PatientsList from "../Messaging/PatientsList";
 
-const DocInboxPatients = ({
+const DocMailboxPatients = ({
   isPatientChecked,
   handleCheckPatient,
   label = true,
@@ -32,4 +32,4 @@ const DocInboxPatients = ({
   );
 };
 
-export default DocInboxPatients;
+export default DocMailboxPatients;

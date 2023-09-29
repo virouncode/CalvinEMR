@@ -57,7 +57,7 @@ const Header = () => {
               to="doc-inbox"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
             >
-              Documents Inbox
+              Documents Mailbox
             </NavLink>
           </li>
           <li>

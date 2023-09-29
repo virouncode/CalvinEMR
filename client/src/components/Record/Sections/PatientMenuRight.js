@@ -72,7 +72,7 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
         patientInfos={patientInfos}
       />
       <PatientTopic
-        url="/patient_appointments"
+        url="/appointments_for_patient"
         textColor="#FEFEFE"
         backgroundColor="#28464b"
         topic="APPOINTMENTS"
