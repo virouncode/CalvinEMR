@@ -36,7 +36,7 @@ app.post("/api/twilio/messages", (req, res) => {
 
 //Dans les autres cas on renvoie la single page app
 app.get("/*", (_, res) => {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+  res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 });
 
 app.listen(PORT, () => {
