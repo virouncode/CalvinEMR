@@ -21,8 +21,9 @@ const DocumentsContent = ({ showDocument, datas, isLoading, errMsg }) => {
                   }
                   style={{
                     textDecoration: "underline",
-                    color: "blue",
+                    color: document.aknowledged ? "black" : "blue",
                     cursor: "pointer",
+                    fontWeight: document.aknowledged ? "normal" : "bold",
                   }}
                 >
                   - {document.description} ({toLocalDate(document.date_created)}

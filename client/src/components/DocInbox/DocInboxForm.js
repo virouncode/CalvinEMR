@@ -1,55 +1,67 @@
 import React, { useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
-import { postPatientRecord } from "../../../../api/fetchRecords";
-import axiosXano from "../../../../api/xano";
+import useAuth from "../../hooks/useAuth";
+import { postPatientRecord } from "../../api/fetchRecords";
+import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
-import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { firstLetterUpper } from "../../utils/firstLetterUpper";
+import DocInboxPatients from "./DocInboxPatients";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
-const DocumentForm = ({
-  patientId,
-  fetchRecord,
-  setAddVisible,
-  editCounter,
-  setErrMsgPost,
-}) => {
+const DocInboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
   //HOOKS
   const { auth, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
-    patient_id: patientId,
+    patient_id: 0,
     assigned_id: user.id,
     description: "",
     file: null,
+    acknowledged: false,
   });
+  const [relatedPatientId, setRelatedPatientId] = useState(0);
   const [saveDisabled, setSaveDisabled] = useState(true);
   const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   //HANDLERS
   const handleChange = (e) => {
-    setErrMsgPost("");
+    setErrMsg("");
     let value = e.target.value;
     const name = e.target.name;
     setFormDatas({ ...formDatas, [name]: value });
   };
 
+  const isPatientChecked = (id) => {
+    return formDatas.patient_id === parseInt(id);
+  };
+
+  const handleCheckPatient = (e) => {
+    setErrMsg("");
+    setFormDatas({ ...formDatas, patient_id: parseInt(e.target.id) });
+  };
+
   const handleSubmit = async (e) => {
+    setErrMsg("");
     e.preventDefault();
-    //Formatting
-    setFormDatas({
-      ...formDatas,
-      description: firstLetterUpper(formDatas.description),
-    });
     const datasToPost = {
       ...formDatas,
       description: firstLetterUpper(formDatas.description),
     };
-    if (!datasToPost.file.type) datasToPost.file.type = "document";
     //Validation
     if (datasToPost.description === "") {
-      setErrMsgPost("Description field is required");
+      setErrMsg("Description field is required");
       return;
     }
+    if (datasToPost.patient_id === 0) {
+      setErrMsg("Please choose a related patient");
+      return;
+    }
+    // Formatting
+    setFormDatas({
+      ...formDatas,
+      description: firstLetterUpper(formDatas.description),
+    });
+    if (!datasToPost.file.type) datasToPost.file.type = "document";
+
     try {
       await postPatientRecord(
         "/documents",
@@ -57,10 +69,20 @@ const DocumentForm = ({
         auth.authToken,
         datasToPost
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
-      editCounter.current -= 1;
+      //   const abortController = new AbortController();
+      //   fetchRecord(abortController);
+      //   editCounter.current -= 1;
+
       setAddVisible(false);
+      const response = await axiosXano.get(
+        `/documents_for_staff?staff_id=${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        }
+      );
+      setDocuments(response.data.filter(({ aknowledged }) => !aknowledged));
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
       toast.error(`Error unable to save document: ${err.message}`, {
@@ -69,11 +91,11 @@ const DocumentForm = ({
     }
   };
   const handleUpload = async (e) => {
-    setErrMsgPost("");
+    setErrMsg("");
     setSaveDisabled(true);
     const file = e.target.files[0];
     if (file.size > 25000000) {
-      setErrMsgPost("The file is over 25Mb, please choose another file");
+      setErrMsg("The file is over 25Mb, please choose another file");
       setIsLoadingFile(false);
       return;
     }
@@ -114,9 +136,12 @@ const DocumentForm = ({
   };
 
   return (
-    <div className="documents-form">
-      <form className="documents-form-content" onSubmit={handleSubmit}>
-        <div className="documents-form-content-row">
+    <div className="docinbox-form">
+      <form className="docinbox-form-content" onSubmit={handleSubmit}>
+        <div className="docinbox-form-content-row">
+          <input type="submit" value="Submit" disabled={saveDisabled} />
+        </div>
+        <div className="docinbox-form-content-row">
           <label>Description</label>
           <input
             name="description"
@@ -126,7 +151,15 @@ const DocumentForm = ({
             autoComplete="off"
           />
         </div>
-        <div className="documents-form-content-row">
+        <div className="docinbox-form-content-row docinbox-form-content-row--patients">
+          <label>Related patient</label>
+          <DocInboxPatients
+            isPatientChecked={isPatientChecked}
+            handleCheckPatient={handleCheckPatient}
+            label={false}
+          />
+        </div>
+        <div className="docinbox-form-content-row">
           <label>Upload document</label>
           <input
             name="file"
@@ -136,10 +169,7 @@ const DocumentForm = ({
             accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx"
           />
         </div>
-        <div className="documents-form-content-row">
-          {!saveDisabled && <input type="submit" value="Save" />}
-        </div>
-        <div className="documents-form-content-row">
+        <div className="docinbox-form-content-row">
           {isLoadingFile && (
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}
@@ -180,4 +210,4 @@ const DocumentForm = ({
   );
 };
 
-export default DocumentForm;
+export default DocInboxForm;

@@ -164,7 +164,7 @@ const FamilyDoctorsPU = ({
               </table>
               <div className="doctors-btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
-                  Add Doctor for patient
+                  Add Doctor to patient
                 </button>
                 <button onClick={handleClose}>Close</button>
               </div>

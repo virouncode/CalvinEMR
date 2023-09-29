@@ -1,0 +1,108 @@
+.docinbox {
+    &-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+    &-err {
+        padding : 10px 20px;
+        font-size: 0.9rem;
+        width : 50%;
+        margin:0 auto 10px;
+        color : red;
+        background-color:rgba(255, 0, 0, 0.403);
+        border-radius: 4px;
+        text-align: center;
+    }
+    &-table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        border: solid 1px $black;
+        font-size: 0.8rem;
+        margin: 0 auto;
+        thead {
+            background-color: $blue;
+            border: solid 1px $black;
+        }
+        th {
+            min-width: 100px;
+            padding: 2px 5px;
+            border: solid 1px $black;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        &-nofilter {
+            text-decoration: none;
+            cursor: default;
+        }
+    }
+    &-btn-container {
+        display: flex;
+        justify-content: center;
+        width:25%;
+        margin: 20px auto 0;
+    }
+    &-item {
+        td {
+            text-align: center;
+            border: solid 1px $black;
+            padding: 2px 5px;
+            word-wrap: break-word;
+            max-width: 370px;
+        }
+        &-link {
+            cursor:pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    }
+    &-form {
+        font-size: 0.8rem;
+        padding: 40px;  
+        &-content {
+            width:50%;
+            &-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+                label {
+                    width: 120px;
+                    font-weight: bold;
+                }
+                input {
+                    width: 70%;
+                }
+                input[type="submit"]{
+                    width:auto;
+                }
+                &--patients{
+                    align-items: flex-start;
+                 
+                }
+            }
+        } 
+    }
+    &-patients {
+        width: 70%;
+        &-list {
+            margin-top: 10px;
+            height: 200px;
+            overflow: scroll;
+            border : 1px solid $grey;
+            border-radius : 4px;
+            padding: 10px;
+        }
+        label {
+            width: 300px;
+            font-weight: normal;
+        }
+        input {
+            width: 100%;
+        }
+        input[type="checkbox"] {
+            width:auto;
+        }
+    }
+}

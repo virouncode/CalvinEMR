@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
+import DocInboxTable from "../components/DocInbox/DocInboxTable";
 
 const DocInboxPage = () => {
   return (
@@ -7,7 +8,7 @@ const DocInboxPage = () => {
       <Helmet>
         <title>Calvin EMR Documents Inbox</title>
       </Helmet>
-      Documents Inbox
+      <DocInboxTable />
     </div>
   );
 };
