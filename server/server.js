@@ -11,7 +11,7 @@ const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
-app.use(express.static("client/build"));
+app.use(express.static(path.join(__dirname, "..", "client", "build")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
