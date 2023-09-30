@@ -5,8 +5,8 @@ const DocMailboxSecretary = () => {
   const [errMsg, setErrMsg] = useState("");
   return (
     <>
-      <h1 className="docinbox-title">Documents Mailbox</h1>
-      {errMsg && <p className="docinbox-err">{errMsg}</p>}
+      <h1 className="docmailbox-title">Documents Mailbox</h1>
+      {errMsg && <p className="docmailbox-err">{errMsg}</p>}
       <DocMailboxFormSecretary errMsg={errMsg} setErrMsg={setErrMsg} />
     </>
   );

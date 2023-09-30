@@ -18,7 +18,6 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
     file: null,
     acknowledged: false,
   });
-  const [relatedPatientId, setRelatedPatientId] = useState(0);
   const [saveDisabled, setSaveDisabled] = useState(true);
   const [isLoadingFile, setIsLoadingFile] = useState(false);
 
@@ -135,12 +134,12 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
   };
 
   return (
-    <div className="docinbox-form">
-      <form className="docinbox-form-content" onSubmit={handleSubmit}>
-        <div className="docinbox-form-content-row">
+    <div className="docmailbox-form">
+      <form className="docmailbox-form-content" onSubmit={handleSubmit}>
+        <div className="docmailbox-form-content-row">
           <input type="submit" value="Post" disabled={saveDisabled} />
         </div>
-        <div className="docinbox-form-content-row">
+        <div className="docmailbox-form-content-row">
           <label>Description</label>
           <input
             name="description"
@@ -150,7 +149,7 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
             autoComplete="off"
           />
         </div>
-        <div className="docinbox-form-content-row docinbox-form-content-row--patients">
+        <div className="docmailbox-form-content-row docmailbox-form-content-row--patients">
           <label>Related patient</label>
           <DocMailboxPatients
             isPatientChecked={isPatientChecked}
@@ -158,7 +157,7 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
             label={false}
           />
         </div>
-        <div className="docinbox-form-content-row">
+        <div className="docmailbox-form-content-row">
           <label>Upload document</label>
           <input
             name="file"
@@ -168,13 +167,13 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
             accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx"
           />
         </div>
-        <div className="docinbox-form-content-row">
+        <div className="docmailbox-form-content-row">
           {isLoadingFile && (
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}
         </div>
       </form>
-      <div className="docinbox-form-content-preview">
+      <div className="docmailbox-form-content-preview">
         {formDatas.file && formDatas.file.mime.includes("image") ? (
           <img src={`${BASE_URL}${formDatas.file.path}`} alt="" width="100%" />
         ) : formDatas.file && formDatas.file.mime.includes("video") ? (

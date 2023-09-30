@@ -2,17 +2,15 @@
 import React, { useEffect, useRef, useState } from "react";
 //Components
 import DocMailboxItem from "./DocMailboxItem";
-import ConfirmPopUp from "../Confirm/ConfirmPopUp";
 import { CircularProgress } from "@mui/material";
 import DocMailboxForm from "./DocMailboxForm";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
-import ConfirmGlobal from "../Confirm/ConfirmGlobal";
 
 const DocMailboxTable = () => {
   //HOOKS
-  const { user, auth, clinic } = useAuth();
+  const { user, auth } = useAuth();
   const editCounter = useRef(0);
   const [documents, setDocuments] = useState(null);
   const [addVisible, setAddVisible] = useState(false);
@@ -42,21 +40,6 @@ const DocMailboxTable = () => {
       window.location.assign("/login");
       return;
     }
-  };
-
-  //STYLE
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
   };
 
   //HANDLERS
@@ -104,9 +87,9 @@ const DocMailboxTable = () => {
       {!isLoading ? (
         documents && (
           <>
-            <h1 className="docinbox-title">Documents Mailbox</h1>
-            {errMsg && <div className="docinbox-err">{errMsg}</div>}
-            <table className="docinbox-table">
+            <h1 className="docmailbox-title">Documents Mailbox</h1>
+            {errMsg && <div className="docmailbox-err">{errMsg}</div>}
+            <table className="docmailbox-table">
               <thead>
                 <tr>
                   <th onClick={() => handleSort("description")}>Description</th>
@@ -190,7 +173,7 @@ const DocMailboxTable = () => {
                       ))}
               </tbody>
             </table>
-            <div className="docinbox-btn-container">
+            <div className="docmailbox-btn-container">
               <button disabled={addVisible} onClick={handleAdd}>
                 Upload a document
               </button>
