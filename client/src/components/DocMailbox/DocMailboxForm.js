@@ -81,7 +81,7 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
           },
         }
       );
-      setDocuments(response.data.filter(({ aknowledged }) => !aknowledged));
+      setDocuments(response.data.filter(({ acknowledged }) => !acknowledged));
       toast.success("Posted successfully", { containerId: "B" });
     } catch (err) {
       toast.error(`Error unable to save document: ${err.message}`, {
@@ -90,9 +90,10 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
     }
   };
   const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
     setErrMsg("");
     setSaveDisabled(true);
-    const file = e.target.files[0];
     if (file.size > 25000000) {
       setErrMsg("The file is over 25Mb, please choose another file");
       setIsLoadingFile(false);
@@ -137,9 +138,6 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
     <div className="docmailbox-form">
       <form className="docmailbox-form-content" onSubmit={handleSubmit}>
         <div className="docmailbox-form-content-row">
-          <input type="submit" value="Post" disabled={saveDisabled} />
-        </div>
-        <div className="docmailbox-form-content-row">
           <label>Description</label>
           <input
             name="description"
@@ -171,6 +169,9 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
           {isLoadingFile && (
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}
+        </div>
+        <div className="docmailbox-form-content-row">
+          <input type="submit" value="Post" disabled={saveDisabled} />
         </div>
       </form>
       <div className="docmailbox-form-content-preview">

@@ -2,13 +2,11 @@
 import React from "react";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import {
-  deletePatientRecord,
-  putPatientRecord,
-} from "../../../../api/fetchRecords";
+import { deletePatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import axiosXano from "../../../../api/xano";
 
 const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
   const { auth, clinic, user } = useAuth();
@@ -33,30 +31,29 @@ const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
     }
   };
 
-  const handleAknowledge = async () => {
+  const handleAcknowledge = async () => {
     if (
       await confirmAlertPopUp({
-        content: "Do you really want to aknowledge this document ?",
+        content: "Do you really want to acknowledge this document ?",
       })
     ) {
       try {
         const datasToPut = { ...item };
-        datasToPut.aknowledged = true;
-        datasToPut.date_aknowledged = Date.now();
-        await putPatientRecord(
-          "documents",
-          item.id,
-          user.id,
-          auth.authToken,
-          datasToPut
-        );
+        datasToPut.acknowledged = true;
+        datasToPut.date_acknowledged = Date.now();
+        await axiosXano.put(`documents/${item.id}`, datasToPut, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        });
         const abortController = new AbortController();
         fetchRecord(abortController);
-        toast.success("Document aknowledged successfully", {
+        toast.success("Document acknowledged successfully", {
           containerId: "A",
         });
       } catch (err) {
-        toast.error(`Unable to aknowledge document : ${err.message}`, {
+        toast.error(`Unable to acknowledge document : ${err.message}`, {
           containerId: "A",
         });
       }
@@ -69,8 +66,8 @@ const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
         className="documents-item-link"
         onClick={() => showDocument(item.file.url, item.file.mime)}
         style={{
-          fontWeight: item.aknowledged ? "normal" : "bold",
-          color: item.aknowledged ? "black" : "blue",
+          fontWeight: item.acknowledged ? "normal" : "bold",
+          color: item.acknowledged ? "black" : "blue",
         }}
       >
         {item.description}
@@ -86,8 +83,8 @@ const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
         <em>{toLocalDate(item.date_created)}</em>
       </td>
       <td>
-        {!item.aknowledged && item.assigned_id === user.id && (
-          <button onClick={handleAknowledge}>Aknowledge</button>
+        {!item.acknowledged && item.assigned_id === user.id && (
+          <button onClick={handleAcknowledge}>Acknowledge</button>
         )}
         <button>Fax</button>
         <button onClick={handleDeleteClick}>Delete</button>

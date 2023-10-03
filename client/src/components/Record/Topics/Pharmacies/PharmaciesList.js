@@ -64,8 +64,10 @@ const PharmaciesList = ({
   return (
     <>
       <div className="pharmacies-list-title">
-        Pharmacies List
-        <button onClick={handleAddNewClick}>Add a new Pharmacy to list</button>
+        Pharmacies database
+        <button onClick={handleAddNewClick}>
+          Add a new Pharmacy to database
+        </button>
       </div>
       <table className="pharmacies-list-table">
         <thead>

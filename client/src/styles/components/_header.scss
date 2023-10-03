@@ -3,7 +3,7 @@
   // background: linear-gradient(90deg, rgba(255,201,201,1) 0%, rgba(148,186,232,1) 38%);
   background: $blue;
   display: grid;
-  grid-template-columns: 25% 50% 25%;
+  grid-template-columns: 23% 54% 23%;
   border-bottom: solid 0.5px grey;
   @media (max-width: 950px) {
     grid-template-columns: 20% 60% 20%;

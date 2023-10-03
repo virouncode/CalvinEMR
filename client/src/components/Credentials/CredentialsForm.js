@@ -23,7 +23,7 @@ const CredentialsForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (credentials.confirmPassword !== credentials.password) {
-      setErrMsg("Passwords don't match");
+      setErrMsg("Passwords do not match");
       return;
     }
     try {
@@ -90,7 +90,8 @@ const CredentialsForm = () => {
             onChange={handleChange}
             name="email"
             value={credentials.email}
-            autoComplete="false"
+            autoComplete="off"
+            required
           />
         </div>
         <div className="credentials-form-row">
@@ -102,7 +103,8 @@ const CredentialsForm = () => {
             name="password"
             value={credentials.password}
             autoFocus
-            autoComplete="false"
+            autoComplete="off"
+            required
           />
         </div>
         <div className="credentials-form-row">
@@ -113,7 +115,8 @@ const CredentialsForm = () => {
             onChange={handleChange}
             name="confirmPassword"
             value={credentials.confirmPassword}
-            autoComplete="false"
+            autoComplete="off"
+            required
           />
         </div>
         <div className="credentials-form-row-submit">

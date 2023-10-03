@@ -7,17 +7,47 @@ import DocMailboxForm from "./DocMailboxForm";
 import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
+import DocMailboxAssignedPracticianForward from "./DocMailboxAssignedPracticianForward";
 
 const DocMailboxTable = () => {
   //HOOKS
-  const { user, auth } = useAuth();
+  const { user, auth, clinic } = useAuth();
   const editCounter = useRef(0);
   const [documents, setDocuments] = useState(null);
   const [addVisible, setAddVisible] = useState(false);
+  const [forwardVisible, setForwardVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
+  const [assignedId, setAssignedId] = useState(0);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const fetchDocMailbox = async () => {
+      try {
+        const response = await axiosXano.get(
+          `/documents_for_staff?staff_id=${user.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+            signal: abortController.signal,
+          }
+        );
+        if (abortController.signal.aborted) return;
+        setDocuments(response.data.filter(({ acknowledged }) => !acknowledged));
+      } catch (err) {
+        if (err.name !== "CanceledError")
+          toast.error(`Error: unable to get inbox documents: ${err.message}`, {
+            containerId: "A",
+          });
+      }
+    };
+    fetchDocMailbox();
+    return () => abortController.abort();
+  }, [auth.authToken, user.id]);
 
   const showDocument = async (docUrl, docMime) => {
     let docWindow;
@@ -55,32 +85,14 @@ const DocMailboxTable = () => {
     setAddVisible((v) => !v);
   };
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    const fetchDocMailbox = async () => {
-      try {
-        const response = await axiosXano.get(
-          `/documents_for_staff?staff_id=${user.id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-            signal: abortController.signal,
-          }
-        );
-        if (abortController.signal.aborted) return;
-        setDocuments(response.data.filter(({ aknowledged }) => !aknowledged));
-      } catch (err) {
-        if (err.name !== "CanceledError")
-          toast.error(`Error: unable to get inbox documents: ${err.message}`, {
-            containerId: "A",
-          });
-      }
-    };
-    fetchDocMailbox();
-    return () => abortController.abort();
-  }, [auth.authToken, user.id]);
+  const handleCheckPractician = (e) => {
+    setErrMsg("");
+    setAssignedId(parseInt(e.target.id));
+  };
+
+  const isPracticianChecked = (id) => {
+    return assignedId === parseInt(id);
+  };
 
   return (
     <>
@@ -123,6 +135,8 @@ const DocMailboxTable = () => {
                             showDocument={showDocument}
                             setErrMsg={setErrMsg}
                             setDocuments={setDocuments}
+                            setForwardVisible={setForwardVisible}
+                            forwardVisible={forwardVisible}
                           />
                         ))
                     : documents
@@ -138,6 +152,8 @@ const DocMailboxTable = () => {
                             showDocument={showDocument}
                             setErrMsg={setErrMsg}
                             setDocuments={setDocuments}
+                            setForwardVisible={setForwardVisible}
+                            forwardVisible={forwardVisible}
                           />
                         ))
                   : direction.current
@@ -154,6 +170,8 @@ const DocMailboxTable = () => {
                           showDocument={showDocument}
                           setErrMsg={setErrMsg}
                           setDocuments={setDocuments}
+                          setForwardVisible={setForwardVisible}
+                          forwardVisible={forwardVisible}
                         />
                       ))
                   : documents
@@ -169,12 +187,17 @@ const DocMailboxTable = () => {
                           showDocument={showDocument}
                           setErrMsg={setErrMsg}
                           setDocuments={setDocuments}
+                          setForwardVisible={setForwardVisible}
+                          forwardVisible={forwardVisible}
                         />
                       ))}
               </tbody>
             </table>
             <div className="docmailbox-btn-container">
-              <button disabled={addVisible} onClick={handleAdd}>
+              <button
+                disabled={addVisible || forwardVisible}
+                onClick={handleAdd}
+              >
                 Upload a document
               </button>
             </div>
@@ -182,6 +205,16 @@ const DocMailboxTable = () => {
               <DocMailboxForm
                 setAddVisible={setAddVisible}
                 setErrMsg={setErrMsg}
+                setDocuments={setDocuments}
+              />
+            )}
+            {forwardVisible && (
+              <DocMailboxAssignedPracticianForward
+                staffInfos={clinic.staffInfos}
+                handleCheckPractician={handleCheckPractician}
+                isPracticianChecked={isPracticianChecked}
+                assignedId={assignedId}
+                setForwardVisible={setForwardVisible}
                 setDocuments={setDocuments}
               />
             )}

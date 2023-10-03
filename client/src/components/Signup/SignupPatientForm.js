@@ -47,7 +47,7 @@ const SignupPatientForm = () => {
     //DONT FORGET TO GENERATE CHART NUMBER AND POST VACCINES
     e.preventDefault();
     if (formDatas.confirm_password !== formDatas.password) {
-      setErrMsg("Passwords don't match");
+      setErrMsg("Passwords do not match");
       return;
     }
 
@@ -291,6 +291,7 @@ const SignupPatientForm = () => {
   };
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     if (file.size > 25000000) {
       toast.error("The file is over 25Mb, please choose another file", {
         containerId: "A",

@@ -25,7 +25,7 @@ const AccountPatientForm = () => {
   const [tempFormDatas, setTempFormDatas] = useState(user.demographics);
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
-  const [infosChanged, setInfosChanged] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
 
   //HANDLERS
   const handleChange = (e) => {
@@ -83,8 +83,8 @@ const AccountPatientForm = () => {
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      setInfosChanged(true);
-      setTimeout(() => setInfosChanged(false), 2000);
+      setSuccessMsg("Infos changed successfully");
+      setTimeout(() => setSuccessMsg(""), 2000);
       //update clinic context patientInfos
       const response = await axiosXanoPatient.get("/patients", {
         headers: {
@@ -120,9 +120,9 @@ const AccountPatientForm = () => {
   };
 
   return (
-    <>
+    <div className="patient-account-container">
       {errMsg && <p className="patient-account-err">{errMsg}</p>}
-      {infosChanged && (
+      {successMsg && (
         <p className="patient-account-confirm">Infos changed successfully</p>
       )}
 
@@ -464,7 +464,7 @@ const AccountPatientForm = () => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -69,9 +69,10 @@ const DocumentForm = ({
     }
   };
   const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
     setErrMsgPost("");
     setSaveDisabled(true);
-    const file = e.target.files[0];
     if (file.size > 25000000) {
       setErrMsgPost("The file is over 25Mb, please choose another file");
       setIsLoadingFile(false);

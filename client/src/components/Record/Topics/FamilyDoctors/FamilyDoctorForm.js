@@ -62,7 +62,7 @@ const FamilyDoctorForm = ({
     try {
       await postPatientRecord("/doctors", user.id, auth.authToken, datasToPost);
       setAddNew(false);
-      const response = await axiosXano.get("/all_pharmacies", {
+      const response = await axiosXano.get("/all_doctors", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,

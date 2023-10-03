@@ -79,6 +79,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     if (file.size > 20000000) {
       toast.error("File size exceeds 20Mbs, please choose another file", {
         containerId: "B",

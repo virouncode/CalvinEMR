@@ -63,8 +63,10 @@ const FamilyDoctorsList = ({
   return (
     <>
       <div className="doctors-list-title">
-        Doctors List
-        <button onClick={handleAddNewClick}>Add a new Doctor to list</button>
+        Doctors database
+        <button onClick={handleAddNewClick}>
+          Add a new doctor to database
+        </button>
       </div>
       <table className="doctors-list-table">
         <thead>

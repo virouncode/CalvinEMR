@@ -124,7 +124,7 @@ const EformsPU = ({
                 assigned_id: user.id,
                 name: file.name,
                 file: response2.data,
-                aknowledged: true,
+                acknowledged: true,
               });
               const abortController = new AbortController();
               fetchRecord(abortController);

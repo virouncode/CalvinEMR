@@ -7,20 +7,27 @@ import { patientIdToName } from "../../utils/patientIdToName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
+import { NavLink } from "react-router-dom";
 
-const DocMailboxItem = ({ item, showDocument, setDocuments }) => {
-  const { clinic, auth, user } = useAuth();
+const DocMailboxItem = ({
+  item,
+  showDocument,
+  setDocuments,
+  setForwardVisible,
+  forwardVisible,
+}) => {
+  const { clinic, auth, user, setUser } = useAuth();
 
-  const handleAknowledge = async () => {
+  const handleAcknowledge = async () => {
     if (
       await confirmAlert({
-        content: "Do you really want to aknowledge this document ?",
+        content: "Do you really want to acknowledge this document ?",
       })
     ) {
       try {
         const datasToPut = { ...item };
-        datasToPut.aknowledged = true;
-        datasToPut.date_aknowledged = Date.now();
+        datasToPut.acknowledged = true;
+        datasToPut.date_acknowledged = Date.now();
         await axiosXano.put(`documents/${item.id}`, datasToPut, {
           headers: {
             "Content-Type": "application/json",
@@ -35,16 +42,21 @@ const DocMailboxItem = ({ item, showDocument, setDocuments }) => {
             },
           }
         );
-        setDocuments(response.data.filter(({ aknowledged }) => !aknowledged));
-        toast.success("Document aknowledged successfully", {
+        setDocuments(response.data.filter(({ acknowledged }) => !acknowledged));
+        toast.success("Document acknowledged successfully", {
           containerId: "A",
         });
       } catch (err) {
-        toast.error(`Unable to aknowledge document : ${err.message}`, {
+        toast.error(`Unable to Acknowledge document : ${err.message}`, {
           containerId: "A",
         });
       }
     }
+  };
+
+  const handleForward = () => {
+    setForwardVisible(true);
+    setUser({ ...user, docToForward: item });
   };
 
   return (
@@ -61,7 +73,16 @@ const DocMailboxItem = ({ item, showDocument, setDocuments }) => {
       </td>
       <td>{item.file.name}</td>
       <td>{item.file.type}</td>
-      <td>{patientIdToName(clinic.patientsInfos, item.patient_id)}</td>
+      <td>
+        <NavLink
+          className="documents-item-link"
+          to={`/patient-record/${item.patient_id}`}
+          target="_blank"
+        >
+          {" "}
+          {patientIdToName(clinic.patientsInfos, item.patient_id)}
+        </NavLink>
+      </td>
       <td>
         <em>
           {staffIdToTitleAndName(clinic.staffInfos, item.created_by_id, true)}
@@ -71,7 +92,10 @@ const DocMailboxItem = ({ item, showDocument, setDocuments }) => {
         <em>{toLocalDate(item.date_created)}</em>
       </td>
       <td>
-        <button onClick={handleAknowledge}>Aknowledge</button>
+        <button onClick={handleAcknowledge}>Acknowledge</button>
+        <button onClick={handleForward} disabled={forwardVisible}>
+          Forward
+        </button>
       </td>
     </tr>
   );

@@ -28,7 +28,7 @@ const AttachmentCard = ({
         assigned_id: user.id,
         description: attachment.alias,
         file: attachment.file,
-        aknowledged: true,
+        acknowledged: true,
       });
       toast.success("Saved successfully", { containerId: "A" });
       navigate(0); //to refresh the patient record

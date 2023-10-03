@@ -100,9 +100,10 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
     }
   };
   const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
     setErrMsg("");
     setSaveDisabled(true);
-    const file = e.target.files[0];
     if (file.size > 25000000) {
       setErrMsg("The file is over 25Mb, please choose another file");
       setIsLoadingFile(false);
@@ -147,9 +148,6 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
     <div className="docmailbox-form">
       <form className="docmailbox-form-content" onSubmit={handleSubmit}>
         <div className="docmailbox-form-content-row">
-          <input type="submit" value="Post" disabled={saveDisabled} />
-        </div>
-        <div className="docmailbox-form-content-row">
           <label>Description</label>
           <input
             name="description"
@@ -189,6 +187,9 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
           {isLoadingFile && (
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}
+        </div>
+        <div className="docmailbox-form-content-row">
+          <input type="submit" value="Post" disabled={saveDisabled} />
         </div>
       </form>
       <div className="docmailbox-form-content-preview">

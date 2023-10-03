@@ -77,6 +77,11 @@ const Header = () => {
             </NavLink>
           </li>
           <li>
+            <a href="https://chat.openai.com/" target="_blank" rel="noreferrer">
+              ChatGPT
+            </a>
+          </li>
+          <li>
             <NavLink
               to="my-account"
               className={(nav) => (nav.isActive ? "nav-active" : "")}

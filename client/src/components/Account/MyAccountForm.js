@@ -16,7 +16,7 @@ const MyAccountForm = () => {
   const { auth, user, clinic, setClinic } = useAuth();
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
-  const [infosChanged, setInfosChanged] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   useEffect(() => {
@@ -60,8 +60,9 @@ const MyAccountForm = () => {
   };
 
   const handleSignChange = async (e) => {
-    setErrMsg("");
     const file = e.target.files[0];
+    if (!file) return;
+    setErrMsg("");
     if (file.size > 25000000) {
       setErrMsg("File is over 25Mb, please choose another file");
       return;
@@ -132,7 +133,9 @@ const MyAccountForm = () => {
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      setInfosChanged(true);
+      setSuccessMsg(
+        "Infos changed successfully, we will redirect you to the login page"
+      );
       //update clinic context staffInfos
       const response = await axiosXano.get("/staff", {
         headers: {
@@ -156,10 +159,10 @@ const MyAccountForm = () => {
     setEditVisible(false);
   };
 
-  return !infosChanged ? (
-    <>
+  return (
+    <div className="myaccount-section-container">
       {errMsg && <p className="myaccount-section-err">{errMsg}</p>}
-
+      {successMsg && <p className="myaccount-section-confirm">{successMsg}</p>}
       {tempFormDatas && (
         <div className="myaccount-section-form">
           <div className="myaccount-section-form-column">
@@ -390,9 +393,7 @@ const MyAccountForm = () => {
           </>
         )}
       </div>
-    </>
-  ) : (
-    <p className="myaccount-section-confirm">Infos changed successfully</p>
+    </div>
   );
 };
 

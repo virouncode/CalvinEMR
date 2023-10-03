@@ -278,6 +278,10 @@ const LoginForm = () => {
     }
   };
 
+  const handleClickForgot = () => {
+    navigate("/reset-password");
+  };
+
   return (
     <div className="login-container">
       <div className="login-content">
@@ -334,7 +338,10 @@ const LoginForm = () => {
           <button>Sign In</button>
         </form>
         <p className="login-forgot">
-          <span style={{ textDecoration: "underline", cursor: "pointer" }}>
+          <span
+            onClick={handleClickForgot}
+            style={{ textDecoration: "underline", cursor: "pointer" }}
+          >
             I forgot my password
           </span>
         </p>

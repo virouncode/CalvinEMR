@@ -12,6 +12,7 @@ const DocumentsContent = ({ showDocument, datas, isLoading, errMsg }) => {
         {datas && datas.length >= 1 ? (
           <ul>
             {datas
+              .filter(({ acknowledged }) => !acknowledged)
               .sort((a, b) => b.date_created - a.date_created)
               .map((document) => (
                 <li
@@ -21,9 +22,29 @@ const DocumentsContent = ({ showDocument, datas, isLoading, errMsg }) => {
                   }
                   style={{
                     textDecoration: "underline",
-                    color: document.aknowledged ? "black" : "blue",
+                    color: "blue",
                     cursor: "pointer",
-                    fontWeight: document.aknowledged ? "normal" : "bold",
+                    fontWeight: "bold",
+                  }}
+                >
+                  - {document.description} ({toLocalDate(document.date_created)}
+                  )
+                </li>
+              ))}
+            {datas
+              .filter(({ acknowledged }) => acknowledged)
+              .sort((a, b) => b.date_created - a.date_created)
+              .map((document) => (
+                <li
+                  key={document.id}
+                  onClick={() =>
+                    showDocument(document.file.url, document.file.mime)
+                  }
+                  style={{
+                    textDecoration: "underline",
+                    color: "black",
+                    cursor: "pointer",
+                    fontWeight: "normal",
                   }}
                 >
                   - {document.description} ({toLocalDate(document.date_created)}

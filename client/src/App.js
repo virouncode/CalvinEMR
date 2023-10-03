@@ -24,6 +24,7 @@ import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
 import PatientCredentialsPage from "./pages/PatientCredentialsPage";
 import useAuth from "./hooks/useAuth";
 import DocMailboxPage from "./pages/DocMailboxPage";
+import ResetPage from "./pages/ResetPage";
 
 const App = () => {
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ const App = () => {
       <Route path="/" element={<Layout2 />}>
         {/* public routes */}
         <Route path="login" element={<LoginPage />} />
+        <Route path="reset-password" element={<ResetPage />}></Route>
         {/* catch all */}
         <Route path="*" element={<MissingPage />} />
       </Route>
