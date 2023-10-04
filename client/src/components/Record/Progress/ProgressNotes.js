@@ -136,6 +136,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
                   setCheckedNotes={setCheckedNotes}
                   setSelectAll={setSelectAll}
                   allBodiesVisible={allBodiesVisible}
+                  patientInfos={patientInfos}
                 />
               ))
           ) : (

@@ -12,11 +12,11 @@ import {
 } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
 import axiosXano from "../../../api/xano";
-import formatName from "../../../utils/formatName";
 import TriangleButtonProgress from "./../Buttons/TriangleButtonProgress";
 import { toast } from "react-toastify";
-import { staffIdListToTitleAndName } from "../../../utils/staffIdListToTitleAndName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import NewWindow from "react-new-window";
+import ChatGPT from "./ChatGPT/ChatGPT";
 var _ = require("lodash");
 
 const ProgressNotesCard = ({
@@ -29,6 +29,7 @@ const ProgressNotesCard = ({
   setCheckedNotes,
   setSelectAll,
   allBodiesVisible,
+  patientInfos,
 }) => {
   //hooks
   const [editVisible, setEditVisible] = useState(false);
@@ -39,6 +40,7 @@ const ProgressNotesCard = ({
   const [bodyVisible, setBodyVisible] = useState(true);
   const bodyRef = useRef(null);
   const { auth, user, clinic } = useAuth();
+  const [popUpVisible, setPopUpVisible] = useState(false);
 
   useEffect(() => {
     if (progressNote) {
@@ -123,6 +125,10 @@ const ProgressNotesCard = ({
     bodyRef.current.classList.toggle(
       "progress-notes-card-body-container--active"
     );
+  };
+
+  const handleChatGPTClick = () => {
+    setPopUpVisible((v) => !v);
   };
 
   const handleEditClick = (e) => {
@@ -282,7 +288,6 @@ const ProgressNotesCard = ({
                 />
                 <p>
                   <strong>From: </strong>
-                  {getAuthorTitle()}{" "}
                   {staffIdToTitleAndName(
                     clinic.staffInfos,
                     tempFormDatas.updated_by_id,
@@ -326,7 +331,10 @@ const ProgressNotesCard = ({
                 )}
                 <div className="progress-notes-card-header-btns">
                   {!editVisible ? (
-                    <button onClick={handleEditClick}>Edit</button>
+                    <>
+                      <button onClick={handleEditClick}>Edit</button>
+                      <button onClick={handleChatGPTClick}>Ask ChatGPT</button>
+                    </>
                   ) : (
                     <div
                       style={{
@@ -470,6 +478,29 @@ const ProgressNotesCard = ({
             </div>
           )}
         </div>
+        {popUpVisible && (
+          <NewWindow
+            title="ChatGPT"
+            features={{
+              toolbar: "no",
+              scrollbars: "no",
+              menubar: "no",
+              status: "no",
+              directories: "no",
+              width: 1000,
+              height: 6000,
+              left: 320,
+              top: 200,
+            }}
+            onUnload={() => setPopUpVisible(false)}
+          >
+            <ChatGPT
+              attachments={attachments}
+              initialBody={formDatas.body}
+              patientInfos={patientInfos}
+            />
+          </NewWindow>
+        )}
       </div>
     )
   );

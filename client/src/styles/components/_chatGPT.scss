@@ -1,0 +1,93 @@
+.chatGPT {
+    &-prompt {
+        padding: 20px;
+        &-title {
+            padding-left: 20px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+    
+        }
+        &-textarea {
+            width : 95%;
+            padding: 20px;
+            margin: 0 auto;
+            height: 80%;
+            display:block;
+            resize: none;
+            overflow: scroll;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
+        &-btns {
+            padding: 20px;
+            display: flex;
+            justify-content: flex-end;
+            button {
+                margin-left: 5px;
+            }
+        }
+    }
+    &-discussion {
+        width:90%;
+        height: 100%;
+        margin:0 auto;
+        display: grid;
+        padding: 20px;
+        grid-template-rows: 3% 80% 10%;
+        &-title {
+            display: block;
+            font-size: 1rem;
+            border-bottom: solid 1px $grey;
+    
+        }
+        &-textarea {
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            border: solid 1px $grey;
+            outline: none;
+            padding-right: 40px;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            height:100px;
+            overflow: scroll;
+            &:focus {
+                outline: none;
+                border: solid 1.5px $grey;
+            }
+        }
+        &-sendicon{
+            cursor: pointer;
+            position: absolute;
+            width: 25px;
+            bottom: 90px;
+            right:8%;
+        }
+        &-content {
+            overflow: scroll;
+            font-size: 0.85rem;
+            margin: 20px 0; 
+
+            &-card {
+                padding: 20px 40px;
+                border: solid 1px $grey;
+                border-radius: 4px;
+                box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                &-img{
+                    width:10%;
+                }
+                &-message {
+                    white-space: pre;
+                    text-wrap: wrap;
+                    width:90%;
+                    
+                }
+            }
+            
+
+        }
+    }
+    
+}
