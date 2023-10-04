@@ -1,9 +1,6 @@
-//Librairies
 import React from "react";
-//Components
-import TriangleButton from "../Buttons/TriangleButton";
-//Utils
 import { getAge } from "../../../utils/getAge";
+import TriangleButton from "../Buttons/TriangleButton";
 
 const ProgressNotesTitle = ({
   patientInfos,

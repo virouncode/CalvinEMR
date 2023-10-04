@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import { CircularProgress } from "@mui/material";
+import React, { useRef, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import RelationshipForm from "../Topics/Relationships/RelationshipForm";
 import RelationshipItem from "../Topics/Relationships/RelationshipItem";
-import { ToastContainer } from "react-toastify";
 
 const RelationshipsPU = ({
   patientId,

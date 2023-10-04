@@ -1,6 +1,6 @@
 import React from "react";
-import doctorLogo from "../../../../assets/img/doctorLogo.png";
 import botLogo from "../../../../assets/img/chatGPTLogo.png";
+import doctorLogo from "../../../../assets/img/doctorLogo.png";
 
 const ChatGPTMessage = ({ role, message }) => {
   return (

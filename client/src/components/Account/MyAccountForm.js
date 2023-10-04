@@ -1,10 +1,10 @@
+import { CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
-import { toast } from "react-toastify";
-import { CircularProgress } from "@mui/material";
 import { myAccountSchema } from "../../validation/myAccountValidation";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 

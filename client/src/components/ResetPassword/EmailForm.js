@@ -1,7 +1,7 @@
 import React from "react";
-import axiosXanoReset from "../../api/xanoReset";
-import { sendEmail } from "../../api/sendEmail";
 import { toast } from "react-toastify";
+import { sendEmail } from "../../api/sendEmail";
+import axiosXanoReset from "../../api/xanoReset";
 
 const EmailForm = ({
   setRequestSent,

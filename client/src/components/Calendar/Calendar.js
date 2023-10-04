@@ -1,35 +1,26 @@
-//Libraries
-import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CircularProgress } from "@mui/material";
-
-//API
-import axiosXano from "../../api/xano";
-import { getAvailableRooms } from "../../api/getAvailableRooms";
-
-//Components
-import Shortcutpickr from "./Shortcutpickr";
-import CalendarFilter from "./CalendarFilter";
-import OutsideWrapper from "./OutsideWrapper";
-import ScrollerWrapper from "./ScrollerWrapper";
-import SlotSelect from "./SlotSelect";
-import FirstDaySelect from "./FirstDaySelect";
-import CalendarView from "./CalendarView";
-import TimelineView from "./TimelineView";
-import { confirmAlert } from "../Confirm/ConfirmGlobal";
-
-//Utils
-import { getWeekRange } from "../../utils/formatDates";
-import { rooms } from "../../utils/rooms";
-import formatName from "../../utils/formatName";
-import useAuth from "../../hooks/useAuth";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import { getAvailableRooms } from "../../api/getAvailableRooms";
+import axiosXano from "../../api/xano";
+import useAuth from "../../hooks/useAuth";
 import { useEvents } from "../../hooks/useEvents";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
+import { getWeekRange } from "../../utils/formatDates";
+import formatName from "../../utils/formatName";
+import { rooms } from "../../utils/rooms";
+import { staffIdToName } from "../../utils/staffIdToName";
+import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import Availability from "./Availability";
-
-//Require
+import CalendarFilter from "./CalendarFilter";
+import CalendarView from "./CalendarView";
+import FirstDaySelect from "./FirstDaySelect";
+import OutsideWrapper from "./OutsideWrapper";
+import ScrollerWrapper from "./ScrollerWrapper";
+import Shortcutpickr from "./Shortcutpickr";
+import SlotSelect from "./SlotSelect";
+import TimelineView from "./TimelineView";
 var _ = require("lodash");
 
 //MY COMPONENT

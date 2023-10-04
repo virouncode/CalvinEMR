@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import EditTemplatesList from "./EditTemplatesList";
-import { ToastContainer, toast } from "react-toastify";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import EditTemplatesList from "./EditTemplatesList";
 
 const EditTemplate = ({
   setEditTemplateVisible,

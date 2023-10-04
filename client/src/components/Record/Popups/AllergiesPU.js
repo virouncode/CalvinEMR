@@ -1,9 +1,9 @@
+import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
-import AllergyItem from "../Topics/Allergies/AllergyItem";
+import { ToastContainer } from "react-toastify";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import AllergyForm from "../Topics/Allergies/AllergyForm";
-import { CircularProgress } from "@mui/material";
-import { ToastContainer } from "react-toastify";
+import AllergyItem from "../Topics/Allergies/AllergyItem";
 
 const AllergiesPU = ({
   patientId,

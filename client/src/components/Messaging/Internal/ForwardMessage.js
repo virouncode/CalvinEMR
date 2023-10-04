@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import Contacts from "./Contacts";
-import { categoryToTitle } from "../../utils/categoryToTitle";
-import formatName from "../../utils/formatName";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
-import { ToastContainer, toast } from "react-toastify";
-import Message from "./Message";
-import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import { postPatientRecord } from "../../api/fetchRecords";
-import MessagesAttachments from "./MessagesAttachments";
 import { CircularProgress } from "@mui/material";
-import MessageExternal from "./MessageExternal";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { postPatientRecord } from "../../../api/fetchRecords";
+import axiosXano from "../../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import { categoryToTitle } from "../../../utils/categoryToTitle";
+import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
+import formatName from "../../../utils/formatName";
+import Contacts from "../Contacts";
+import MessageExternal from "../External/MessageExternal";
+import MessagesAttachments from "../MessagesAttachments";
+import Message from "./Message";
 
 const ForwardMessage = ({
   setForwardVisible,

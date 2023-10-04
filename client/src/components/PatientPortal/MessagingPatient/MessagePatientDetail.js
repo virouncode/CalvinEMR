@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
+import NewWindow from "react-new-window";
+import { toast } from "react-toastify";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
-import { toast } from "react-toastify";
-import { confirmAlert } from "../../Confirm/ConfirmGlobal";
-import MessagesAttachments from "../../Messaging/MessagesAttachments";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
-import MessageExternal from "../../Messaging/MessageExternal";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import MessageExternal from "../../Messaging/External/MessageExternal";
+import MessagesExternalPrintPU from "../../Messaging/External/MessagesExternalPrintPU";
+import MessagesAttachments from "../../Messaging/MessagesAttachments";
 import ReplyMessagePatient from "./ReplyMessagePatient";
-import NewWindow from "react-new-window";
-import MessagesExternalPrintPU from "../../Messaging/MessagesExternalPrintPU";
 
 const MessagePatientDetail = ({
   setCurrentMsgId,
@@ -21,7 +21,7 @@ const MessagePatientDetail = ({
 }) => {
   const [replyVisible, setReplyVisible] = useState(false);
   const [allPersons, setAllPersons] = useState(false);
-  const { auth, user, clinic } = useAuth();
+  const { auth, user } = useAuth();
   const [previousMsgs, setPreviousMsgs] = useState(null);
   const [attachments, setAttachments] = useState([]);
 

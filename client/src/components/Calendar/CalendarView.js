@@ -1,11 +1,10 @@
-//Librairies
-import React from "react";
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGrid from "@fullcalendar/daygrid";
-import timeGrid from "@fullcalendar/timegrid";
+import interaction from "@fullcalendar/interaction";
 import list from "@fullcalendar/list";
 import multimonth from "@fullcalendar/multimonth";
-import interaction from "@fullcalendar/interaction";
+import FullCalendar from "@fullcalendar/react"; // must go before plugins
+import timeGrid from "@fullcalendar/timegrid";
+import React from "react";
 
 const CalendarView = ({
   slotDuration,

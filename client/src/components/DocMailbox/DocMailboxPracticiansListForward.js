@@ -1,6 +1,6 @@
 import React from "react";
-import DocMailboxPracticiansListItemForward from "./DocMailboxPracticiansListItemForward";
 import useAuth from "../../hooks/useAuth";
+import DocMailboxPracticiansListItemForward from "./DocMailboxPracticiansListItemForward";
 
 const DocMailboxPracticiansListForward = ({
   categoryInfos,

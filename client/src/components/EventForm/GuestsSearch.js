@@ -1,6 +1,4 @@
-//Lobrairies
 import React, { useState } from "react";
-//Components
 import GuestsSearchForm from "./GuestsSearchForm";
 import GuestsSearchResults from "./GuestsSearchResults";
 

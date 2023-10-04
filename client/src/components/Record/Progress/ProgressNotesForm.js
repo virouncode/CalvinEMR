@@ -1,19 +1,16 @@
-//Librairies
-import React, { useEffect, useState } from "react";
-//Components
-import { confirmAlert } from "../../Confirm/ConfirmGlobal";
-//Utils
-import ProgressNotesAttachments from "./ProgressNotesAttachments";
-import formatName from "../../../utils/formatName";
-import { postPatientRecord } from "../../../api/fetchRecords";
-import useAuth from "../../../hooks/useAuth";
-import axiosXano from "../../../api/xano";
-import ProgressNotesTemplatesList from "./ProgressNotesTemplatesList";
-import NewWindow from "react-new-window";
-import NewTemplate from "./NewTemplate";
-import EditTemplate from "./EditTemplate";
-import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import NewWindow from "react-new-window";
+import { toast } from "react-toastify";
+import { postPatientRecord } from "../../../api/fetchRecords";
+import axiosXano from "../../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import formatName from "../../../utils/formatName";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import EditTemplate from "./EditTemplate";
+import NewTemplate from "./NewTemplate";
+import ProgressNotesAttachments from "./ProgressNotesAttachments";
+import ProgressNotesTemplatesList from "./ProgressNotesTemplatesList";
 
 const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
   //hooks

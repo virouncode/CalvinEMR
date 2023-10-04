@@ -1,6 +1,6 @@
 import React from "react";
-import "react-widgets/scss/styles.scss";
 import { Combobox } from "react-widgets";
+import "react-widgets/scss/styles.scss";
 import { relations } from "../../utils/relations";
 
 const RelationshipList = ({ value, handleChange, itemId = 0 }) => {

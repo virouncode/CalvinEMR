@@ -1,6 +1,6 @@
 import React from "react";
-import PatientsListItem from "./PatientsListItem";
 import useAuth from "../../hooks/useAuth";
+import PatientsListItem from "./PatientsListItem";
 
 const PatientsList = ({ isPatientChecked, handleCheckPatient, search }) => {
   const { clinic } = useAuth();

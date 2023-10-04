@@ -1,8 +1,8 @@
-import React from "react";
 import { CircularProgress } from "@mui/material";
-import { toLocalDate } from "../../../../utils/formatDates";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import useAuth from "../../../../hooks/useAuth";
+import { toLocalDate } from "../../../../utils/formatDates";
 
 const MessagesContent = ({ datas, isLoading, errMsg }) => {
   const { user } = useAuth();

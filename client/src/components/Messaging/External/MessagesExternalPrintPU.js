@@ -1,6 +1,5 @@
 import React from "react";
-import useAuth from "../../hooks/useAuth";
-import MessagesAttachments from "./MessagesAttachments";
+import MessagesAttachments from "../MessagesAttachments";
 import MessageExternal from "./MessageExternal";
 
 const MessagesExternalPrintPU = ({
@@ -10,7 +9,6 @@ const MessagesExternalPrintPU = ({
   authorTitle,
   attachments,
 }) => {
-  const { clinic } = useAuth();
   const handleClickPrint = (e) => {
     e.nativeEvent.view.print();
   };

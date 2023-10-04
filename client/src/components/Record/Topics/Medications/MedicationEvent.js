@@ -1,15 +1,14 @@
-//Librairies
 import React, { useState } from "react";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import { toLocalDate } from "../../../../utils/formatDates";
-import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
-import { medicationSchema } from "../../../../validation/medicationValidation";
+import useAuth from "../../../../hooks/useAuth";
+import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { medicationSchema } from "../../../../validation/medicationValidation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 
 const MedicationEvent = ({
   event,

@@ -1,11 +1,10 @@
-//Librairies
 import React from "react";
-import { toLocalDate } from "../../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import useAuth from "../../../../hooks/useAuth";
-import { deletePatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { deletePatientRecord } from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
+import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 
 const EformItem = ({ item, fetchRecord, showDocument }) => {
   //HOOKS

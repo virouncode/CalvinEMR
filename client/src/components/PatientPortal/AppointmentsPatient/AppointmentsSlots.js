@@ -1,6 +1,6 @@
+import { CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getAvailableAppointments } from "../../../utils/getAvailableAppointments";
-import { CircularProgress } from "@mui/material";
 import AppointmentSlotItem from "./AppointmentSlotItem";
 
 const AppointmentsSlots = ({

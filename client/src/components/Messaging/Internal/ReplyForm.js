@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
-import { ToastContainer, toast } from "react-toastify";
-import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import Message from "./Message";
 import { CircularProgress } from "@mui/material";
-import MessagesAttachments from "./MessagesAttachments";
-import { postPatientRecord } from "../../api/fetchRecords";
-import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { postPatientRecord } from "../../../api/fetchRecords";
+import axiosXano from "../../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import MessagesAttachments from "../MessagesAttachments";
+import Message from "./Message";
 
 const ReplyForm = ({
   setReplyVisible,

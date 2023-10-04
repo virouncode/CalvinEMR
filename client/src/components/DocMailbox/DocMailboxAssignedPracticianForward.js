@@ -1,8 +1,8 @@
 import React from "react";
-import DocMailboxPracticianCategoryForward from "./DocMailboxPracticianCategoryForward";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
+import axiosXano from "../../api/xano";
+import useAuth from "../../hooks/useAuth";
+import DocMailboxPracticianCategoryForward from "./DocMailboxPracticianCategoryForward";
 
 const DocMailboxAssignedPracticianForward = ({
   staffInfos,

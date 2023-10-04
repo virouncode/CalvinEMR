@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import formatName from "../../../../utils/formatName";
-import { toLocalDate } from "../../../../utils/formatDates";
-import useAuth from "../../../../hooks/useAuth";
-import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
-import { allergySchema } from "../../../../validation/allergyValidation";
+import { postPatientRecord } from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
+import formatName from "../../../../utils/formatName";
+import { allergySchema } from "../../../../validation/allergyValidation";
 
 const AllergyForm = ({
   editCounter,

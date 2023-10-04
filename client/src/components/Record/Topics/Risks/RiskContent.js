@@ -1,7 +1,5 @@
-//Librairies
-import React from "react";
 import { CircularProgress } from "@mui/material";
-//Components
+import React from "react";
 
 const RiskContent = ({ datas, isLoading, errMsg }) => {
   return !isLoading ? (

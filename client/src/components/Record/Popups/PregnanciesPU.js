@@ -1,12 +1,9 @@
-//Librairies
-import React, { useRef, useState } from "react";
-//Components
-import PregnancyEvent from "../Topics/Pregnancies/PregnancyEvent";
-import { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
-import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
-import PregnancyForm from "../Topics/Pregnancies/PregnancyForm";
 import { CircularProgress } from "@mui/material";
+import React, { useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import PregnancyEvent from "../Topics/Pregnancies/PregnancyEvent";
+import PregnancyForm from "../Topics/Pregnancies/PregnancyForm";
 
 const PregnanciesPU = ({
   patientId,

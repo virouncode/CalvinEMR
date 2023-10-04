@@ -1,7 +1,6 @@
-//Librairies
 import React from "react";
-import axiosXano from "../../api/xano";
 import { toast } from "react-toastify";
+import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 
 const SlotSelect = () => {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
+import useAuth from "../../hooks/useAuth";
 
 const VerifyPassword = ({ setVerified }) => {
   const LOGIN_URL = "/auth/login";

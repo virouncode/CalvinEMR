@@ -1,8 +1,8 @@
 import { CircularProgress } from "@mui/material";
 import React from "react";
-import { patientIdToName } from "../../../../utils/patientIdToName";
-import useAuth from "../../../../hooks/useAuth";
 import { NavLink } from "react-router-dom";
+import useAuth from "../../../../hooks/useAuth";
+import { patientIdToName } from "../../../../utils/patientIdToName";
 
 const RelationshipsContent = ({ datas, isLoading, errMsg }) => {
   const { clinic } = useAuth();

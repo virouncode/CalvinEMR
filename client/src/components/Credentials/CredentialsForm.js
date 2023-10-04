@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
 import { useNavigate } from "react-router-dom";
+import axiosXano from "../../api/xano";
+import useAuth from "../../hooks/useAuth";
 
 const CredentialsForm = () => {
   const navigate = useNavigate();

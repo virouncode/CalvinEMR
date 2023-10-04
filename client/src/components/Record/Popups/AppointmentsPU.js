@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
-import AppointmentEvent from "../Topics/Appointments/AppointmentEvent";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
-import AppointmentForm from "../Topics/Appointments/AppointmentForm";
-
 import { CircularProgress } from "@mui/material";
+import React, { useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import AppointmentEvent from "../Topics/Appointments/AppointmentEvent";
+import AppointmentForm from "../Topics/Appointments/AppointmentForm";
 
 const AppointmentsPU = ({
   patientId,

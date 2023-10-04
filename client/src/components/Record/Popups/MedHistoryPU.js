@@ -1,11 +1,9 @@
-//Librairies
-import React, { useRef, useState } from "react";
-//Components
-import MedHistoryEvent from "../Topics/MedHistory/MedHistoryEvent";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
-import MedHistoryForm from "../Topics/MedHistory/MedHistoryForm";
 import { CircularProgress } from "@mui/material";
+import React, { useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import MedHistoryEvent from "../Topics/MedHistory/MedHistoryEvent";
+import MedHistoryForm from "../Topics/MedHistory/MedHistoryForm";
 
 const MedHistoryPU = ({
   patientId,

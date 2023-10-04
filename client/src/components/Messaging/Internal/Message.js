@@ -1,8 +1,8 @@
 import React from "react";
-import { toLocalDateAndTime } from "../../utils/formatDates";
-import useAuth from "../../hooks/useAuth";
-import { patientIdToName } from "../../utils/patientIdToName";
-import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
+import useAuth from "../../../hooks/useAuth";
+import { toLocalDateAndTime } from "../../../utils/formatDates";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const Message = ({ message, index }) => {
   const { clinic } = useAuth();

@@ -1,28 +1,22 @@
-//Librairies
-import React from "react";
-import { useState, useRef } from "react";
-
-//Components
-import RoomsList from "../../../EventForm/RoomsList";
-import StatusList from "../../../EventForm/StatusList";
-import HostsList from "../../../EventForm/HostsList";
-
-//Utils
+import React, { useRef, useState } from "react";
+import { toast } from "react-toastify";
+import { postPatientRecord } from "../../../../api/fetchRecords";
+import { getAvailableRooms } from "../../../../api/getAvailableRooms";
+import useAuth from "../../../../hooks/useAuth";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import {
   fromLocalToISOStringNoMs,
-  toLocalDate,
   toISOStringNoMs,
+  toLocalDate,
 } from "../../../../utils/formatDates";
-import { getAvailableRooms } from "../../../../api/getAvailableRooms";
-import { statuses } from "../../../../utils/statuses";
-import { rooms } from "../../../../utils/rooms";
-import TimePicker from "../../../Pickers/TimePicker";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import formatName from "../../../../utils/formatName";
-import useAuth from "../../../../hooks/useAuth";
-import { postPatientRecord } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
-import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { rooms } from "../../../../utils/rooms";
+import { statuses } from "../../../../utils/statuses";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import HostsList from "../../../EventForm/HostsList";
+import RoomsList from "../../../EventForm/RoomsList";
+import StatusList from "../../../EventForm/StatusList";
+import TimePicker from "../../../Pickers/TimePicker";
 
 const AppointmentForm = ({
   fetchRecord,

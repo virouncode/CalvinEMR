@@ -1,17 +1,13 @@
-//Librairies
+import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
-//Components
+import NewWindow from "react-new-window";
+import useAuth from "../../../hooks/useAuth";
+import { useProgressNotes } from "../../../hooks/useProgressNotes";
+import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
+import ProgressNotesPU from "../Popups/ProgressNotesPU";
 import ProgressNotesCard from "./ProgressNotesCard";
 import ProgressNotesForm from "./ProgressNotesForm";
-//Hooks
-import { useProgressNotes } from "../../../hooks/useProgressNotes";
-//Utils
-import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import ProgressNotesHeader from "./ProgressNotesHeader";
-import ProgressNotesPU from "../Popups/ProgressNotesPU";
-import NewWindow from "react-new-window";
-import { CircularProgress } from "@mui/material";
-import useAuth from "../../../hooks/useAuth";
 
 const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
   //hooks

@@ -1,8 +1,8 @@
+import { CircularProgress } from "@mui/material";
 import React from "react";
 import NewWindow from "react-new-window";
-import { CircularProgress } from "@mui/material";
-import MessagesExternalOverview from "./MessagesExternalOverview";
 import MessageExternalDetail from "./MessageExternalDetail";
+import MessagesExternalOverview from "./MessagesExternalOverview";
 import NewMessageExternal from "./NewMessageExternal";
 
 const MessagesExternalBox = ({

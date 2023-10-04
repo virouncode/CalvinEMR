@@ -1,73 +1,94 @@
-import React, { useState } from "react";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
-import { ToastContainer, toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
-import MessagesAttachments from "./MessagesAttachments";
-import { postPatientRecord } from "../../api/fetchRecords";
-import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
-import { patientIdToName } from "../../utils/patientIdToName";
-import MessageExternal from "./MessageExternal";
-import { sendEmail } from "../../api/sendEmail";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { postPatientRecord } from "../../../api/fetchRecords";
+import { sendEmail } from "../../../api/sendEmail";
+import axiosXano from "../../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import MessagesAttachments from "../MessagesAttachments";
+import Patients from "../Patients";
 
-const ReplyFormExternal = ({
-  setReplyVisible,
-  message,
-  previousMsgs,
-  setMessages,
-  section,
-  setCurrentMsgId,
-}) => {
+const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
   const { auth, user, clinic } = useAuth();
-  const [body, setBody] = useState("");
   const [attachments, setAttachments] = useState([]);
+  const [recipientId, setRecipientId] = useState(0);
+  const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
 
-  const handleCancel = (e) => {
-    setReplyVisible(false);
+  const handleChange = (e) => {
+    setBody(e.target.value);
   };
+
+  const handleChangeSubject = (e) => {
+    setSubject(e.target.value);
+  };
+
+  const isPatientChecked = (id) => recipientId === id;
+
+  const handleCheckPatient = (e) => {
+    const id = parseInt(e.target.id);
+    const checked = e.target.checked;
+    if (checked) {
+      setRecipientId(id);
+    } else {
+      setRecipientId(0);
+    }
+  };
+
+  const handleCancel = (e) => {
+    setNewVisible(false);
+  };
+
+  const handleRemoveAttachment = (fileName) => {
+    let updatedAttachments = [...attachments];
+    updatedAttachments = updatedAttachments.filter(
+      (attachment) => attachment.file.name !== fileName
+    );
+    setAttachments(updatedAttachments);
+  };
+
   const handleSend = async (e) => {
+    if (recipientId === 0) {
+      toast.error("Please choose a recipient", { containerId: "B" });
+      return;
+    }
     try {
-      let attach_ids = (
+      const attach_ids = (
         await postPatientRecord("/attachments", user.id, auth.authToken, {
           attachments_array: attachments,
         })
       ).data;
 
-      attach_ids = [...message.attachments_ids, ...attach_ids];
-
-      const replyMessage = {
+      //create the message
+      const message = {
         from_id: user.id,
         from_user_type: "staff",
-        to_id: message.from_id,
+        to_id: recipientId,
         to_user_type: "patient",
-        subject: previousMsgs.length
-          ? `Re ${previousMsgs.length + 1}: ${message.subject.slice(
-              message.subject.indexOf(":") + 1
-            )}`
-          : `Re: ${message.subject}`,
+        subject: subject,
         body: body,
         attachments_ids: attach_ids,
         read_by_staff_id: user.id,
-        previous_messages_ids: [
-          ...previousMsgs.map(({ id }) => id),
-          message.id,
-        ],
+        read_by_ids: [{ user_type: "staff", id: user.id }],
         date_created: Date.now(),
       };
 
-      await axiosXano.post("/messages_external", replyMessage, {
+      await axiosXano.post("/messages_external", message, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
+          "Content-Type": "application/json",
         },
       });
+
       const response = await axiosXano.get(
         `/messages_external_for_staff?staff_id=${user.id}`,
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
           },
         }
       );
@@ -78,13 +99,12 @@ const ReplyFormExternal = ({
         user.id
       );
       setMessages(newMessages);
-      setReplyVisible(false);
-      setCurrentMsgId(0);
+      setNewVisible(false);
 
       //send an email and an SMS to patient
       await sendEmail(
         "virounk@gmail.com", //to be changed to patient email
-        patientIdToName(clinic.patientsInfos, message.from_id),
+        patientIdToName(clinic.patientsInfos, recipientId),
         "Calvin EMR New message",
         "",
         "",
@@ -101,7 +121,7 @@ const ReplyFormExternal = ({
           // from: "New Life",
           to: "+33683267962", //to be changed to patient cell_phone
           body: `
-Hello ${patientIdToName(clinic.patientsInfos, message.from_id)},
+Hello ${patientIdToName(clinic.patientsInfos, recipientId)},
           
 You have a new message, please login to your patient portal
           
@@ -120,16 +140,15 @@ Powered by Calvin EMR`,
             });
           }
         });
+
       toast.success("Message sent successfully", { containerId: "A" });
+
+      //EMAIL + SMS pour prévenir le patient qu'il a un nouveau message dans son portail
     } catch (err) {
       toast.error(`Error: unable to send message: ${err.message}`, {
         containerId: "B",
       });
     }
-  };
-
-  const handleChange = (e) => {
-    setBody(e.target.value);
   };
 
   const handleAttach = (e) => {
@@ -188,67 +207,65 @@ Powered by Calvin EMR`,
     input.click();
   };
 
-  const handleRemoveAttachment = (fileName) => {
-    let updatedAttachments = [...attachments];
-    updatedAttachments = updatedAttachments.filter(
-      (attachment) => attachment.file.name !== fileName
-    );
-    setAttachments(updatedAttachments);
-  };
-
   return (
-    <div className="reply-form">
-      <div className="reply-form-title">
-        <p>
+    <div className="new-message">
+      <div className="new-message-form">
+        <div className="new-message-form-recipients">
           <strong>To: </strong>
-          {patientIdToName(clinic.patientsInfos, message.from_id)}
-        </p>
-      </div>
-      <div className="reply-form-subject">
-        <strong>Subject:</strong>
-        {previousMsgs.length
-          ? `\u00A0Re ${previousMsgs.length + 1}: ${message.subject.slice(
-              message.subject.indexOf(":") + 1
-            )}`
-          : `\u00A0Re: ${message.subject}`}
-      </div>
-      <div className="reply-form-attach">
-        <strong>Attach files</strong>
-        <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
-        {attachments.map((attachment) => (
-          <span key={attachment.file.name} style={{ marginLeft: "5px" }}>
-            {attachment.alias},
-          </span>
-        ))}
-      </div>
-      <div className="reply-form-body">
-        <textarea value={body} onChange={handleChange}></textarea>
-        <div className="reply-form-history">
-          <MessageExternal message={message} key={message.id} index={0} />
-          {previousMsgs.map((message, index) => (
-            <MessageExternal
-              message={message}
-              key={message.id}
-              index={index + 1}
-            />
+          <input
+            type="text"
+            placeholder="Patient"
+            value={
+              recipientId
+                ? clinic.patientsInfos.find(({ id }) => recipientId === id)
+                    .full_name
+                : ""
+            }
+            readOnly
+          />
+        </div>
+        <div className="new-message-form-subject">
+          <strong>Subject: </strong>
+          <input
+            type="text"
+            placeholder="Subject"
+            onChange={handleChangeSubject}
+            value={subject}
+          />
+        </div>
+        <div className="new-message-form-attach">
+          <strong>Attach files</strong>
+          <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
+          {attachments.map((attachment) => (
+            <span key={attachment.file.name} style={{ marginLeft: "5px" }}>
+              {attachment.alias},
+            </span>
           ))}
         </div>
-        <MessagesAttachments
-          attachments={attachments}
-          handleRemoveAttachment={handleRemoveAttachment}
-          deletable={true}
-          cardWidth="17%"
-          addable={false}
-        />
+        <div className="new-message-form-body">
+          <textarea value={body} onChange={handleChange}></textarea>
+          <MessagesAttachments
+            attachments={attachments}
+            handleRemoveAttachment={handleRemoveAttachment}
+            deletable={true}
+            addable={false}
+          />
+        </div>
+        <div className="new-message-form-btns">
+          <button onClick={handleSend} disabled={isLoadingFile}>
+            Send
+          </button>
+          <button onClick={handleCancel}>Cancel</button>
+          {isLoadingFile && (
+            <CircularProgress size="1rem" style={{ margin: "5px" }} />
+          )}
+        </div>
       </div>
-      <div className="reply-form-btns">
-        <button onClick={handleSend} disabled={isLoadingFile}>
-          Send
-        </button>
-        <button onClick={handleCancel}>Cancel</button>
-        {isLoadingFile && (
-          <CircularProgress size="1rem" style={{ margin: "5px" }} />
-        )}
+      <div className="new-message-patients">
+        <Patients
+          handleCheckPatient={handleCheckPatient}
+          isPatientChecked={isPatientChecked}
+        />
       </div>
       <ToastContainer
         enableMultiContainer
@@ -269,4 +286,4 @@ Powered by Calvin EMR`,
   );
 };
 
-export default ReplyFormExternal;
+export default NewMessageExternal;

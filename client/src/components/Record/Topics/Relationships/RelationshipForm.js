@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
-import RelationshipList from "../../../Lists/RelationshipList";
-import PatientsSelect from "../../../Lists/PatientsSelect";
-import formatName from "../../../../utils/formatName";
-import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
-import { postPatientRecord } from "../../../../api/fetchRecords";
-import { toInverseRelation } from "../../../../utils/toInverseRelation";
 import { toast } from "react-toastify";
-import { relationshipSchema } from "../../../../validation/relationshipValidation";
 import "react-widgets/scss/styles.scss";
+import { postPatientRecord } from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
+import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
+import formatName from "../../../../utils/formatName";
+import { toInverseRelation } from "../../../../utils/toInverseRelation";
+import { relationshipSchema } from "../../../../validation/relationshipValidation";
+import PatientsSelect from "../../../Lists/PatientsSelect";
+import RelationshipList from "../../../Lists/RelationshipList";
 
 const RelationshipForm = ({
   editCounter,

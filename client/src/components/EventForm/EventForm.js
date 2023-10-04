@@ -1,35 +1,29 @@
 //Libraries
 import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
   useRef,
   useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
 } from "react";
 
-//API
+import { toast } from "react-toastify";
 import { getAvailableRooms } from "../../api/getAvailableRooms";
 import axiosXano from "../../api/xano";
-
-//Components
-import EditGuests from "./EditGuests";
-import FlatpickrStart from "./FlatpickrStart";
-import FlatpickrEnd from "./FlatpickrEnd";
-import HostsList from "./HostsList";
-import RoomsRadio from "./RoomsRadio";
-import { confirmAlert } from "../Confirm/ConfirmGlobal";
-import StatusesRadio from "./StatusesRadio";
-import Invitation from "./Invitation";
-import DurationPicker from "../Pickers/DurationPicker";
-
-//Utils
-import { rooms } from "../../utils/rooms";
-import { statuses } from "../../utils/statuses";
 import useAuth from "../../hooks/useAuth";
-import formatName from "../../utils/formatName";
 import { useEventForm } from "../../hooks/useEventForm";
-import { toast } from "react-toastify";
+import { rooms } from "../../utils/rooms";
 import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
+import { statuses } from "../../utils/statuses";
+import { confirmAlert } from "../Confirm/ConfirmGlobal";
+import DurationPicker from "../Pickers/DurationPicker";
+import EditGuests from "./EditGuests";
+import FlatpickrEnd from "./FlatpickrEnd";
+import FlatpickrStart from "./FlatpickrStart";
+import HostsList from "./HostsList";
+import Invitation from "./Invitation";
+import RoomsRadio from "./RoomsRadio";
+import StatusesRadio from "./StatusesRadio";
 
 var _ = require("lodash");
 

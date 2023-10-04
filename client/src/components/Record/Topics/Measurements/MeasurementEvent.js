@@ -1,11 +1,10 @@
-//Librairies
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-
-//Components
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-
-//Utils
+import {
+  deletePatientRecord,
+  putPatientRecord,
+} from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
 import { toLocalDate } from "../../../../utils/formatDates";
 import {
   bodyMassIndex,
@@ -15,13 +14,9 @@ import {
   kgToLbs,
   lbsToKg,
 } from "../../../../utils/measurements";
-import useAuth from "../../../../hooks/useAuth";
-import {
-  deletePatientRecord,
-  putPatientRecord,
-} from "../../../../api/fetchRecords";
-import { measurementSchema } from "../../../../validation/measurementValidation";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { measurementSchema } from "../../../../validation/measurementValidation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 
 const MeasurementEvent = ({
   event,

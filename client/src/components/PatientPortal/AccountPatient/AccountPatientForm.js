@@ -1,19 +1,19 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 import { firstLetterUpper } from "../../../utils/firstLetterUpper";
 import { toLocalDate } from "../../../utils/formatDates";
 import { getAge } from "../../../utils/getAge";
-import DoctorsList from "../../Lists/DoctorsLists";
-import CountriesList from "../../Lists/CountriesList";
-import NursesList from "../../Lists/NursesList";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { patientAccountSchema } from "../../../validation/patientAccountValidation";
-import USTechsList from "../../Lists/USTechsList";
+import CountriesList from "../../Lists/CountriesList";
+import DoctorsList from "../../Lists/DoctorsLists";
+import NursesList from "../../Lists/NursesList";
+import NutritionistsList from "../../Lists/NutritionistsList";
 import PhysiosList from "../../Lists/PhysiosList";
 import PsychosList from "../../Lists/PsychosList";
-import NutritionistsList from "../../Lists/NutritionistsList";
-import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import USTechsList from "../../Lists/USTechsList";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 const USERINFO_URL = "/auth/me";
 

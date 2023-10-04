@@ -1,11 +1,11 @@
 import React from "react";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
-import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
 import { toast } from "react-toastify";
-import { confirmAlert } from "../Confirm/ConfirmGlobal";
+import axiosXano from "../../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
-const MessagesToolBar = ({
+const MessagesExternalToolBar = ({
   search,
   setSearch,
   newVisible,
@@ -18,8 +18,8 @@ const MessagesToolBar = ({
   setMsgsSelectedIds,
   currentMsgId,
   setPopUpVisible,
-  selectAllVisible,
   setSelectAllVisible,
+  selectAllVisible,
 }) => {
   const { auth, user } = useAuth();
   const handleChange = (e) => {
@@ -27,8 +27,9 @@ const MessagesToolBar = ({
   };
   const handleClickNew = (e) => {
     if (newVisible) {
-      alert(
-        "You already opened a New Message window, please send your message or close the window"
+      toast.error(
+        "You already opened a New Message window, please send your message or close the window",
+        { containerId: "A" }
       );
       return;
     }
@@ -54,34 +55,44 @@ const MessagesToolBar = ({
     ) {
       try {
         for (let messageId of msgsSelectedIds) {
-          //get the particular message
-          const response = await axiosXano.get(`/messages/${messageId}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          });
+          const response = await axiosXano.get(
+            `/messages_external/${messageId}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${auth.authToken}`,
+              },
+            }
+          );
           const newMessage = {
             ...response.data,
-            deleted_by_staff_ids: [
-              ...response.data.deleted_by_staff_ids,
-              user.id,
-            ],
+            deleted_by_staff_id: user.id,
           };
-          await axiosXano.put(`/messages/${messageId}`, newMessage, {
+          await axiosXano.put(`/messages_external/${messageId}`, newMessage, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${auth.authToken}`,
             },
           });
         }
-        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        setMessages(filterAndSortMessages(section, response.data, user.id));
+        const response = await axiosXano.get(
+          `/messages_external_for_staff?staff_id=${user.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${auth.authToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        setMessages(
+          filterAndSortExternalMessages(
+            section,
+            response.data,
+            "staff",
+            user.id
+          )
+        );
         setNewVisible(false);
         toast.success("Message(s) deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
@@ -98,7 +109,7 @@ const MessagesToolBar = ({
     try {
       const msgsSelected = (
         await axiosXano.post(
-          "/messages_selected",
+          "/messages_external_selected",
           { messages_ids: msgsSelectedIds },
           {
             headers: {
@@ -109,14 +120,11 @@ const MessagesToolBar = ({
         )
       ).data;
       for (let message of msgsSelected) {
-        const newDeletedByStaffIds = message.deleted_by_staff_ids.filter(
-          (id) => id !== user.id
-        );
         const newMessage = {
           ...message,
-          deleted_by_staff_ids: newDeletedByStaffIds,
+          deleted_by_staff_id: 0,
         };
-        await axiosXano.put(`/messages/${message.id}`, newMessage, {
+        await axiosXano.put(`/messages_external/${message.id}`, newMessage, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
@@ -149,7 +157,6 @@ const MessagesToolBar = ({
         placeholder="Search in messages"
         value={search}
         onChange={handleChange}
-        id="search"
       />
       <div className="messages-toolbar-btns">
         <button onClick={handleClickNew}>New</button>
@@ -175,4 +182,4 @@ const MessagesToolBar = ({
   );
 };
 
-export default MessagesToolBar;
+export default MessagesExternalToolBar;

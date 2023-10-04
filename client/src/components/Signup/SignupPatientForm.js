@@ -1,17 +1,17 @@
+import { CircularProgress } from "@mui/material";
 import React, { useState } from "react";
-import { toLocalDate } from "../../utils/formatDates";
-import CountriesList from "../Lists/CountriesList";
-import axiosXano from "../../api/xano";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { postPatientRecord, putPatientRecord } from "../../api/fetchRecords";
+import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { createChartNbr } from "../../utils/createChartNbr";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
-import { CircularProgress } from "@mui/material";
-import { toast } from "react-toastify";
-import RelationshipsForm from "./RelationshipsForm";
+import { toLocalDate } from "../../utils/formatDates";
 import { toInverseRelation } from "../../utils/toInverseRelation";
-import { postPatientRecord, putPatientRecord } from "../../api/fetchRecords";
 import { patientSchema } from "../../validation/patientValidation";
+import CountriesList from "../Lists/CountriesList";
+import RelationshipsForm from "./RelationshipsForm";
 
 const SignupPatientForm = () => {
   const { auth, user, clinic, setClinic } = useAuth();

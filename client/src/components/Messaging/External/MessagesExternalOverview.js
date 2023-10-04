@@ -1,6 +1,6 @@
 import React from "react";
-import MessagesExternalOverviewToolbar from "./MessagesExternalOverviewToolbar";
 import MessageExternalThumbnail from "./MessageExternalThumbnail";
+import MessagesExternalOverviewToolbar from "./MessagesExternalOverviewToolbar";
 
 const MessagesExternalOverview = ({
   messages,

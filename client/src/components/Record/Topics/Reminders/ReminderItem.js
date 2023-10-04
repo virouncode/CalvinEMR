@@ -1,18 +1,15 @@
-//Librairies
 import React, { useState } from "react";
-
-//Utils
-import { toLocalDate } from "../../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
-import { reminderSchema } from "../../../../validation/reminderValidation";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { reminderSchema } from "../../../../validation/reminderValidation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 
 const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS

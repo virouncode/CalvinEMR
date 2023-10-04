@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import useAuth from "../../../hooks/useAuth";
-import axiosXanoPatient from "../../../api/xanoPatient";
-import { ToastContainer, toast } from "react-toastify";
-import MessagesAttachments from "../../Messaging/MessagesAttachments";
 import { CircularProgress } from "@mui/material";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { postPatientRecordPatient } from "../../../api/fetchRecords";
+import axiosXanoPatient from "../../../api/xanoPatient";
+import useAuth from "../../../hooks/useAuth";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
-import ContactsForPatient from "./ContactsForPatient";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import MessagesAttachments from "../../Messaging/MessagesAttachments";
+import ContactsForPatient from "./ContactsForPatient";
 
 const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
   const { auth, user, clinic } = useAuth();

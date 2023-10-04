@@ -1,21 +1,16 @@
-//Librairies
 import React, { useState } from "react";
-
-//Components
-import PregnanciesList from "../../../Lists/PregnanciesList";
-
-//Utils
-import { toLocalDate } from "../../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
-import { pregnancySchema } from "../../../../validation/pregnancyValidation";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { pregnancySchema } from "../../../../validation/pregnancyValidation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import PregnanciesList from "../../../Lists/PregnanciesList";
 
 const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS

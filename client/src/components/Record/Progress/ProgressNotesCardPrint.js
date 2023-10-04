@@ -1,12 +1,9 @@
-//Librairies
 import React, { useEffect, useState } from "react";
-//Components
-import ProgressNotesAttachments from "./ProgressNotesAttachments";
-//Utils
-import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
+import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import ProgressNotesAttachments from "./ProgressNotesAttachments";
 
 const ProgressNotesCardPrint = ({ progressNote }) => {
   const { auth, clinic } = useAuth();

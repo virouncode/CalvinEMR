@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import formatName from "../../../../utils/formatName";
-import { toLocalDate } from "../../../../utils/formatDates";
-import useAuth from "../../../../hooks/useAuth";
-import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
-import { medHistorySchema } from "../../../../validation/medHistoryValidation";
+import { postPatientRecord } from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
+import formatName from "../../../../utils/formatName";
+import { medHistorySchema } from "../../../../validation/medHistoryValidation";
 
 const MedHistoryForm = ({
   editCounter,

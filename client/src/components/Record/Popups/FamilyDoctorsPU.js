@@ -1,11 +1,11 @@
+import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { putPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
-import { putPatientRecord } from "../../../api/fetchRecords";
-import { ToastContainer, toast } from "react-toastify";
 import FamilyDoctorItem from "../Topics/FamilyDoctors/FamilyDoctorItem";
 import FamilyDoctorsList from "../Topics/FamilyDoctors/FamilyDoctorsList";
-import { CircularProgress } from "@mui/material";
 
 const FamilyDoctorsPU = ({
   patientId,

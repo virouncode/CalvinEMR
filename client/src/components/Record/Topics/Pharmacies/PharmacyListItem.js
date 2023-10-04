@@ -1,7 +1,7 @@
 import React from "react";
+import useAuth from "../../../../hooks/useAuth";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
-import useAuth from "../../../../hooks/useAuth";
 
 const PharmacyListItem = ({ item, handleAddItemClick }) => {
   const { clinic } = useAuth();

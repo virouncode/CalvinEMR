@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
-import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
-import { doctorSchema } from "../../../../validation/doctorValidation";
+import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import axiosXano from "../../../../api/xano";
-import { toast } from "react-toastify";
-import CountriesList from "../../../Lists/CountriesList";
-import formatName from "../../../../utils/formatName";
+import useAuth from "../../../../hooks/useAuth";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
+import formatName from "../../../../utils/formatName";
+import { doctorSchema } from "../../../../validation/doctorValidation";
+import CountriesList from "../../../Lists/CountriesList";
 
 const FamilyDoctorForm = ({
   setDoctorsList,

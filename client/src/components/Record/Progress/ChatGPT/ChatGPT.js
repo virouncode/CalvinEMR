@@ -1,7 +1,8 @@
+import { LinearProgress } from "@mui/material";
 import React, { useState } from "react";
 import { getAge } from "../../../../utils/getAge";
-import ChatGPTPrompt from "./ChatGPTPrompt";
 import ChatGPTDiscussion from "./ChatGPTDiscussion";
+import ChatGPTPrompt from "./ChatGPTPrompt";
 
 const ChatGPT = ({ attachments, initialBody, patientInfos }) => {
   const [promptText, setPromptText] = useState(
@@ -25,8 +26,10 @@ What is the diagnosis and what treatment would you suggest ?`
       setChatVisible={setChatVisible}
       setFirstBotRes={setFirstBotRes}
     />
-  ) : (
+  ) : firstBotRes ? (
     <ChatGPTDiscussion firstMessage={promptText} firstResponse={firstBotRes} />
+  ) : (
+    <LinearProgress />
   );
 };
 

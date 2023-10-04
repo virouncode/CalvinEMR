@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Messages from "../components/Messaging/Messages";
-import MessagesExternal from "../components/Messaging/MessagesExternal";
-import { useParams } from "react-router-dom";
-import MessagingToggle from "../components/Messaging/MessagingToggle";
 import { Helmet } from "react-helmet";
+import { useParams } from "react-router-dom";
+import MessagesExternal from "../components/Messaging/External/MessagesExternal";
+import Messages from "../components/Messaging/Internal/Messages";
+import MessagingToggle from "../components/Messaging/MessagingToggle";
 
 const MessagesPage = () => {
   const { msgType } = useParams();

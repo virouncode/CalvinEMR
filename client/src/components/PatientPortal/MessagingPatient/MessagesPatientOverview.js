@@ -1,6 +1,6 @@
 import React from "react";
-import MessagesPatientOverviewToolbar from "./MessagesPatientOverviewToolbar";
 import MessagePatientThumbnail from "./MessagePatientThumbnail";
+import MessagesPatientOverviewToolbar from "./MessagesPatientOverviewToolbar";
 
 const MessagesPatientOverview = ({
   messages,

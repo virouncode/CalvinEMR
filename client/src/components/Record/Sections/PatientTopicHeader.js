@@ -1,6 +1,6 @@
 import React from "react";
-import TriangleButton from "../Buttons/TriangleButton";
 import PopUpButton from "../Buttons/PopUpButton";
+import TriangleButton from "../Buttons/TriangleButton";
 
 const PatientTopicHeader = ({
   topic,

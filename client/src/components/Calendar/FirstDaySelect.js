@@ -1,8 +1,8 @@
 //Librairies
 import React from "react";
+import { toast } from "react-toastify";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
-import { toast } from "react-toastify";
 
 const FirstDaySelect = () => {
   const { auth, user, setUser } = useAuth();

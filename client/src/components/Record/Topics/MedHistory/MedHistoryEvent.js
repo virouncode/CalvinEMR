@@ -1,16 +1,15 @@
-//Librairies
 import React, { useState } from "react";
-import { toLocalDate } from "../../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
-import { medHistorySchema } from "../../../../validation/medHistoryValidation";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { medHistorySchema } from "../../../../validation/medHistoryValidation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 
 const MedHistoryEvent = ({
   event,

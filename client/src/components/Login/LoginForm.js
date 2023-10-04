@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import axiosXano from "../../api/xano";
 import axiosXanoPatient from "../../api/xanoPatient";
-import { userSchema } from "../../validation/userValidation";
+import useAuth from "../../hooks/useAuth";
 import {
   getUnreadMessagesExternalNbr,
   getUnreadMessagesNbr,
 } from "../../utils/getUnreadMessagesNbr";
+import { userSchema } from "../../validation/userValidation";
 
 const LOGIN_URL = "/auth/login";
 const USERINFO_URL = "/auth/me";

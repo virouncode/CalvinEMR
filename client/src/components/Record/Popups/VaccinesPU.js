@@ -1,20 +1,15 @@
-//Library
-import React, { useState } from "react";
 import { CircularProgress } from "@mui/material";
+import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-
-//Components
+import { putPatientRecord } from "../../../api/fetchRecords";
+import useAuth from "../../../hooks/useAuth";
+import { formatAge } from "../../../utils/formatAge";
+import { vaccinesList } from "../../../utils/vaccines";
 import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
+import SplittedHeader from "../../Presentation/SplittedHeader";
 import VaccineCaption from "../Topics/Vaccines/VaccineCaption";
 import VaccineHeaderAge from "../Topics/Vaccines/VaccineHeaderAge";
 import VaccineItem from "../Topics/Vaccines/VaccineItem";
-import SplittedHeader from "../../Presentation/SplittedHeader";
-
-//Utils
-import { vaccinesList } from "../../../utils/vaccines";
-import { formatAge } from "../../../utils/formatAge";
-import useAuth from "../../../hooks/useAuth";
-import { putPatientRecord } from "../../../api/fetchRecords";
 
 const VaccinesPU = ({
   datas,

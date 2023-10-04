@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axiosXanoReset from "../../api/xanoReset";
 import { useNavigate } from "react-router-dom";
+import axiosXanoReset from "../../api/xanoReset";
 
 const ResetPasswordForm = ({
   setErrMsg,

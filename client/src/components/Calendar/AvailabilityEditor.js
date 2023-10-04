@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import AvailabilityItem from "./AvailabilityItem";
+import { toast } from "react-toastify";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
-import { toast } from "react-toastify";
-import DurationPicker from "../Pickers/DurationPicker";
 import { availabilitySchema } from "../../validation/availabilityValidation";
+import DurationPicker from "../Pickers/DurationPicker";
+import AvailabilityItem from "./AvailabilityItem";
 
 const AvailabilityEditor = ({ setEditVisible }) => {
   const { auth, user } = useAuth();

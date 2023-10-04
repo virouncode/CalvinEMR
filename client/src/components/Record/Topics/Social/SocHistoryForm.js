@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
-import { toast } from "react-toastify";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 
 const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {

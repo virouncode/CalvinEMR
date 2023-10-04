@@ -1,11 +1,9 @@
-//Librairies
+import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
-//Components
-import ReminderItem from "../Topics/Reminders/ReminderItem";
+import { ToastContainer } from "react-toastify";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import ReminderForm from "../Topics/Reminders/ReminderForm";
-import { CircularProgress } from "@mui/material";
-import { ToastContainer } from "react-toastify";
+import ReminderItem from "../Topics/Reminders/ReminderItem";
 
 const RemindersPU = ({
   patientId,

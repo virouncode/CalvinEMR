@@ -1,18 +1,18 @@
+import { CircularProgress } from "@mui/material";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import React, { useEffect, useRef, useState } from "react";
-import formatName from "../../../utils/formatName";
+import { ToastContainer, toast } from "react-toastify";
+import { postPatientRecord } from "../../../api/fetchRecords";
+import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import {
   toLocalDate,
   toLocalDateAndTimeWithSeconds,
 } from "../../../utils/formatDates";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import { postPatientRecord } from "../../../api/fetchRecords";
-import axiosXano from "../../../api/xano";
-import { ToastContainer, toast } from "react-toastify";
-import { CircularProgress } from "@mui/material";
-import AddressesList from "../../Lists/AddressesList";
+import formatName from "../../../utils/formatName";
 import { patientIdToName } from "../../../utils/patientIdToName";
+import AddressesList from "../../Lists/AddressesList";
 
 const PrescriptionPU = ({ medsRx, patientInfos }) => {
   const { auth, user, clinic } = useAuth();

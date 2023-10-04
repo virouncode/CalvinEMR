@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
 import { getWeekRange } from "../../../utils/formatDates";
-import AssignedPracticiansList from "./AssignedPracticiansList";
-import axiosXanoPatient from "../../../api/xanoPatient";
-import { toast } from "react-toastify";
-import AppointmentsSlots from "./AppointmentsSlots";
-import WeekPicker from "./WeekPicker";
 import { staffIdToName } from "../../../utils/staffIdToName";
-import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import AppointmentsSlots from "./AppointmentsSlots";
+import AssignedPracticiansList from "./AssignedPracticiansList";
+import WeekPicker from "./WeekPicker";
 var _ = require("lodash");
 
 const optionsDate = {

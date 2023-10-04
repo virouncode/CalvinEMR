@@ -1,12 +1,12 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { putPatientRecord } from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { getVaccinationLogo } from "../../../../utils/getVaccinationLogo";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import { putPatientRecord } from "../../../../api/fetchRecords";
-import useAuth from "../../../../hooks/useAuth";
 import VaccineFormFirstDose from "./VaccineFormFirstDose";
 import VaccineFormSecondDose from "./VaccineFormSecondDose";
-import { toast } from "react-toastify";
 
 const VaccineCellItemDouble = ({
   age,

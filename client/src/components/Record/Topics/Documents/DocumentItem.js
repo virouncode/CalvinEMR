@@ -1,12 +1,11 @@
-//Librairies
 import React from "react";
-import { toLocalDate } from "../../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import { deletePatientRecord } from "../../../../api/fetchRecords";
-import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
-import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { deletePatientRecord } from "../../../../api/fetchRecords";
 import axiosXano from "../../../../api/xano";
+import useAuth from "../../../../hooks/useAuth";
+import { toLocalDate } from "../../../../utils/formatDates";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 
 const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
   const { auth, clinic, user } = useAuth();

@@ -1,8 +1,8 @@
 import React from "react";
 import { getVaccinationInterval } from "../../../../utils/getVaccinationInterval";
-import VaccineCellItemSingle from "./VaccineCellItemSingle";
 import VaccineCellItemDouble from "./VaccineCellItemDouble";
 import VaccineCellItemMultiple from "./VaccineCellItemMultiple";
+import VaccineCellItemSingle from "./VaccineCellItemSingle";
 
 const VaccineCell = ({
   age,

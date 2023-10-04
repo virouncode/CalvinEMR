@@ -1,8 +1,6 @@
-//Librairies
 import React from "react";
-//Components
-import LoginForm from "./LoginForm";
 import LoginCarousel from "./LoginCarousel";
+import LoginForm from "./LoginForm";
 
 const LoginCard = () => {
   return (

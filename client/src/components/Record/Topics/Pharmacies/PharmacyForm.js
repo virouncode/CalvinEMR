@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import formatName from "../../../../utils/formatName";
-import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
-import CountriesList from "../../../Lists/CountriesList";
-import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import axiosXano from "../../../../api/xano";
-import { toast } from "react-toastify";
-import { pharmacySchema } from "../../../../validation/pharmacyValidation";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
+import formatName from "../../../../utils/formatName";
+import { pharmacySchema } from "../../../../validation/pharmacyValidation";
+import CountriesList from "../../../Lists/CountriesList";
 
 const PharmacyForm = ({
   setPharmaciesList,

@@ -1,9 +1,7 @@
-//Librairies
-import React from "react";
-//Components
-import PatientResultItem from "./PatientResultItem";
 import { CircularProgress } from "@mui/material";
+import React from "react";
 import { toLocalDate } from "../../../utils/formatDates";
+import PatientResultItem from "./PatientResultItem";
 
 const PatientSearchResult = ({ search, sortedPatientsInfos, handleSort }) => {
   return sortedPatientsInfos ? (

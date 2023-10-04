@@ -1,21 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
-import axiosXano from "../../api/xano";
-import useAuth from "../../hooks/useAuth";
-import { toast } from "react-toastify";
-import { confirmAlert } from "../Confirm/ConfirmGlobal";
-import { patientIdToName } from "../../utils/patientIdToName";
-import MessagesAttachments from "./MessagesAttachments";
-import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
-import MessageExternal from "./MessageExternal";
-import ReplyFormExternal from "./ReplyFormExternal";
-import NewWindow from "react-new-window";
-import MessagesExternalPrintPU from "./MessagesExternalPrintPU";
-import ForwardMessageExternal from "./ForwardMessageExternal";
 import html2canvas from "html2canvas";
-import { toLocalDateAndTimeWithSeconds } from "../../utils/formatDates";
-import { postPatientRecord } from "../../api/fetchRecords";
+import React, { useEffect, useRef, useState } from "react";
+import NewWindow from "react-new-window";
 import { NavLink } from "react-router-dom";
-import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
+import { toast } from "react-toastify";
+import { postPatientRecord } from "../../../api/fetchRecords";
+import axiosXano from "../../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
+import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import MessagesAttachments from "../MessagesAttachments";
+import ForwardMessageExternal from "./ForwardMessageExternal";
+import MessageExternal from "./MessageExternal";
+import MessagesExternalPrintPU from "./MessagesExternalPrintPU";
+import ReplyFormExternal from "./ReplyFormExternal";
 
 const MessageExternalDetail = ({
   setCurrentMsgId,

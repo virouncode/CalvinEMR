@@ -1,6 +1,5 @@
-//Librairies
-import React from "react";
 import { CircularProgress } from "@mui/material";
+import React from "react";
 
 const SocHistoryContent = ({ datas, isLoading, errMsg }) => {
   return !isLoading ? (

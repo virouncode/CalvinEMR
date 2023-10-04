@@ -1,11 +1,9 @@
-//Librairies
-import React, { useRef, useState } from "react";
-//Components
-import FamHistoryEvent from "../Topics/Family/FamHistoryEvent";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
-import FamHistoryForm from "../Topics/Family/FamHistoryForm";
 import { CircularProgress } from "@mui/material";
+import React, { useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import FamHistoryEvent from "../Topics/Family/FamHistoryEvent";
+import FamHistoryForm from "../Topics/Family/FamHistoryForm";
 
 const FamHistoryPU = ({
   patientId,

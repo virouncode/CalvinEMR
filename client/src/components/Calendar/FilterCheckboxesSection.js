@@ -1,9 +1,7 @@
-//Librairies
 import React from "react";
-//Components
-import FilterStaffItem from "./FilterStaffItem";
 import useAuth from "../../hooks/useAuth";
 import { categoryToTitle } from "../../utils/categoryToTitle";
+import FilterStaffItem from "./FilterStaffItem";
 
 const FilterCheckboxesSection = ({
   isCategoryChecked,

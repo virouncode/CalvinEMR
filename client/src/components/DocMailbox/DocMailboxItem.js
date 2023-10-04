@@ -1,13 +1,13 @@
 //Librairies
 import React from "react";
-import { toLocalDate } from "../../utils/formatDates";
-import useAuth from "../../hooks/useAuth";
-import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
-import { patientIdToName } from "../../utils/patientIdToName";
-import { confirmAlert } from "../Confirm/ConfirmGlobal";
-import axiosXano from "../../api/xano";
-import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+import axiosXano from "../../api/xano";
+import useAuth from "../../hooks/useAuth";
+import { toLocalDate } from "../../utils/formatDates";
+import { patientIdToName } from "../../utils/patientIdToName";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
+import { confirmAlert } from "../Confirm/ConfirmGlobal";
 
 const DocMailboxItem = ({
   item,

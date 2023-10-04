@@ -1,11 +1,9 @@
-//Librairies
+import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
-//Components
-import RiskItem from "../Topics/Risks/RiskItem";
+import { ToastContainer } from "react-toastify";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import RiskForm from "../Topics/Risks/RiskForm";
-import { ToastContainer } from "react-toastify";
-import { CircularProgress } from "@mui/material";
+import RiskItem from "../Topics/Risks/RiskItem";
 
 const RiskPU = ({
   patientId,

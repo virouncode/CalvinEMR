@@ -1,10 +1,11 @@
+import { CircularProgress } from "@mui/material";
 import React, { useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import axiosXano from "../../../../api/xano";
-import { toast } from "react-toastify";
-import { CircularProgress } from "@mui/material";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const DocumentForm = ({

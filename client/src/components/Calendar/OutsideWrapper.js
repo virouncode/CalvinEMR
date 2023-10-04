@@ -1,5 +1,4 @@
-//Librairies
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 const useOutsideCloser = (
   wrapperRef,

@@ -1,10 +1,7 @@
-//Librairies
-import React, { useState, useRef } from "react";
-//Components
+import React, { useRef, useState } from "react";
+import useAuth from "../../../hooks/useAuth";
 import PatientSearchForm from "./PatientSearchForm";
 import PatientSearchResult from "./PatientSearchResult";
-//Utils
-import useAuth from "../../../hooks/useAuth";
 
 const BrowsePatient = () => {
   const direction = useRef(false);

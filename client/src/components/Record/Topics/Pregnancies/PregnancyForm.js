@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import PregnanciesList from "../../../Lists/PregnanciesList";
-import formatName from "../../../../utils/formatName";
-import { toLocalDate, toISOStringNoMs } from "../../../../utils/formatDates";
-import useAuth from "../../../../hooks/useAuth";
-import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
+import { postPatientRecord } from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
+import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
+import formatName from "../../../../utils/formatName";
 import { pregnancySchema } from "../../../../validation/pregnancyValidation";
+import PregnanciesList from "../../../Lists/PregnanciesList";
 
 const PregnancyForm = ({
   editCounter,

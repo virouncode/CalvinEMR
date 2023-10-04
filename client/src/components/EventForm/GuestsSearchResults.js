@@ -1,9 +1,7 @@
-//Librairies
 import React from "react";
-//Components
+import { toLocalDate } from "../../utils/formatDates";
 import GuestPatientResultItem from "./GuestPatientResultItem";
 import GuestStaffResultItem from "./GuestStaffResultItem";
-import { toLocalDate } from "../../utils/formatDates";
 
 const GuestsSearchResults = ({
   search,

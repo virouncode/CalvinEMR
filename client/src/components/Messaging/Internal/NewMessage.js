@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import Contacts from "./Contacts";
-import { categoryToTitle } from "../../utils/categoryToTitle";
-import formatName from "../../utils/formatName";
-import Patients from "./Patients";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
-import { ToastContainer, toast } from "react-toastify";
-import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import { patientIdToName } from "../../utils/patientIdToName";
-import MessagesAttachments from "./MessagesAttachments";
 import { CircularProgress } from "@mui/material";
-import { postPatientRecord } from "../../api/fetchRecords";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { postPatientRecord } from "../../../api/fetchRecords";
+import axiosXano from "../../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import { categoryToTitle } from "../../../utils/categoryToTitle";
+import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
+import formatName from "../../../utils/formatName";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import Contacts from "../Contacts";
+import MessagesAttachments from "../MessagesAttachments";
+import Patients from "../Patients";
 
 const NewMessage = ({ setNewVisible, setMessages, section }) => {
   const { auth, user, clinic } = useAuth();

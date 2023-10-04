@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import formatName from "../../../../utils/formatName";
-import { toLocalDate, toISOStringNoMs } from "../../../../utils/formatDates";
-import RelativesList from "../../../Lists/RelativesList";
-import useAuth from "../../../../hooks/useAuth";
-import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
-import { famHistorySchema } from "../../../../validation/famHistoryValidation";
+import { postPatientRecord } from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
+import formatName from "../../../../utils/formatName";
+import { famHistorySchema } from "../../../../validation/famHistoryValidation";
+import RelativesList from "../../../Lists/RelativesList";
 
 const FamHistoryForm = ({
   editCounter,

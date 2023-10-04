@@ -1,13 +1,10 @@
-//Librairies
-import React, { useState, useEffect } from "react";
+import { CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-//Components
+import useAuth from "../../../hooks/useAuth";
+import ProgressNotes from "../Progress/ProgressNotes";
 import PatientMenuLeft from "./PatientMenuLeft";
 import PatientMenuRight from "./PatientMenuRight";
-import ProgressNotes from "../Progress/ProgressNotes";
-import { CircularProgress } from "@mui/material";
-//Utils
-import useAuth from "../../../hooks/useAuth";
 
 const PatientRecord = () => {
   //HOOKS

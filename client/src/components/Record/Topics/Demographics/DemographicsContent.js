@@ -1,11 +1,9 @@
-//Librairies
-import React from "react";
-//Utils
-import { getAge } from "../../../../utils/getAge";
-import { toLocalDate } from "../../../../utils/formatDates";
 import { CircularProgress } from "@mui/material";
+import React from "react";
 import avatar from "../../../../assets/img/avatar.png";
 import useAuth from "../../../../hooks/useAuth";
+import { toLocalDate } from "../../../../utils/formatDates";
+import { getAge } from "../../../../utils/getAge";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";

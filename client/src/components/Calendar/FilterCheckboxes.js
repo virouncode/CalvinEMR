@@ -1,10 +1,7 @@
-//Libraries
-import React, { useEffect, useState, useRef } from "react";
-//Components
-import FilterCheckboxesSection from "./FilterCheckboxesSection";
-//Utils
+import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { categoryToTitle } from "../../utils/categoryToTitle";
+import FilterCheckboxesSection from "./FilterCheckboxesSection";
 
 const FilterCheckboxes = ({
   staffInfos,

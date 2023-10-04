@@ -1,7 +1,5 @@
-//Librairies
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EventForm from "../EventForm/EventForm";
-//Components
 
 const useFormScroller = (wrapperRef, scrollGrid, initialScrollTop) => {
   //function to add and remove scroll Listeners

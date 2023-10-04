@@ -1,13 +1,12 @@
-//Librairies
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { putPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
-import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
-import { toLocalDate } from "../../../../utils/formatDates";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { doctorSchema } from "../../../../validation/doctorValidation";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import { putPatientRecord } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
 import CountriesList from "../../../Lists/CountriesList";
 
 const FamilyDoctorItem = ({

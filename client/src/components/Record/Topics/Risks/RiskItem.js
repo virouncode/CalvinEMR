@@ -1,18 +1,15 @@
-//Librairies
 import React, { useState } from "react";
-
-//Utils
-import { toLocalDate } from "../../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { toast } from "react-toastify";
 import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
-import { toast } from "react-toastify";
-import { riskSchema } from "../../../../validation/riskValidation";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { riskSchema } from "../../../../validation/riskValidation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 
 const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS

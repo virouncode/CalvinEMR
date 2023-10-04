@@ -1,4 +1,3 @@
-//Librairies
 import React from "react";
 
 const PatientSearchForm = ({ search, setSearch }) => {

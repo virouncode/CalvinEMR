@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import useAuth from "../../../hooks/useAuth";
-import axiosXanoPatient from "../../../api/xanoPatient";
-import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import axiosXanoPatient from "../../../api/xanoPatient";
+import useAuth from "../../../hooks/useAuth";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const PastAppointments = () => {

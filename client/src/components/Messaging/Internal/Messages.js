@@ -1,18 +1,15 @@
-//Libraries
 import React, { useEffect, useState } from "react";
-//Components
-import MessagesLeftBar from "./MessagesLeftBar";
-//Utils
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { filterAndSortExternalMessages } from "../../utils/filterAndSortExternalMessages";
-import MessagesExternalToolBar from "./MessagesExternalToolbar";
-import MessagesExternalBox from "./MessagesExternalBox";
-import { searchMessagesExternal } from "../../utils/searchMessagesExternal";
+import axiosXano from "../../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
+import { searchMessages } from "../../../utils/searchMessages";
+import MessagesLeftBar from "../MessagesLeftBar";
+import MessagesBox from "./MessagesBox";
+import MessagesToolBar from "./MessagesToolBar";
 
-const MessagesExternal = () => {
+const Messages = () => {
   //HOOKSs
   const { messageId, sectionName } = useParams();
   const [search, setSearch] = useState("");
@@ -37,28 +34,23 @@ const MessagesExternal = () => {
     const abortController = new AbortController();
     const fetchMessages = async () => {
       try {
-        const response = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-            signal: abortController.signal,
-          }
-        );
+        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+          signal: abortController.signal,
+        });
 
         if (abortController.signal.aborted) return;
-
         //En fonction de la section on filtre les messages
-        let newMessages = filterAndSortExternalMessages(
+        const newMessages = filterAndSortMessages(
           sectionName || section,
           response.data,
-          "staff",
           user.id
         );
         //Search
-        setMessages(searchMessagesExternal(newMessages, search, clinic));
+        setMessages(searchMessages(newMessages, search, clinic));
       } catch (err) {
         if (err.name !== "CanceledError")
           toast.error(`Error: unable to get messages: ${err.message}`, {
@@ -75,7 +67,7 @@ const MessagesExternal = () => {
 
   return (
     <div className="messages-container">
-      <MessagesExternalToolBar
+      <MessagesToolBar
         search={search}
         setSearch={setSearch}
         newVisible={newVisible}
@@ -93,14 +85,14 @@ const MessagesExternal = () => {
       />
       <div className="messages-section">
         <MessagesLeftBar
-          msgType="external"
+          msgType="internal"
           section={section}
           setSection={setSection}
           setCurrentMsgId={setCurrentMsgId}
           setMsgsSelectedIds={setMsgsSelectedIds}
           setSelectAllVisible={setSelectAllVisible}
         />
-        <MessagesExternalBox
+        <MessagesBox
           section={section}
           newVisible={newVisible}
           setNewVisible={setNewVisible}
@@ -119,4 +111,4 @@ const MessagesExternal = () => {
   );
 };
 
-export default MessagesExternal;
+export default Messages;

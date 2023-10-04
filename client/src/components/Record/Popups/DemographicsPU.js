@@ -1,31 +1,22 @@
-//Librairies
+import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
-import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
-
-//Components
-import CountriesList from "../../Lists/CountriesList";
-
-//Utils
-import { getAge } from "../../../utils/getAge";
-import { toLocalDate } from "../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
-import DoctorsList from "../../Lists/DoctorsLists";
-import NursesList from "../../Lists/NursesList";
-import useAuth from "../../../hooks/useAuth";
+import { ToastContainer, toast } from "react-toastify";
 import { putPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
-import { toLocalDateAndTime } from "../../../utils/formatDates";
-import { CircularProgress } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
-import formatName from "../../../utils/formatName";
-import { demographicsSchema } from "../../../validation/demographicsValidation";
+import useAuth from "../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../utils/firstLetterUpper";
-import USTechsList from "../../Lists/USTechsList";
+import { toLocalDate, toLocalDateAndTime } from "../../../utils/formatDates";
+import { getAge } from "../../../utils/getAge";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import { demographicsSchema } from "../../../validation/demographicsValidation";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import CountriesList from "../../Lists/CountriesList";
+import DoctorsList from "../../Lists/DoctorsLists";
+import NursesList from "../../Lists/NursesList";
+import NutritionistsList from "../../Lists/NutritionistsList";
 import PhysiosList from "../../Lists/PhysiosList";
 import PsychosList from "../../Lists/PsychosList";
-import NutritionistsList from "../../Lists/NutritionistsList";
-import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
-
+import USTechsList from "../../Lists/USTechsList";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {

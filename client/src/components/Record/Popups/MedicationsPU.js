@@ -1,14 +1,12 @@
-//Librairies
-import React, { useRef, useState } from "react";
-//Components
-import MedicationEvent from "../Topics/Medications/MedicationEvent";
-import MedicationForm from "../Topics/Medications/MedicationForm";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import { CircularProgress } from "@mui/material";
+import React, { useRef, useState } from "react";
 import NewWindow from "react-new-window";
-import PrescriptionPU from "./PrescriptionPU";
 import { ToastContainer } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import MedicationEvent from "../Topics/Medications/MedicationEvent";
+import MedicationForm from "../Topics/Medications/MedicationForm";
+import PrescriptionPU from "./PrescriptionPU";
 
 const MedicationsPU = ({
   patientId,

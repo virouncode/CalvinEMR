@@ -1,10 +1,7 @@
-//Librairies
-import React from "react";
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import interaction from "@fullcalendar/interaction";
-// import resourceTimeline from "@fullcalendar/resource-timeline";
+import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import resourceTimeGrid from "@fullcalendar/resource-timegrid";
-//Utils
+import React from "react";
 import { rooms } from "../../utils/rooms";
 
 const TimelineView = ({

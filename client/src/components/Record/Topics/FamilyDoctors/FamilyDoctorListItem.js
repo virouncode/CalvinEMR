@@ -1,7 +1,7 @@
 import React from "react";
 import useAuth from "../../../../hooks/useAuth";
-import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { toLocalDate } from "../../../../utils/formatDates";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const FamilyDoctorListItem = ({ item, handleAddItemClick }) => {
   const { clinic } = useAuth();

@@ -1,9 +1,9 @@
-import React from "react";
-import NewMessage from "./NewMessage";
-import NewWindow from "react-new-window";
 import { CircularProgress } from "@mui/material";
-import MessagesOverview from "./MessagesOverview";
+import React from "react";
+import NewWindow from "react-new-window";
 import MessageDetail from "./MessageDetail";
+import MessagesOverview from "./MessagesOverview";
+import NewMessage from "./NewMessage";
 
 const MessagesBox = ({
   section,

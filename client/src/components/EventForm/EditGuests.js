@@ -1,8 +1,6 @@
-//Librairies
 import React, { useEffect } from "react";
-//Components
-import GuestsSearch from "./GuestsSearch";
 import GuestsList from "./GuestsList";
+import GuestsSearch from "./GuestsSearch";
 
 const EditGuests = ({
   staffInfos,

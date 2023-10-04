@@ -1,8 +1,8 @@
+import { CircularProgress } from "@mui/material";
 import React from "react";
 import NewWindow from "react-new-window";
-import { CircularProgress } from "@mui/material";
-import MessagesPatientOverview from "./MessagesPatientOverview";
 import MessagePatientDetail from "./MessagePatientDetail";
+import MessagesPatientOverview from "./MessagesPatientOverview";
 import NewMessagePatient from "./NewMessagePatient";
 
 const MessagesPatientBox = ({

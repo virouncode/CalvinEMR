@@ -1,20 +1,16 @@
-//Librairies
 import React, { useState } from "react";
-//Components
-import RelativesList from "../../../Lists/RelativesList";
-//Utils
-import { toLocalDate } from "../../../../utils/formatDates";
-
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { toast } from "react-toastify";
 import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
-import { toast } from "react-toastify";
-import { famHistorySchema } from "../../../../validation/famHistoryValidation";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { famHistorySchema } from "../../../../validation/famHistoryValidation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import RelativesList from "../../../Lists/RelativesList";
 
 const FamHistoryEvent = ({
   event,

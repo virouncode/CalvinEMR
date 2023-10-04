@@ -1,9 +1,7 @@
-//Librairies
 import React from "react";
 import { NavLink } from "react-router-dom";
-//Utils
-import { getAge } from "../../../utils/getAge";
 import { toLocalDate } from "../../../utils/formatDates";
+import { getAge } from "../../../utils/getAge";
 
 const PatientResultItem = ({ patient }) => {
   return (

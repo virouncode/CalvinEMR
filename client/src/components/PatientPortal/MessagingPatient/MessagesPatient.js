@@ -1,15 +1,12 @@
-//Libraries
 import React, { useEffect, useState } from "react";
-//Components
-//Utils
-import useAuth from "../../../hooks/useAuth";
-import axiosXanoPatient from "../../../api/xanoPatient";
 import { toast } from "react-toastify";
+import axiosXanoPatient from "../../../api/xanoPatient";
+import useAuth from "../../../hooks/useAuth";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
-import MessagesPatientToolBar from "./MessagesPatientToolbar";
-import MessagesPatientLeftBar from "./MessagesPatientLeftBar";
-import MessagesPatientBox from "./MessagesPatientBox";
 import { searchMessagesExternal } from "../../../utils/searchMessagesExternal";
+import MessagesPatientBox from "./MessagesPatientBox";
+import MessagesPatientLeftBar from "./MessagesPatientLeftBar";
+import MessagesPatientToolBar from "./MessagesPatientToolbar";
 
 const MessagesPatient = () => {
   //HOOKSs

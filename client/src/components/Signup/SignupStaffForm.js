@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
-import { useNavigate } from "react-router-dom";
-import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import { CircularProgress } from "@mui/material";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axiosXano from "../../api/xano";
+import useAuth from "../../hooks/useAuth";
+import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import { staffSchema } from "../../validation/staffValidation";
 
 const SignupStaffForm = () => {

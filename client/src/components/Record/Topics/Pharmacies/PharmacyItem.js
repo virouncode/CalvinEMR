@@ -1,13 +1,13 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { putPatientRecord } from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
+import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { toLocalDate } from "../../../../utils/formatDates";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { pharmacySchema } from "../../../../validation/pharmacyValidation";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import CountriesList from "../../../Lists/CountriesList";
-import useAuth from "../../../../hooks/useAuth";
-import { putPatientRecord } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
-import { pharmacySchema } from "../../../../validation/pharmacyValidation";
-import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
-import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 
 const PharmacyItem = ({
   patientId,

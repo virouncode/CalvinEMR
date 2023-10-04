@@ -1,12 +1,12 @@
 import React from "react";
+import { toast } from "react-toastify";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
-import { toLocalDateAndTime } from "../../../utils/formatDates";
-import { toast } from "react-toastify";
-import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
+import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
 const MessagePatientThumbnail = ({
   message,

@@ -1,11 +1,9 @@
-//Librairies
+import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
-//Components
-import DocumentItem from "../Topics/Documents/DocumentItem";
+import { ToastContainer } from "react-toastify";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import DocumentForm from "../Topics/Documents/DocumentForm";
-import { CircularProgress } from "@mui/material";
-import { ToastContainer } from "react-toastify";
+import DocumentItem from "../Topics/Documents/DocumentItem";
 
 const DocumentsPU = ({
   patientId,

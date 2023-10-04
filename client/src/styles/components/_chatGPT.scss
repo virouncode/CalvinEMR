@@ -54,12 +54,22 @@
                 border: solid 1.5px $grey;
             }
         }
-        &-sendicon{
+        &-btn {
             cursor: pointer;
             position: absolute;
-            width: 25px;
-            bottom: 90px;
+            width: 50px;
+            bottom: 75px;
             right:8%;
+            height: 50px;
+            background: #14E5B0;
+            border: solid 1px $grey;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            &:hover {
+                background: #10d19d;
+            }
+        }
+        &-sendicon{
+            width: 90%;
         }
         &-content {
             overflow: scroll;
@@ -79,6 +89,7 @@
                     width:10%;
                 }
                 &-message {
+                    padding:0 10px;
                     white-space: pre;
                     text-wrap: wrap;
                     width:90%;

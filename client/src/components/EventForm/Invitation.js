@@ -1,16 +1,11 @@
-//LIBRARY
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
-//COMPONENTS
-import TemplatesRadio from "./TemplatesRadio";
-import AddressesList from "../Lists/AddressesList";
-
-//UTILS
-import useAuth from "../../hooks/useAuth";
 import { sendEmail } from "../../api/sendEmail";
-import formatName from "../../utils/formatName";
 import axiosXano from "../../api/xano";
+import useAuth from "../../hooks/useAuth";
+import formatName from "../../utils/formatName";
+import AddressesList from "../Lists/AddressesList";
+import TemplatesRadio from "./TemplatesRadio";
 
 const Invitation = ({
   setInvitationVisible,

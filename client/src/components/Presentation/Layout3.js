@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import ConfirmGlobal from "../Confirm/ConfirmGlobal";
 import PatientHeader from "../PatientPortal/PatientHeader";
 import Welcome from "./Welcome";
-import ConfirmGlobal from "../Confirm/ConfirmGlobal";
-import { ToastContainer } from "react-toastify";
 
 const Layout3 = () => {
   const DIALOG_CONTAINER_STYLE = {

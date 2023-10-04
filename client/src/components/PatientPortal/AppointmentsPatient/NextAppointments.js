@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import useAuth from "../../../hooks/useAuth";
-import axiosXanoPatient from "../../../api/xanoPatient";
-import { toast } from "react-toastify";
-import { staffIdToName } from "../../../utils/staffIdToName";
 import { CircularProgress } from "@mui/material";
-import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import axiosXanoPatient from "../../../api/xanoPatient";
+import useAuth from "../../../hooks/useAuth";
+import { staffIdToName } from "../../../utils/staffIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
 const NextAppointments = () => {
   const { user, auth, clinic } = useAuth();

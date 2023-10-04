@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import formatName from "../../../../utils/formatName";
-import { toLocalDate } from "../../../../utils/formatDates";
-import useAuth from "../../../../hooks/useAuth";
-import { postPatientRecord } from "../../../../api/fetchRecords";
 import { toast } from "react-toastify";
-import { reminderSchema } from "../../../../validation/reminderValidation";
+import { postPatientRecord } from "../../../../api/fetchRecords";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
+import formatName from "../../../../utils/formatName";
+import { reminderSchema } from "../../../../validation/reminderValidation";
 
 const ReminderForm = ({
   editCounter,

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import CopyTemplatesList from "./CopyTemplatesList";
+import { ToastContainer, toast } from "react-toastify";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import AlertMsg from "../../Alert/AlertMsg";
-import { ToastContainer, toast } from "react-toastify";
 import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
+import CopyTemplatesList from "./CopyTemplatesList";
 
 const NewTemplate = ({
   setNewTemplateVisible,

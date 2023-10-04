@@ -1,18 +1,13 @@
-//Librairies
-import React from "react";
-import { useState } from "react";
-
-//Utils
-import { toLocalDateAndTime } from "../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
-import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
+import { CircularProgress } from "@mui/material";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { putPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
-import { CircularProgress } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
-import SocHistoryForm from "../Topics/Social/SocHistoryForm";
 import { firstLetterUpper } from "../../../utils/firstLetterUpper";
+import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import SocHistoryForm from "../Topics/Social/SocHistoryForm";
 
 const SocHistoryPU = ({
   patientId,

@@ -1,22 +1,19 @@
-//Librairies
 import React, { useEffect, useRef, useState } from "react";
-//Components
-import ProgressNotesAttachments from "./ProgressNotesAttachments";
-import { confirmAlert } from "../../Confirm/ConfirmGlobal";
-//Utils
-import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
+import NewWindow from "react-new-window";
+import { toast } from "react-toastify";
 import {
   getPatientRecord,
   postPatientRecord,
   putPatientRecord,
 } from "../../../api/fetchRecords";
-import useAuth from "../../../hooks/useAuth";
 import axiosXano from "../../../api/xano";
-import TriangleButtonProgress from "./../Buttons/TriangleButtonProgress";
-import { toast } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
+import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
-import NewWindow from "react-new-window";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import TriangleButtonProgress from "./../Buttons/TriangleButtonProgress";
 import ChatGPT from "./ChatGPT/ChatGPT";
+import ProgressNotesAttachments from "./ProgressNotesAttachments";
 var _ = require("lodash");
 
 const ProgressNotesCard = ({

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import useAuth from "../../../hooks/useAuth";
-import axiosXanoPatient from "../../../api/xanoPatient";
 import { useNavigate } from "react-router-dom";
+import axiosXanoPatient from "../../../api/xanoPatient";
+import useAuth from "../../../hooks/useAuth";
 
 const CredentialsFormPatient = () => {
   const navigate = useNavigate();

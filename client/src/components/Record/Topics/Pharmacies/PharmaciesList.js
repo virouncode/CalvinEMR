@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import PharmacyListItem from "./PharmacyListItem";
-import PharmacyForm from "./PharmacyForm";
+import { toast } from "react-toastify";
 import axiosXano from "../../../../api/xano";
 import useAuth from "../../../../hooks/useAuth";
-import { toast } from "react-toastify";
+import PharmacyForm from "./PharmacyForm";
+import PharmacyListItem from "./PharmacyListItem";
 var _ = require("lodash");
 
 const PharmaciesList = ({

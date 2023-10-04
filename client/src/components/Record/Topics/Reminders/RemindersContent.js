@@ -1,8 +1,6 @@
-//Librairies
+import { CircularProgress } from "@mui/material";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
-import { CircularProgress } from "@mui/material";
-//Components
 
 const RemindersContent = ({ datas, isLoading, errMsg }) => {
   useEffect(() => {

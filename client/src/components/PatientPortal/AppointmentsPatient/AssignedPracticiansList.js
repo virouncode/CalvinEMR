@@ -1,6 +1,6 @@
 import React from "react";
-import { staffIdToName } from "../../../utils/staffIdToName";
 import formatName from "../../../utils/formatName";
+import { staffIdToName } from "../../../utils/staffIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 
 const AssignedPracticiansList = ({

@@ -1,6 +1,4 @@
-//Librairies
-import React, { useState, useEffect } from "react";
-//Utils
+import React, { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 
 const Welcome = () => {

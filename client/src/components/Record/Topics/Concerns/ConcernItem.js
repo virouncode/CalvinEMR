@@ -1,16 +1,15 @@
-//Librairies
 import React, { useState } from "react";
-import { toLocalDate } from "../../../../utils/formatDates";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
-import { concernSchema } from "../../../../validation/concernValidation";
+import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
+import { concernSchema } from "../../../../validation/concernValidation";
+import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 
 const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS

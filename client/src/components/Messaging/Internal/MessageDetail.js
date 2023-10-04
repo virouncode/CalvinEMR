@@ -1,22 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
-import Message from "./Message";
-import ReplyForm from "./ReplyForm";
-import axiosXano from "../../api/xano";
-import useAuth from "../../hooks/useAuth";
-import { toast } from "react-toastify";
-import NewWindow from "react-new-window";
-import ForwardMessage from "./ForwardMessage";
-import { filterAndSortMessages } from "../../utils/filterAndSortMessages";
-import { NavLink } from "react-router-dom";
-import { confirmAlert } from "../Confirm/ConfirmGlobal";
-import MessagesPrintPU from "./MessagesPrintPU";
-import { patientIdToName } from "../../utils/patientIdToName";
-import MessagesAttachments from "./MessagesAttachments";
-import MessageExternal from "./MessageExternal";
 import html2canvas from "html2canvas";
-import { toLocalDateAndTimeWithSeconds } from "../../utils/formatDates";
-import { postPatientRecord } from "../../api/fetchRecords";
-import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
+import React, { useEffect, useRef, useState } from "react";
+import NewWindow from "react-new-window";
+import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+import { postPatientRecord } from "../../../api/fetchRecords";
+import axiosXano from "../../../api/xano";
+import useAuth from "../../../hooks/useAuth";
+import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
+import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
+import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import MessageExternal from "../External/MessageExternal";
+import MessagesAttachments from "../MessagesAttachments";
+import ForwardMessage from "./ForwardMessage";
+import Message from "./Message";
+import MessagesPrintPU from "./MessagesPrintPU";
+import ReplyForm from "./ReplyForm";
 
 const MessageDetail = ({
   setCurrentMsgId,

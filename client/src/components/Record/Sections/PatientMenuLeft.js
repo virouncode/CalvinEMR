@@ -1,6 +1,4 @@
-//Librairies
 import React from "react";
-//Components
 import PatientTopic from "./PatientTopic";
 
 const PatientMenuLeft = ({

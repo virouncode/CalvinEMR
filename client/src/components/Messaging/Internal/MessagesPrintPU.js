@@ -1,8 +1,8 @@
 import React from "react";
+import useAuth from "../../../hooks/useAuth";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import MessagesAttachments from "../MessagesAttachments";
 import Message from "./Message";
-import useAuth from "../../hooks/useAuth";
-import { patientIdToName } from "../../utils/patientIdToName";
-import MessagesAttachments from "./MessagesAttachments";
 
 const MessagesPrintPU = ({ message, previousMsgs, attachments }) => {
   const { clinic } = useAuth();

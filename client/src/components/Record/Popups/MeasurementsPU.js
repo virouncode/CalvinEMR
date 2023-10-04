@@ -1,10 +1,9 @@
-//Librairies
+import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
 import MeasurementEvent from "../Topics/Measurements/MeasurementEvent";
 import MeasurementForm from "../Topics/Measurements/MeasurementForm";
-import { CircularProgress } from "@mui/material";
-import { ToastContainer } from "react-toastify";
 
 const MeasurementsPU = ({
   patientId,

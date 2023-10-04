@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import ResetPasswordForm from "./ResetPasswordForm";
+import React, { useState } from "react";
 import EmailForm from "./EmailForm";
+import ResetPasswordForm from "./ResetPasswordForm";
 import TempPwdForm from "./TempPwdForm";
 
 const ForgotPassword = () => {

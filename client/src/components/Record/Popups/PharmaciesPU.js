@@ -1,11 +1,11 @@
+import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
-import PharmacyItem from "../Topics/Pharmacies/PharmacyItem";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
-import PharmaciesList from "../Topics/Pharmacies/PharmaciesList";
+import { ToastContainer, toast } from "react-toastify";
 import { putPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
-import { CircularProgress } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import PharmaciesList from "../Topics/Pharmacies/PharmaciesList";
+import PharmacyItem from "../Topics/Pharmacies/PharmacyItem";
 
 const PharmaciesPU = ({
   patientId,

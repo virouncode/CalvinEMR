@@ -1,13 +1,11 @@
-//Librairies
-import React, { useEffect, useRef, useState } from "react";
-//Components
-import DocMailboxItem from "./DocMailboxItem";
 import { CircularProgress } from "@mui/material";
-import DocMailboxForm from "./DocMailboxForm";
-import useAuth from "../../hooks/useAuth";
-import axiosXano from "../../api/xano";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import axiosXano from "../../api/xano";
+import useAuth from "../../hooks/useAuth";
 import DocMailboxAssignedPracticianForward from "./DocMailboxAssignedPracticianForward";
+import DocMailboxForm from "./DocMailboxForm";
+import DocMailboxItem from "./DocMailboxItem";
 
 const DocMailboxTable = () => {
   //HOOKS

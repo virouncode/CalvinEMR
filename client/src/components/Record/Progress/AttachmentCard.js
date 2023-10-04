@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import NewWindow from "react-new-window";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 

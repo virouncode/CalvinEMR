@@ -11,11 +11,11 @@ const ChatGPTPrompt = ({
     setPromptText(e.target.value);
   };
   const handleSubmit = async () => {
+    setChatVisible(true);
     const response = await sendMsgToOpenAI([
       { role: "user", content: promptText },
     ]);
     setFirstBotRes(response[0].message.content);
-    setChatVisible(true);
   };
   return (
     <div className="chatgpt-prompt">

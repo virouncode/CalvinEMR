@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
-import RelationshipList from "../../../Lists/RelationshipList";
-import PatientsSelect from "../../../Lists/PatientsSelect";
-import { patientIdToName } from "../../../../utils/patientIdToName";
-import { toLocalDate } from "../../../../utils/formatDates";
+import { toast } from "react-toastify";
+import "react-widgets/scss/styles.scss";
 import {
   deletePatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
 import axiosXano from "../../../../api/xano";
+import useAuth from "../../../../hooks/useAuth";
+import { toLocalDate } from "../../../../utils/formatDates";
+import { patientIdToName } from "../../../../utils/patientIdToName";
+import { relations } from "../../../../utils/relations";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { toInverseRelation } from "../../../../utils/toInverseRelation";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
-import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
-import "react-widgets/scss/styles.scss";
-import { relations } from "../../../../utils/relations";
+import PatientsSelect from "../../../Lists/PatientsSelect";
+import RelationshipList from "../../../Lists/RelationshipList";
 
 const RelationshipItem = ({
   item,

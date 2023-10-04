@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { putPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toLocalDate } from "../../../../utils/formatDates";
-import { putPatientRecord } from "../../../../api/fetchRecords";
-import { toast } from "react-toastify";
 
 const VaccineForm = ({
   setFormVisible,
