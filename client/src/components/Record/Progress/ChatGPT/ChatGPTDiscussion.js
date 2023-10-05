@@ -1,28 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import { sendMsgToOpenAI } from "../../../../api/openapi";
-import sendIcon from "../../../../assets/img/sendIcon.png";
 import ChatGPTDiscussionContent from "./ChatGPTDiscussionContent";
 
-const ChatGPTDiscussion = ({ firstMessage, firstResponse }) => {
+const ChatGPTDiscussion = ({ messages, setMessages }) => {
   const msgEndRef = useRef(null);
-  const [messages, setMessages] = useState([
-    { content: firstMessage, role: "user" },
-    { content: firstResponse, role: "assistant" },
-  ]);
   const [isLoading, setIsLoading] = useState(false);
-  const [promptText, setPromptText] = useState("");
+  const [inputText, setInputText] = useState("");
 
   useEffect(() => {
     msgEndRef.current.scrollIntoView();
   }, [messages]);
 
-  const handleChangePrompt = (e) => {
-    setPromptText(e.target.value);
+  const handleChangeInput = (e) => {
+    setInputText(e.target.value);
   };
   const handleAskGPT = async () => {
     setIsLoading(true);
-    const text = promptText;
-    setPromptText("");
+    const text = inputText;
+    setInputText("");
     setMessages([...messages, { content: text, role: "user" }]);
     const response = await sendMsgToOpenAI([
       ...messages,
@@ -45,18 +40,15 @@ const ChatGPTDiscussion = ({ firstMessage, firstResponse }) => {
       />
       <textarea
         className="chatgpt-discussion-textarea"
-        onChange={handleChangePrompt}
-        value={promptText}
+        onChange={handleChangeInput}
+        value={inputText}
         autoFocus
       />
-      <button className="chatgpt-discussion-btn">
-        <img
-          src={sendIcon}
-          alt="send-icon"
-          onClick={handleAskGPT}
-          className="chatgpt-discussion-sendicon"
-        />
-      </button>
+      <button
+        onClick={handleAskGPT}
+        className="chatgpt-discussion-btn"
+        disabled={isLoading}
+      />
     </div>
   );
 };

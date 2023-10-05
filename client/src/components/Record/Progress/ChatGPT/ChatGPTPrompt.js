@@ -1,21 +1,17 @@
 import React from "react";
 import { sendMsgToOpenAI } from "../../../../api/openapi";
 
-const ChatGPTPrompt = ({
-  setChatVisible,
-  promptText,
-  setPromptText,
-  setFirstBotRes,
-}) => {
+const ChatGPTPrompt = ({ messages, setMessages, setChatVisible }) => {
   const handleChange = (e) => {
-    setPromptText(e.target.value);
+    setMessages([{ role: "user", content: e.target.value }]);
   };
   const handleSubmit = async () => {
     setChatVisible(true);
-    const response = await sendMsgToOpenAI([
-      { role: "user", content: promptText },
+    const response = await sendMsgToOpenAI(messages);
+    setMessages([
+      ...messages,
+      { role: "assistant", content: response[0].message.content },
     ]);
-    setFirstBotRes(response[0].message.content);
   };
   return (
     <div className="chatgpt-prompt">
@@ -23,7 +19,7 @@ const ChatGPTPrompt = ({
       <textarea
         className="chatgpt-prompt-textarea"
         onChange={handleChange}
-        value={promptText}
+        value={messages[0].content}
       />
       <div className="chatgpt-prompt-btns">
         <button>Add attachments datas</button>

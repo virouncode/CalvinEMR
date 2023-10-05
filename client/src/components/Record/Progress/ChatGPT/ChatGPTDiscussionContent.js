@@ -1,6 +1,6 @@
 import React from "react";
+import TypingDots from "../../../Presentation/TypingDots";
 import ChatGPTMessage from "./ChatGPTMessage";
-import { LinearProgress } from "@mui/material";
 
 const ChatGPTDiscussionContent = ({ messages, msgEndRef, isLoading }) => {
   return (
@@ -8,7 +8,7 @@ const ChatGPTDiscussionContent = ({ messages, msgEndRef, isLoading }) => {
       {messages.map((message, i) => (
         <ChatGPTMessage role={message.role} key={i} message={message} />
       ))}
-      {isLoading && <LinearProgress />}
+      {isLoading && <TypingDots />}
       <div ref={msgEndRef}></div>
     </div>
   );

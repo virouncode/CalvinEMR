@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../../assets/img/logo.png";
 
 const ConfirmDialog = ({
   title,
@@ -13,7 +12,7 @@ const ConfirmDialog = ({
       <div id="confirm-dialog" style={containerStyle}>
         <div className="confirm-dialog">
           <div className="confirm-dialog-header">
-            <img src={logo} alt="alpha-emr-logo" width="100px" />
+            <div className="confirm-dialog-header-logo"></div>
             <h2 style={{ fontSize: "1rem" }}>{title ?? "Confirmation"}</h2>
           </div>
           <p style={{ fontSize: "0.8rem", padding: "10px", margin: "0" }}>

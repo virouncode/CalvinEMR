@@ -1,35 +1,46 @@
-import { LinearProgress } from "@mui/material";
 import React, { useState } from "react";
 import { getAge } from "../../../../utils/getAge";
+import TypingDots from "../../../Presentation/TypingDots";
 import ChatGPTDiscussion from "./ChatGPTDiscussion";
 import ChatGPTPrompt from "./ChatGPTPrompt";
 
 const ChatGPT = ({ attachments, initialBody, patientInfos }) => {
-  const [promptText, setPromptText] = useState(
-    `Hello ChatGPT I'm a doctor.
+  const [chatVisible, setChatVisible] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      content: `Hello ChatGPT I'm a doctor.
 
 My patient is a ${getAge(patientInfos.date_of_birth)} year-old ${
-      patientInfos.gender_at_birth
-    } with the following symptoms:
-  
-${initialBody}.
-  
-What is the diagnosis and what treatment would you suggest ?`
-  );
-  const [firstBotRes, setFirstBotRes] = useState("");
-  const [chatVisible, setChatVisible] = useState(false);
+        patientInfos.gender_at_birth
+      } with the following symptoms:
+    
+  ${initialBody}.
+    
+What is the diagnosis and what treatment would you suggest ?`,
+      role: "user",
+    },
+  ]);
 
   return !chatVisible ? (
     <ChatGPTPrompt
-      promptText={promptText}
-      setPromptText={setPromptText}
+      messages={messages}
+      setMessages={setMessages}
       setChatVisible={setChatVisible}
-      setFirstBotRes={setFirstBotRes}
     />
-  ) : firstBotRes ? (
-    <ChatGPTDiscussion firstMessage={promptText} firstResponse={firstBotRes} />
+  ) : messages.length >= 2 ? (
+    <ChatGPTDiscussion messages={messages} setMessages={setMessages} />
   ) : (
-    <LinearProgress />
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <TypingDots />
+    </div>
   );
 };
 

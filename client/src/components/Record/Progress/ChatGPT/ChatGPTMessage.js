@@ -1,25 +1,15 @@
 import React from "react";
-import botLogo from "../../../../assets/img/chatGPTLogo.png";
-import doctorLogo from "../../../../assets/img/doctorLogo.png";
 
 const ChatGPTMessage = ({ role, message }) => {
   return (
     <div
       className="chatgpt-discussion-content-card"
-      style={{ background: role === "user" ? "#FEFEFE" : "#B2B2B2" }}
+      style={{ background: role === "user" ? "#FEFEFE" : "rgb(224 224 224)" }}
     >
       {role === "user" ? (
-        <img
-          className="chatgpt-discussion-content-card-img"
-          src={doctorLogo}
-          alt="doctor-avatar"
-        />
+        <div className="chatgpt-discussion-content-card-img-user" />
       ) : (
-        <img
-          className="chatgpt-discussion-content-card-img"
-          src={botLogo}
-          alt="chatGPT-avatar"
-        />
+        <div className="chatgpt-discussion-content-card-img-bot" />
       )}
       <p className="chatgpt-discussion-content-card-message">
         {message.content}
