@@ -147,12 +147,10 @@ const NewAppointment = () => {
       const secretariesIds = clinic.staffInfos
         .filter(({ title }) => title === "Secretary")
         .map(({ id }) => id);
-      console.log("secretariesIds", secretariesIds);
-      //create the message
 
+      //create the message
       try {
         for (const secretaryId of secretariesIds) {
-          console.log(secretaryId);
           const message = {
             from_id: user.id,
             from_user_type: "patient",

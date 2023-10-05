@@ -128,7 +128,7 @@ Cellphone: ${user.demographics.cell_phone}`,
 
         setAppointmentSelectedId(null);
       } catch (err) {
-        toast.err(`Unable to send appointment cancelation: ${err.message}`, {
+        toast.error(`Unable to send appointment cancelation: ${err.message}`, {
           containerId: "A",
         });
       }

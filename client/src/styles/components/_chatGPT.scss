@@ -54,8 +54,7 @@
                 border: solid 1.5px $grey;
             }
         }
-        &-btn {
-            cursor: pointer;
+        &-send-btn {
             position: absolute;
             width: 50px;
             bottom: 9.4%;
@@ -72,6 +71,22 @@
                 background-color: #1affc6;
                 background-size: 30px 30px;
             }
+            &:disabled {
+                background:url("../../assets/img/sendIcon.png") no-repeat center;
+                background-color: #FEFEFE;
+                background-size: 30px 30px;
+            }
+        }
+        &-stop-btn {
+            position: absolute;
+            bottom: 20%;
+            right:8%;
+            width: auto;
+            background-color: #14E5B0;
+            border: solid 1px $grey;
+            &:hover {
+                background-color: #1affc6;
+            }
         }
         &-sendicon{
             width: 100%;
@@ -81,7 +96,8 @@
         &-content {
             overflow: scroll;
             font-size: 0.85rem;
-            margin: 20px 0; 
+            margin: 20px 0 40px; 
+            border-bottom: solid 1px $grey;
 
             &-card {
                 padding: 20px 40px;

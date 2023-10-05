@@ -20,11 +20,9 @@ const EmailForm = ({
     //verifier l'email
     try {
       const response = await axiosXanoReset.get(`/${type}/all_emails`);
-      console.log(response.data);
       const mail = response.data.find(
         ({ email }) => email === emailInput.toLowerCase()
       );
-      console.log(mail);
       if (!mail) {
         setErrMsg(`There is no ${type} account associated with this email`);
         return;
@@ -34,7 +32,6 @@ const EmailForm = ({
           `/auth/${type}/request_temp_password?email=${emailInput.toLowerCase()}`
         )
       ).data;
-      console.log(user);
 
       sendEmail(
         user.email,

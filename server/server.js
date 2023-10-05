@@ -7,7 +7,6 @@ const twilio = require("twilio")(
   process.env.TWILIO_AUTH_TOKEN
 );
 const bodyParser = require("body-parser");
-
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
@@ -16,21 +15,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //***************** Endpoint TWILIO ******************//
-app.post("/api/twilio/messages", (req, res) => {
-  res.header("Content-Type", "application/json");
-  twilio.messages
-    .create({
+app.post("/api/twilio/messages", async (req, res) => {
+  try {
+    res.header("Content-Type", "application/json");
+    await twilio.messages.create({
       from: process.env.TWILIO_PHONE_NUMBER,
       to: req.body.to,
       body: req.body.body,
-    })
-    .then(() => {
-      res.send(JSON.stringify({ success: true }));
-    })
-    .catch((err) => {
-      console.log(err);
-      res.send(JSON.stringify({ success: false }));
     });
+    res.send(JSON.stringify({ success: true }));
+  } catch (err) {
+    console.log(err);
+    res.send(JSON.stringify({ success: false }));
+  }
 });
 //****************************************************//
 

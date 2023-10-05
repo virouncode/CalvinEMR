@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import { getAge } from "../../../../utils/getAge";
-import TypingDots from "../../../Presentation/TypingDots";
 import ChatGPTDiscussion from "./ChatGPTDiscussion";
 import ChatGPTPrompt from "./ChatGPTPrompt";
 
@@ -20,27 +20,48 @@ What is the diagnosis and what treatment would you suggest ?`,
       role: "user",
     },
   ]);
+  const [lastResponse, setLastResponse] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const abortController = useRef(null);
 
-  return !chatVisible ? (
-    <ChatGPTPrompt
-      messages={messages}
-      setMessages={setMessages}
-      setChatVisible={setChatVisible}
-    />
-  ) : messages.length >= 2 ? (
-    <ChatGPTDiscussion messages={messages} setMessages={setMessages} />
-  ) : (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <TypingDots />
-    </div>
+  return (
+    <>
+      {!chatVisible ? (
+        <ChatGPTPrompt
+          messages={messages}
+          setMessages={setMessages}
+          setChatVisible={setChatVisible}
+          setLastResponse={setLastResponse}
+          setIsLoading={setIsLoading}
+          abortController={abortController}
+        />
+      ) : (
+        <ChatGPTDiscussion
+          messages={messages}
+          setMessages={setMessages}
+          lastResponse={lastResponse}
+          setLastResponse={setLastResponse}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          abortController={abortController}
+        />
+      )}
+      <ToastContainer
+        enableMultiContainer
+        containerId={"B"}
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        limit={1}
+      />
+    </>
   );
 };
 

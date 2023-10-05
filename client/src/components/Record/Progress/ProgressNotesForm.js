@@ -87,7 +87,7 @@ const ProgressNotesForm = ({ setAddVisible, fetchRecord, patientId }) => {
       fetchRecord(abortController);
       toast.success("Saved successfully", { containerId: "A" });
     } catch (err) {
-      toast.err(`Error: unable to save progress note: ${err.message}`, {
+      toast.error(`Error: unable to save progress note: ${err.message}`, {
         containerId: "A",
       });
     }

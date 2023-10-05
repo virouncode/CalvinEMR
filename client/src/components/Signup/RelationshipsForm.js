@@ -5,7 +5,6 @@ const RelationshipsForm = ({ relationships, setRelationships }) => {
   const idCounter = useRef(0);
 
   const handleChange = (e) => {
-    console.log(e.target.id);
     const value = parseInt(e.target.value);
     let updatedRelationships = [...relationships];
     //ne pas prendre l'index mais filtrer sur l'id

@@ -1,17 +1,36 @@
 import React from "react";
+import { toast } from "react-toastify";
 import { sendMsgToOpenAI } from "../../../../api/openapi";
 
-const ChatGPTPrompt = ({ messages, setMessages, setChatVisible }) => {
+const ChatGPTPrompt = ({
+  messages,
+  setMessages,
+  setChatVisible,
+  setLastResponse,
+  setIsLoading,
+  abortController,
+}) => {
   const handleChange = (e) => {
     setMessages([{ role: "user", content: e.target.value }]);
   };
   const handleSubmit = async () => {
+    const updatedMessages = [...messages];
     setChatVisible(true);
-    const response = await sendMsgToOpenAI(messages);
-    setMessages([
-      ...messages,
-      { role: "assistant", content: response[0].message.content },
-    ]);
+    updatedMessages.push({ role: "assistant", content: "" });
+    try {
+      setIsLoading(true);
+      abortController.current = new AbortController();
+      const stream = await sendMsgToOpenAI(messages, abortController.current);
+      for await (const part of stream) {
+        updatedMessages[updatedMessages.length - 1].content +=
+          part.choices[0]?.delta?.content || "";
+        setMessages(updatedMessages);
+        setLastResponse((r) => r + (part.choices[0]?.delta?.content || ""));
+      }
+      setIsLoading(false);
+    } catch (err) {
+      toast.error(`ChatGPT is down: ${err.message}`, { containerId: "B" });
+    }
   };
   return (
     <div className="chatgpt-prompt">

@@ -52,7 +52,6 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrMsg("");
-    console.log("submit");
     const datasToPost = {
       ...formDatas,
       description: firstLetterUpper(formDatas.description),

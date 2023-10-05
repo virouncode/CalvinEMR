@@ -138,7 +138,6 @@ const RelationshipItem = ({
           );
         }
         deletePatientRecord("/relationships", item.id, auth.authToken);
-        console.log("fetchRecord");
         const abortController = new AbortController();
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
