@@ -24,20 +24,7 @@ const FamilyDoctorsPU = ({
   const [addVisible, setAddVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
-  //STYLE
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
+
   //HANDLERS
   const handleClose = async (e) => {
     if (
@@ -93,7 +80,10 @@ const FamilyDoctorsPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="doctors-title"> Patient Doctors</h1>
+              <h1 className="doctors-title">
+                {" "}
+                Patient Doctors <i className="fa-solid fa-user-doctor"></i>
+              </h1>
               {errMsgPost && <div className="doctors-err">{errMsgPost}</div>}
               <table className="doctors-table">
                 <thead>
@@ -182,7 +172,7 @@ const FamilyDoctorsPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmPopUp />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

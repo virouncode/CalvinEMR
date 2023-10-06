@@ -1,57 +1,57 @@
 .concerns {
     &-title {
         font-size: 1.2rem;
-        margin-bottom: 10px;
-        padding: 10px;
+        margin-top: 60px;
+        margin-bottom:30px;
         text-align: center;
     }
     &-err {
         padding : 10px 20px;
         font-size: 0.9rem;
-        width : 50%;
-        margin:0 auto 10px;
+        width : 100%;
+        margin:10px auto;
         color : red;
         background-color:rgba(255, 0, 0, 0.403);
         border-radius: 4px;
         text-align: center;
     }
     &-table {
-        table-layout: fixed;
+        table-layout:fixed;
+        min-width:100%;
         border-collapse: collapse;
-        border: solid 1px $black;
         font-size: 0.8rem;
-        margin: 0 auto;
         thead {
-            background-color: $blue;
+            background: $blue;
             border: solid 1px $black;
         }
         th {
-            min-width: 50px;
+            min-width: 120px;
             padding: 2px 5px;
             border: solid 1px $black;
             text-decoration: underline;
-            cursor: pointer; 
+            cursor: pointer;
         }
-    }
-    &-btn-container {
-        display: flex;
-        justify-content: space-between;
-        width: 25%;
-        margin: 20px auto 0;
     }
     &-item, &-form {
         td {
             text-align: center;
             border: solid 1px $black;
             padding: 2px 5px;
-            word-wrap: break-word;
-            max-width: 470px;
+            word-break: break-word;
+            input {
+                width: 100%;
+            }
+            input[type="submit"]{
+                width:auto;
+            }
         }
-        input {
-            width: 450px;
-        }
-        input[type="submit"]{
-            width:auto;
-        }
+        
     }
+    &-btn-container {
+        display: flex;
+        justify-content: space-between;
+        width: 170px;
+        margin: 20px auto 0;
+    }
+   
 }

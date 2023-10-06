@@ -77,7 +77,7 @@ const Header = () => {
           </li>
           <li>
             <a href="https://chat.openai.com/" target="_blank" rel="noreferrer">
-              ChatGPT
+              CalvinAI
             </a>
           </li>
           <li>

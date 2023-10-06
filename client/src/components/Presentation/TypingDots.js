@@ -1,6 +1,6 @@
 import React from "react";
 
-const TypingDots = ({ text = "Please wait for ChatGPT..." }) => {
+const TypingDots = ({ text = "Please wait for CalvinAI..." }) => {
   return (
     <div className="typing">
       <div className="typing-progress">

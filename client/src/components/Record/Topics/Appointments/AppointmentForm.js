@@ -11,6 +11,7 @@ import {
 } from "../../../../utils/formatDates";
 import formatName from "../../../../utils/formatName";
 import { rooms } from "../../../../utils/rooms";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { statuses } from "../../../../utils/statuses";
 import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
 import HostsList from "../../../EventForm/HostsList";
@@ -458,7 +459,7 @@ const AppointmentForm = ({
         />
       </td>
       <td>
-        <em>{formatName(user.name)}</em>
+        <em> {staffIdToTitleAndName(clinic.staffInfos, user.id, true)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

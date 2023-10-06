@@ -84,7 +84,8 @@ const VaccinesPU = ({
           datas && (
             <>
               <h1 className="vaccines-title">
-                Patient vaccines <button onClick={handleClose}>Close</button>
+                Patient vaccines <i className="fa-solid fa-syringe"></i>
+                <button onClick={handleClose}>Close</button>
               </h1>
               {errMsgPost && <div className="vaccines-err">{errMsgPost}</div>}
               <table className="vaccines-table">

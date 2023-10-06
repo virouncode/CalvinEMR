@@ -144,7 +144,6 @@ const MedicationEvent = ({
               value={eventInfos.name}
               name="name"
               onChange={handleChange}
-              className="medications-event-input1"
               autoComplete="off"
             />
           ) : (
@@ -158,7 +157,6 @@ const MedicationEvent = ({
               value={eventInfos.active_ingredients ?? ""}
               name="active_ingredients"
               onChange={handleChange}
-              className="medications-event-input1"
               autoComplete="off"
             />
           ) : (
@@ -172,7 +170,6 @@ const MedicationEvent = ({
               value={eventInfos.route_of_administration}
               name="route_of_administration"
               onChange={handleChange}
-              className="medications-event-input2"
               autoComplete="off"
             />
           ) : (
@@ -186,7 +183,6 @@ const MedicationEvent = ({
               value={eventInfos.dose}
               name="dose"
               onChange={handleChange}
-              className="medications-event-input2"
               autoComplete="off"
             />
           ) : (
@@ -200,7 +196,6 @@ const MedicationEvent = ({
               value={eventInfos.frequency}
               name="frequency"
               onChange={handleChange}
-              className="medications-event-input3"
               autoComplete="off"
             />
           ) : (
@@ -214,7 +209,6 @@ const MedicationEvent = ({
               value={eventInfos.number_of_doses}
               name="number_of_doses"
               onChange={handleChange}
-              className="medications-event-input2"
               autoComplete="off"
             />
           ) : (
@@ -228,7 +222,6 @@ const MedicationEvent = ({
               value={eventInfos.duration}
               name="duration"
               onChange={handleChange}
-              className="medications-event-input2"
               autoComplete="off"
             />
           ) : (

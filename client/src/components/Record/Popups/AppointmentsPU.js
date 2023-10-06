@@ -22,20 +22,6 @@ const AppointmentsPU = ({
   const [columnToSort, setColumnToSort] = useState("start");
   const direction = useRef(false);
 
-  //STYLE
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "100vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
   //HANDLERS
   const handleSort = (columnName) => {
     direction.current = !direction.current;
@@ -70,7 +56,10 @@ const AppointmentsPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="appointments-title">Patient appointments</h1>
+              <h1 className="appointments-title">
+                Patient appointments{" "}
+                <i className="fa-regular fa-calendar-check"></i>
+              </h1>
               {errMsgPost && (
                 <div className="appointments-err">{errMsgPost}</div>
               )}
@@ -152,7 +141,7 @@ const AppointmentsPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmPopUp />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

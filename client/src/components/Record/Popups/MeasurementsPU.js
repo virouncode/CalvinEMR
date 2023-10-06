@@ -70,7 +70,10 @@ const MeasurementsPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="measurements-title">Patient measurements</h1>
+              <h1 className="measurements-title">
+                Patient measurements{" "}
+                <i className="fa-solid fa-ruler-combined"></i>
+              </h1>
               {errMsgPost && (
                 <div className="measurements-err">{errMsgPost}</div>
               )}

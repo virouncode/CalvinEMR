@@ -127,7 +127,6 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="address"
-              className="pharmacies-item-input1"
               type="text"
               value={itemInfos.address}
               onChange={handleChange}
@@ -141,7 +140,6 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="province_state"
-              className="pharmacies-item-input2"
               type="text"
               value={itemInfos.province_state}
               onChange={handleChange}
@@ -155,7 +153,6 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="postal_code"
-              className="pharmacies-item-input4"
               type="text"
               value={itemInfos.postal_code}
               onChange={handleChange}
@@ -169,7 +166,6 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="city"
-              className="pharmacies-item-input2"
               type="text"
               value={itemInfos.city}
               onChange={handleChange}
@@ -194,7 +190,6 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="phone"
-              className="pharmacies-item-input2"
               type="text"
               value={itemInfos.phone}
               onChange={handleChange}
@@ -208,7 +203,6 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="fax"
-              className="pharmacies-item-input2"
               type="text"
               value={itemInfos.fax}
               onChange={handleChange}
@@ -222,7 +216,6 @@ const PharmacyItem = ({
           {editVisible ? (
             <input
               name="email"
-              className="pharmacies-item-input3"
               type="email"
               value={itemInfos.email}
               onChange={handleChange}

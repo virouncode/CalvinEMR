@@ -5,7 +5,7 @@ import axiosXano from "../../../../api/xano";
 import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
-import formatName from "../../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { pharmacySchema } from "../../../../validation/pharmacyValidation";
 import CountriesList from "../../../Lists/CountriesList";
 
@@ -16,7 +16,7 @@ const PharmacyForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, clinic, user } = useAuth();
   const [formDatas, setFormDatas] = useState({
     name: "",
     patients: [{ patients_id: patientId }],
@@ -87,7 +87,6 @@ const PharmacyForm = ({
           name="name"
           type="text"
           value={formDatas.name}
-          className="pharmacies-form-input3"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -97,7 +96,6 @@ const PharmacyForm = ({
           name="address"
           type="text"
           value={formDatas.address}
-          className="pharmacies-form-input1"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -107,7 +105,6 @@ const PharmacyForm = ({
           name="province_state"
           type="text"
           value={formDatas.province_state}
-          className="pharmacies-form-input2"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -117,7 +114,6 @@ const PharmacyForm = ({
           name="postal_code"
           type="text"
           value={formDatas.postal_code}
-          className="pharmacies-form-input4"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -127,7 +123,6 @@ const PharmacyForm = ({
           name="city"
           type="text"
           value={formDatas.city}
-          className="pharmacies-form-input2"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -144,7 +139,6 @@ const PharmacyForm = ({
           name="phone"
           type="text"
           value={formDatas.phone}
-          className="pharmacies-form-input2"
           onChange={handleChange}
         />
       </td>
@@ -153,7 +147,6 @@ const PharmacyForm = ({
           name="fax"
           type="text"
           value={formDatas.fax}
-          className="pharmacies-form-input2"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -163,13 +156,12 @@ const PharmacyForm = ({
           name="email"
           type="text"
           value={formDatas.email}
-          className="pharmacies-form-input3"
           onChange={handleChange}
           autoComplete="off"
         />
       </td>
       <td>
-        <em>{formatName(user.name)}</em>
+        <em>{staffIdToTitleAndName(clinic.staffInfos, user.id, true)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { sendMsgToOpenAI } from "../../../../api/openapi";
-import ChatGPTDiscussionContent from "./ChatGPTDiscussionContent";
+import CalvinAIDiscussionContent from "./CalvinAIDiscussionContent";
 
-const ChatGPTDiscussion = ({
+const CalvinAIDiscussion = ({
   messages,
   setMessages,
   lastResponse,
@@ -44,36 +44,36 @@ const ChatGPTDiscussion = ({
       }
       setIsLoading(false);
     } catch (err) {
-      toast.error(`ChatGPT is down: ${err.message}`, { containerId: "B" });
+      toast.error(`CalvinAI is down: ${err.message}`, { containerId: "B" });
     }
   };
   return (
-    <div className="chatgpt-discussion">
-      <h2 className="chatgpt-discussion-title">Discussion</h2>
-      <ChatGPTDiscussionContent
+    <div className="calvinai-discussion">
+      <h2 className="calvinai-discussion-title">Discussion</h2>
+      <CalvinAIDiscussionContent
         messages={messages}
         msgEndRef={msgEndRef}
         lastResponse={lastResponse}
       />
       <button
-        className="chatgpt-discussion-stop-btn"
+        className="calvinai-discussion-stop-btn"
         onClick={() => abortController.current.abort()}
       >
         Stop generating
       </button>
       <textarea
-        className="chatgpt-discussion-textarea"
+        className="calvinai-discussion-textarea"
         onChange={handleChangeInput}
         value={inputText}
         autoFocus
       />
       <button
         onClick={handleAskGPT}
-        className="chatgpt-discussion-send-btn"
+        className="calvinai-discussion-send-btn"
         disabled={isLoading}
       />
     </div>
   );
 };
 
-export default ChatGPTDiscussion;
+export default CalvinAIDiscussion;

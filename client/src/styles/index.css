@@ -33,7 +33,7 @@ body {
   font-family: Lato, sans-serif;
   color: #21201e;
   max-width: 100vw;
-  background: #fefefe;
+  background: #FEFEFE;
   min-width: 700px;
   font-variant: normal;
 }
@@ -10659,7 +10659,7 @@ readers do not read off random characters that represent icons */
 .login-card .login-container {
   height: 100%;
   width: 50%;
-  background: #fefefe;
+  background: #FEFEFE;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10876,7 +10876,7 @@ readers do not read off random characters that represent icons */
   width: 17%;
   border-radius: 2px;
   border: 0.5px solid #a4a3a3;
-  background: #fefefe;
+  background: #FEFEFE;
   color: grey;
   font-size: 0.8rem;
   line-height: 1.3;
@@ -11045,7 +11045,7 @@ readers do not read off random characters that represent icons */
 }
 
 .event-form {
-  background: #fefefe;
+  background: #FEFEFE;
   position: absolute;
   font-size: 0.75rem;
   z-index: 100;
@@ -11158,11 +11158,11 @@ readers do not read off random characters that represent icons */
 }
 .event-form .form-uneditable input, .event-form .form-uneditable select {
   border: none;
-  background: #fefefe;
+  background: #FEFEFE;
 }
 .event-form .form-uneditable select {
   border: none;
-  background: #fefefe;
+  background: #FEFEFE;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -11311,7 +11311,7 @@ readers do not read off random characters that represent icons */
   position: absolute;
   right: 0;
   bottom: 0;
-  background: #fefefe;
+  background: #FEFEFE;
   border-radius: 4px;
   width: 100%;
   padding: 15px;
@@ -13551,7 +13551,7 @@ readers do not read off random characters that represent icons */
   left: 50%;
   transform: translateY(-50%);
   margin-left: -200px;
-  background: #fefefe;
+  background: #FEFEFE;
   overflow: hidden;
 }
 .confirm-dialog-header {

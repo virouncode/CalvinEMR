@@ -21,21 +21,6 @@ const AllergiesPU = ({
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
 
-  //STYLE
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
-
   //HANDLERS
   const handleSort = (columnName) => {
     direction.current = !direction.current;
@@ -70,7 +55,9 @@ const AllergiesPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="allergies-title">Patient allergies</h1>
+              <h1 className="allergies-title">
+                Patient allergies <i class="fa-solid fa-hand-dots"></i>
+              </h1>
               {errMsgPost && <div className="allergies-err">{errMsgPost}</div>}
               <table className="allergies-table">
                 <thead>
@@ -142,7 +129,7 @@ const AllergiesPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmPopUp />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

@@ -153,7 +153,9 @@ const EformsPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="electronic-title">Patient e-forms</h1>
+              <h1 className="electronic-title">
+                Patient e-forms <i className="fa-regular fa-newspaper"></i>
+              </h1>
               <table className="electronic-table">
                 <thead>
                   <tr>

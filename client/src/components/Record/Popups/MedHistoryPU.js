@@ -21,20 +21,6 @@ const MedHistoryPU = ({
   const [columnToSort, setColumnToSort] = useState("date_of_event");
   const direction = useRef(false);
 
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
-
   //HANDLERS
   const handleSort = (columnName) => {
     direction.current = !direction.current;
@@ -69,7 +55,10 @@ const MedHistoryPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="medhistory-title">Patient medical history</h1>
+              <h1 className="medhistory-title">
+                Patient medical history{" "}
+                <i className="fa-solid fa-laptop-medical"></i>
+              </h1>
               {errMsgPost && <div className="medhistory-err">{errMsgPost}</div>}
               <table className="medhistory-table">
                 <thead>
@@ -180,7 +169,7 @@ const MedHistoryPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmPopUp />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

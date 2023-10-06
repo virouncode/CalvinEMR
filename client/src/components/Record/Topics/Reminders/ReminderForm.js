@@ -4,7 +4,7 @@ import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
 import { toLocalDate } from "../../../../utils/formatDates";
-import formatName from "../../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { reminderSchema } from "../../../../validation/reminderValidation";
 
 const ReminderForm = ({
@@ -15,7 +15,7 @@ const ReminderForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     active: true,
@@ -92,7 +92,7 @@ const ReminderForm = ({
         />
       </td>
       <td>
-        <em>{formatName(user.name)}</em>
+        <em>{staffIdToTitleAndName(clinic.staffInfos, user.id, true)}</em>
       </td>
       <td>
         <em>{toLocalDate(Date.now())}</em>

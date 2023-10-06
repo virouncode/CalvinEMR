@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
-import formatName from "../../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { pregnancySchema } from "../../../../validation/pregnancyValidation";
 import PregnanciesList from "../../../Lists/PregnanciesList";
 
@@ -15,7 +15,7 @@ const PregnancyForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -137,7 +137,7 @@ const PregnancyForm = ({
         </div>
       </td>
       <td>
-        <em>{formatName(user.name)}</em>{" "}
+        <em>{staffIdToTitleAndName(clinic.staffInfos, user.id, true)}</em>{" "}
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

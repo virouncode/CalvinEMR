@@ -1,9 +1,10 @@
 import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
-import NewWindow from "react-new-window";
 import { ToastContainer } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
+import { patientIdToName } from "../../../utils/patientIdToName";
 import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import FakeWindow from "../../Presentation/FakeWindow";
 import MedicationEvent from "../Topics/Medications/MedicationEvent";
 import MedicationForm from "../Topics/Medications/MedicationForm";
 import PrescriptionPU from "./PrescriptionPU";
@@ -19,7 +20,7 @@ const MedicationsPU = ({
   errMsg,
 }) => {
   //HOOKS
-  const { user } = useAuth();
+  const { user, clinic } = useAuth();
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
@@ -27,21 +28,6 @@ const MedicationsPU = ({
   const [columnToSort, setColumnToSort] = useState("start");
   const [medsRx, setMedsRx] = useState([]);
   const direction = useRef(false);
-
-  //STYLE
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "100vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
 
   //HANDLERS
   const handleSort = (columnName) => {
@@ -77,7 +63,9 @@ const MedicationsPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="medications-title">Patient medications</h1>
+              <h1 className="medications-title">
+                Patient medications <i className="fa-solid fa-pills"></i>
+              </h1>
               {errMsgPost && (
                 <div className="medications-err">{errMsgPost}</div>
               )}
@@ -220,28 +208,22 @@ const MedicationsPU = ({
         />
       )}
       {presVisible && (
-        <NewWindow
-          title="New Prescription"
-          features={{
-            toolbar: "no",
-            scrollbars: "no",
-            menubar: "no",
-            status: "no",
-            directories: "no",
-            width: 793.7,
-            height: 1122.5,
-            left: 0,
-            top: 0,
-          }}
-          onUnload={() => {
-            setPresVisible(false);
-            setMedsRx([]);
-          }}
+        <FakeWindow
+          title={`NEW PRESCRIPTION to ${patientIdToName(
+            clinic.patientsInfos,
+            patientId
+          )}`}
+          width={800}
+          height={600}
+          x={(window.innerWidth - 800) / 2}
+          y={(window.innerHeight - 600) / 2}
+          color="black"
+          setPopUpVisible={setPopUpVisible}
         >
           <PrescriptionPU medsRx={medsRx} patientInfos={patientInfos} />
-        </NewWindow>
+        </FakeWindow>
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmPopUp />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

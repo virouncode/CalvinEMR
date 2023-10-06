@@ -4,7 +4,7 @@ import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper";
 import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
-import formatName from "../../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { riskSchema } from "../../../../validation/riskValidation";
 
 const RiskForm = ({
@@ -15,7 +15,7 @@ const RiskForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -75,7 +75,7 @@ const RiskForm = ({
         />
       </td>
       <td>
-        <em>{formatName(user.name)}</em>
+        <em>{staffIdToTitleAndName(clinic.staffInfos, user.id, true)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

@@ -4,7 +4,7 @@ import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { toLocalDate } from "../../../../utils/formatDates";
-import formatName from "../../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { allergySchema } from "../../../../validation/allergyValidation";
 
 const AllergyForm = ({
@@ -15,7 +15,7 @@ const AllergyForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     allergy: "",
@@ -79,7 +79,7 @@ const AllergyForm = ({
         />
       </td>
       <td>
-        <em>{formatName(user.name)}</em>
+        <em>{staffIdToTitleAndName(clinic.staffInfos, user.id, true)}</em>
       </td>
       <td>
         <em>{toLocalDate(Date.now())}</em>

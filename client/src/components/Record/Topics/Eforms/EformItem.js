@@ -46,8 +46,10 @@ const EformItem = ({ item, fetchRecord, showDocument }) => {
         <em>{toLocalDate(item.date_created)}</em>
       </td>
       <td>
-        <button>Fax</button>
-        <button onClick={handleDeleteClick}>Delete</button>
+        <div className="electronic-item-btn-container">
+          <button>Fax</button>
+          <button onClick={handleDeleteClick}>Delete</button>
+        </div>
       </td>
     </tr>
   );

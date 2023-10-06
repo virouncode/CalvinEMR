@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { getAge } from "../../../../utils/getAge";
-import ChatGPTDiscussion from "./ChatGPTDiscussion";
-import ChatGPTPrompt from "./ChatGPTPrompt";
+import CalvinAIDiscussion from "./CalvinAIDiscussion";
+import CalvinAIPrompt from "./CalvinAIPrompt";
 
-const ChatGPT = ({ attachments, initialBody, patientInfos }) => {
+const CalvinAI = ({ attachments, initialBody, patientInfos }) => {
   const [chatVisible, setChatVisible] = useState(false);
   const [messages, setMessages] = useState([
     {
-      content: `Hello ChatGPT I'm a doctor.
+      content: `Hello CalvinAI I'm a doctor.
 
 My patient is a ${getAge(patientInfos.date_of_birth)} year-old ${
         patientInfos.gender_at_birth
@@ -27,7 +27,7 @@ What is the diagnosis and what treatment would you suggest ?`,
   return (
     <>
       {!chatVisible ? (
-        <ChatGPTPrompt
+        <CalvinAIPrompt
           messages={messages}
           setMessages={setMessages}
           setChatVisible={setChatVisible}
@@ -36,7 +36,7 @@ What is the diagnosis and what treatment would you suggest ?`,
           abortController={abortController}
         />
       ) : (
-        <ChatGPTDiscussion
+        <CalvinAIDiscussion
           messages={messages}
           setMessages={setMessages}
           lastResponse={lastResponse}
@@ -65,4 +65,4 @@ What is the diagnosis and what treatment would you suggest ?`,
   );
 };
 
-export default ChatGPT;
+export default CalvinAI;

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import NewWindow from "react-new-window";
 import { toast } from "react-toastify";
 import {
   getPatientRecord,
@@ -9,10 +8,12 @@ import {
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
+import { patientIdToName } from "../../../utils/patientIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import FakeWindow from "../../Presentation/FakeWindow";
 import TriangleButtonProgress from "./../Buttons/TriangleButtonProgress";
-import ChatGPT from "./ChatGPT/ChatGPT";
+import CalvinAI from "./CalvinAI/CalvinAI";
 import ProgressNotesAttachments from "./ProgressNotesAttachments";
 var _ = require("lodash");
 
@@ -124,7 +125,7 @@ const ProgressNotesCard = ({
     );
   };
 
-  const handleChatGPTClick = () => {
+  const handleCalvinAIClick = () => {
     setPopUpVisible((v) => !v);
   };
 
@@ -330,7 +331,7 @@ const ProgressNotesCard = ({
                   {!editVisible ? (
                     <>
                       <button onClick={handleEditClick}>Edit</button>
-                      <button onClick={handleChatGPTClick}>Ask ChatGPT</button>
+                      <button onClick={handleCalvinAIClick}>CALVIN AI</button>
                     </>
                   ) : (
                     <div
@@ -476,27 +477,24 @@ const ProgressNotesCard = ({
           )}
         </div>
         {popUpVisible && (
-          <NewWindow
-            title="ChatGPT"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 1000,
-              height: 6000,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`CALVIN AI talk about ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color="#14E5B0"
+            setPopUpVisible={setPopUpVisible}
           >
-            <ChatGPT
+            <CalvinAI
               attachments={attachments}
               initialBody={formDatas.body}
               patientInfos={patientInfos}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
       </div>
     )

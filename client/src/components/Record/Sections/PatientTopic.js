@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
-import NewWindow from "react-new-window";
+import useAuth from "../../../hooks/useAuth";
 import { usePatientRecord } from "../../../hooks/usePatientRecord";
+import { patientIdToName } from "../../../utils/patientIdToName";
+import FakeWindow from "../../Presentation/FakeWindow";
 import AllergiesPU from "../Popups/AllergiesPU";
 import AppointmentsPU from "../Popups/AppointmentsPU";
 import ConcernsPU from "../Popups/ConcernsPU";
@@ -53,6 +55,7 @@ const PatientTopic = ({
   side,
 }) => {
   //HOOKS
+  const { clinic } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
   const [{ datas, isLoading, errMsg }, fetchRecord, setDatas] =
     usePatientRecord(url, patientId);
@@ -133,27 +136,24 @@ const PatientTopic = ({
           <DemographicsContent patientInfos={patientInfos} />
         )}
         {topic === "DEMOGRAPHICS" && popUpVisible && (
-          <NewWindow
-            title="Patient Demographics"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`DEMOGRAPHICS of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <DemographicsPU
               patientInfos={patientInfos}
               setPatientInfos={setPatientInfos}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -166,20 +166,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "MEDICAL HISTORY" && popUpVisible && (
-          <NewWindow
-            title="Patient Medical History"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`MEDICAL HISTORY of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <MedHistoryPU
               patientId={patientId}
@@ -190,7 +187,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -203,20 +200,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "FAMILY HISTORY" && popUpVisible && (
-          <NewWindow
-            title="Patient Family History"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`FAMILY HISTORY of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <FamHistoryPU
               patientId={patientId}
@@ -227,42 +221,9 @@ const PatientTopic = ({
               isLoading={isLoading}
               errMsg={errMsg}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
-        {/* FAMILY DOCTORS */}
-        {topic === "FAMILY DOCTORS/SPECIALISTS" && (
-          <DoctorsContent datas={datas} isLoading={isLoading} errMsg={errMsg} />
-        )}
-        {topic === "FAMILY DOCTORS/SPECIALISTS" && popUpVisible && (
-          <NewWindow
-            title="Patient Doctors"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 1200,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
-          >
-            <FamilyDoctorsPU
-              patientId={patientId}
-              datas={datas}
-              setDatas={setDatas}
-              fetchRecord={fetchRecord}
-              isLoading={isLoading}
-              errMsg={errMsg}
-              setPopUpVisible={setPopUpVisible}
-            />
-          </NewWindow>
-        )}
-        {/*******************/}
-
         {/* RELATIONSHIPS */}
         {topic === "RELATIONSHIPS" && (
           <RelationshipsContent
@@ -272,20 +233,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "RELATIONSHIPS" && popUpVisible && (
-          <NewWindow
-            title="Patient Relationships"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`RELATIONSHIPS of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <RelationshipsPU
               patientId={patientId}
@@ -296,7 +254,36 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
+        )}
+        {/*******************/}
+        {/* FAMILY DOCTORS */}
+        {topic === "FAMILY DOCTORS/SPECIALISTS" && (
+          <DoctorsContent datas={datas} isLoading={isLoading} errMsg={errMsg} />
+        )}
+        {topic === "FAMILY DOCTORS/SPECIALISTS" && popUpVisible && (
+          <FakeWindow
+            title={`FAMILY DOCTORS & SPECIALISTS of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={1400}
+            height={600}
+            x={(window.innerWidth - 1400) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
+          >
+            <FamilyDoctorsPU
+              patientId={patientId}
+              datas={datas}
+              setDatas={setDatas}
+              fetchRecord={fetchRecord}
+              isLoading={isLoading}
+              errMsg={errMsg}
+              setPopUpVisible={setPopUpVisible}
+            />
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -305,20 +292,17 @@ const PatientTopic = ({
           <RiskContent datas={datas} isLoading={isLoading} errMsg={errMsg} />
         )}
         {topic === "RISK FACTORS/PREVENTION" && popUpVisible && (
-          <NewWindow
-            title="Patient Risk Factors & Prevention"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`RISK FACTORS of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <RiskPU
               patientId={patientId}
@@ -329,7 +313,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -342,20 +326,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "MEDICATIONS" && popUpVisible && (
-          <NewWindow
-            title="Patient Medications"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 1200,
-              height: 600,
-              left: 120,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`MEDICATIONS for ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={1400}
+            height={600}
+            x={(window.innerWidth - 1400) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <MedicationsPU
               patientId={patientId}
@@ -367,7 +348,7 @@ const PatientTopic = ({
               setPopUpVisible={setPopUpVisible}
               patientInfos={patientInfos}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -380,20 +361,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "PHARMACIES" && popUpVisible && (
-          <NewWindow
-            title="Patient Pharmacies"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 1200,
-              height: 600,
-              left: 120,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`PHARMACIES of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={1400}
+            height={600}
+            x={(window.innerWidth - 1400) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <PharmaciesPU
               patientId={patientId}
@@ -404,7 +382,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -417,20 +395,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "MEASUREMENTS" && popUpVisible && (
-          <NewWindow
-            title="Patient Measurements"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 1200,
-              height: 600,
-              left: 120,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`MEASUREMENTS of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={1200}
+            height={600}
+            x={(window.innerWidth - 1200) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <MeasurementsPU
               patientId={patientId}
@@ -441,7 +416,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
         {/*E-FORMS */}
@@ -454,20 +429,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "E-FORMS" && popUpVisible && (
-          <NewWindow
-            title="Patient Electronic Forms"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`ELECTRONIC FORMS of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <EformsPU
               patientInfos={patientInfos}
@@ -480,7 +452,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
         {/* SOCIAL HISTORY */}
@@ -492,20 +464,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "SOCIAL HISTORY" && popUpVisible && (
-          <NewWindow
-            title="Patient Social History"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`SOCIAL HISTORY of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={500}
+            height={400}
+            x={(window.innerWidth - 500) / 2}
+            y={(window.innerHeight - 400) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <SocHistoryPU
               patientId={patientId}
@@ -516,7 +485,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -529,20 +498,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "REMINDERS/ALERTS" && popUpVisible && (
-          <NewWindow
-            title="Patient Reminders & Alerts"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`REMINDERS & ALERTS concerning ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <RemindersPU
               patientId={patientId}
@@ -553,7 +519,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -566,20 +532,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "PREGNANCIES" && popUpVisible && (
-          <NewWindow
-            title="Patient Pregnancies"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`PREGNANCIES of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={900}
+            height={600}
+            x={(window.innerWidth - 900) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <PregnanciesPU
               patientId={patientId}
@@ -590,7 +553,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -603,20 +566,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "ALLERGIES" && popUpVisible && (
-          <NewWindow
-            title="Patient Allergies"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`ALLERGIES of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <AllergiesPU
               patientId={patientId}
@@ -627,7 +587,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -640,20 +600,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "ONGOING CONCERNS" && popUpVisible && (
-          <NewWindow
-            title="Ongoing concerns"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`ONGOING CONCERNS about ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <ConcernsPU
               patientId={patientId}
@@ -664,7 +621,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -678,20 +635,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "DOCUMENTS" && popUpVisible && (
-          <NewWindow
-            title="Patient Documents"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 800,
-              height: 600,
-              left: 320,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`DOCUMENTS about ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={1200}
+            height={600}
+            x={(window.innerWidth - 1200) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <DocumentsPU
               patientId={patientId}
@@ -703,27 +657,24 @@ const PatientTopic = ({
               showDocument={showDocument}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
         {/* VACCINES */}
         {topic === "VACCINES" && <VaccinesContent />}
         {topic === "VACCINES" && popUpVisible && (
-          <NewWindow
-            title="Patient Vaccines"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 1200,
-              height: 800,
-              left: 120,
-              top: 0,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`VACCINES of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={1400}
+            height={700}
+            x={(window.innerWidth - 1400) / 2}
+            y={(window.innerHeight - 700) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <VaccinesPU
               datas={datas}
@@ -734,7 +685,7 @@ const PatientTopic = ({
               setPopUpVisible={setPopUpVisible}
               patientInfos={patientInfos}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
 
@@ -747,20 +698,17 @@ const PatientTopic = ({
           />
         )}
         {topic === "APPOINTMENTS" && popUpVisible && (
-          <NewWindow
-            title="Patient Appointments"
-            features={{
-              toolbar: "no",
-              scrollbars: "no",
-              menubar: "no",
-              status: "no",
-              directories: "no",
-              width: 1200,
-              height: 600,
-              left: 120,
-              top: 200,
-            }}
-            onUnload={() => setPopUpVisible(false)}
+          <FakeWindow
+            title={`APPOINTMENTS of ${patientIdToName(
+              clinic.patientsInfos,
+              patientId
+            )}`}
+            width={1300}
+            height={600}
+            x={(window.innerWidth - 1300) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color={backgroundColor}
+            setPopUpVisible={setPopUpVisible}
           >
             <AppointmentsPU
               patientId={patientId}
@@ -772,7 +720,7 @@ const PatientTopic = ({
               errMsg={errMsg}
               setPopUpVisible={setPopUpVisible}
             />
-          </NewWindow>
+          </FakeWindow>
         )}
         {/*******************/}
         {/* MESSAGES ABOUT PATIENT */}

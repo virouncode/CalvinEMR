@@ -1,25 +1,19 @@
 .measurements {
     &-title {
         font-size: 1.2rem;
-        margin-bottom: 10px;
-        padding: 10px;
+        margin-top: 60px;
+        margin-bottom:30px;
         text-align: center;
     }
     &-err {
         padding : 10px 20px;
         font-size: 0.9rem;
-        width : 50%;
-        margin:0 auto 10px;
+        width : 100%;
+        margin:10px auto;
         color : red;
         background-color:rgba(255, 0, 0, 0.403);
         border-radius: 4px;
         text-align: center;
-    }
-    &-btn-container {
-        display: flex;
-        justify-content: space-between;
-        width:18%;
-        margin: 20px auto 0;
     }
     &-table {
         table-layout: fixed;
@@ -48,10 +42,9 @@
             text-align: center;
             border: solid 1px $black;
             padding: 2px 5px;
-            word-wrap: break-word;
-            max-width: 380px;
+            word-break: break-word;
             input {
-                width:60px;
+                width:100%;
             }
         }
         &-btn-container {
@@ -59,4 +52,11 @@
             justify-content: space-around;
         }
     }
+    &-btn-container {
+        display: flex;
+        justify-content: space-between;
+        width:190px;
+        margin: 20px auto 0;
+    }
+    
 }

@@ -22,21 +22,6 @@ const DocumentsPU = ({
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
 
-  //STYLE
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
-
   //HANDLERS
   const handleSort = (columnName) => {
     direction.current = !direction.current;
@@ -71,7 +56,9 @@ const DocumentsPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="documents-title">Patient documents</h1>
+              <h1 className="documents-title">
+                Patient documents <i className="fa-regular fa-folder"></i>
+              </h1>
               {errMsgPost && <div className="documents-err">{errMsgPost}</div>}
               <table className="documents-table">
                 <thead>
@@ -179,7 +166,7 @@ const DocumentsPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmPopUp />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

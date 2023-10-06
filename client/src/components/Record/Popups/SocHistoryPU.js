@@ -130,7 +130,10 @@ const SocHistoryPU = ({
           <>
             <div className="sochistory-card">
               <div className="sochistory-card-header">
-                <h1>Patient social history</h1>
+                <h1>
+                  Patient social history{" "}
+                  <i className="fa-solid fa-champagne-glasses"></i>
+                </h1>
                 <div className="sochistory-card-header-btns">
                   {!editVisible ? (
                     <button onClick={() => setEditVisible((v) => !v)}>

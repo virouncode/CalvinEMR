@@ -1,29 +1,31 @@
 .electronic {
     &-title {
         font-size: 1.2rem;
-        margin-bottom: 10px;
-        padding: 10px;
+        margin-top: 60px;
+        margin-bottom:30px;
         text-align: center;
     }
     &-err {
-        background:$red;
-        padding: 10px;
-        font-size: 0.8rem;
-        margin-bottom: 10px;
+        padding : 10px 20px;
+        font-size: 0.9rem;
+        width : 100%;
+        margin:10px auto;
+        color : red;
+        background-color:rgba(255, 0, 0, 0.403);
         border-radius: 4px;
+        text-align: center;
     }
     &-table {
-        table-layout: fixed;
+        table-layout:fixed;
+        min-width:100%;
         border-collapse: collapse;
-        border: solid 1px $black;
         font-size: 0.8rem;
-        margin: 0 auto;
         thead {
-            background-color: $blue;
+            background: $blue;
             border: solid 1px $black;
         }
         th {
-            min-width: 100px;
+            min-width: 120px;
             padding: 2px 5px;
             border: solid 1px $black;
             text-decoration: underline;
@@ -34,24 +36,24 @@
             cursor: default;
         }
     }
-    &-btn-container {
-        display: flex;
-        justify-content: space-between;
-        width:20%;
-        margin: 20px auto 0;
-    }
     &-item {
         td {
             text-align: center;
             border: solid 1px $black;
             padding: 2px 5px;
-            word-wrap: break-word;
-            max-width: 370px;
+            word-break: break-word;
+            input {
+                width:auto;
+            }
         }
         &-link {
             cursor:pointer;
             color: blue;
             text-decoration: underline;
+        }
+        &-btn-container {
+            display: flex;
+            justify-content: space-around;
         }
     }
     &-form {
@@ -70,6 +72,12 @@
                 margin-top: 5px;
             }
         }
+    }
+    &-btn-container {
+        display: flex;
+        justify-content: space-between;
+        width:150px;
+        margin: 20px auto 0;
     }
 }
 

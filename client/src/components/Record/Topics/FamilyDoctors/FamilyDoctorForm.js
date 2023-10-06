@@ -5,7 +5,7 @@ import axiosXano from "../../../../api/xano";
 import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
-import formatName from "../../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { doctorSchema } from "../../../../validation/doctorValidation";
 import CountriesList from "../../../Lists/CountriesList";
 
@@ -16,7 +16,7 @@ const FamilyDoctorForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [formDatas, setFormDatas] = useState({
     name: "",
     speciality: "",
@@ -83,7 +83,6 @@ const FamilyDoctorForm = ({
           name="name"
           type="text"
           value={formDatas.name}
-          className="doctors-form-input3"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -93,7 +92,6 @@ const FamilyDoctorForm = ({
           name="speciality"
           type="text"
           value={formDatas.speciality}
-          className="doctors-form-input3"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -103,7 +101,6 @@ const FamilyDoctorForm = ({
           name="licence_nbr"
           type="text"
           value={formDatas.licence_nbr}
-          className="doctors-form-input3"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -113,7 +110,6 @@ const FamilyDoctorForm = ({
           name="address"
           type="text"
           value={formDatas.address}
-          className="doctors-form-input1"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -123,7 +119,6 @@ const FamilyDoctorForm = ({
           name="province_state"
           type="text"
           value={formDatas.province_state}
-          className="doctors-form-input2"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -133,7 +128,6 @@ const FamilyDoctorForm = ({
           name="postal_code"
           type="text"
           value={formDatas.postal_code}
-          className="doctors-form-input4"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -143,7 +137,6 @@ const FamilyDoctorForm = ({
           name="city"
           type="text"
           value={formDatas.city}
-          className="doctors-form-input2"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -160,7 +153,6 @@ const FamilyDoctorForm = ({
           name="phone"
           type="text"
           value={formDatas.phone}
-          className="doctors-form-input2"
           onChange={handleChange}
         />
       </td>
@@ -169,7 +161,6 @@ const FamilyDoctorForm = ({
           name="fax"
           type="text"
           value={formDatas.fax}
-          className="doctors-form-input2"
           onChange={handleChange}
           autoComplete="off"
         />
@@ -179,13 +170,12 @@ const FamilyDoctorForm = ({
           name="email"
           type="text"
           value={formDatas.email}
-          className="doctors-form-input3"
           onChange={handleChange}
           autoComplete="off"
         />
       </td>
       <td>
-        <em>{formatName(user.name)}</em>
+        <em>{staffIdToTitleAndName(clinic.staffInfos, user.id, true)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

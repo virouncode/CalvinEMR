@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
-import formatName from "../../../../utils/formatName";
 import {
   bodyMassIndex,
   bodySurfaceArea,
@@ -12,6 +11,7 @@ import {
   kgToLbs,
   lbsToKg,
 } from "../../../../utils/measurements";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { measurementSchema } from "../../../../validation/measurementValidation";
 
 const MeasurementForm = ({
@@ -22,7 +22,7 @@ const MeasurementForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     height_cm: "",
@@ -256,7 +256,7 @@ const MeasurementForm = ({
         />
       </td>
       <td>
-        <em>{formatName(user.name)}</em>
+        <em> {staffIdToTitleAndName(clinic.staffInfos, user.id, true)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

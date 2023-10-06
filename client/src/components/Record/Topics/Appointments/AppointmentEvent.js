@@ -563,7 +563,7 @@ const AppointmentEvent = ({
               clinic.staffInfos,
               eventInfos.created_by_id,
               true
-            )}{" "}
+            )}
           </em>
         </td>
         <td>

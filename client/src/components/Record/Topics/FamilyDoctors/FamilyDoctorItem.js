@@ -129,7 +129,6 @@ const FamilyDoctorItem = ({
             <input
               type="text"
               name="speciality"
-              className="doctors-item-input3"
               value={itemInfos.speciality}
               onChange={handleChange}
               autoComplete="off"
@@ -143,7 +142,6 @@ const FamilyDoctorItem = ({
             <input
               type="text"
               name="licence_nbr"
-              className="doctors-item-input3"
               value={itemInfos.licence_nbr}
               onChange={handleChange}
               autoComplete="off"
@@ -156,7 +154,6 @@ const FamilyDoctorItem = ({
           {editVisible ? (
             <input
               name="address"
-              className="doctors-item-input1"
               type="text"
               value={itemInfos.address}
               onChange={handleChange}
@@ -170,7 +167,6 @@ const FamilyDoctorItem = ({
           {editVisible ? (
             <input
               name="province_state"
-              className="doctors-item-input2"
               type="text"
               value={itemInfos.province_state}
               onChange={handleChange}
@@ -184,7 +180,6 @@ const FamilyDoctorItem = ({
           {editVisible ? (
             <input
               name="postal_code"
-              className="doctors-item-input4"
               type="text"
               value={itemInfos.postal_code}
               onChange={handleChange}
@@ -198,7 +193,6 @@ const FamilyDoctorItem = ({
           {editVisible ? (
             <input
               name="city"
-              className="doctors-item-input2"
               type="text"
               value={itemInfos.city}
               onChange={handleChange}
@@ -223,7 +217,6 @@ const FamilyDoctorItem = ({
           {editVisible ? (
             <input
               name="phone"
-              className="doctors-item-input2"
               type="text"
               value={itemInfos.phone}
               onChange={handleChange}
@@ -237,7 +230,6 @@ const FamilyDoctorItem = ({
           {editVisible ? (
             <input
               name="fax"
-              className="doctors-item-input2"
               type="text"
               value={itemInfos.fax}
               onChange={handleChange}
@@ -251,7 +243,6 @@ const FamilyDoctorItem = ({
           {editVisible ? (
             <input
               name="email"
-              className="doctors-item-input3"
               type="email"
               value={itemInfos.email}
               onChange={handleChange}

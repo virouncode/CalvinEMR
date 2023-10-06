@@ -29,7 +29,7 @@ $font1 : Lato, sans-serif;
 $font2 : Rubik, sans-serif;
 
 //COLORS
-$white : #fefefe;
+$white : #FEFEFE;
 $black : #21201e;
 $grey : rgb(206, 205, 205);
 $grey2 :rgb(163, 163, 163);
@@ -134,6 +134,7 @@ body {
     background : $white;
     min-width:700px;
     font-variant: normal;
+    user-select: none;
 }
 li {
     list-style: none;

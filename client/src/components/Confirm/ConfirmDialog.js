@@ -1,15 +1,9 @@
 import React from "react";
 
-const ConfirmDialog = ({
-  title,
-  content,
-  onConfirm,
-  onCancel,
-  containerStyle,
-}) => {
+const ConfirmDialog = ({ title, content, onConfirm, onCancel }) => {
   return (
     <>
-      <div id="confirm-dialog" style={containerStyle}>
+      <div className="confirm-container">
         <div className="confirm-dialog">
           <div className="confirm-dialog-header">
             <div className="confirm-dialog-header-logo"></div>

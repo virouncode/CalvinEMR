@@ -4,7 +4,7 @@ import "react-widgets/scss/styles.scss";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
-import formatName from "../../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { toInverseRelation } from "../../../../utils/toInverseRelation";
 import { relationshipSchema } from "../../../../validation/relationshipValidation";
 import PatientsSelect from "../../../Lists/PatientsSelect";
@@ -107,7 +107,7 @@ const RelationshipForm = ({
         />
       </td>
       <td>
-        <em>{formatName(user.name)}</em>
+        <em>{staffIdToTitleAndName(clinic.staffInfos, user.id, true)}</em>
       </td>
       <td>
         <em>{toLocalDate(toISOStringNoMs(new Date()))}</em>

@@ -24,21 +24,6 @@ const PharmaciesPU = ({
   const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
 
-  //STYLE
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
-
   //HANDLERS
   const handleClose = async (e) => {
     if (
@@ -95,7 +80,10 @@ const PharmaciesPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="pharmacies-title">Patient pharmacies</h1>
+              <h1 className="pharmacies-title">
+                Patient pharmacies{" "}
+                <i className="fa-solid fa-prescription-bottle-medical"></i>
+              </h1>
               {errMsgPost && <div className="pharmacies-err">{errMsgPost}</div>}
               <table className="pharmacies-table">
                 <thead>
@@ -180,7 +168,7 @@ const PharmaciesPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmPopUp />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

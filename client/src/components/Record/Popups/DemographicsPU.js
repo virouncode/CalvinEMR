@@ -22,22 +22,6 @@ const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
   //get the avatar with a fetch
 
-  //======================= STYLES ========================//
-
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
-
   //============================= STATES ==============================//
   const [editVisible, setEditVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
@@ -207,7 +191,9 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         <>
           <div className="demographics-card">
             <div className="demographics-card-header">
-              <h1>Patient demographics </h1>
+              <h1>
+                Patient demographics <i className="fa-regular fa-id-card"></i>
+              </h1>
               <div className="demographics-card-header-btns">
                 {!editVisible ? (
                   <button onClick={(e) => setEditVisible((v) => !v)}>
@@ -677,7 +663,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmPopUp />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

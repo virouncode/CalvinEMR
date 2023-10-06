@@ -1,15 +1,15 @@
 .doctors {
     &-title {
         font-size: 1.2rem;
-        margin-bottom: 10px;
-        padding: 10px;
+        margin-top: 60px;
+        margin-bottom: 30px;
         text-align: center;
     }
     &-err {
         padding : 10px 20px;
         font-size: 0.9rem;
         width : 50%;
-        margin:0 auto 10px;
+        margin:10px auto;
         color : red;
         background-color:rgba(255, 0, 0, 0.403);
         border-radius: 4px;
@@ -17,15 +17,14 @@
     }
     &-table {
         table-layout: fixed;
+        min-width:100%;
         border-collapse: collapse;
-        border : solid 1px $black;
         font-size: 0.8rem;
-        margin: 20px;
         thead {
             background-color: $blue;
             border : solid 1px $black;
             th {
-                min-width: 90px;
+                min-width: 120px;
                 padding: 2px 5px;
                 border : solid 1px $black;
                 text-decoration: underline;
@@ -33,62 +32,52 @@
             }
         }
     }
-    &-btn-container {
-        display: flex;
-        justify-content: space-between;
-        width: 20%;
-        margin: 20px auto 0;
-        font-size:0.8rem;
-    }
     &-item, &-form {
         td {
             text-align: center;
-            border: solid 1px black;
+            border: solid 1px $black;
             padding: 2px 5px;
-            word-wrap: break-word;
-            max-width: 370px;
-            select {
-                width:150px;
+            word-break: break-word;
+            input,select {
+                width:100%;
+            }
+            input[type="submit"]{
+                width: auto;
             }
         }
-        &-input1 {
-            width: 300px;
-        }
-        &-input2 {
-            width: 140px;
-        }
-        &-input3 {
-            width: 200px;
-        }
-        &-input4 {
-            width: 90px;
-        } 
+        
         &-btn-container {
             display: flex;
             justify-content: space-around;
         } 
     }
+    &-btn-container {
+        display: flex;
+        justify-content: space-between;
+        width: 220px;
+        margin: 20px auto 0;
+    }
+    
     &-list {
         &-title {
-            margin-top: 40px;
-            margin-left: 20px;
+            margin: 40px 0 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
             button {
                 margin-left: 20px;
             }
         }
         &-table {
             table-layout: fixed;
+            min-width:100%;
             border-collapse: collapse;
-            border: solid 1px $black;
             font-size: 0.8rem;
-            margin: 10px 20px;
-            padding : 0 10px;
             thead {
                 background-color: $blue;
                 border: solid 1px $black;
             }
             th {
-                min-width: 90px;
+                min-width: 120px;
                 padding: 2px 5px;
                 border: solid 1px $black;
                 text-decoration: underline;
@@ -100,8 +89,13 @@
                 text-align: center;
                 border: solid 1px $black;
                 padding: 2px 5px;
-                word-wrap: break-word;
-                max-width: 370px;
+                word-break: break-word;
+                input,select {
+                    width:100%;
+                }
+                input[type="submit"]{
+                    width: auto;
+                }
             }
         }
     }

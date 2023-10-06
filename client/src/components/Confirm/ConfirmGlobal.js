@@ -11,7 +11,7 @@ export const confirmAlert = (props) => {
   return confirmAction.current(props);
 };
 
-const ConfirmGlobal = ({ containerStyle }) => {
+const ConfirmGlobal = () => {
   const [open, setOpen] = useState(false);
   const [props, setProps] = useState({});
   const resolveRef = useRef(() => {});
@@ -36,7 +36,6 @@ const ConfirmGlobal = ({ containerStyle }) => {
         }}
         open={open}
         {...props}
-        containerStyle={containerStyle}
       />
     )
   );

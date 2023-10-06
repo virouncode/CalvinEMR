@@ -21,21 +21,6 @@ const FamHistoryPU = ({
   const [columnToSort, setColumnToSort] = useState("date_of_event");
   const direction = useRef(false);
 
-  //STYLES
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
-
   //HANDLERS
   const handleSort = (columnName) => {
     direction.current = !direction.current;
@@ -70,7 +55,10 @@ const FamHistoryPU = ({
         ) : (
           datas && (
             <>
-              <h1 className="famhistory-title">Patient family history</h1>
+              <h1 className="famhistory-title">
+                Patient family history{" "}
+                <i className="fa-solid fa-people-roof"></i>
+              </h1>
               {errMsgPost && <div className="famhistory-err">{errMsgPost}</div>}
               <table className="famhistory-table">
                 <thead>
@@ -148,7 +136,7 @@ const FamHistoryPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmPopUp />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

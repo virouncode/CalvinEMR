@@ -2,7 +2,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import { sendMsgToOpenAI } from "../../../../api/openapi";
 
-const ChatGPTPrompt = ({
+const CalvinAIPrompt = ({
   messages,
   setMessages,
   setChatVisible,
@@ -29,24 +29,26 @@ const ChatGPTPrompt = ({
       }
       setIsLoading(false);
     } catch (err) {
-      toast.error(`ChatGPT is down: ${err.message}`, { containerId: "B" });
+      toast.error(`CalvinAI is down: ${err.message}`, { containerId: "B" });
     }
   };
   return (
-    <div className="chatgpt-prompt">
-      <h2 className="chatgpt-prompt-title">Prepare prompt to ChatGPT</h2>
+    <div className="calvinai-prompt">
+      <h2 className="calvinai-prompt-title">
+        Prepare prompt to CalvinAI <i className="fa-solid fa-robot"></i>
+      </h2>
       <textarea
-        className="chatgpt-prompt-textarea"
+        className="calvinai-prompt-textarea"
         onChange={handleChange}
         value={messages[0].content}
       />
-      <div className="chatgpt-prompt-btns">
+      <div className="calvinai-prompt-btns">
         <button>Add attachments datas</button>
         <button>Add documents datas</button>
-        <button onClick={handleSubmit}>Submit to ChatGPT</button>
+        <button onClick={handleSubmit}>Submit to CalvinAI</button>
       </div>
     </div>
   );
 };
 
-export default ChatGPTPrompt;
+export default CalvinAIPrompt;

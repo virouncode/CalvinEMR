@@ -1,6 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import printJS from "print-js";
 import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
@@ -13,6 +14,7 @@ import {
 import formatName from "../../../utils/formatName";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import AddressesList from "../../Lists/AddressesList";
+const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const PrescriptionPU = ({ medsRx, patientInfos }) => {
   const { auth, user, clinic } = useAuth();
@@ -76,8 +78,40 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
     setAddNotes(value);
   };
 
-  const handlePrint = (e) => {
-    e.nativeEvent.view.print();
+  const handlePrint = async (e) => {
+    setProgress(true);
+    const element = printRef.current;
+    const canvas = await html2canvas(element, {
+      logging: true,
+      letterRendering: 1,
+      allowTaint: false,
+      useCORS: true,
+    });
+    const dataURL = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("portrait", "pt", "a4");
+    // const imgProperties = pdf.getImageProperties(dataURL);
+    pdf.addImage(
+      dataURL,
+      "PNG",
+      0,
+      0,
+      pdf.internal.pageSize.getWidth(),
+      pdf.internal.pageSize.getHeight()
+    );
+    let fileToUpload = await axiosXano.post(
+      "/upload/attachment",
+      {
+        content: pdf.output("dataurlstring"),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${auth.authToken}`,
+        },
+      }
+    );
+    setProgress(false);
+
+    printJS(`${BASE_URL}${fileToUpload.data.path}`);
   };
 
   const handleAddToRecord = async (e) => {
@@ -112,7 +146,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
         },
       }
     );
-
+    console.log("Hello");
     const datas = {
       patient_id: patientInfos.id,
       assigned_id: user.id,
@@ -287,11 +321,16 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
       </div>
       <div className="prescription-add">
         <label>Additional Notes: </label>
-        <textarea name="addNotes" onChange={handleAddNotes} value={addNotes} />
+        <textarea
+          name="addNotes"
+          onChange={handleAddNotes}
+          value={addNotes}
+          placeholder="The text will appear in the prescription, under the medications"
+        />
       </div>
       <ToastContainer
         enableMultiContainer
-        containerId={"B"}
+        containerId={"C"}
         position="bottom-right"
         autoClose={2000}
         hideProgressBar={true}
