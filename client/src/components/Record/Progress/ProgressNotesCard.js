@@ -22,6 +22,7 @@ const ProgressNotesCard = ({
   progressNotes,
   setProgressNotes,
   fetchRecord,
+  order,
   patientId,
   checkedNotes,
   setCheckedNotes,
@@ -185,7 +186,7 @@ const ProgressNotesCard = ({
         );
         setEditVisible(false);
         const abortController = new AbortController();
-        fetchRecord(abortController);
+        fetchRecord(abortController, order);
         const versionsResults = (
           await getPatientRecord(
             "/progress_notes_log",

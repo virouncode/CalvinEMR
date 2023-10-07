@@ -24,7 +24,7 @@ const ProgressNotesToolBar = ({
   fetchRecord,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, setUser } = useAuth();
   //Events
   const handleClickSelectAll = (e) => {
     if (selectAll) {
@@ -71,6 +71,17 @@ const ProgressNotesToolBar = ({
       );
       const abortController = new AbortController();
       fetchRecord(abortController, value);
+      setUser({
+        ...user,
+        settings: { ...user.settings, progress_notes_order: value },
+      });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          settings: { ...user.settings, progress_notes_order: value },
+        })
+      );
       toast.success("Saved preference", {
         containerId: "A",
       });

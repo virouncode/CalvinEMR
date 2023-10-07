@@ -23,12 +23,13 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
   );
   const contentRef = useRef(null);
   const triangleRef = useRef(null);
+  console.log(user.settings);
 
   const [
     { datas: progressNotes, isLoading, errMsg },
     fetchRecord,
     setProgressNotes,
-  ] = useProgressNotes("/progress_notes", patientId);
+  ] = useProgressNotes("/progress_notes", patientId, order);
 
   const checkAllNotes = () => {
     const allNotesIds = progressNotes.map(({ id }) => id);
@@ -96,6 +97,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
             setAddVisible={setAddVisible}
             fetchRecord={fetchRecord}
             patientId={patientId}
+            order={order}
           />
         )}
         {!isLoading ? (
@@ -126,6 +128,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
                   progressNotes={progressNotes}
                   setProgressNotes={setProgressNotes}
                   fetchRecord={fetchRecord}
+                  order={order}
                   patientId={patientId}
                   key={progressNote.id}
                   checkedNotes={checkedNotes}

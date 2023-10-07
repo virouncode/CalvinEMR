@@ -33,7 +33,7 @@ const httpReducer = (state, action) => {
   }
 };
 
-export const useProgressNotes = (url, patientId) => {
+export const useProgressNotes = (url, patientId, order) => {
   const { auth } = useAuth();
   const [httpState, dispatch] = useReducer(httpReducer, initialHttpState);
   const fetchRecord = useCallback(
@@ -51,6 +51,7 @@ export const useProgressNotes = (url, patientId) => {
           signal: abortController.signal,
         });
         if (abortController.signal.aborted) return;
+        console.log("order", order);
         dispatch({
           type: "FETCH_SUCCESS",
           payload:
@@ -84,10 +85,10 @@ export const useProgressNotes = (url, patientId) => {
 
   useEffect(() => {
     const abortController = new AbortController();
-    fetchRecord(abortController);
+    fetchRecord(abortController, order);
     return () => {
       abortController.abort();
     };
-  }, [fetchRecord]);
+  }, [fetchRecord, order]);
   return [httpState, fetchRecord, setDatas];
 };
