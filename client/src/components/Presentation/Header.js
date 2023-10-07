@@ -76,9 +76,12 @@ const Header = () => {
             </NavLink>
           </li>
           <li>
-            <a href="https://chat.openai.com/" target="_blank" rel="noreferrer">
+            <NavLink
+              to="calvinai"
+              className={(nav) => (nav.isActive ? "nav-active" : "")}
+            >
               CalvinAI
-            </a>
+            </NavLink>
           </li>
           <li>
             <NavLink

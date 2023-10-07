@@ -1,0 +1,87 @@
+.calvinai {
+  &-chat {
+      width:80%;
+      height: 100%;
+      margin:40px auto 0;
+      display: grid;
+      grid-template-rows: 80% 2% 18%;
+      &-content {
+          overflow: scroll;
+          font-size: 0.85rem;
+          border-bottom: solid 1px $grey;
+          &-card {
+              padding: 20px 40px;
+              border: solid 1px $grey;
+              border-radius: 4px;
+              box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+              margin-bottom: 10px;
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              &-img-bot{
+                  width:7.5%;
+                  height: 80px;
+                  background:url("../../assets/img/chatGPTLogo.png") center/cover;
+              }
+              &-img-user {
+                  width:7.5%;
+                  height: 80px;
+                  background:url("../../assets/img/doctorLogo.png") center/cover;
+              }
+              &-message {
+                  padding:0 10px;
+                  white-space: pre-wrap;
+                  width:90%;
+              }
+          }
+      }
+      &-stop-btn {
+          width: 150px;
+          height: 25px;
+          background-color: #14E5B0;
+          border: solid 1px $grey;
+          margin-left:auto;
+          &:hover {
+              background-color: #1affc6;
+          }
+      }
+      &-textarea {
+          margin-top: 10px;
+          padding: 10px;
+          border-radius: 4px;
+          border: solid 1px $grey;
+          outline: none;
+          padding-right: 80px;
+          box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+          height:100px;
+          overflow: scroll;
+          &:focus {
+              outline: none;
+              border: solid 1.5px $grey;
+          }
+      }
+      &-send-btn {
+          position: absolute;
+          width: 50px;
+          bottom: 7.5%;
+          right:12%;
+          height: 50px;
+          background:url("../../assets/img/sendIcon.png") no-repeat center;
+          background-color: #14E5B0;
+          background-size: 30px 30px;
+          padding:0;
+          border: solid 1px $grey;
+          box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+          &:hover {
+              background:url("../../assets/img/sendIcon.png") no-repeat center;
+              background-color: #1affc6;
+              background-size: 30px 30px;
+          }
+          &:disabled {
+              background:url("../../assets/img/sendIcon.png") no-repeat center;
+              background-color: #FEFEFE;
+              background-size: 30px 30px;
+          }
+      }
+  }
+}

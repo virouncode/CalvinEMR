@@ -1,30 +1,31 @@
 //Librairies
 import React, { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import RequireAuth from "./components/Presentation/RequireAuth";
-import { Routes, Route, useNavigate } from "react-router-dom";
 //Pages Components
-import LoginPage from "./pages/LoginPage";
-import CalendarPage from "./pages/CalendarPage";
-import SearchPatientPage from "./pages/SearchPatientPage";
-import PatientRecordPage from "./pages/PatientRecordPage";
 import Layout from "./components/Presentation/Layout";
-import UnauthorizedPage from "./pages/UnauthorizedPage";
-import MissingPage from "./pages/MissingPage";
 import Layout2 from "./components/Presentation/Layout2";
-import SignupPageStaff from "./pages/SignupPageStaff";
-import SignupPagePatient from "./pages/SignupPagePatient";
-import MyAccountPage from "./pages/MyAccountPage";
-import MessagesPage from "./pages/MessagesPage";
-import CredentialsPage from "./pages/CredentialsPage";
 import Layout3 from "./components/Presentation/Layout3";
-import PatientMessagesPage from "./pages/PatientMessagesPage";
+import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
+import useAuth from "./hooks/useAuth";
+import CalendarPage from "./pages/CalendarPage";
+import CalvinAIPage from "./pages/CalvinAIPage";
+import CredentialsPage from "./pages/CredentialsPage";
+import DocMailboxPage from "./pages/DocMailboxPage";
+import LoginPage from "./pages/LoginPage";
+import MessagesPage from "./pages/MessagesPage";
+import MissingPage from "./pages/MissingPage";
+import MyAccountPage from "./pages/MyAccountPage";
 import PatientAccountPage from "./pages/PatientAccountPage";
 import PatientAppointmentsPage from "./pages/PatientAppointmentsPage";
-import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
 import PatientCredentialsPage from "./pages/PatientCredentialsPage";
-import useAuth from "./hooks/useAuth";
-import DocMailboxPage from "./pages/DocMailboxPage";
+import PatientMessagesPage from "./pages/PatientMessagesPage";
+import PatientRecordPage from "./pages/PatientRecordPage";
 import ResetPage from "./pages/ResetPage";
+import SearchPatientPage from "./pages/SearchPatientPage";
+import SignupPagePatient from "./pages/SignupPagePatient";
+import SignupPageStaff from "./pages/SignupPageStaff";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 const App = () => {
   const navigate = useNavigate();
@@ -76,6 +77,7 @@ const App = () => {
             element={<MessagesPage />}
           />
           <Route path="credentials" element={<CredentialsPage />} />
+          <Route path="calvinai" element={<CalvinAIPage />} />
         </Route>
         <Route element={<RequireAuth allowedAccesses={["Admin"]} />}>
           <Route path="signup-staff" element={<SignupPageStaff />} />

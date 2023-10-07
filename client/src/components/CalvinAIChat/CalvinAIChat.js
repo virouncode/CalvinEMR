@@ -1,18 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { sendMsgToOpenAI } from "../../../../api/openapi";
-import CalvinAIDiscussionContent from "./CalvinAIDiscussionContent";
+import { sendMsgToOpenAI } from "../../api/openapi";
+import CalvinAIChatContent from "./CalvinAIChatContent";
 
-const CalvinAIDiscussion = ({
-  messages,
-  setMessages,
-  lastResponse,
-  setLastResponse,
-  abortController,
-}) => {
+const CalvinAIChat = () => {
   const msgEndRef = useRef(null);
   const [inputText, setInputText] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [lastResponse, setLastResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const abortController = useRef(null);
 
   useEffect(() => {
     msgEndRef.current.scrollIntoView();
@@ -43,24 +40,24 @@ const CalvinAIDiscussion = ({
       }
       setIsLoading(false);
     } catch (err) {
-      toast.error(`CalvinAI is down: ${err.message}`, { containerId: "B" });
+      toast.error(`CalvinAI is down: ${err.message}`, { containerId: "A" });
     }
   };
   return (
-    <div className="calvinai-discussion">
-      <CalvinAIDiscussionContent
+    <div className="calvinai-chat">
+      <CalvinAIChatContent
         messages={messages}
         msgEndRef={msgEndRef}
         lastResponse={lastResponse}
       />
       <button
-        className="calvinai-discussion-stop-btn"
+        className="calvinai-chat-stop-btn"
         onClick={() => abortController.current.abort()}
       >
         Stop generating
       </button>
       <textarea
-        className="calvinai-discussion-textarea"
+        className="calvinai-chat-textarea"
         onChange={handleChangeInput}
         value={inputText}
         autoFocus
@@ -68,11 +65,11 @@ const CalvinAIDiscussion = ({
       />
       <button
         onClick={handleAskGPT}
-        className="calvinai-discussion-send-btn"
+        className="calvinai-chat-send-btn"
         disabled={isLoading}
       />
     </div>
   );
 };
 
-export default CalvinAIDiscussion;
+export default CalvinAIChat;

@@ -126,6 +126,10 @@ const ProgressNotesCard = ({
   };
 
   const handleCalvinAIClick = () => {
+    if (!patientInfos.ai_consent) {
+      alert("The patient didn't give his/her consent to use AI for his record");
+      return;
+    }
     setPopUpVisible((v) => !v);
   };
 

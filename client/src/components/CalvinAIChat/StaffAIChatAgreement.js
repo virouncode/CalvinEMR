@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 
-const StaffAIAgreement = ({ setStart, setChatVisible }) => {
+const StaffAIChatAgreement = ({ setStart }) => {
   const { user, auth } = useAuth();
   const [agreed, setAgreed] = useState(false);
   const handleCheck = (e) => {
@@ -28,12 +28,13 @@ const StaffAIAgreement = ({ setStart, setChatVisible }) => {
       setStart(true);
     } else alert("Please agree to the terms and conditions");
   };
-  const handleCancel = () => {
-    setChatVisible(false);
-  };
+
   return (
-    <div className="staff-ai-agreement">
-      <h2 className="staff-ai-agreement-title">
+    <div
+      className="staff-ai-agreement"
+      style={{ width: "80%", margin: "0 auto", fontSize: "0.8rem" }}
+    >
+      <h2 className="staff-ai-agreement-title staff-ai-agreement-title--chat">
         **DISCLAIMER AND ACKNOWLEDGMENT**
       </h2>
       <p>
@@ -156,7 +157,7 @@ const StaffAIAgreement = ({ setStart, setChatVisible }) => {
           </ul>
         </li>
       </ol>
-      <div className="staff-ai-agreement-check">
+      <div className="staff-ai-agreement-check staff-ai-agreement-check--chat">
         <input
           type="checkbox"
           id="agreement"
@@ -167,10 +168,9 @@ const StaffAIAgreement = ({ setStart, setChatVisible }) => {
           I agree to the terms and conditions outlined in this disclaimer.
         </label>
         <button onClick={handleStart}>Start</button>
-        <button onClick={handleCancel}>Cancel</button>
       </div>
     </div>
   );
 };
 
-export default StaffAIAgreement;
+export default StaffAIChatAgreement;

@@ -7,7 +7,6 @@ const CalvinAIPrompt = ({
   setMessages,
   setChatVisible,
   setLastResponse,
-  setIsLoading,
   abortController,
 }) => {
   const handleChange = (e) => {
@@ -18,7 +17,6 @@ const CalvinAIPrompt = ({
     setChatVisible(true);
     updatedMessages.push({ role: "assistant", content: "" });
     try {
-      setIsLoading(true);
       abortController.current = new AbortController();
       const stream = await sendMsgToOpenAI(messages, abortController.current);
       for await (const part of stream) {
@@ -27,7 +25,6 @@ const CalvinAIPrompt = ({
         setMessages(updatedMessages);
         setLastResponse((r) => r + (part.choices[0]?.delta?.content || ""));
       }
-      setIsLoading(false);
     } catch (err) {
       toast.error(`CalvinAI is down: ${err.message}`, { containerId: "B" });
     }

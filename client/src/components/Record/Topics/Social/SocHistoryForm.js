@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
+import { socialSchema } from "../../../../validation/socialValidation";
 
 const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
   const { user, auth } = useAuth();
@@ -28,6 +29,12 @@ const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
       !formDatasForValidation
     ) {
       setErrMsgPost("Please fill at least one field");
+      return;
+    }
+    try {
+      await socialSchema.validate(formDatasForValidation);
+    } catch (err) {
+      setErrMsgPost(err.message);
       return;
     }
     const formDatasToPost = {

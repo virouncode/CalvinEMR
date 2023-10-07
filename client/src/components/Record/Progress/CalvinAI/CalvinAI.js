@@ -1,11 +1,15 @@
-import React, { useRef, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { CircularProgress } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import axiosXano from "../../../../api/xano";
+import useAuth from "../../../../hooks/useAuth";
 import { getAge } from "../../../../utils/getAge";
 import StaffAIAgreement from "../../../Presentation/StaffAIAgreement";
 import CalvinAIDiscussion from "./CalvinAIDiscussion";
 import CalvinAIPrompt from "./CalvinAIPrompt";
 
 const CalvinAI = ({ attachments, initialBody, patientInfos }) => {
+  const { user, auth } = useAuth();
   const [chatVisible, setChatVisible] = useState(false);
   const [start, setStart] = useState(false);
   const [messages, setMessages] = useState([
@@ -23,8 +27,34 @@ What is the diagnosis and what treatment would you suggest ?`,
     },
   ]);
   const [lastResponse, setLastResponse] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const abortController = useRef(null);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const fetchStaffInfos = async () => {
+      try {
+        const response = await axiosXano.get(`/staff/${user.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+          signal: abortController.signal,
+        });
+        if (abortController.signal.aborted) return;
+        setIsLoading(false);
+        setStart(response.data.ai_consent);
+      } catch (err) {
+        toast.error(`Cant fetch staff ai consent: ${err.message}`, {
+          containerId: "A",
+        });
+      }
+    };
+    fetchStaffInfos();
+    return () => {
+      abortController.abort();
+    };
+  }, [auth.authToken, user.id]);
 
   return (
     <>
@@ -34,17 +64,16 @@ What is the diagnosis and what treatment would you suggest ?`,
           setMessages={setMessages}
           setChatVisible={setChatVisible}
           setLastResponse={setLastResponse}
-          setIsLoading={setIsLoading}
           abortController={abortController}
         />
+      ) : isLoading ? (
+        <CircularProgress />
       ) : start ? (
         <CalvinAIDiscussion
           messages={messages}
           setMessages={setMessages}
           lastResponse={lastResponse}
           setLastResponse={setLastResponse}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
           abortController={abortController}
         />
       ) : (
