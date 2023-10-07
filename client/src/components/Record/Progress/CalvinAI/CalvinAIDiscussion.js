@@ -49,7 +49,6 @@ const CalvinAIDiscussion = ({
   };
   return (
     <div className="calvinai-discussion">
-      <h2 className="calvinai-discussion-title">Discussion</h2>
       <CalvinAIDiscussionContent
         messages={messages}
         msgEndRef={msgEndRef}

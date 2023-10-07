@@ -28,77 +28,14 @@
     }
     &-discussion {
         width:90%;
-        height: 100%;
-        margin:0 auto;
+        height: 94%;
+        margin:40px auto 0;
         display: grid;
-        padding: 20px;
-        grid-template-rows: 3% 80% 10%;
-        &-title {
-            display: block;
-            font-size: 1rem;
-            border-bottom: solid 1px $grey;
-    
-        }
-        &-textarea {
-            display: block;
-            padding: 10px;
-            border-radius: 4px;
-            border: solid 1px $grey;
-            outline: none;
-            padding-right: 40px;
-            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-            height:100px;
-            overflow: scroll;
-            &:focus {
-                outline: none;
-                border: solid 1.5px $grey;
-            }
-        }
-        &-send-btn {
-            position: absolute;
-            width: 50px;
-            bottom: 9.4%;
-            right:8%;
-            height: 50px;
-            background:url("../../assets/img/sendIcon.png") no-repeat center;
-            background-color: #14E5B0;
-            background-size: 30px 30px;
-            padding:0;
-            border: solid 1px $grey;
-            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-            &:hover {
-                background:url("../../assets/img/sendIcon.png") no-repeat center;
-                background-color: #1affc6;
-                background-size: 30px 30px;
-            }
-            &:disabled {
-                background:url("../../assets/img/sendIcon.png") no-repeat center;
-                background-color: #FEFEFE;
-                background-size: 30px 30px;
-            }
-        }
-        &-stop-btn {
-            position: absolute;
-            bottom: 20%;
-            right:8%;
-            width: auto;
-            background-color: #14E5B0;
-            border: solid 1px $grey;
-            &:hover {
-                background-color: #1affc6;
-            }
-        }
-        &-sendicon{
-            width: 100%;
-            height:60%;
-            background:url("../../assets/img/sendIcon.png") center/cover;
-        }
+        grid-template-rows: 80% 2% 18%;
         &-content {
             overflow: scroll;
             font-size: 0.85rem;
-            margin: 20px 0 40px; 
             border-bottom: solid 1px $grey;
-
             &-card {
                 padding: 20px 40px;
                 border: solid 1px $grey;
@@ -122,11 +59,56 @@
                     padding:0 10px;
                     white-space: pre-wrap;
                     width:90%;
-                    
                 }
             }
-            
-
+        }
+        &-stop-btn {
+            width: 150px;
+            height: 25px;
+            background-color: #14E5B0;
+            border: solid 1px $grey;
+            margin-left:auto;
+            &:hover {
+                background-color: #1affc6;
+            }
+        }
+        &-textarea {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            border: solid 1px $grey;
+            outline: none;
+            padding-right: 80px;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            height:100px;
+            overflow: scroll;
+            &:focus {
+                outline: none;
+                border: solid 1.5px $grey;
+            }
+        }
+        &-send-btn {
+            position: absolute;
+            width: 50px;
+            bottom: 7.5%;
+            right:8%;
+            height: 50px;
+            background:url("../../assets/img/sendIcon.png") no-repeat center;
+            background-color: #14E5B0;
+            background-size: 30px 30px;
+            padding:0;
+            border: solid 1px $grey;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            &:hover {
+                background:url("../../assets/img/sendIcon.png") no-repeat center;
+                background-color: #1affc6;
+                background-size: 30px 30px;
+            }
+            &:disabled {
+                background:url("../../assets/img/sendIcon.png") no-repeat center;
+                background-color: #FEFEFE;
+                background-size: 30px 30px;
+            }
         }
     }
     

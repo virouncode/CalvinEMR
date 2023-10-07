@@ -1,14 +1,16 @@
 import React, { useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { getAge } from "../../../../utils/getAge";
+import StaffAIAgreement from "../../../Presentation/StaffAIAgreement";
 import CalvinAIDiscussion from "./CalvinAIDiscussion";
 import CalvinAIPrompt from "./CalvinAIPrompt";
 
 const CalvinAI = ({ attachments, initialBody, patientInfos }) => {
   const [chatVisible, setChatVisible] = useState(false);
+  const [start, setStart] = useState(false);
   const [messages, setMessages] = useState([
     {
-      content: `Hello CalvinAI I'm a doctor.
+      content: `Hello I'm a doctor.
 
 My patient is a ${getAge(patientInfos.date_of_birth)} year-old ${
         patientInfos.gender_at_birth
@@ -35,7 +37,7 @@ What is the diagnosis and what treatment would you suggest ?`,
           setIsLoading={setIsLoading}
           abortController={abortController}
         />
-      ) : (
+      ) : start ? (
         <CalvinAIDiscussion
           messages={messages}
           setMessages={setMessages}
@@ -45,6 +47,8 @@ What is the diagnosis and what treatment would you suggest ?`,
           setIsLoading={setIsLoading}
           abortController={abortController}
         />
+      ) : (
+        <StaffAIAgreement setStart={setStart} setChatVisible={setChatVisible} />
       )}
       <ToastContainer
         enableMultiContainer

@@ -331,7 +331,7 @@ const ProgressNotesCard = ({
                   {!editVisible ? (
                     <>
                       <button onClick={handleEditClick}>Edit</button>
-                      <button onClick={handleCalvinAIClick}>CALVIN AI</button>
+                      <button onClick={handleCalvinAIClick}>CalvinAI</button>
                     </>
                   ) : (
                     <div
@@ -482,10 +482,10 @@ const ProgressNotesCard = ({
               clinic.patientsInfos,
               patientId
             )}`}
-            width={800}
-            height={600}
-            x={(window.innerWidth - 800) / 2}
-            y={(window.innerHeight - 600) / 2}
+            width={1000}
+            height={window.innerHeight}
+            x={(window.innerWidth - 1000) / 2}
+            y={0}
             color="#14E5B0"
             setPopUpVisible={setPopUpVisible}
           >
