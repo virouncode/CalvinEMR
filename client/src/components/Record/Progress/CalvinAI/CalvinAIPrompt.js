@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { sendMsgToOpenAI } from "../../../../api/openapi";
+import axiosXano from "../../../../api/xano";
+import useAuth from "../../../../hooks/useAuth";
+import AddAIAttachments from "./AddAIAttachments";
+import AddAIDocuments from "./AddAIDocuments";
 
 const CalvinAIPrompt = ({
   messages,
@@ -8,7 +12,49 @@ const CalvinAIPrompt = ({
   setChatVisible,
   setLastResponse,
   abortController,
+  attachments,
+  initialBody,
+  patientInfos,
 }) => {
+  const { auth } = useAuth();
+  const [isLoadingAttachmentText, setIsLoadingAttachmentText] = useState(false);
+  const [isLoadingDocumentText, setIsLoadingDocumentText] = useState(false);
+  const [documents, setDocuments] = useState([]);
+  const [attachmentsTextsToAdd, setAttachmentsTextsToAdd] = useState([]);
+  const [documentsTextsToAdd, setDocumentsTextsToAdd] = useState([]);
+  console.log(patientInfos.id);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const fetchDocuments = async () => {
+      try {
+        const response = await axiosXano.get(
+          `/documents?patient_id=${patientInfos.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+            signal: abortController.signal,
+          }
+        );
+        if (abortController.signal.aborted) return;
+        console.log(response.data);
+        setDocuments(
+          response.data.sort((a, b) => a.date_created - b.date_created)
+        );
+      } catch (err) {
+        if (err.name !== "CanceledError") {
+          toast.error(`Unable to fetch patient documents: ${err.message}`, {
+            containerId: "A",
+          });
+        }
+      }
+    };
+    fetchDocuments();
+    return () => abortController.abort();
+  }, [auth.authToken, patientInfos.id]);
+
   const handleChange = (e) => {
     setMessages([{ role: "user", content: e.target.value }]);
   };
@@ -39,10 +85,45 @@ const CalvinAIPrompt = ({
         onChange={handleChange}
         value={messages[0].content}
       />
-      <div className="calvinai-prompt-btns">
-        <button>Add attachments datas</button>
-        <button>Add documents datas</button>
-        <button onClick={handleSubmit}>Submit to CalvinAI</button>
+      <div className="calvinai-prompt-footer">
+        <div className="calvinai-prompt-add">
+          {attachments.length ? (
+            <AddAIAttachments
+              messages={messages}
+              setMessages={setMessages}
+              attachments={attachments}
+              initialBody={initialBody}
+              patientInfos={patientInfos}
+              isLoadingAttachmentText={isLoadingAttachmentText}
+              setIsLoadingAttachmentText={setIsLoadingAttachmentText}
+              isLoadingDocumentText={isLoadingDocumentText}
+              attachmentsTextsToAdd={attachmentsTextsToAdd}
+              setAttachmentsTextsToAdd={setAttachmentsTextsToAdd}
+              documentsTextsToAdd={documentsTextsToAdd}
+            />
+          ) : null}
+          {documents.length ? (
+            <AddAIDocuments
+              messages={messages}
+              setMessages={setMessages}
+              documents={documents}
+              initialBody={initialBody}
+              patientInfos={patientInfos}
+              isLoadingDocumentText={isLoadingDocumentText}
+              setIsLoadingDocumentText={setIsLoadingDocumentText}
+              isLoadingAttachmentText={isLoadingAttachmentText}
+              documentsTextsToAdd={documentsTextsToAdd}
+              setDocumentsTextsToAdd={setDocumentsTextsToAdd}
+              attachmentsTextsToAdd={attachmentsTextsToAdd}
+            />
+          ) : null}
+        </div>
+        <button
+          onClick={handleSubmit}
+          disabled={isLoadingAttachmentText || isLoadingDocumentText}
+        >
+          Submit to CalvinAI
+        </button>
       </div>
     </div>
   );

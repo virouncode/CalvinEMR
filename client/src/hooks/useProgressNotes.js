@@ -51,7 +51,6 @@ export const useProgressNotes = (url, patientId, order) => {
           signal: abortController.signal,
         });
         if (abortController.signal.aborted) return;
-        console.log("order", order);
         dispatch({
           type: "FETCH_SUCCESS",
           payload:

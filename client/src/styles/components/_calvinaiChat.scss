@@ -21,7 +21,7 @@
               &-img-bot{
                   width:7.5%;
                   height: 80px;
-                  background:url("../../assets/img/chatGPTLogo.png") center/cover;
+                  background:url("../../assets/img/botLogo.png") center/cover;
               }
               &-img-user {
                   width:7.5%;
@@ -38,11 +38,12 @@
       &-stop-btn {
           width: 150px;
           height: 25px;
-          background-color: #14E5B0;
+          color:#FEFEFE;
+          background-color: #3C5A76;
           border: solid 1px $grey;
           margin-left:auto;
           &:hover {
-              background-color: #1affc6;
+              background-color: #4c7193;
           }
       }
       &-textarea {
@@ -67,14 +68,14 @@
           right:12%;
           height: 50px;
           background:url("../../assets/img/sendIcon.png") no-repeat center;
-          background-color: #14E5B0;
+          background-color: #3C5A76;
           background-size: 30px 30px;
           padding:0;
           border: solid 1px $grey;
           box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
           &:hover {
               background:url("../../assets/img/sendIcon.png") no-repeat center;
-              background-color: #1affc6;
+              background-color: #4c7193;
               background-size: 30px 30px;
           }
           &:disabled {

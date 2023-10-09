@@ -17,12 +17,32 @@
             overflow: scroll;
             box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         }
-        &-btns {
-            padding: 20px;
+        &-footer {
+            padding: 20px 50px;
             display: flex;
-            justify-content: flex-end;
-            button {
-                margin-left: 5px;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        &-add {
+            width: 75%;
+            display: flex;
+            justify-content: space-between; 
+        }
+        &-attachments, &-documents {
+            p {
+                padding: 0;
+                font-weight: bold;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+            }
+            
+            &-item {
+                margin-left: 10px;
+                display: flex;
+                align-items: center;
+                input[type="checkbox"]{
+                    margin-right: 5px;
+                }
             }
         }
     }
@@ -46,13 +66,13 @@
                 justify-content: space-between;
                 align-items: flex-start;
                 &-img-bot{
-                    width:10%;
-                    height: 77px;
-                    background:url("../../assets/img/chatGPTLogo.png") center/cover;
+                    width:10.5%;
+                    height: 85px;
+                    background:url("../../assets/img/botLogo.png") center/cover;
                 }
                 &-img-user {
-                    width:10%;
-                    height: 77px;
+                    width:10.5%;
+                    height: 85px;
                     background:url("../../assets/img/doctorLogo.png") center/cover;
                 }
                 &-message {
@@ -65,11 +85,12 @@
         &-stop-btn {
             width: 150px;
             height: 25px;
-            background-color: #14E5B0;
+            color: #FEFEFE;
+            background-color: #3C5A76;
             border: solid 1px $grey;
             margin-left:auto;
             &:hover {
-                background-color: #1affc6;
+                background-color: #4c7193;
             }
         }
         &-textarea {
@@ -94,14 +115,14 @@
             right:8%;
             height: 50px;
             background:url("../../assets/img/sendIcon.png") no-repeat center;
-            background-color: #14E5B0;
+            background-color: #3C5A76;
             background-size: 30px 30px;
             padding:0;
             border: solid 1px $grey;
             box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
             &:hover {
                 background:url("../../assets/img/sendIcon.png") no-repeat center;
-                background-color: #1affc6;
+                background-color: #4c7193;
                 background-size: 30px 30px;
             }
             &:disabled {

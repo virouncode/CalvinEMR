@@ -23,8 +23,6 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
   );
   const contentRef = useRef(null);
   const triangleRef = useRef(null);
-  console.log(user.settings);
-
   const [
     { datas: progressNotes, isLoading, errMsg },
     fetchRecord,

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { sendMsgToOpenAI } from "../../../../api/openapi";
+import TypingDots from "../../../Presentation/TypingDots";
 import CalvinAIDiscussionContent from "./CalvinAIDiscussionContent";
 
 const CalvinAIDiscussion = ({
@@ -66,11 +67,14 @@ const CalvinAIDiscussion = ({
         autoFocus
         placeholder="Please write your message here"
       />
-      <button
-        onClick={handleAskGPT}
-        className="calvinai-discussion-send-btn"
-        disabled={isLoading}
-      />
+      {isLoading ? (
+        <TypingDots text="" style={{ bottom: "9.5%", right: "6%" }} />
+      ) : (
+        <button
+          onClick={handleAskGPT}
+          className="calvinai-discussion-send-btn"
+        />
+      )}
     </div>
   );
 };

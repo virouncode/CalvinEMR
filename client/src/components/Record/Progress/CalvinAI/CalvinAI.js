@@ -29,6 +29,7 @@ What is the diagnosis and what treatment would you suggest ?`,
   const [lastResponse, setLastResponse] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const abortController = useRef(null);
+  const abortControllerAI = useRef(null);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -64,7 +65,10 @@ What is the diagnosis and what treatment would you suggest ?`,
           setMessages={setMessages}
           setChatVisible={setChatVisible}
           setLastResponse={setLastResponse}
-          abortController={abortController}
+          abortController={abortControllerAI}
+          attachments={attachments}
+          initialBody={initialBody}
+          patientInfos={patientInfos}
         />
       ) : isLoading ? (
         <CircularProgress />
@@ -74,7 +78,7 @@ What is the diagnosis and what treatment would you suggest ?`,
           setMessages={setMessages}
           lastResponse={lastResponse}
           setLastResponse={setLastResponse}
-          abortController={abortController}
+          abortController={abortControllerAI}
         />
       ) : (
         <StaffAIAgreement setStart={setStart} setChatVisible={setChatVisible} />

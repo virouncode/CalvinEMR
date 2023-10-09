@@ -6,7 +6,9 @@ const twilio = require("twilio")(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
 );
+const extractTextFromDoc = require("./extractTextFromDoc");
 const bodyParser = require("body-parser");
+const { log } = require("console");
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
@@ -29,6 +31,23 @@ app.post("/api/twilio/messages", async (req, res) => {
     res.send(JSON.stringify({ success: false }));
   }
 });
+//****************************************************//
+
+//**************** Endpoint DOCUMENT AI **************//
+app.post("/api/extractToText", async (req, res) => {
+  try {
+    const { docUrl, mime } = req.body;
+    console.log(docUrl);
+    console.log(mime);
+    const result = await extractTextFromDoc(docUrl, mime);
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+    res.send(JSON.stringify({ success: false }));
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 //****************************************************//
 
 //Dans les autres cas on renvoie la single page app

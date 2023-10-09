@@ -104,7 +104,9 @@ const ProgressNotesCard = ({
           )
         ).data;
         if (abortController.signal.aborted) return;
-        setAttachments(response);
+        setAttachments(
+          response.sort((a, b) => a.date_created - b.date_created)
+        );
       } catch (err) {
         if (err.name !== "CanceledError")
           toast.error(`Error: unable to fetch attachments: ${err.message}`, {
@@ -396,7 +398,6 @@ const ProgressNotesCard = ({
               <label>
                 <strong>From: </strong>
               </label>
-              {getAuthorTitle()}{" "}
               {staffIdToTitleAndName(
                 clinic.staffInfos,
                 tempFormDatas.updated_by_id,
@@ -491,7 +492,7 @@ const ProgressNotesCard = ({
             height={window.innerHeight}
             x={(window.innerWidth - 1000) / 2}
             y={0}
-            color="#14E5B0"
+            color="#3C5A76"
             setPopUpVisible={setPopUpVisible}
           >
             <CalvinAI
