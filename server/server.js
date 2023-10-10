@@ -37,9 +37,6 @@ app.post("/api/twilio/messages", async (req, res) => {
 app.post("/api/extractToText", async (req, res) => {
   try {
     const { docUrl, mime } = req.body;
-    console.log(docUrl);
-    console.log(mime);
-    console.log("ok");
     const result = await extractTextFromDoc(docUrl, mime);
     res.send(result);
   } catch (err) {
