@@ -41,8 +41,8 @@ app.post("/api/extractToText", async (req, res) => {
     res.send(result);
   } catch (err) {
     console.log(err);
-    res.send(JSON.stringify({ success: false }));
     res.status(500).json({ success: false, error: err.message });
+    res.send(JSON.stringify({ success: false }));
   }
 });
 
