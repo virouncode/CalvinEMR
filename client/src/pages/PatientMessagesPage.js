@@ -13,7 +13,7 @@ const PatientMessagesPage = () => {
   return (
     <>
       <Helmet>
-        <title>Calvin EMR Messages</title>
+        <title>Messages</title>
       </Helmet>
       <MessagesPatient />
       {popUpVisible && (

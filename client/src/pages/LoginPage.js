@@ -1,6 +1,6 @@
 import React from "react";
-import LoginCard from "../components/Login/LoginCard";
 import { Helmet } from "react-helmet";
+import LoginCard from "../components/Login/LoginCard";
 
 const LoginPage = () => {
   return (

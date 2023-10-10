@@ -7,7 +7,6 @@ import {
 import { getActiveIngredients, getRoute } from "../../../../api/medsService";
 import useAuth from "../../../../hooks/useAuth";
 import { medicationSchema } from "../../../../validation/medicationValidation";
-import MedsSearch from "./MedsSearch";
 
 const MedicationForm = ({
   patientId,
@@ -204,7 +203,7 @@ const MedicationForm = ({
           </button>
         </div>
       </form>
-      <MedsSearch handleMedClick={handleMedClick} />
+      {/* <MedsSearch handleMedClick={handleMedClick} /> */}
     </div>
   );
 };

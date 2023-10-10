@@ -1,10 +1,11 @@
 //Librairies
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const PatientHeader = () => {
   const { user, setUser, setAuth, setClinic } = useAuth();
+  const navigate = useNavigate();
   const handleLogout = () => {
     setAuth({});
     setUser({});
@@ -17,7 +18,7 @@ const PatientHeader = () => {
   };
   return (
     <header className="header header--patient">
-      <div className="logo"></div>
+      <div className="logo" onClick={() => navigate("/patient/messages")}></div>
       <nav className="navigation navigation--patient">
         <ul>
           <li>

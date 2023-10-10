@@ -18,7 +18,7 @@ const MessagesPage = () => {
   return (
     <main className="messages">
       <Helmet>
-        <title>Calvin EMR Messages</title>
+        <title>Messages</title>
       </Helmet>
       <MessagingToggle
         isTypeChecked={isTypeChecked}

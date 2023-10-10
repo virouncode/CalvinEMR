@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import VerifyPasswordPatient from "../components/PatientPortal/CredentialsPatient/VerifyPasswordPatient";
-import CredentialsFormPatient from "../components/PatientPortal/CredentialsPatient/CredentialsFormPatient";
 import { Helmet } from "react-helmet";
+import CredentialsFormPatient from "../components/PatientPortal/CredentialsPatient/CredentialsFormPatient";
+import VerifyPasswordPatient from "../components/PatientPortal/CredentialsPatient/VerifyPasswordPatient";
 
 const PatientCredentialsPage = () => {
   const [verified, setVerified] = useState(false);
@@ -9,7 +9,7 @@ const PatientCredentialsPage = () => {
   return (
     <div className="credentials">
       <Helmet>
-        <title>Calvin EMR Credentials</title>
+        <title>Credentials</title>
       </Helmet>
       <div className="credentials-title">Change email/password</div>
       {!verified ? (

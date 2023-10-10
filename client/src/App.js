@@ -8,6 +8,7 @@ import Layout2 from "./components/Presentation/Layout2";
 import Layout3 from "./components/Presentation/Layout3";
 import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
 import useAuth from "./hooks/useAuth";
+import BillingPage from "./pages/BillingPage";
 import CalendarPage from "./pages/CalendarPage";
 import CalvinAIPage from "./pages/CalvinAIPage";
 import CredentialsPage from "./pages/CredentialsPage";
@@ -21,6 +22,7 @@ import PatientAppointmentsPage from "./pages/PatientAppointmentsPage";
 import PatientCredentialsPage from "./pages/PatientCredentialsPage";
 import PatientMessagesPage from "./pages/PatientMessagesPage";
 import PatientRecordPage from "./pages/PatientRecordPage";
+import ReferencePage from "./pages/ReferencePage";
 import ResetPage from "./pages/ResetPage";
 import SearchPatientPage from "./pages/SearchPatientPage";
 import SignupPagePatient from "./pages/SignupPagePatient";
@@ -69,15 +71,17 @@ const App = () => {
           <Route path="search-patient" element={<SearchPatientPage />} />
           <Route path="patient-record/:id" element={<PatientRecordPage />} />
           <Route path="signup-patient" element={<SignupPagePatient />} />
-          <Route path="my-account" element={<MyAccountPage />} />
           <Route path="messages" element={<MessagesPage />} />
           <Route path="doc-inbox" element={<DocMailboxPage />} />
           <Route
             path="messages/:messageId/:sectionName/:msgType"
             element={<MessagesPage />}
           />
+          <Route path="reference" element={<ReferencePage />} />
           <Route path="credentials" element={<CredentialsPage />} />
           <Route path="calvinai" element={<CalvinAIPage />} />
+          <Route path="billing" element={<BillingPage />} />
+          <Route path="my-account" element={<MyAccountPage />} />
         </Route>
         <Route element={<RequireAuth allowedAccesses={["Admin"]} />}>
           <Route path="signup-staff" element={<SignupPageStaff />} />

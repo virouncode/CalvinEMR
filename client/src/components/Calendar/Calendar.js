@@ -427,7 +427,6 @@ const Calendar = ({ timelineVisible }) => {
               Authorization: `Bearer ${auth.authToken}`,
             },
           });
-          toast.success("Saved Successfully", { containerId: "A" });
           const abortController = new AbortController();
           fetchEvents(abortController);
           lastCurrentId.current = response.data.id.toString();
@@ -468,7 +467,6 @@ const Calendar = ({ timelineVisible }) => {
             },
           }
         );
-        toast.success("Saved Successfully", { containerId: "A" });
         const abortController = new AbortController();
         fetchEvents(abortController);
         lastCurrentId.current = response.data.id.toString();
@@ -551,7 +549,6 @@ const Calendar = ({ timelineVisible }) => {
               Authorization: `Bearer ${auth.authToken}`,
             },
           });
-          toast.success("Saved Successfully", { containerId: "A" });
           const abortController = new AbortController();
           fetchEvents(abortController);
         } catch (err) {
@@ -585,7 +582,6 @@ const Calendar = ({ timelineVisible }) => {
               Authorization: `Bearer ${auth.authToken}`,
             },
           });
-          toast.success("Saved Successfully", { containerId: "A" });
           const abortController = new AbortController();
           fetchEvents(abortController);
         } catch (err) {
@@ -667,7 +663,6 @@ const Calendar = ({ timelineVisible }) => {
             Authorization: `Bearer ${auth.authToken}`,
           },
         });
-        toast.success("Saved Successfully", { containerId: "A" });
         const abortController = new AbortController();
         fetchEvents(abortController);
       } catch (err) {
@@ -808,7 +803,6 @@ const Calendar = ({ timelineVisible }) => {
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      toast.success("Saved Successfully", { containerId: "A" });
       setHostsIds([...hostsIds, tempFormDatas.host_id]);
       const abortController = new AbortController();
       fetchEvents(abortController);

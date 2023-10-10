@@ -9,7 +9,7 @@ const DocMailboxPage = () => {
   return (
     <div>
       <Helmet>
-        <title>Calvin EMR Documents Mailbox</title>
+        <title>Documents Mailbox</title>
       </Helmet>
       {user.title === "Secretary" ? (
         <DocMailboxSecretary />

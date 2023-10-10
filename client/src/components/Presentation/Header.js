@@ -1,9 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
   const { user, setUser, setAuth, setClinic } = useAuth();
+  const navigate = useNavigate();
   const handleLogout = () => {
     setAuth({});
     setUser({});
@@ -16,13 +17,14 @@ const Header = () => {
   };
   return (
     <header className="header">
-      <div className="logo"></div>
+      <div className="logo" onClick={() => navigate("/")}></div>
       <nav className="navigation">
         <ul>
           <li>
             <NavLink
               to="/"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
             >
               Calendar
             </NavLink>
@@ -31,6 +33,7 @@ const Header = () => {
             <NavLink
               to="search-patient"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
             >
               Patients
             </NavLink>
@@ -39,6 +42,7 @@ const Header = () => {
             <NavLink
               to="signup-patient"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
             >
               New Patient
             </NavLink>
@@ -47,6 +51,7 @@ const Header = () => {
             <NavLink
               to="signup-staff"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
             >
               New Staff Account
             </NavLink>
@@ -55,6 +60,7 @@ const Header = () => {
             <NavLink
               to="doc-inbox"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
             >
               Documents Mailbox
             </NavLink>
@@ -63,6 +69,7 @@ const Header = () => {
             <NavLink
               to="messages"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
             >
               {"Messages" + (user.unreadNbr ? ` (${user.unreadNbr})` : "")}
             </NavLink>
@@ -71,6 +78,7 @@ const Header = () => {
             <NavLink
               to="reference"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
             >
               Reference
             </NavLink>
@@ -79,14 +87,25 @@ const Header = () => {
             <NavLink
               to="calvinai"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
             >
               CalvinAI
             </NavLink>
           </li>
           <li>
             <NavLink
+              to="billing"
+              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
+            >
+              Billing
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="my-account"
               className={(nav) => (nav.isActive ? "nav-active" : "")}
+              target="_blank"
             >
               My Account
             </NavLink>

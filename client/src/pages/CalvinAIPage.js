@@ -40,7 +40,7 @@ const CalvinAIPage = () => {
   return (
     <section className="calvinai-section">
       <Helmet>
-        <title>Calvin EMR AI chat</title>
+        <title>CalvinAI Chat</title>
       </Helmet>
       {isLoading ? (
         <CircularProgress />

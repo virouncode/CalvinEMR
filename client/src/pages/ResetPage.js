@@ -6,7 +6,7 @@ const ResetPage = () => {
   return (
     <main className="reset-section">
       <Helmet>
-        <title>Calvin EMR Forgot Password</title>
+        <title>Forgot Password</title>
       </Helmet>
       <ForgotPassword />
     </main>
