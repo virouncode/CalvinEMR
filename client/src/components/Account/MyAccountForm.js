@@ -117,7 +117,16 @@ const MyAccountForm = () => {
       datasToPut.speciality = firstLetterUpper(datasToPut.speciality);
       datasToPut.subspeciality = firstLetterUpper(datasToPut.subspeciality);
       datasToPut.date_created = Date.now();
+      console.log("billing nbr", tempFormDatas.ohip_billing_nbr);
 
+      if (
+        tempFormDatas.ohip_billing_nbr.toString().length !== 6 &&
+        tempFormDatas.title === "Doctor"
+      ) {
+        setErrMsg("OHIP billing number should be 6-digits");
+        return;
+      }
+      datasToPut.ohip_billing_nbr = parseInt(datasToPut.ohip_billing_nbr);
       //Validation
       try {
         await myAccountSchema.validate(datasToPut);
@@ -133,9 +142,7 @@ const MyAccountForm = () => {
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      setSuccessMsg(
-        "Infos changed successfully, we will redirect you to the login page"
-      );
+      setSuccessMsg("Infos changed successfully");
       //update clinic context staffInfos
       const response = await axiosXano.get("/staff", {
         headers: {
@@ -148,13 +155,14 @@ const MyAccountForm = () => {
         "clinic",
         JSON.stringify({ ...clinic, staffInfos: response.data })
       );
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => setSuccessMsg(""), 2000);
     } catch (err) {
       setErrMsg(`Error: unable to save infos: ${err.message}`);
     }
   };
 
   const handleCancel = (e) => {
+    setErrMsg("");
     setTempFormDatas(formDatas);
     setEditVisible(false);
   };
@@ -258,8 +266,6 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.title}</p>
               )}
             </div>
-          </div>
-          <div className="signup-staff-form-column">
             <div className="myaccount-section-form-row">
               <label>Speciality: </label>
               {editVisible ? (
@@ -274,6 +280,8 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.speciality}</p>
               )}
             </div>
+          </div>
+          <div className="signup-staff-form-column">
             <div className="myaccount-section-form-row">
               <label>Subspeciality: </label>
               {editVisible ? (
@@ -296,6 +304,21 @@ const MyAccountForm = () => {
                   value={tempFormDatas.licence_nbr}
                   onChange={handleChange}
                   name="licence_nbr"
+                  autoComplete="off"
+                  required={tempFormDatas.title === "Doctor"}
+                />
+              ) : (
+                <p>{tempFormDatas.licence_nbr}</p>
+              )}
+            </div>
+            <div className="myaccount-section-form-row">
+              <label>OHIP billing nbr: </label>
+              {editVisible ? (
+                <input
+                  type="text"
+                  value={tempFormDatas.ohip_billing_nbr}
+                  onChange={handleChange}
+                  name="ohip_billing_nbr"
                   autoComplete="off"
                   required={tempFormDatas.title === "Doctor"}
                 />

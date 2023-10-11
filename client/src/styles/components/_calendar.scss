@@ -189,11 +189,17 @@
                 opacity : 0.65;
             }         
         }
-    }   
+    } 
+    &-event-patient-link {
+        color:$white;
+        &:hover{
+            text-decoration: underline !important;
+            color:$white;
+        }
+    }  
 
     
 }
-
 
 .flatpickr {
     .numInputWrapper {

@@ -1,5 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAvailableRooms } from "../../api/getAvailableRooms";
 import axiosXano from "../../api/xano";
@@ -7,10 +8,8 @@ import useAuth from "../../hooks/useAuth";
 import { useEvents } from "../../hooks/useEvents";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import { getWeekRange } from "../../utils/formatDates";
-import formatName from "../../utils/formatName";
 import { rooms } from "../../utils/rooms";
-import { staffIdToName } from "../../utils/staffIdToName";
-import { staffIdToTitle } from "../../utils/staffIdToTitle";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import Availability from "./Availability";
 import CalendarFilter from "./CalendarFilter";
@@ -152,62 +151,51 @@ const Calendar = ({ timelineVisible }) => {
   };
   const renderEventContent = (info) => {
     const event = info.event;
-
-    let staffGuestsNames = event.extendedProps.staffGuestsNames ?? [];
-    let patientsGuestsNames = event.extendedProps.patientsGuestsNames ?? [];
-    let guestsCaption = "";
-    let guestsList = "";
-
-    if (patientsGuestsNames.length === 0) {
-      //no patients
-      if (staffGuestsNames.length === 0) {
-        //no guests
-        guestsCaption = "";
-      } else if (staffGuestsNames.length === 1) {
-        //one guest
-        guestsCaption = "Guest: ";
-        guestsList = staffGuestsNames[0];
-      } else {
-        //several guests
-        guestsCaption = "Guests: ";
-        guestsList = staffGuestsNames.join(", ");
-      }
-    } else if (patientsGuestsNames.length === 1) {
-      //one patient
-      if (staffGuestsNames.length === 0) {
-        //no staff
-        guestsCaption = "Patient: ";
-        guestsList = patientsGuestsNames[0];
-      } else {
-        guestsCaption = "Guests: ";
-        guestsList = [...staffGuestsNames, patientsGuestsNames[0]].join(", ");
-      }
-    } else {
-      //several patients
-      if (staffGuestsNames.length === 0) {
-        //no staff
-        guestsCaption = "Patients: ";
-        guestsList = patientsGuestsNames.join(", ");
-      } else {
-        guestsCaption = "Guests: ";
-        guestsList = [...staffGuestsNames, ...patientsGuestsNames].join(", ");
-      }
-    }
+    let staffGuestsIds = event.extendedProps.staffGuestsIds ?? [];
+    let patientsGuestsIds = event.extendedProps.patientsGuestsIds ?? [];
+    // let guestsCaption = "";
+    // if (patientsGuestsIds.length === 0) {
+    //   //no patients
+    //   if (staffGuestsIds.length === 0) {
+    //     //no guests
+    //     guestsCaption = "";
+    //   } else if (staffGuestsIds.length === 1) {
+    //     //one guest
+    //     guestsCaption = "Guest: ";
+    //   } else {
+    //     //several guests
+    //     guestsCaption = "Guests: ";
+    //   }
+    // } else if (patientsGuestsIds.length === 1) {
+    //   //one patient
+    //   if (staffGuestsIds.length === 0) {
+    //     //no staff
+    //     guestsCaption = "Patient: ";
+    //   } else {
+    //     guestsCaption = "Guests: ";
+    //   }
+    // } else {
+    //   //several patients
+    //   if (staffGuestsIds.length === 0) {
+    //     //no staff
+    //     guestsCaption = "Patients: ";
+    //   } else {
+    //     guestsCaption = "Guests: ";
+    //   }
+    // }
 
     const hostName = event.extendedProps.host
-      ? formatName(staffIdToName(clinic.staffInfos, event.extendedProps.host))
+      ? staffIdToTitleAndName(clinic.staffInfos, event.extendedProps.host, true)
       : "";
 
-    const hostNameShort = formatName(hostName);
-
-    let hostCaption = event.extendedProps.host
-      ? staffIdToTitle(clinic.staffInfos, event.extendedProps.host)
-      : "";
-    if (hostCaption === "Doctor") {
-      hostCaption = "Doctor: ";
-    } else {
-      hostCaption = "Host: ";
-    }
+    // let hostCaption = event.extendedProps.host
+    //   ? staffIdToTitle(clinic.staffInfos, event.extendedProps.host)
+    //   : "";
+    // if (hostCaption === "Doctor") {
+    //   hostCaption = "Doctor: ";
+    // } else {
+    //   hostCaption = "Host: ";
+    // }
     if (
       info.view.type === "timeGridWeek" ||
       info.view.type === "dayGridMonth" ||
@@ -237,15 +225,37 @@ const Calendar = ({ timelineVisible }) => {
             </p>
             <i className="fa-solid fa-trash" onClick={handleDeleteEvent}></i>
           </div>
-          {guestsCaption && (
-            <div>
-              <strong>{guestsCaption}</strong>
-              {guestsList}
-            </div>
-          )}
+          {/* {guestsCaption && ( */}
           <div>
-            <strong>{hostCaption}</strong>
-            {hostNameShort}
+            {patientsGuestsIds.length || staffGuestsIds.length ? (
+              <span>
+                {patientsGuestsIds.map((patient) => (
+                  <NavLink
+                    className="calendar-event-patient-link"
+                    to={`/patient-record/${patient.patients_id}`}
+                    target="_blank"
+                  >
+                    {patient.patient_name.full_name.toUpperCase()},{" "}
+                  </NavLink>
+                ))}
+                {staffGuestsIds.map((staff) => (
+                  <span>
+                    {staffIdToTitleAndName(
+                      clinic.staffInfos,
+                      staff.staff_id,
+                      true
+                    ).toUpperCase()}
+                    ,{" "}
+                  </span>
+                ))}
+              </span>
+            ) : null}
+          </div>
+          {/* )} */}
+          <div>
+            {/* <strong>{hostCaption}</strong> */}
+            <strong>Host: </strong>
+            {hostName}
           </div>
           <div>
             <strong>Room: </strong>
@@ -271,18 +281,44 @@ const Calendar = ({ timelineVisible }) => {
           <div>
             {event.allDay ? "All Day" : info.timeText}
             <span style={{ marginLeft: "10px" }}>
-              <strong>Reason: </strong>
-              {event.extendedProps.reason ?? "Appointment"}
+              <strong>
+                {event.extendedProps.reason.toUpperCase() ?? "APPOINTMENT"}
+              </strong>
             </span>
-            {guestsCaption && (
+            {/* {guestsCaption && ( */}
+            {patientsGuestsIds.length || staffGuestsIds.length ? (
               <span>
-                {" "}
-                / <strong>{guestsCaption}</strong>
-                {guestsList}
+                {/* <strong>{guestsCaption}</strong> */} /{" "}
+                {patientsGuestsIds.map((patient) => (
+                  <NavLink
+                    className="calendar-event-patient-link"
+                    to={`/patient-record/${patient.patients_id}`}
+                    target="_blank"
+                    key={patient.patients_id}
+                  >
+                    <strong>
+                      {patient.patient_name.full_name.toUpperCase()}
+                    </strong>
+                    ,{" "}
+                  </NavLink>
+                ))}
+                {staffGuestsIds.map((staff) => (
+                  <span>
+                    <strong>
+                      {staffIdToTitleAndName(
+                        clinic.staffInfos,
+                        staff.staff_id,
+                        true
+                      ).toUpperCase()}
+                    </strong>
+                    ,{" "}
+                  </span>
+                ))}
               </span>
-            )}{" "}
-            / <strong>{hostCaption}</strong>
-            {hostNameShort} / <strong>Room: </strong>
+            ) : null}
+            {/* )} */}
+            {/* / <strong>{hostCaption}</strong> */}/ <strong>Host: </strong>
+            {hostName} / <strong>Room: </strong>
             {event.extendedProps.room} / <strong>Status: </strong>
             {event.extendedProps.status}
           </div>
@@ -307,8 +343,10 @@ const Calendar = ({ timelineVisible }) => {
                 textOverflow: "clip",
               }}
             >
-              <strong>Reason: </strong>
-              {event.extendedProps.reason ?? "Appointment"}
+              {/* <strong>Reason: </strong> */}
+              <strong>
+                {event.extendedProps.reason.toUpperCase() ?? "APPOINTMENT"}
+              </strong>
             </p>
             <i
               className="fa-solid fa-trash"
@@ -316,15 +354,42 @@ const Calendar = ({ timelineVisible }) => {
               style={{ cursor: "pointer" }}
             ></i>
           </div>
-          {guestsCaption && (
-            <div>
-              <strong>{guestsCaption}</strong>
-              {guestsList}
-            </div>
-          )}
+          {/* {guestsCaption && (/{" "} */}
           <div>
-            <strong>{hostCaption}</strong>
-            {hostNameShort}
+            {patientsGuestsIds.length || staffGuestsIds.length ? (
+              <span>
+                {patientsGuestsIds.map((patient) => (
+                  <NavLink
+                    className="calendar-event-patient-link"
+                    to={`/patient-record/${patient.patients_id}`}
+                    target="_blank"
+                  >
+                    <strong>
+                      {patient.patient_name.full_name.toUpperCase()}
+                    </strong>
+                    ,{" "}
+                  </NavLink>
+                ))}
+                {staffGuestsIds.map((staff) => (
+                  <span>
+                    <strong>
+                      {staffIdToTitleAndName(
+                        clinic.staffInfos,
+                        staff.staff_id,
+                        true
+                      ).toUpperCase()}
+                    </strong>
+                    ,{" "}
+                  </span>
+                ))}
+              </span>
+            ) : null}
+          </div>
+          {/* )} */}
+          <div>
+            {/* <strong>{hostCaption}</strong> */}
+            <strong>Host: </strong>
+            {hostName}
           </div>
           <div>
             <strong>Room: </strong>

@@ -4,12 +4,12 @@ import ForgotPassword from "../components/ResetPassword/ForgotPassword";
 
 const ResetPage = () => {
   return (
-    <main className="reset-section">
+    <div className="reset-section">
       <Helmet>
         <title>Forgot Password</title>
       </Helmet>
       <ForgotPassword />
-    </main>
+    </div>
   );
 };
 

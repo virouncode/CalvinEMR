@@ -22,17 +22,20 @@ const SignupStaffForm = () => {
     last_name: "",
     gender: "Male",
     title: "Doctor",
+    access_level: "User",
     speciality: "",
     subspeciality: "",
     licence_nbr: "",
-    access_level: "User",
+    ohip_billing_nbr: "",
     account_status: "Confirmed",
     cell_phone: "",
     backup_phone: "",
+    video_link: "",
     sign: null,
   });
 
   const handleChange = (e) => {
+    setErrMsg("");
     const value = e.target.value;
     const name = e.target.name;
     setFormDatas({ ...formDatas, [name]: value });
@@ -78,6 +81,7 @@ const SignupStaffForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //Validation
     if (formDatas.confirm_password !== formDatas.password) {
       setErrMsg("Passwords do not match");
       return;
@@ -103,6 +107,13 @@ const SignupStaffForm = () => {
       setErrMsg(`Error: unable to sign up staff: ${err.message}`);
       return;
     }
+    if (
+      formDatas.ohip_billing_nbr.toString().length !== 6 &&
+      formDatas.title === "Doctor"
+    ) {
+      setErrMsg("OHIP Billing number should be 6-digits");
+      return;
+    }
     try {
       const full_name =
         formDatas.first_name +
@@ -121,6 +132,7 @@ const SignupStaffForm = () => {
       datasToPost.speciality = firstLetterUpper(datasToPost.speciality);
       datasToPost.subspeciality = firstLetterUpper(datasToPost.subspeciality);
       datasToPost.date_created = Date.now();
+      datasToPost.ohip_billing_nbr = parseInt(datasToPost.ohip_billing_nbr);
 
       //Validation
       try {
@@ -444,6 +456,17 @@ const SignupStaffForm = () => {
               value={formDatas.licence_nbr}
               onChange={handleChange}
               name="licence_nbr"
+              autoComplete="off"
+              required={formDatas.title === "Doctor"}
+            />
+          </div>
+          <div className="signup-staff-form-row">
+            <label>OHIP billing nbr: </label>
+            <input
+              type="text"
+              value={formDatas.ohip_billing_nbr}
+              onChange={handleChange}
+              name="ohip_billing_nbr"
               autoComplete="off"
               required={formDatas.title === "Doctor"}
             />

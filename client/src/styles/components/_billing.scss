@@ -119,11 +119,13 @@
       justify-content: flex-start;
       align-items: center;
       margin-left: 20px;
-
       label {
         font-size: 0.8rem;
         margin-right: 5px;
         font-weight: bold;
+      }
+      input[type="date"] {
+        width:150px;
       }
     }
   }
