@@ -17,8 +17,6 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
-  //STYLE
-
   //HANDLERS
   const handleChange = (e) => {
     setErrMsgPost("");

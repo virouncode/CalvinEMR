@@ -22,7 +22,6 @@ const CalvinAIChat = () => {
 
   // Event handler for user scrolling.
   const handleScroll = () => {
-    console.log("scrolled");
     setAutoScroll(false);
   };
 

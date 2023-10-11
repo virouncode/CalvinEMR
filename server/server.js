@@ -39,6 +39,7 @@ app.post("/api/extractToText", async (req, res) => {
     const { docUrl, mime } = req.body;
     const result = await extractTextFromDoc(docUrl, mime);
     res.send(result);
+    res.send(JSON.stringify({ success: true }));
   } catch (err) {
     console.log(err);
     res.status(500).json({ success: false, error: err.message });
