@@ -5,6 +5,7 @@ const GuestPatientResultItem = ({ guest, handleAddGuest }) => {
     <li key={guest.id} data-key={guest.id} data-type="patient">
       <span>{guest.full_name} (Patient)</span>
       <i
+        style={{ marginLeft: "10px", cursor: "pointer" }}
         className="fa-solid fa-user-plus"
         onClick={(e) => handleAddGuest(guest, e)}
       ></i>

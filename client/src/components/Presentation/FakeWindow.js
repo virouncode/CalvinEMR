@@ -9,10 +9,8 @@ const FakeWindow = ({
   height,
   color,
   setPopUpVisible,
+  closeCross = true,
 }) => {
-  // const [isDragging, setIsDragging] = useState(false);
-  // const [isResizing, setIsResizing] = useState(false);
-
   const isDragging = useRef(false);
   const isResizing = useRef(false);
   const windowRef = useRef(null);
@@ -56,7 +54,7 @@ const FakeWindow = ({
 
     const handleMouseMove = (e) => {
       if (isDragging.current) {
-        // Update window position based on mouse movement
+        document.body.style.userSelect = "none";
         setWindowPosition({
           x: e.clientX - offsetX,
           y:
@@ -71,6 +69,7 @@ const FakeWindow = ({
 
     const handleMouseUp = () => {
       isDragging.current = false;
+      document.body.style.userSelect = "auto";
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
@@ -120,12 +119,16 @@ const FakeWindow = ({
         style={{ background: color, width: windowSize.width }}
       >
         <p>{title}</p>
-        <p
-          onClick={() => setPopUpVisible(false)}
-          className="window-title-close"
-        >
-          X
-        </p>
+        {closeCross && (
+          <p
+            onClick={() => {
+              setPopUpVisible(false);
+            }}
+            className="window-title-close"
+          >
+            X
+          </p>
+        )}
       </div>
       <div
         className="resize-handle"

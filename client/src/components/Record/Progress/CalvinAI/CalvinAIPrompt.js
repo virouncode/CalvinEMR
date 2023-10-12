@@ -22,7 +22,6 @@ const CalvinAIPrompt = ({
   const [documents, setDocuments] = useState([]);
   const [attachmentsTextsToAdd, setAttachmentsTextsToAdd] = useState([]);
   const [documentsTextsToAdd, setDocumentsTextsToAdd] = useState([]);
-  console.log(patientInfos.id);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -39,7 +38,6 @@ const CalvinAIPrompt = ({
           }
         );
         if (abortController.signal.aborted) return;
-        console.log(response.data);
         setDocuments(
           response.data.sort((a, b) => a.date_created - b.date_created)
         );

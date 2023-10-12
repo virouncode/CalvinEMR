@@ -1,10 +1,12 @@
 import React from "react";
+import useAuth from "../../hooks/useAuth";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 
-const HostOption = ({ staff, title }) => {
+const HostOption = ({ staff }) => {
+  const { clinic } = useAuth();
   return (
     <option value={staff.id} key={staff.id}>
-      {title === "Doctor" ? "Dr. " : ""}
-      {staff.full_name}
+      {staffIdToTitleAndName(clinic.staffInfos, staff.id, true)} ({staff.title})
     </option>
   );
 };

@@ -7,7 +7,7 @@ const CalendarPage = () => {
   const [timelineVisible, setTimelineVisible] = useState(false);
 
   return (
-    <>
+    <section className="calendar-section">
       <Helmet>
         <title>Calendar</title>
       </Helmet>
@@ -16,7 +16,7 @@ const CalendarPage = () => {
         timelineVisible={timelineVisible}
       />
       <Calendar timelineVisible={timelineVisible} />
-    </>
+    </section>
   );
 };
 

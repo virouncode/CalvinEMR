@@ -53,7 +53,6 @@ const extractTextFromDoc = async (docUrl, mime) => {
     const paragraphText = getText(paragraph.layout.textAnchor);
     decodedText.push(paragraphText);
   }
-  console.log(decodedText);
   return decodedText;
 };
 

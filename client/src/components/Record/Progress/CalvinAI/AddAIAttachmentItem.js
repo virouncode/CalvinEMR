@@ -24,9 +24,24 @@ const AddAIAttachmentItem = ({
     if (checked) {
       setAttachmentsAddedIds([...attachmentsAddedIds, id]);
       setIsLoadingAttachmentText(true);
-      const textToAdd = (
+      let textToAdd = (
         await extractToText(attachment.file.url, attachment.file.mime)
       ).join("");
+
+      textToAdd = textToAdd
+        .replaceAll(patientInfos.first_name, "")
+        .replaceAll(patientInfos.middle_name, "")
+        .replaceAll(patientInfos.last_name, "")
+        .replaceAll(patientInfos.health_insurance_nbr, "")
+        .replaceAll(patientInfos.cell_phone, "")
+        .replaceAll(patientInfos.preferred_phone, "")
+        .replaceAll(patientInfos.address, "")
+        .replaceAll(patientInfos.postal_code, "")
+        .replaceAll(patientInfos.province_state, "")
+        .replaceAll(patientInfos.city, "")
+        .replaceAll(patientInfos.country, "")
+        .replaceAll(patientInfos.email, "");
+
       attachmentsTextsToAddUpdated = [
         ...attachmentsTextsToAdd,
         { id, content: textToAdd, date_created: attachment.date_created },

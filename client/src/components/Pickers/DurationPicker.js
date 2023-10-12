@@ -10,18 +10,22 @@ const DurationPicker = ({
 }) => {
   return (
     <>
-      {title && <label>Duration</label>}
+      {title && (
+        <label style={{ marginRight: "10px", fontWeight: "bold" }}>
+          Duration
+        </label>
+      )}
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          width: "40%",
+          width: "20%",
         }}
       >
         <label style={{ fontWeight: "normal" }}>Hrs</label>
         <input
-          style={{ width: "50px" }}
+          style={{ width: "50px", marginRight: "10px" }}
           type="number"
           step="1"
           min="0"

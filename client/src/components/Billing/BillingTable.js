@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
+import useAuth from "../../hooks/useAuth";
 import BillingTableItem from "./BillingTableItem";
 
 const BillingTable = ({ billings, setBillings, setErrMsg, filterDatas }) => {
-  // const { clinic } = useAuth();
+  const { user } = useAuth();
   const direction = useRef(false);
   const [columnToSort, setColumnToSort] = useState("date_created");
   const filteredBillings = billings.filter(
@@ -39,7 +40,11 @@ const BillingTable = ({ billings, setBillings, setErrMsg, filterDatas }) => {
           <th style={{ textDecoration: "none", cursor: "default" }}>
             Provider fee
           </th>
-          <th style={{ textDecoration: "none", cursor: "default" }}>Action</th>
+          {user.title !== "Secretary" && (
+            <th style={{ textDecoration: "none", cursor: "default" }}>
+              Action
+            </th>
+          )}
         </tr>
       </thead>
       <tbody>

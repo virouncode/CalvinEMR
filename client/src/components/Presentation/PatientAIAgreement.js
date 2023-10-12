@@ -5,7 +5,6 @@ import useAuth from "../../hooks/useAuth";
 
 const PatientAIAgreement = ({ patientInfos, setPopUpVisible }) => {
   const { user, auth } = useAuth();
-  console.log("userid", user.id);
   const [agreed, setAgreed] = useState(true);
   const handleChange = (e) => {
     const id = e.target.id;

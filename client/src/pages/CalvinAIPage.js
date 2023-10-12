@@ -22,7 +22,6 @@ const CalvinAIPage = () => {
           },
           signal: abortController.signal,
         });
-        console.log(response.data.ai_consent);
         if (abortController.signal.aborted) return;
         setStart(response.data.ai_consent);
         setIsLoading(false);

@@ -8,7 +8,7 @@ const GuestsList = ({
   handleRemoveGuest,
 }) => {
   return (
-    <p className="guests-list-caption">
+    <p className="guests-list">
       {patientsGuestsInfos.map((patient) => (
         <GuestPatientItem
           key={patient.id}

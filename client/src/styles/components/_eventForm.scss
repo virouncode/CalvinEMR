@@ -1,144 +1,85 @@
 .event-form {
-    background: $white;
-    position : absolute;
-    font-size: 0.75rem;
-    z-index : 100;
-    border-radius : 6px;
-    &--leftcenter{
-        @include arrow('left','center', 10px, white);
+    margin-top: 40px;
+    padding: 10px;
+    &--uneditable {
+        pointer-events: none;
     }
-    &--rightcenter{
-        @include arrow('right','center', 10px, white);
-    }
-    &--leftbottom{
-        @include arrow('left','bottom', 10px, white);
-    }
-    &--rightbottom{
-        @include arrow('right','bottom', 10px, white);
-    }
-    &--lefttop {
-        @include arrow('left','top', 10px, white);
-    }
-    &--righttop {
-        @include arrow('right','top', 10px, white);
-    }
-    .form {
-        padding : 10px;
-        display : flex ; 
-        flex-direction: column;
-        width : 450px;
-        height :650px;
-        overflow-y: scroll;
-        margin:0 auto;
-        &-uneditable{
-            height :160px;
-            pointer-events: none;
-            input, select{
-                border:none;
-                background:$white;
-            }
-            select{
-                border:none;
-                background:$white;
-                appearance: none;
-            }
+    &-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        border: solid 1px $grey;
+        border-radius: 4px;
+        padding: 10px;
+        button, input[type="submit"] {
+            margin-right: 5px;
         }
-        &-row{
+        &--guest {
+            flex-direction: column;
+        }
+        &-item {
             display: flex;
-            justify-content: space-between;
-            align-content: center;
-            margin-bottom:2px;
-            &-duration {
-                width: 70%;
-                display: flex;
-                padding : 5px 10px;
-                align-items: center;
-                label {
-                    font-weight: bold;
-                    margin-right: 10px;
-                }
-                input {
-                    margin-right: 10px;
-                }
+            align-items: center;
+            margin-right: 20px;
+            label {
+                font-weight: bold;
+                margin-right: 10px;
             }
-            &-section {
-                width:50%;
-                display:flex;
-                justify-content: flex-start;
-                align-items: center;
-                padding : 5px 10px;
-                label {
-                    font-weight : bold;
-                    min-width : 50px;
-                }
-                input, select {
-                    font-size: 0.75rem;
-                    width:100%;
-                    &:read-only {
-                        outline:solid 1px $black;
-                    }
-                }
-            }
-            &-section-rooms, &-section-statuses {
-                p {
-                    font-weight: bold;
-                }
-                width:50%;
-                display:flex;
+            &--guestlist {
+                width:100%;
+                margin-left: 20px;
                 align-items: flex-start;
-                &-radios {
-                    padding : 5px;
-                    margin-left: 10px;
-                    .room-radio-item, .status-radio-item {
-                        display: flex;
-                        margin-bottom: 3px;
-                        align-items: center;
-                        input[type="radio"] {
-                            margin-right: 10px;
-                        }
+                margin-bottom: 20px;
+                .guest-patient-item {
+                    &:hover {
+                        text-decoration: underline;
                     }
                 }
             }
-            &-guests-list {
-                label {
-                    font-weight: bold;
-                    text-align: left;
+            &--guestsearch {
+                width: 100%;
+                height:200px;
+                margin: 0 auto;
+                display:grid;
+                border: solid 1px $grey;
+                padding: 10px;
+                border-radius: 4px;
+                justify-content: space-between;
+                grid-template-columns: 40% 60%;
+                align-items: flex-start;
+                .results {
+                    height:170px;
+                    overflow:scroll;
+                    border: solid 1px $grey;
+                    padding: 10px;
+                    border-radius: 4px;
+                    font-size: 0.75rem;
                 }
-                display:flex;
-                align-items: center;
-                padding: 5px 10px;
-            }
-            &-guests-search {
-                background:white;
-                // border : solid 1px $black;
-                border-radius:4px;
-                height:300px;
-                padding : 10px;
-                // margin:10px;
-                display : grid;
-                grid-template-columns: 30% 70%;
-    
                 .search-bar {
                     display: flex;
                     flex-direction: column;
-                    justify-content: space-between;
+                    justify-content: flex-start;
+                    padding:0 10px;
                     &-title {
-                        padding:5px;
-                        text-align: center;
+                        padding: 0;
+                        text-align: left;
                         font-weight: bold;
+                    }
+                    &-row {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
                     }
                     &-item {
                         display:flex;
-                        flex-direction: column;
                         align-items: flex-start;
-                        justify-content: space-between;
+                        flex-direction: column;
                         padding: 5px;
-                        // label{
-                        //     width : 80px;
-                        // }
+                        label {
+                            font-size: 0.75rem;
+                        }
                         input {
                             font-size: 0.75rem;
-                            width:100%;
                         }
                     }
                     button {
@@ -147,99 +88,76 @@
                         margin:20px auto 0;
                         width:80px;
                     }
-                }
-                .results {
-                    padding : 5px;
-                    display : block;
-                    border : solid 1px black;
-                    border-radius: 4px;
-                    margin-left : 5px;
-                    overflow:scroll;
-                    li {
-                        display:flex;
-                        justify-content: space-between;
-                        i {
-                            cursor :pointer;
-                        }
-                    }
+                }  
+            }
+            &--radio {
+                margin-right: 10px;
+                label{
+                    font-weight: normal;
+                    margin-left: 5px;
                 }
             }
-            &-invitation {
+            .guests-list{
+                padding:0;
+            }
+        }
+        &-radio {
+            p {
+                padding: 0;
+                font-weight: bold;
+            }
+            &-container {
                 display: flex;
-                justify-content: flex-end;
                 padding: 10px;
-                button {
-                    margin : 0 5px;
-                }
             }
         }
-        &-all-day {
-            display:flex;
-            justify-content: flex-start;
-            padding : 5px 10px;
-            label {
-                font-weight : bold;
-                min-width : 50px;
-            }
-            input {
-                min-width: auto
-            }
-        }
+       
     }
 }
 
 .invitation {
-    position: absolute; 
-    right:0;
-    bottom:0;
-    background: $white;
-    border-radius: 4px;
-    width: 100%;
-    padding: 15px;
-    height: 650px;
-    font-size: 0.8rem;
+    margin-top: 40px;
+    padding: 10px;
     &-edit {
         &-row {
+            border: solid 1px $grey;
+            width:100%;
+            border-radius:4px;
+            padding:10px;
+            margin-bottom: 10px;
             display: flex;
             flex-direction: column;
-            margin-bottom: 5px;
             label {
                 font-weight: bold;
-                margin-bottom: 5px;
+                margin-bottom: 10px;
+            }
+            &-radio {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                &-item {
+                    label{
+                        margin: 0;
+                        font-weight: normal;
+                    }
+                    display: flex;
+                    align-items: center;
+                    margin-right: 5px;
+                    width:20%;
+                    input[type="radio"]{
+                        margin-right: 5px;
+                    }
+                }
             }
         }
     }
     &-btn-row {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 25px;
+        border: solid 1px $grey;
+        border-radius:4px;
+        padding:10px;
         button {
-            margin : 0 5px;
+            margin-right: 5px;
         }
     }
-    textarea {
-        width: 100%;
-        margin-bottom: 10px;
-        padding: 10px;
-        text-align: justify;
-    }
-    select {
-        max-width: 200px;
-    }
-    .templates-radio{
-        display: grid;
-        grid-template-columns: 50% 50%;
-        justify-content: space-between;
-        margin-bottom: 5px;
-        &-item {
-            display: flex;
-            margin-bottom: 3px;
-            align-items: center;
-            input[type="radio"] {
-                margin-right: 10px;
-            }
-        }
-    }
+  
 }
-
-

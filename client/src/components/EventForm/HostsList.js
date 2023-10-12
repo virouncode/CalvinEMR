@@ -16,12 +16,14 @@ const HostsList = ({
       disabled={disabled}
       style={style}
     >
-      <option value="" disabled>
+      <option value="0" disabled>
         Choose a host...
       </option>
-      {staffInfos.map((staff) => (
-        <HostOption title={staff.title} staff={staff} key={staff.id} />
-      ))}
+      {staffInfos
+        .sort((a, b) => a.last_name.localeCompare(b.last_name))
+        .map((staff) => (
+          <HostOption staff={staff} key={staff.id} />
+        ))}
     </select>
   );
 };

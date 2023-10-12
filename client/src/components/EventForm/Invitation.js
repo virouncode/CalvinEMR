@@ -295,10 +295,15 @@ Powered by Calvin EMR`,
   };
 
   return (
-    <div className="invitation">
+    <form className="invitation">
       <div className="invitation-edit">
+        <TemplatesRadio
+          handleTemplateChange={handleTemplateChange}
+          templates={settings.invitation_templates}
+          templateSelected={templateSelected}
+        />
         <div className="invitation-edit-row">
-          <label>Introduction:</label>
+          <label>Introduction</label>
           <textarea
             onChange={handleIntroChange}
             value={intro}
@@ -313,11 +318,11 @@ Powered by Calvin EMR`,
                 please be sure you provided a video call link, see "My Account"
                 section
               </span>
-              ):
+              )
             </label>
           ) : (
             <label>
-              Appointment Infos (read only):
+              Appointment Infos (read only)
               {templateSelected !== "Video appointment" &&
                 templateSelected !== "Phone appointment" &&
                 templateSelected !== "[Blank]" && (
@@ -340,7 +345,7 @@ Powered by Calvin EMR`,
           />
         </div>
         <div className="invitation-edit-row">
-          <label>Message:</label>
+          <label>Message</label>
           <textarea
             onChange={handleMessageChange}
             value={message}
@@ -348,11 +353,6 @@ Powered by Calvin EMR`,
           />
         </div>
       </div>
-      <TemplatesRadio
-        handleTemplateChange={handleTemplateChange}
-        templates={settings.invitation_templates}
-        templateSelected={templateSelected}
-      />
       <div className="invitation-btn-row">
         {user.id === hostId && (
           <button onClick={handleSendAndSave}>Send & Save Template</button>
@@ -360,7 +360,7 @@ Powered by Calvin EMR`,
         <button onClick={handleSend}>Send</button>
         <button onClick={handleCancel}>Cancel</button>
       </div>
-    </div>
+    </form>
   );
 };
 

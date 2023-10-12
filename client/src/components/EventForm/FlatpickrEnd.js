@@ -1,15 +1,8 @@
-//Librairies
+import "flatpickr/dist/themes/material_blue.css";
 import React from "react";
 import Flatpickr from "react-flatpickr";
 
-const FlatpickrEnd = ({
-  fpEnd,
-  start,
-  endTime,
-  allDay,
-  fpVisible,
-  handleEndChange,
-}) => {
+const FlatpickrEnd = ({ fpEnd, start, endTime, allDay, handleEndChange }) => {
   return (
     <>
       <label>End</label>
@@ -31,10 +24,6 @@ const FlatpickrEnd = ({
             fpEnd.current.flatpickr.close();
             return;
           }
-          fpVisible.current = true;
-        }}
-        onClose={() => {
-          fpVisible.current = false;
         }}
       />
     </>

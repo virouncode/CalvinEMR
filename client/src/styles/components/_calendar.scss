@@ -2,9 +2,10 @@
 //space : .class1 .class2 apply to class 2 that is inside class 1
 //no space : .class1.class2 apply to element that has both classes
 .calendar {
+    z-index:1;
     margin: 20px auto 20px;
     width : 97%;
-    min-height : 80vh;
+    min-height : 100%;
     display: grid;
     grid-template-columns: 15% 85%;
     @media (max-width: 950px){
@@ -283,4 +284,10 @@
 }
 .dayContainer{
     min-width:100% !important;
+}
+
+.form-control  {
+    &:read-only{
+        outline:solid 1px $black;
+    }
 }

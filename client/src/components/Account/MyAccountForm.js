@@ -117,7 +117,6 @@ const MyAccountForm = () => {
       datasToPut.speciality = firstLetterUpper(datasToPut.speciality);
       datasToPut.subspeciality = firstLetterUpper(datasToPut.subspeciality);
       datasToPut.date_created = Date.now();
-      console.log("billing nbr", tempFormDatas.ohip_billing_nbr);
 
       if (
         tempFormDatas.ohip_billing_nbr.toString().length !== 6 &&
@@ -241,7 +240,7 @@ const MyAccountForm = () => {
             </div>
             <div className="myaccount-section-form-row">
               <label>Occupation*: </label>
-              {editVisible ? (
+              {/* {editVisible ? (
                 <select
                   required
                   value={tempFormDatas.title}
@@ -262,9 +261,9 @@ const MyAccountForm = () => {
                   <option value="Psychologist">Psychologist</option>
                   <option value="Other">Other</option>
                 </select>
-              ) : (
-                <p>{tempFormDatas.title}</p>
-              )}
+              ) : ( */}
+              <p>{tempFormDatas.title}</p>
+              {/* )} */}
             </div>
             <div className="myaccount-section-form-row">
               <label>Speciality: </label>

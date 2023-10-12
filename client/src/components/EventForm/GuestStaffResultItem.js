@@ -7,6 +7,7 @@ const GuestStaffResultItem = ({ guest, handleAddGuest }) => {
         {guest.full_name} ({guest.title})
       </span>
       <i
+        style={{ marginLeft: "10px", cursor: "pointer" }}
         className="fa-solid fa-user-plus"
         onClick={(e) => handleAddGuest(guest, e)}
       ></i>

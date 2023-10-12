@@ -14,28 +14,6 @@ const GuestsSearchResults = ({
 }) => {
   return (
     <ul className="results">
-      {search.chart === "" &&
-        search.health === "" &&
-        search.birth === "" &&
-        staffInfos
-          .filter(
-            (staff) =>
-              staff.full_name
-                .toLowerCase()
-                .includes(search.name.toLowerCase()) &&
-              staff.email.toLowerCase().includes(search.email.toLowerCase()) &&
-              (staff.cell_phone.includes(search.phone) ||
-                staff.backup_phone.includes(search.phone)) &&
-              !staffGuestsInfos.map(({ id }) => id).includes(staff.id) &&
-              staff.id !== hostId
-          )
-          .map((guest) => (
-            <GuestStaffResultItem
-              key={guest.id}
-              guest={guest}
-              handleAddGuest={handleAddGuest}
-            />
-          ))}
       {patientsInfos
         .filter(
           (patient) =>
@@ -58,6 +36,28 @@ const GuestsSearchResults = ({
             handleAddGuest={handleAddGuest}
           />
         ))}
+      {search.chart === "" &&
+        search.health === "" &&
+        search.birth === "" &&
+        staffInfos
+          .filter(
+            (staff) =>
+              staff.full_name
+                .toLowerCase()
+                .includes(search.name.toLowerCase()) &&
+              staff.email.toLowerCase().includes(search.email.toLowerCase()) &&
+              (staff.cell_phone.includes(search.phone) ||
+                staff.backup_phone.includes(search.phone)) &&
+              !staffGuestsInfos.map(({ id }) => id).includes(staff.id) &&
+              staff.id !== hostId
+          )
+          .map((guest) => (
+            <GuestStaffResultItem
+              key={guest.id}
+              guest={guest}
+              handleAddGuest={handleAddGuest}
+            />
+          ))}
     </ul>
   );
 };

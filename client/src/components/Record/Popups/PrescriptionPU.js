@@ -146,7 +146,6 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
         },
       }
     );
-    console.log("Hello");
     const datas = {
       patient_id: patientInfos.id,
       assigned_id: user.id,

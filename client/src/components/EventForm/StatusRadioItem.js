@@ -2,7 +2,7 @@ import React from "react";
 
 const StatusRadioItem = ({ status, handleStatusChange, isStatusSelected }) => {
   return (
-    <div className="status-radio-item">
+    <div className="event-form-row-item event-form-row-item--radio">
       <input
         type="radio"
         name="status"

@@ -263,16 +263,18 @@ const BillingTableItem = ({ billing, setBillings, setErrMsg }) => {
               billing.billing_code.specialist_fee) / 10000}{" "}
             $
           </td>
-          <td>
-            <div className="billing-table-item-btn-container">
-              {!editVisible ? (
-                <button onClick={handleEditClick}>Edit</button>
-              ) : (
-                <input type="submit" value="Save" onClick={handleSubmit} />
-              )}
-              <button onClick={handleDeleteClick}>Delete</button>
-            </div>
-          </td>
+          {user.title !== "Secretary" && (
+            <td>
+              <div className="billing-table-item-btn-container">
+                {!editVisible ? (
+                  <button onClick={handleEditClick}>Edit</button>
+                ) : (
+                  <input type="submit" value="Save" onClick={handleSubmit} />
+                )}
+                <button onClick={handleDeleteClick}>Delete</button>
+              </div>
+            </td>
+          )}
         </tr>
         {hinSearchVisible && (
           <FakeWindow

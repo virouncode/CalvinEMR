@@ -6,17 +6,16 @@ import { getAvailableRooms } from "../../api/getAvailableRooms";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { useEvents } from "../../hooks/useEvents";
-import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import { getWeekRange } from "../../utils/formatDates";
 import { rooms } from "../../utils/rooms";
 import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
+import EventForm from "../EventForm/EventForm";
+import FakeWindow from "../Presentation/FakeWindow";
 import Availability from "./Availability";
 import CalendarFilter from "./CalendarFilter";
 import CalendarView from "./CalendarView";
 import FirstDaySelect from "./FirstDaySelect";
-import OutsideWrapper from "./OutsideWrapper";
-import ScrollerWrapper from "./ScrollerWrapper";
 import Shortcutpickr from "./Shortcutpickr";
 import SlotSelect from "./SlotSelect";
 import TimelineView from "./TimelineView";
@@ -28,12 +27,7 @@ const Calendar = ({ timelineVisible }) => {
   const { clinic, auth, user } = useAuth();
   const [hostsIds, setHostsIds] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
-  const [formTop, setFormTop] = useState(0);
-  const [formLeft, setFormLeft] = useState(0);
-  const [formClass, setFormClass] = useState("");
   const fcRef = useRef(null); //fullcalendar
-  const fpVisible = useRef(false); //flatpicker
-  const formStateRef = useRef(null);
   const currentEvent = useRef(null);
   const currentEventElt = useRef(null);
   const currentView = useRef(null);
@@ -54,6 +48,7 @@ const Calendar = ({ timelineVisible }) => {
     isSecretary(),
     user.id
   );
+  const [formColor, setFormColor] = useState("#41A7F5");
 
   useEffect(() => {
     if (lastCurrentId.current) {
@@ -123,6 +118,7 @@ const Calendar = ({ timelineVisible }) => {
 
   //====================== EVENTS HANDLERS ==========================//
   const handleDeleteEvent = async (e) => {
+    if (formVisible) return;
     if (
       await confirmAlert({
         content: "Do you really want to remove this event ?",
@@ -234,12 +230,13 @@ const Calendar = ({ timelineVisible }) => {
                     className="calendar-event-patient-link"
                     to={`/patient-record/${patient.patients_id}`}
                     target="_blank"
+                    key={patient.patients_id}
                   >
                     {patient.patient_name.full_name.toUpperCase()},{" "}
                   </NavLink>
                 ))}
                 {staffGuestsIds.map((staff) => (
-                  <span>
+                  <span key={staff.staff_id}>
                     {staffIdToTitleAndName(
                       clinic.staffInfos,
                       staff.staff_id,
@@ -303,7 +300,7 @@ const Calendar = ({ timelineVisible }) => {
                   </NavLink>
                 ))}
                 {staffGuestsIds.map((staff) => (
-                  <span>
+                  <span key={staff.staff_id}>
                     <strong>
                       {staffIdToTitleAndName(
                         clinic.staffInfos,
@@ -363,6 +360,7 @@ const Calendar = ({ timelineVisible }) => {
                     className="calendar-event-patient-link"
                     to={`/patient-record/${patient.patients_id}`}
                     target="_blank"
+                    key={patient.patients_id}
                   >
                     <strong>
                       {patient.patient_name.full_name.toUpperCase()}
@@ -371,7 +369,7 @@ const Calendar = ({ timelineVisible }) => {
                   </NavLink>
                 ))}
                 {staffGuestsIds.map((staff) => (
-                  <span>
+                  <span key={staff.staff_id}>
                     <strong>
                       {staffIdToTitleAndName(
                         clinic.staffInfos,
@@ -417,6 +415,7 @@ const Calendar = ({ timelineVisible }) => {
 
   //DATE SELECT
   const handleDateSelect = async (info) => {
+    console.log(info.jsEvent.type);
     if (currentEventElt.current) currentEventElt.current.style.opacity = 0.65;
     const startDate = Date.parse(info.startStr);
     const endDate = Date.parse(info.endStr);
@@ -742,10 +741,12 @@ const Calendar = ({ timelineVisible }) => {
   };
 
   const handleEventClick = async (info) => {
+    if (formVisible) return;
     const eventElt = info.el;
     const event = info.event;
     const view = info.view;
     if (currentEvent.current && currentEvent.current.id !== event.id) {
+      //event selection change
       //change opacity and unselect previous event
       currentEventElt.current.style.opacity = 0.65;
       //Change current event, current event element and current view
@@ -762,129 +763,29 @@ const Calendar = ({ timelineVisible }) => {
       currentView.current = view;
       eventElt.style.opacity = "1";
     } else {
-      if (!formVisible) {
-        currentEvent.current = event;
-        lastCurrentId.current = event.id;
-        currentEventElt.current = eventElt;
-        currentView.current = view;
-        eventElt.style.opacity = "1";
-        const eventPosition = eventElt.getBoundingClientRect();
-        const eventWidth = eventElt.offsetWidth;
-        const eventHeight = eventElt.offsetHeight;
-        const eventPositionMiddleY = eventPosition.top + eventHeight / 2;
-        placeForm(
-          view,
-          eventPosition,
-          eventPositionMiddleY,
-          eventWidth,
-          eventHeight,
-          event.allDay
-        );
-        setFormVisible(true);
-        setCalendarSelectable(false);
-      } else {
-        setFormVisible(false);
-        setCalendarSelectable(true);
-        putForm();
-      }
+      //click on already selected event
+      currentEvent.current = event;
+      lastCurrentId.current = event.id;
+      currentEventElt.current = eventElt;
+      currentView.current = view;
+      eventElt.style.opacity = "1";
+      setFormColor(event.backgroundColor);
+      setFormVisible(true);
+      setCalendarSelectable(false);
     }
   };
+
   const handleShortcutpickrChange = (selectedDates, dateStr) => {
     fcRef.current.calendar.gotoDate(dateStr);
   };
 
   //======================== FUNCTIONS ===================//
-  const placeForm = (
-    view,
-    eventPosition,
-    eventPositionMiddleY,
-    eventWidth,
-    eventHeight,
-    allDay
-  ) => {
-    //Lateral
-    let arrowSide = "";
-
-    if (
-      view.type === "timeGridWeek" ||
-      view.type === "dayGridMonth" ||
-      view.type === "multiMonthYear" ||
-      view.type === "resourceTimeGridDay"
-    ) {
-      if (eventPosition.right + 450 <= window.innerWidth) {
-        //450 is form width
-        setFormLeft(eventPosition.right + 2);
-        arrowSide = "left";
-      } else {
-        setFormLeft(eventPosition.right - 450 - eventWidth - 3);
-        arrowSide = "right";
-      }
-    } else if (view.type === "timeGrid" || view.type === "listWeek") {
-      setFormLeft(eventPosition.right - eventWidth / 2);
-      arrowSide = "left";
-    }
-    //Vertical
-    if (eventPositionMiddleY + 350 >= window.innerHeight) {
-      //depasse en bas
-      //325 is form height/2
-      setFormTop(eventPosition.top + window.scrollY - 650 + eventHeight);
-      setFormClass(`event-form event-form--${arrowSide}bottom`);
-    } else if (eventPositionMiddleY - 350 <= 60) {
-      setFormTop(eventPosition.top + window.scrollY);
-      setFormClass(`event-form event-form--${arrowSide}top`);
-    } else {
-      setFormTop(eventPosition.top + window.scrollY - 350 + eventHeight / 2);
-      setFormClass(`event-form event-form--${arrowSide}center`);
-    }
-  };
-  // };
-
-  const putForm = async () => {
-    const { formDatas, tempFormDatas } = formStateRef.current.getFormState();
-    if (_.isEqual(tempFormDatas, formDatas)) return;
-
-    const startAllDay = new Date(tempFormDatas.start).setHours(0, 0, 0, 0);
-    let endAllDay = new Date(startAllDay);
-    endAllDay = endAllDay.setDate(endAllDay.getDate() + 1);
-
-    const datas = {
-      host_id: tempFormDatas.host_id,
-      start: tempFormDatas.all_day ? startAllDay : tempFormDatas.start,
-      end: tempFormDatas.all_day ? endAllDay : tempFormDatas.end,
-      duration: tempFormDatas.duration,
-      all_day: tempFormDatas.all_day,
-      staff_guests: tempFormDatas.staff_guests,
-      patients_guests: tempFormDatas.patients_guests,
-      status: tempFormDatas.status,
-      reason: firstLetterUpper(tempFormDatas.reason),
-      room: tempFormDatas.room,
-      created_by_id: user.id,
-      date_created: Date.now(),
-    };
-    try {
-      await axiosXano.put(`/appointments/${currentEvent.current.id}`, datas, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
-      setHostsIds([...hostsIds, tempFormDatas.host_id]);
-      const abortController = new AbortController();
-      fetchEvents(abortController);
-    } catch (err) {
-      if (err.name !== "CanceledError")
-        toast.error(`Error: unable to save appointment: ${err.message}`, {
-          containerId: "A",
-        });
-    }
-  };
-
   const setCalendarSelectable = (selectable) => {
     fcRef.current.calendar.currentData.options.selectable = selectable;
   };
 
   return events && clinic.staffInfos ? (
-    <main className="calendar">
+    <div className="calendar">
       <section className="calendar-left-bar">
         <Shortcutpickr handleShortcutpickrChange={handleShortcutpickrChange} />
         <div className="calendar-left-bar-options">
@@ -935,69 +836,32 @@ const Calendar = ({ timelineVisible }) => {
           />
         )}
         {formVisible && (
-          <OutsideWrapper
-            eventElement={currentEventElt}
-            setFormVisible={setFormVisible}
-            fpVisible={fpVisible}
-            putForm={putForm}
-            setCalendarSelectable={setCalendarSelectable}
-            //put a ref on the modal
+          <FakeWindow
+            title={`APPOINTMENT DETAILS`}
+            width={900}
+            height={window.innerHeight}
+            x={(window.innerWidth - 900) / 2}
+            y={0}
+            color={formColor}
+            setPopUpVisible={setFormVisible}
+            closeCross={false}
           >
-            <ScrollerWrapper
-              formClass={formClass}
-              scrollGrid={
-                currentView.current.type !== "multiMonthYear"
-                  ? currentView.current.type !== "listWeek"
-                    ? Array.from(
-                        document.getElementsByClassName(
-                          "fc-scroller fc-scroller-liquid-absolute"
-                        )
-                      )[0]
-                    : document.getElementsByClassName(
-                        "fc-scroller fc-scroller-liquid"
-                      )[0]
-                  : Array.from(
-                      document.getElementsByClassName(
-                        "fc-multiMonthYear-view fc-view fc-multimonth fc-multimonth-singlecol"
-                      )
-                    )[0]
-              }
-              initialScrollTop={
-                currentView.current.type !== "multiMonthYear"
-                  ? currentView.current.type !== "listWeek"
-                    ? Array.from(
-                        document.getElementsByClassName(
-                          "fc-scroller fc-scroller-liquid-absolute"
-                        )
-                      )[0].scrollTop
-                    : Array.from(
-                        document.getElementsByClassName(
-                          "fc-scroller fc-scroller-liquid"
-                        )
-                      )[0].scrollTop
-                  : Array.from(
-                      document.getElementsByClassName(
-                        "fc-multiMonthYear-view fc-view fc-multimonth fc-multimonth-singlecol"
-                      )
-                    )[0].scrollTop
-              }
-              top={formTop}
-              left={formLeft}
-              borderColor={currentEvent.current.borderColor}
+            <EventForm
               staffInfos={clinic.staffInfos}
               patientsInfos={clinic.patientsInfos}
               currentEvent={currentEvent}
-              fpVisible={fpVisible}
-              remainingStaff={remainingStaff}
-              passingFormRef={formStateRef}
               setFormVisible={setFormVisible}
-              putForm={putForm}
+              remainingStaff={remainingStaff}
+              setFormColor={setFormColor}
               setCalendarSelectable={setCalendarSelectable}
+              hostsIds={hostsIds}
+              setHostsIds={setHostsIds}
+              fetchEvents={fetchEvents}
             />
-          </OutsideWrapper>
+          </FakeWindow>
         )}
       </section>
-    </main>
+    </div>
   ) : (
     <div
       style={{

@@ -119,8 +119,8 @@ const EditGuests = ({
   };
 
   return (
-    <div style={{ width: "100%" }}>
-      <div className="form-row-guests-list">
+    <>
+      <div className="event-form-row-item event-form-row-item--guestlist">
         <label>Patients/Guests: </label>
         <GuestsList
           patientsGuestsInfos={patientsGuestsInfos}
@@ -129,7 +129,7 @@ const EditGuests = ({
         />
       </div>
       {editable && (
-        <div className="form-row-guests-search">
+        <div className="event-form-row-item event-form-row-item--guestsearch">
           <GuestsSearch
             handleAddGuest={handleAddGuest}
             patientsInfos={patientsInfos}
@@ -140,7 +140,7 @@ const EditGuests = ({
           />
         </div>
       )}
-    </div>
+    </>
   );
 };
 
