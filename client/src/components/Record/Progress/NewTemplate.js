@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import AlertMsg from "../../Alert/AlertMsg";
-import ConfirmGlobal from "../../Confirm/ConfirmGlobal";
 import CopyTemplatesList from "./CopyTemplatesList";
 
 const NewTemplate = ({
@@ -17,24 +15,10 @@ const NewTemplate = ({
   const { auth, user } = useAuth();
   const [copyTemplateSelectedId, setCopyTemplateSelectedId] = useState("");
   const [newTemplate, setNewTemplate] = useState({ name: "", body: "" });
-  const [alertVisible, setAlertVisible] = useState(false);
-
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
+  const [errMsg, setErrMsg] = useState("");
 
   const handleSelectCopyTemplate = (e) => {
-    setAlertVisible(false);
+    setErrMsg("");
     const value = parseInt(e.target.value);
     setCopyTemplateSelectedId(value);
     setNewTemplate({
@@ -43,21 +27,21 @@ const NewTemplate = ({
     });
   };
   const handleChange = (e) => {
-    setAlertVisible(false);
+    setErrMsg("");
     const value = e.target.value;
     const name = e.target.name;
     setNewTemplate({ ...newTemplate, [name]: value });
   };
 
   const handleCancel = () => {
-    setAlertVisible(false);
+    setErrMsg("");
     setNewTemplateVisible(false);
+    setTemplateSelectedId("");
   };
 
   const handleSave = async () => {
-    //save template
     if (!newTemplate.name) {
-      setAlertVisible(true);
+      setErrMsg("Please enter a name for your template");
       return;
     }
     const templateToSave = { ...newTemplate };
@@ -89,7 +73,7 @@ const NewTemplate = ({
       setFormDatas({ ...formDatas, body: newTemplate.body });
       setTemplateSelectedId(response.data.id);
       setNewTemplateVisible(false);
-      toast.success("Saved succesfully", { containerId: "B" });
+      toast.success("Template saved succesfully", { containerId: "B" });
     } catch (err) {
       toast.error(`Error: unable to save template: ${err.message}`, {
         containerId: "B",
@@ -98,15 +82,7 @@ const NewTemplate = ({
   };
   return (
     <div className="new-template">
-      {alertVisible && (
-        <AlertMsg
-          severity="error"
-          title="Error"
-          msg="Please enter a name for this new template"
-          open={alertVisible}
-          setOpen={setAlertVisible}
-        />
-      )}
+      {errMsg && <p className="new-template-err">{errMsg}</p>}
       <div className="new-template-title">
         Please write a new template or copy{" "}
         <CopyTemplatesList
@@ -135,7 +111,6 @@ const NewTemplate = ({
         <button onClick={handleSave}>Save</button>
         <button onClick={handleCancel}>Cancel</button>
       </div>
-      <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

@@ -21,20 +21,6 @@ const EditTemplate = ({
     name: "",
   });
 
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "200vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
-
   const handleSelectEditTemplate = (e) => {
     const value = parseInt(e.target.value);
     setEditTemplateSelectedId(value);
@@ -52,6 +38,7 @@ const EditTemplate = ({
 
   const handleCancel = () => {
     setEditTemplateVisible(false);
+    setTemplateSelectedId("");
   };
 
   const handleDelete = async () => {
@@ -163,7 +150,7 @@ const EditTemplate = ({
         </button>
         <button onClick={handleCancel}>Cancel</button>
       </div>
-      <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmGlobal />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

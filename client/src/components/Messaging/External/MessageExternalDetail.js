@@ -11,6 +11,7 @@ import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import FakeWindow from "../../Presentation/FakeWindow";
 import MessagesAttachments from "../MessagesAttachments";
 import ForwardMessageExternal from "./ForwardMessageExternal";
 import MessageExternal from "./MessageExternal";
@@ -348,20 +349,14 @@ const MessageExternalDetail = ({
         </div>
       )}
       {forwardVisible && (
-        <NewWindow
-          title="Forward Discussion"
-          features={{
-            toolbar: "no",
-            scrollbars: "no",
-            menubar: "no",
-            status: "no",
-            directories: "no",
-            width: 1000,
-            height: 500,
-            left: 0,
-            top: 0,
-          }}
-          onUnload={() => setForwardVisible(false)}
+        <FakeWindow
+          title="FORWARD MESSAGE"
+          width={1000}
+          height={600}
+          x={(window.innerWidth - 1000) / 2}
+          y={(window.innerHeight - 600) / 2}
+          color={"#94bae8"}
+          setPopUpVisible={setForwardVisible}
         >
           <ForwardMessageExternal
             setForwardVisible={setForwardVisible}
@@ -370,7 +365,7 @@ const MessageExternalDetail = ({
             message={message}
             previousMsgs={previousMsgs}
           />
-        </NewWindow>
+        </FakeWindow>
       )}
     </>
   );

@@ -441,6 +441,7 @@
     align-items: flex-start;
     justify-content: space-between;
     padding: 0 5px;
+    margin-top: 30px;
     &-contacts {
         width:24%;
         border: solid 0.3px grey;
@@ -604,6 +605,7 @@
     align-items: flex-start;
     justify-content: space-between;
     padding: 0 5px;
+    margin-top: 30px;
     &-contacts {
         width:20%;
         border: solid 0.3px grey;
@@ -690,6 +692,18 @@
 }
 
 .new-template, .edit-template {
+    &-err {
+        padding : 10px 20px;
+        font-size: 0.9rem;
+        width : 100%;
+        margin:0 auto;
+        color : red;
+        background-color:rgba(255, 0, 0, 0.403);
+        border-radius: 4px;
+        text-align: center;
+        margin:0 auto 20px;
+    }
+    margin-top: 30px;
     padding : 20px;
     display: flex;
     flex-direction: column;

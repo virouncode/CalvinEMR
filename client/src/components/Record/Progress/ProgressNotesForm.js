@@ -1,12 +1,12 @@
 import { CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import NewWindow from "react-new-window";
 import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import formatName from "../../../utils/formatName";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
+import FakeWindow from "../../Presentation/FakeWindow";
 import EditTemplate from "./EditTemplate";
 import NewTemplate from "./NewTemplate";
 import ProgressNotesAttachments from "./ProgressNotesAttachments";
@@ -180,6 +180,7 @@ const ProgressNotesForm = ({
     } else if (value === -2) {
       if (!templates.filter(({ author_id }) => author_id === user.id).length) {
         alert("You don't have any templates");
+        setTemplateSelectedId("");
         return;
       }
       setEditTemplateVisible(true);
@@ -187,92 +188,93 @@ const ProgressNotesForm = ({
   };
 
   return (
-    <form className="progress-notes-form" onSubmit={handleSubmit}>
-      <div className="progress-notes-form-header">
-        <div className="progress-notes-form-row--author">
-          <p>
-            <strong>From: </strong>
-            {user.title === "Doctor" ? "Dr. " : ""} {formatName(user.name)}
-          </p>
-          <div className="progress-notes-form-row-template">
-            <label>
-              <strong>Use template: </strong>
-            </label>
-            <ProgressNotesTemplatesList
-              templates={templates}
-              templateSelectedId={templateSelectedId}
-              handleSelectTemplate={handleSelectTemplate}
-            />
+    <>
+      <form className="progress-notes-form" onSubmit={handleSubmit}>
+        <div className="progress-notes-form-header">
+          <div className="progress-notes-form-row--author">
+            <p>
+              <strong>From: </strong>
+              {user.title === "Doctor" ? "Dr. " : ""} {formatName(user.name)}
+            </p>
+            <div className="progress-notes-form-row-template">
+              <label>
+                <strong>Use template: </strong>
+              </label>
+              <ProgressNotesTemplatesList
+                templates={templates}
+                templateSelectedId={templateSelectedId}
+                handleSelectTemplate={handleSelectTemplate}
+              />
+            </div>
+          </div>
+          <div className="progress-notes-form-row">
+            <div>
+              {" "}
+              <label>
+                <strong>Subject: </strong>
+              </label>
+              <input
+                type="text"
+                name="object"
+                onChange={handleChange}
+                value={formDatas.object}
+                autoComplete="off"
+              />
+            </div>
+            <div>
+              <label>
+                <strong>Attach files: </strong>
+              </label>
+              <i
+                className="fa-solid fa-paperclip"
+                style={{ cursor: "pointer" }}
+                onClick={handleAttach}
+              ></i>
+            </div>
           </div>
         </div>
-        <div className="progress-notes-form-row">
-          <div>
-            {" "}
-            <label>
-              <strong>Subject: </strong>
-            </label>
-            <input
-              type="text"
-              name="object"
-              onChange={handleChange}
-              value={formDatas.object}
-              autoComplete="off"
-            />
-          </div>
-          <div>
-            <label>
-              <strong>Attach files: </strong>
-            </label>
-            <i
-              className="fa-solid fa-paperclip"
-              style={{ cursor: "pointer" }}
-              onClick={handleAttach}
-            ></i>
-          </div>
+        <div className="progress-notes-form-area">
+          <textarea
+            name="body"
+            onChange={handleChange}
+            value={formDatas.body}
+          />
+          <ProgressNotesAttachments
+            attachments={attachments}
+            handleRemoveAttachment={handleRemoveAttachment}
+            deletable={true}
+            addable={false}
+          />
         </div>
-      </div>
-      <div className="progress-notes-form-area">
-        <textarea name="body" onChange={handleChange} value={formDatas.body} />
-        <ProgressNotesAttachments
-          attachments={attachments}
-          handleRemoveAttachment={handleRemoveAttachment}
-          deletable={true}
-          addable={false}
-        />
-      </div>
-      <div className="progress-notes-form-submit">
-        <input
-          className="progress-notes-form-submit-btn"
-          type="submit"
-          value="Save & Sign"
-          disabled={isLoadingFile}
-        />
-        <button
-          type="button"
-          className="progress-notes-form-submit-btn"
-          onClick={handleCancelClick}
-        >
-          Cancel
-        </button>
-        {isLoadingFile && (
-          <CircularProgress size="1rem" style={{ margin: "5px" }} />
-        )}
-      </div>
+        <div className="progress-notes-form-submit">
+          <input
+            className="progress-notes-form-submit-btn"
+            type="submit"
+            value="Save & Sign"
+            disabled={isLoadingFile}
+          />
+          <button
+            type="button"
+            className="progress-notes-form-submit-btn"
+            onClick={handleCancelClick}
+          >
+            Cancel
+          </button>
+          {isLoadingFile && (
+            <CircularProgress size="1rem" style={{ margin: "5px" }} />
+          )}
+        </div>
+      </form>
       {newTemplateVisible && (
-        <NewWindow
-          title="New Template"
-          features={{
-            toolbar: "no",
-            scrollbars: "no",
-            menubar: "no",
-            status: "no",
-            directories: "no",
-            width: 1000,
-            height: 500,
-            left: 0,
-            top: 0,
-          }}
-          onUnload={() => setNewTemplateVisible(false)}
+        <FakeWindow
+          title="NEW TEMPLATE"
+          width={1000}
+          height={500}
+          x={(window.innerWidth - 1000) / 2}
+          y={(window.innerHeight - 500) / 2}
+          color={"#94bae8"}
+          setPopUpVisible={setNewTemplateVisible}
+          closeCross={false}
         >
           <NewTemplate
             setNewTemplateVisible={setNewTemplateVisible}
@@ -282,23 +284,17 @@ const ProgressNotesForm = ({
             setFormDatas={setFormDatas}
             formDatas={formDatas}
           />
-        </NewWindow>
+        </FakeWindow>
       )}
       {editTemplateVisible && (
-        <NewWindow
-          title="Edit A Template"
-          features={{
-            toolbar: "no",
-            scrollbars: "no",
-            menubar: "no",
-            status: "no",
-            directories: "no",
-            width: 1000,
-            height: 500,
-            left: 0,
-            top: 0,
-          }}
-          onUnload={() => setEditTemplateVisible(false)}
+        <FakeWindow
+          title="EDIT TEMPLATE"
+          width={1000}
+          height={500}
+          x={(window.innerWidth - 1000) / 2}
+          y={(window.innerHeight - 500) / 2}
+          color={"#94bae8"}
+          setPopUpVisible={setEditTemplateVisible}
         >
           <EditTemplate
             setEditTemplateVisible={setEditTemplateVisible}
@@ -310,9 +306,9 @@ const ProgressNotesForm = ({
             setFormDatas={setFormDatas}
             formDatas={formDatas}
           />
-        </NewWindow>
-      )}
-    </form>
+        </FakeWindow>
+      )}{" "}
+    </>
   );
 };
 

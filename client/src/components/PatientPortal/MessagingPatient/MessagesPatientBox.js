@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import React from "react";
-import NewWindow from "react-new-window";
+import FakeWindow from "../../Presentation/FakeWindow";
 import MessagePatientDetail from "./MessagePatientDetail";
 import MessagesPatientOverview from "./MessagesPatientOverview";
 import NewMessagePatient from "./NewMessagePatient";
@@ -65,27 +65,21 @@ const MessagesPatientBox = ({
         )}
       </div>
       {newVisible && (
-        <NewWindow
-          title="New Message"
-          features={{
-            toolbar: "no",
-            scrollbars: "no",
-            menubar: "no",
-            status: "no",
-            directories: "no",
-            width: 1000,
-            height: 500,
-            left: 0,
-            top: 0,
-          }}
-          onUnload={() => setNewVisible(false)}
+        <FakeWindow
+          title="NEW MESSAGE"
+          width={1000}
+          height={600}
+          x={(window.innerWidth - 1000) / 2}
+          y={(window.innerHeight - 600) / 2}
+          color={"#94bae8"}
+          setPopUpVisible={setNewVisible}
         >
           <NewMessagePatient
             setNewVisible={setNewVisible}
             setMessages={setMessages}
             section={section}
           />
-        </NewWindow>
+        </FakeWindow>
       )}
     </>
   );

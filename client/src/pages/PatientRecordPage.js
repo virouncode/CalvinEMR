@@ -15,10 +15,10 @@ const PatientRecordPage = () => {
           Patient: {patientIdToName(clinic.patientsInfos, parseInt(params.id))}
         </title>
       </Helmet>
-      <setion className="patient-record-section">
+      <section className="patient-record-section">
         <h2 className="patient-record-section-title">Patient Medical Record</h2>
         <PatientRecord />
-      </setion>
+      </section>
     </>
   );
 };

@@ -18,6 +18,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  p {
+    margin: 0;
+  }
   &-close {
     cursor:pointer;
   }
