@@ -8,12 +8,12 @@ const ToggleView = ({ timelineVisible, setTimelineVisible }) => {
     setTimelineVisible(true);
   };
   return (
-    <div className="toggle-view">
+    <div className="calendar-section__toggle-view">
       <p
         className={
           timelineVisible
-            ? "toggle-view-option"
-            : "toggle-view-option toggle-view-option--active"
+            ? "calendar-section__option"
+            : "calendar-section__option calendar-section__option--active"
         }
         onClick={handleClickCalendar}
       >
@@ -22,8 +22,8 @@ const ToggleView = ({ timelineVisible, setTimelineVisible }) => {
       <p
         className={
           timelineVisible
-            ? "toggle-view-option toggle-view-option--active"
-            : "toggle-view-option"
+            ? "calendar-section__option calendar-section__option--active"
+            : "calendar-section__option"
         }
         onClick={handleClickRooms}
       >

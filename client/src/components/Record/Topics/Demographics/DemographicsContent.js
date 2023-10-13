@@ -11,8 +11,8 @@ const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 const DemographicsContent = ({ patientInfos }) => {
   const { clinic } = useAuth();
   return patientInfos ? (
-    <div className="patient-demo-content">
-      <div className="patient-demo-content-infos">
+    <div className="topic-content">
+      <div className="topic-content__infos">
         <p>
           <label>First Name: </label>
           {patientInfos.first_name}
@@ -126,7 +126,7 @@ const DemographicsContent = ({ patientInfos }) => {
           {patientInfos.assigned_nutri_name?.full_name}
         </p>
       </div>
-      <div className="patient-demo-content-avatar">
+      <div className="topic-content__avatar">
         {patientInfos.avatar ? (
           <img
             src={`${BASE_URL}${patientInfos.avatar.path}`}

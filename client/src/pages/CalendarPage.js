@@ -12,7 +12,7 @@ const CalendarPage = () => {
         <title>Calendar</title>
       </Helmet>
       <section className="calendar-section">
-        <h2 className="calendar-section-title">Calendar</h2>
+        <h2 className="calendar-section__title">Calendar</h2>
         <ToggleView
           setTimelineVisible={setTimelineVisible}
           timelineVisible={timelineVisible}

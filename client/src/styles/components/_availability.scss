@@ -1,11 +1,15 @@
-.availability {
-    padding: 5px;
-    label {
-        font-size: 0.8rem;
-        font-weight: bold;
-        margin-right: 5px;
+.calendar {
+    &__availability {
+        padding: 5px;
+        label {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 5px;
+        }
     }
-    &-err {
+}
+.availability {
+    &__err {
         padding : 10px 20px;
         font-size: 0.9rem;
         width : 50%;
@@ -15,7 +19,7 @@
         border-radius: 4px;
         text-align: center;
     }
-    &-heads{
+    &__heads{
         margin : 10px auto;
         display: flex;
         justify-content: space-between;
@@ -27,7 +31,7 @@
             text-align: center;
         }
     }
-    &-form {
+    &__form {
         font-size: 0.9rem;
         width: 95%;
         margin: 20px auto 0;
@@ -37,48 +41,50 @@
         p {
             padding: 0;
         }
-        &-row {
+    }
+    &__row {
             display: grid;
             grid-template-columns: 15% 35% 35% 15%;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 5px;
-            &-day {
-                font-weight: bold;
-            }
-            &-time {
-                margin-right: 15px;
-                margin-left: 15px;
-                display: flex;
-                justify-content:space-between;
-                align-items: center;
-            }
-            &-checkbox {
-                input[type="checkbox"]{
-                    margin-right: 5px;
-                }
-                display: flex;
-                align-items: center;
-                justify-content: flex-end;
-            }
+    }
+    &__column {
+        &--day {
+            font-weight: bold;
         }
-        &-btn {
-            text-align: center;
-            margin-top: 10px;
-            button {
-                margin-left: 10px;
-            }
+        &--time {
+            margin-right: 15px;
+            margin-left: 15px;
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
         }
-        &-duration {
+        &--checkbox {
+            input[type="checkbox"]{
+                margin-right: 5px;
+            }
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            width:100%;
-            margin-top: 20px;
-            label {
-                font-weight: bold;
-                margin-right: 10px;
-            }
+            justify-content: flex-end;
+        }
+    }
+    &__duration {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width:100%;
+        margin-top: 20px;
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    }
+    &__btns {
+        text-align: center;
+        margin-top: 10px;
+        button {
+            margin-left: 10px;
         }
     }
 }

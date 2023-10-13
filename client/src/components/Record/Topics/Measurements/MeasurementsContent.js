@@ -14,9 +14,9 @@ const MeasurementsContent = ({ datas, isLoading, errMsg }) => {
 
   return !isLoading ? (
     errMsg ? (
-      <p className="patient-measurements-content-err">{errMsg}</p>
+      <p className="topic-content__err">{errMsg}</p>
     ) : (
-      <div className="patient-measurements-content">
+      <div className="topic-content">
         {datas && datas.length >= 1 && lastMeasurement ? (
           <>
             <p>

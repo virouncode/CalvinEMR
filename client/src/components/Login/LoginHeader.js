@@ -3,9 +3,9 @@ import React from "react";
 const LoginHeader = () => {
   return (
     <header>
-      <div className="login-header">
-        <div className="logo"></div>
-        <h1>Electronic Medical Records</h1>
+      <div className="header header--login">
+        <div className="header__logo"></div>
+        <h1 className="header__title">Electronic Medical Records</h1>
       </div>
     </header>
   );

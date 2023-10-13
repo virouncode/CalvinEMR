@@ -7,7 +7,7 @@ const ProgressNotesPU = ({ patientInfos, progressNotes, checkedNotes }) => {
     e.nativeEvent.view.print();
   };
   return (
-    <div className="progress-notes-print-page">
+    <div className="progress-notes__print-page">
       <p
         style={{
           fontSize: "0.85rem",
@@ -35,7 +35,7 @@ const ProgressNotesPU = ({ patientInfos, progressNotes, checkedNotes }) => {
           type="button"
           onClick={handlePrint}
           style={{ width: "100px" }}
-          className="progress-notes-print-page-btn"
+          className="progress-notes__print-page-btn"
         >
           Print
         </button>

@@ -4,9 +4,9 @@ import React from "react";
 const FamilyDoctorsContent = ({ datas, isLoading, errMsg }) => {
   return !isLoading ? (
     errMsg ? (
-      <p className="patient-doctors-content-err">{errMsg}</p>
+      <p className="topic-content__err">{errMsg}</p>
     ) : (
-      <div className="patient-doctors-content">
+      <div className="topic-content">
         {datas && datas.length >= 1 ? (
           <ul>
             {datas

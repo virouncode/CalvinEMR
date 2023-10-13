@@ -296,13 +296,15 @@ Powered by Calvin EMR`,
 
   return (
     <form className="invitation">
-      <div className="invitation-edit">
-        <TemplatesRadio
-          handleTemplateChange={handleTemplateChange}
-          templates={settings.invitation_templates}
-          templateSelected={templateSelected}
-        />
-        <div className="invitation-edit-row">
+      <div className="invitation__edit">
+        <div className="invitation__row">
+          <TemplatesRadio
+            handleTemplateChange={handleTemplateChange}
+            templates={settings.invitation_templates}
+            templateSelected={templateSelected}
+          />
+        </div>
+        <div className="invitation__row">
           <label>Introduction</label>
           <textarea
             onChange={handleIntroChange}
@@ -310,7 +312,7 @@ Powered by Calvin EMR`,
             style={{ height: "60px" }}
           />
         </div>
-        <div className="invitation-edit-row">
+        <div className="invitation__row">
           {templateSelected === "Video appointment" ? (
             <label>
               Appointment Infos (read only,{" "}
@@ -344,7 +346,7 @@ Powered by Calvin EMR`,
             style={{ height: "130px" }}
           />
         </div>
-        <div className="invitation-edit-row">
+        <div className="invitation__row">
           <label>Message</label>
           <textarea
             onChange={handleMessageChange}
@@ -353,7 +355,7 @@ Powered by Calvin EMR`,
           />
         </div>
       </div>
-      <div className="invitation-btn-row">
+      <div className="invitation__btns">
         {user.id === hostId && (
           <button onClick={handleSendAndSave}>Send & Save Template</button>
         )}

@@ -9,9 +9,9 @@ const StatusesRadio = ({
 }) => {
   const isStatusSelected = (status) => selectedStatus === status;
   return (
-    <div className="event-form-row-radio">
+    <>
       {label && <p>Status</p>}
-      <div className="event-form-row-radio-container">
+      <div className="event-form__radio-container">
         {statuses.map((status) => (
           <StatusRadioItem
             key={status}
@@ -21,7 +21,7 @@ const StatusesRadio = ({
           />
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

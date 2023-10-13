@@ -3,7 +3,7 @@ import PatientTopic from "./PatientTopic";
 
 const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
   return (
-    <section className="patient-menu-right">
+    <div className="patient-record__menu">
       <PatientTopic
         url="/social_history"
         textColor="#FEFEFE"
@@ -99,7 +99,7 @@ const PatientMenuRight = ({ patientId, allContentsVisible, patientInfos }) => {
         allContentsVisible={allContentsVisible}
         side="right"
       />
-    </section>
+    </div>
   );
 };
 export default PatientMenuRight;

@@ -404,8 +404,8 @@ const EventForm = ({
         }
         onSubmit={handleSubmit}
       >
-        <div className="event-form-row">
-          <div className="event-form-row-item">
+        <div className="event-form__row">
+          <div className="event-form__item">
             <label>Host </label>
             {isSecretary() ? (
               <HostsList
@@ -422,7 +422,7 @@ const EventForm = ({
               </p>
             )}
           </div>
-          <div className="event-form-row-item">
+          <div className="event-form__item">
             <label htmlFor="reason">Reason</label>
             <input
               type="text"
@@ -434,8 +434,8 @@ const EventForm = ({
             />
           </div>
         </div>
-        <div className="event-form-row">
-          <div className="event-form-row-item">
+        <div className="event-form__row">
+          <div className="event-form__item">
             <FlatpickrStart
               fpStart={fpStart}
               startTime={tempFormDatas.start}
@@ -443,7 +443,7 @@ const EventForm = ({
               allDay={tempFormDatas.all_day}
             />
           </div>
-          <div className="event-form-row-item">
+          <div className="event-form__item">
             <FlatpickrEnd
               fpEnd={fpEnd}
               start={currentEvent.current.start}
@@ -452,7 +452,7 @@ const EventForm = ({
               handleEndChange={handleEndChange}
             />
           </div>
-          <div className="event-form-row-item">
+          <div className="event-form__item">
             <DurationPicker
               durationHours={
                 tempFormDatas.all_day
@@ -469,7 +469,7 @@ const EventForm = ({
               handleDurationMinChange={handleDurationMinChange}
             />
           </div>
-          <div className="event-form-row-item">
+          <div className="event-form__item">
             <label>All Day</label>
             <input
               type="checkbox"
@@ -479,7 +479,7 @@ const EventForm = ({
             />
           </div>
         </div>
-        <div className="event-form-row event-form-row--guest">
+        <div className="event-form__row event-form__row--guest">
           <EditGuests
             staffInfos={staffInfos}
             patientsInfos={patientsInfos}
@@ -494,7 +494,7 @@ const EventForm = ({
             setPatientsGuestsInfos={setPatientsGuestsInfos}
           />
         </div>
-        <div className="event-form-row">
+        <div className="event-form__row event-form__row--radio">
           <RoomsRadio
             handleRoomChange={handleRoomChange}
             roomSelected={tempFormDatas.room}
@@ -502,14 +502,14 @@ const EventForm = ({
             isRoomOccupied={isRoomOccupied}
           />
         </div>
-        <div className="event-form-row">
+        <div className="event-form__row event-form__row--radio">
           <StatusesRadio
             handleStatusChange={handleChange}
             statuses={statuses}
             selectedStatus={tempFormDatas.status}
           />
         </div>
-        <div className="event-form-row">
+        <div className="event-form__row">
           <input type="submit" value="Save" />
           <button onClick={handleCancel}>Cancel</button>
           <button

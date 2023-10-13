@@ -4,9 +4,9 @@ import React from "react";
 const AllergiesContent = ({ datas, isLoading, errMsg }) => {
   return !isLoading ? (
     errMsg ? (
-      <p className="patient-allergies-content-err">{errMsg}</p>
+      <p className="topic-content__err">{errMsg}</p>
     ) : (
-      <div className="patient-allergies-content">
+      <div className="topic-content">
         {datas && datas.length >= 1 ? (
           <ul>
             {datas

@@ -36,7 +36,7 @@ const ProgressNotesHeader = ({
     }
   }, [progressNotes, allContentsVisible]);
   return (
-    <div className="progress-notes-header">
+    <div className="progress-notes__header">
       <ProgressNotesTitle
         patientInfos={patientInfos}
         allContentsVisible={allContentsVisible}

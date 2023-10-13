@@ -9,7 +9,7 @@ const Availability = () => {
   };
   return (
     <>
-      <div className="availability">
+      <div className="calendar__availability">
         <label>Availability</label>
         <i
           onClick={handleEdit}

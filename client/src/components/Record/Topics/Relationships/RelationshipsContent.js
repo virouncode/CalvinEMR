@@ -8,9 +8,9 @@ const RelationshipsContent = ({ datas, isLoading, errMsg }) => {
   const { clinic } = useAuth();
   return !isLoading ? (
     errMsg ? (
-      <p className="patient-relationships-content-err">{errMsg}</p>
+      <p className="topic-content__err">{errMsg}</p>
     ) : (
-      <div className="patient-relationships-content">
+      <div className="topic-content">
         {datas && datas.length >= 1 ? (
           <ul>
             {datas.map((item) => (
@@ -18,7 +18,7 @@ const RelationshipsContent = ({ datas, isLoading, errMsg }) => {
                 - {item.relationship} of{" "}
                 <NavLink
                   to={`/patient-record/${item.relation_id}`}
-                  className="patient-relationships-content-link"
+                  className="topic-content__link"
                   target="_blank"
                 >
                   {patientIdToName(clinic.patientsInfos, item.relation_id)}

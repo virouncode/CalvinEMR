@@ -40,8 +40,8 @@ const AttachmentCard = ({
   };
   return (
     <>
-      <div className="progress-notes-attachments-card">
-        <div className="progress-notes-attachments-card-thumbnail">
+      <div className="progress-notes__attachment-card">
+        <div className="progress-notes__attachment-thumbnail">
           {attachment.file.mime.includes("image") ? (
             <img
               src={`${BASE_URL}${attachment.file.path}`}
@@ -95,8 +95,8 @@ const AttachmentCard = ({
             </div>
           )}
         </div>
-        <div className="progress-notes-attachments-card-footer">
-          <div className="progress-notes-attachments-card-footer-title">
+        <div className="progress-notes__attachment-footer">
+          <div className="progress-notes__attachment-footer-title">
             <p
               style={{
                 overflow: "hidden",
@@ -116,7 +116,7 @@ const AttachmentCard = ({
             )}
           </div>
           {addable && (
-            <div className="progress-notes-attachments-card-footer-btn">
+            <div className="progress-notes-attachment__footer-btn">
               <button onClick={handleAddToRecord}>Add to patient record</button>
             </div>
           )}

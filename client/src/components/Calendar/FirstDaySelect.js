@@ -37,7 +37,7 @@ const FirstDaySelect = () => {
     }
   };
   return (
-    <div className="day-select">
+    <div className="calendar__day-select">
       <label htmlFor="firstDay">First day of the week</label>
       <select
         name="firstDay"

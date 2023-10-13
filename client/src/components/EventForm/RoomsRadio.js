@@ -11,9 +11,9 @@ const RoomsRadio = ({
   //Rooms vector with all Rooms
   const isRoomSelected = (roomName) => roomSelected === roomName;
   return (
-    <div className="event-form-row-radio">
+    <>
       {label && <p>Room</p>}
-      <div className="event-form-row-radio-container">
+      <div className="event-form__radio-container">
         {rooms.map((room) => (
           <RoomRadioItem
             key={room.id}
@@ -24,7 +24,7 @@ const RoomsRadio = ({
           />
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

@@ -6,7 +6,7 @@ const TemplateRadioItem = ({
   isTemplateSelected,
 }) => {
   return (
-    <div className="invitation-edit-row-radio-item">
+    <div className="invitation__radio-item">
       <input
         type="radio"
         name={templateName}

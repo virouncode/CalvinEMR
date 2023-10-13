@@ -69,8 +69,6 @@ const ProgressNotesToolBar = ({
           },
         }
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController, value);
       setUser({
         ...user,
         settings: { ...user.settings, progress_notes_order: value },
@@ -93,16 +91,16 @@ const ProgressNotesToolBar = ({
   };
 
   return (
-    <div className="progress-notes-toolbar">
+    <div className="progress-notes__toolbar">
       <div>
         <label>
           <strong>Search</strong>
         </label>
         <input type="text" value={search} onChange={handleChange}></input>
       </div>
-      <div className="progress-notes-toolbar-order">
+      <div className="progress-notes__order">
         <p>Most recent on:</p>
-        <div className="progress-notes-toolbar-order-radio-item">
+        <div className="progress-notes__radio-item">
           <input
             type="radio"
             name="order"
@@ -113,7 +111,7 @@ const ProgressNotesToolBar = ({
           />
           <label htmlFor="top">Top</label>
         </div>
-        <div className="progress-notes-toolbar-order-radio-item">
+        <div className="progress-notes__radio-item">
           <input
             type="radio"
             name="order"

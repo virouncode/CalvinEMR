@@ -8,8 +8,8 @@ const PatientSearchForm = ({ search, setSearch }) => {
   };
   return (
     <div className="patient-search">
-      <form>
-        <div className="patient-search-item">
+      <form className="patient-search__form">
+        <div className="patient-search__item">
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -21,7 +21,7 @@ const PatientSearchForm = ({ search, setSearch }) => {
             autoFocus
           />
         </div>
-        <div className="patient-search-item">
+        <div className="patient-search__item">
           <label htmlFor="email">Email</label>
           <input
             type="text"
@@ -32,7 +32,7 @@ const PatientSearchForm = ({ search, setSearch }) => {
             id="email"
           />
         </div>
-        <div className="patient-search-item">
+        <div className="patient-search__item">
           <label htmlFor="phone">Phone</label>
           <input
             type="text"
@@ -43,7 +43,7 @@ const PatientSearchForm = ({ search, setSearch }) => {
             id="phone"
           />
         </div>
-        <div className="patient-search-item">
+        <div className="patient-search__item">
           <label htmlFor="birth">Date Of Birth</label>
           <input
             type="text"
@@ -54,7 +54,7 @@ const PatientSearchForm = ({ search, setSearch }) => {
             id="birth"
           />
         </div>
-        <div className="patient-search-item">
+        <div className="patient-search__item">
           <label htmlFor="chart">Chart Number</label>
           <input
             type="text"
@@ -65,7 +65,7 @@ const PatientSearchForm = ({ search, setSearch }) => {
             id="chart"
           />
         </div>
-        <div className="patient-search-item">
+        <div className="patient-search__item">
           <label htmlFor="health">Health Insurance Number</label>
           <input
             type="text"

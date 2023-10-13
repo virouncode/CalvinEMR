@@ -13,18 +13,16 @@ const TemplatesRadio = ({
   };
   return (
     <>
-      <div className="invitation-edit-row">
-        {label && <label>Choose a template</label>}
-        <div className="invitation-edit-row-radio">
-          {templates.map((template) => (
-            <TemplateRadioItem
-              key={template.name}
-              templateName={template.name}
-              handleTemplateChange={handleTemplateChange}
-              isTemplateSelected={isTemplateSelected}
-            />
-          ))}
-        </div>
+      {label && <label>Choose a template</label>}
+      <div className="invitation__radio">
+        {templates.map((template) => (
+          <TemplateRadioItem
+            key={template.name}
+            templateName={template.name}
+            handleTemplateChange={handleTemplateChange}
+            isTemplateSelected={isTemplateSelected}
+          />
+        ))}
       </div>
     </>
   );

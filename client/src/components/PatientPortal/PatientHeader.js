@@ -18,13 +18,20 @@ const PatientHeader = () => {
   };
   return (
     <header className="header header--patient">
-      <div className="logo" onClick={() => navigate("/patient/messages")}></div>
-      <nav className="navigation navigation--patient">
+      <div
+        className="header__logo"
+        onClick={() => navigate("/patient/messages")}
+      ></div>
+      <nav className="header__nav header__nav--patient">
         <ul>
           <li>
             <NavLink
               to="patient/messages"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link--patient header__link--active"
+                  : "header__link--patient"
+              }
             >
               {"Messages" + (user.unreadNbr ? ` (${user.unreadNbr})` : "")}
             </NavLink>
@@ -32,7 +39,11 @@ const PatientHeader = () => {
           <li>
             <NavLink
               to="patient/appointments"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link--patient header__link--active"
+                  : "header__link--patient"
+              }
             >
               Appointments
             </NavLink>
@@ -40,19 +51,31 @@ const PatientHeader = () => {
           <li>
             <NavLink
               to="patient/my-account"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link--patient header__link--active"
+                  : "header__link--patient"
+              }
             >
               My Account
             </NavLink>
           </li>
           <li>
-            <NavLink to="login" onClick={handleLogout}>
+            <NavLink
+              to="login"
+              onClick={handleLogout}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link--patient header__link--active"
+                  : "header__link--patient"
+              }
+            >
               Log out
             </NavLink>
           </li>
         </ul>
       </nav>
-      <h1>Electronic Medical Records</h1>
+      <h1 className="header__title">Electronic Medical Records</h1>
     </header>
   );
 };

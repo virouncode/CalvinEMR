@@ -8,7 +8,6 @@ const Layout = () => {
   return (
     <>
       <Header />
-
       <main>
         <Welcome />
         {/* all the children of the Layout component */}

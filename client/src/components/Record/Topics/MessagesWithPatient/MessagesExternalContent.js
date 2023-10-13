@@ -21,9 +21,9 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
   };
   return !isLoading ? (
     errMsg ? (
-      <p className="patient-messages-content-err">{errMsg}</p>
+      <p className="topic-content__err">{errMsg}</p>
     ) : (
-      <div className="patient-messages-content">
+      <div className="topic-content">
         {datas &&
         datas.filter(
           (message) =>
@@ -31,7 +31,7 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
               message.from_user_type === "staff") ||
             (message.to_id === user.id && message.to_user_type === "staff")
         ).length >= 1 ? (
-          <ul className="patient-messages-content-list">
+          <ul className="topic-content__list">
             {datas
               .filter(
                 (message) =>
@@ -42,10 +42,10 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
               )
               .sort((a, b) => b.date_created - a.date_created)
               .map((message) => (
-                <li className="patient-messages-content-item" key={message.id}>
-                  <div className="patient-messages-content-item-overview">
+                <li className="topic-content__item" key={message.id}>
+                  <div className="topic-content__overview">
                     <NavLink
-                      className="patient-messages-content-item-link"
+                      className="topic-content__link"
                       to={`/messages/${message.id}/${getSection(
                         message
                       )}/External`}
@@ -54,9 +54,9 @@ const MessagesExternalContent = ({ datas, isLoading, errMsg }) => {
                       {message.subject} - {message.body}
                     </NavLink>
                   </div>
-                  <div className="patient-messages-content-item-date">
+                  <div className="topic-content__date">
                     <NavLink
-                      className="patient-messages-content-item-link"
+                      className="topic-content__link"
                       to={`/messages/${message.id}/${getSection(
                         message
                       )}/External`}

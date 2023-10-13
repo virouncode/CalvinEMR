@@ -25,10 +25,14 @@ const PatientRecord = () => {
 
   return patientInfos ? (
     <>
-      <button type="button" className="patient-btn-fold" onClick={handleClick}>
+      <button
+        type="button"
+        className="patient-record__fold"
+        onClick={handleClick}
+      >
         {allContentsVisible ? "Fold All" : "Unfold All"}
       </button>
-      <div className="patient-record">
+      <div className="patient-record__content">
         <PatientMenuLeft
           patientInfos={patientInfos}
           setPatientInfos={setPatientInfos}

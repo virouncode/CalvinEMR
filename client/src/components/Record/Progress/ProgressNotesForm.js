@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import formatName from "../../../utils/formatName";
+import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import FakeWindow from "../../Presentation/FakeWindow";
 import EditTemplate from "./EditTemplate";
@@ -19,7 +19,7 @@ const ProgressNotesForm = ({
   order,
 }) => {
   //hooks
-  const { auth, user } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     object: "Progress note",
@@ -189,14 +189,14 @@ const ProgressNotesForm = ({
 
   return (
     <>
-      <form className="progress-notes-form" onSubmit={handleSubmit}>
-        <div className="progress-notes-form-header">
-          <div className="progress-notes-form-row--author">
+      <form className="progress-notes__form" onSubmit={handleSubmit}>
+        <div className="progress-notes__form-header">
+          <div className="progress-notes__form-row">
             <p>
               <strong>From: </strong>
-              {user.title === "Doctor" ? "Dr. " : ""} {formatName(user.name)}
+              {staffIdToTitleAndName(clinic.staffInfos, user.id, true)}
             </p>
-            <div className="progress-notes-form-row-template">
+            <div className="progress-notes__form-template">
               <label>
                 <strong>Use template: </strong>
               </label>
@@ -207,7 +207,7 @@ const ProgressNotesForm = ({
               />
             </div>
           </div>
-          <div className="progress-notes-form-row">
+          <div className="progress-notes__form-row">
             <div>
               {" "}
               <label>
@@ -233,7 +233,7 @@ const ProgressNotesForm = ({
             </div>
           </div>
         </div>
-        <div className="progress-notes-form-area">
+        <div className="progress-notes__form-body">
           <textarea
             name="body"
             onChange={handleChange}
@@ -246,18 +246,9 @@ const ProgressNotesForm = ({
             addable={false}
           />
         </div>
-        <div className="progress-notes-form-submit">
-          <input
-            className="progress-notes-form-submit-btn"
-            type="submit"
-            value="Save & Sign"
-            disabled={isLoadingFile}
-          />
-          <button
-            type="button"
-            className="progress-notes-form-submit-btn"
-            onClick={handleCancelClick}
-          >
+        <div className="progress-notes__form-btns">
+          <input type="submit" value="Save & Sign" disabled={isLoadingFile} />
+          <button type="button" onClick={handleCancelClick}>
             Cancel
           </button>
           {isLoadingFile && (

@@ -38,26 +38,12 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
     fontStyle: "italic",
   };
 
-  const getAuthorTitle = () => {
-    if (
-      progressNote.updated_by_title?.title &&
-      progressNote.updated_by_title?.title === "Doctor"
-    ) {
-      return "Dr. ";
-    } else if (progressNote.created_by_title?.title === "Doctor") {
-      return "Dr. ";
-    } else {
-      return "";
-    }
-  };
-
   return (
-    <div className="progress-notes-card-print">
-      <div className="progress-notes-card-print-header">
-        <div className="progress-notes-card-print-header-title">
+    <div className="progress-notes__card progress-notes__card--print">
+      <div className="progress-notes__card-header">
+        <div className="progress-notes__card-header-row">
           <p style={{ margin: "0", padding: "0" }}>
             <strong>From: </strong>
-            {getAuthorTitle()}{" "}
             {staffIdToTitleAndName(
               clinic.staffInfos,
               progressNote.updated_by_id,
@@ -76,13 +62,13 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
               : toLocalDateAndTimeWithSeconds(progressNote.date_created)}
           </p>
         </div>
-        <div>
-          <label>
-            <strong>Subject: </strong>
-          </label>
-          {progressNote.object}
-        </div>
-        <div>
+        <div className="progress-notes__card-header-row">
+          <div>
+            <label>
+              <strong>Subject: </strong>
+            </label>
+            {progressNote.object}
+          </div>
           <div>
             <label>
               <strong>Version: </strong>
@@ -116,7 +102,11 @@ const ProgressNotesCardPrint = ({ progressNote }) => {
           </p>
         </div>
       </div>
-      <ProgressNotesAttachments attachments={attachments} deletable={false} />
+      <ProgressNotesAttachments
+        attachments={attachments}
+        deletable={false}
+        addable={false}
+      />
     </div>
   );
 };

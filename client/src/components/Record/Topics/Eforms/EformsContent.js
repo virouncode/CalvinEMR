@@ -5,9 +5,9 @@ import { toLocalDate } from "../../../../utils/formatDates";
 const EformsContent = ({ showDocument, datas, isLoading, errMsg }) => {
   return !isLoading ? (
     errMsg ? (
-      <p className="patient-electronic-content-err">{errMsg}</p>
+      <p className="topic-content__err">{errMsg}</p>
     ) : (
-      <div className="patient-electronic-content">
+      <div className="topic-content">
         {datas && datas.length >= 1 ? (
           <ul>
             {datas
@@ -18,11 +18,7 @@ const EformsContent = ({ showDocument, datas, isLoading, errMsg }) => {
                   onClick={() =>
                     showDocument(eform.file.url, document.file.mime)
                   }
-                  style={{
-                    textDecoration: "underline",
-                    color: "blue",
-                    cursor: "pointer",
-                  }}
+                  className="topic-content__link"
                 >
                   - {eform.name} ({toLocalDate(eform.date_created)})
                 </li>

@@ -12,12 +12,10 @@ import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import EventForm from "../EventForm/EventForm";
 import FakeWindow from "../Presentation/FakeWindow";
-import Availability from "./Availability";
 import CalendarFilter from "./CalendarFilter";
+import CalendarOptions from "./CalendarOptions";
 import CalendarView from "./CalendarView";
-import FirstDaySelect from "./FirstDaySelect";
 import Shortcutpickr from "./Shortcutpickr";
-import SlotSelect from "./SlotSelect";
 import TimelineView from "./TimelineView";
 var _ = require("lodash");
 
@@ -261,7 +259,7 @@ const Calendar = ({ timelineVisible }) => {
               <span>
                 {patientsGuestsIds.map((patient) => (
                   <NavLink
-                    className="calendar-event-patient-link"
+                    className="calendar__patient-link"
                     to={`/patient-record/${patient.patients_id}`}
                     target="_blank"
                     key={patient.patients_id}
@@ -322,7 +320,7 @@ const Calendar = ({ timelineVisible }) => {
                 {/* <strong>{guestsCaption}</strong> */} /{" "}
                 {patientsGuestsIds.map((patient) => (
                   <NavLink
-                    className="calendar-event-patient-link"
+                    className="calendar__patient-link"
                     to={`/patient-record/${patient.patients_id}`}
                     target="_blank"
                     key={patient.patients_id}
@@ -391,7 +389,7 @@ const Calendar = ({ timelineVisible }) => {
               <span>
                 {patientsGuestsIds.map((patient) => (
                   <NavLink
-                    className="calendar-event-patient-link"
+                    className="calendar__patient-link"
                     to={`/patient-record/${patient.patients_id}`}
                     target="_blank"
                     key={patient.patients_id}
@@ -820,14 +818,9 @@ const Calendar = ({ timelineVisible }) => {
 
   return events && clinic.staffInfos ? (
     <div className="calendar">
-      <div className="calendar-left-bar">
+      <div className="calendar__left-bar">
         <Shortcutpickr handleShortcutpickrChange={handleShortcutpickrChange} />
-        <div className="calendar-left-bar-options">
-          <p className="calendar-left-bar-options-title">Options</p>
-          <SlotSelect />
-          <FirstDaySelect />
-          <Availability />
-        </div>
+        <CalendarOptions title="Options" />
         <CalendarFilter
           staffInfos={clinic.staffInfos}
           hostsIds={hostsIds}
@@ -835,7 +828,7 @@ const Calendar = ({ timelineVisible }) => {
           remainingStaff={remainingStaff}
         />
       </div>
-      <div className="calendar-display">
+      <div className="calendar__display">
         {!timelineVisible ? (
           <CalendarView
             slotDuration={user.settings.slot_duration}

@@ -8,7 +8,7 @@ const PatientMenuLeft = ({
   allContentsVisible,
 }) => {
   return (
-    <section className="patient-menu-left">
+    <div className="patient-record__menu">
       <PatientTopic
         textColor="#FEFEFE"
         backgroundColor="#495867"
@@ -102,7 +102,7 @@ const PatientMenuLeft = ({
         allContentsVisible={allContentsVisible}
         side="left"
       />
-    </section>
+    </div>
   );
 };
 

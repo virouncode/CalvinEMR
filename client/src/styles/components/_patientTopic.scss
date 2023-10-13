@@ -1,5 +1,5 @@
-.patient-topic {
-    &-title-left{
+.patient-record {
+    &__topic-header {
         font-size: 0.8rem;
         display : flex;
         justify-content: space-between;
@@ -7,204 +7,88 @@
         padding : 5px;
         border-right: solid 0.5px grey;
         border-left: solid 0.5px grey;
-        margin-right: -1px;
         i {
             cursor : pointer;
         }
-    }
-    &-title-right{
-        font-size: 0.8rem;
-        display : flex;
-        justify-content: space-between;
-        align-items: center;
-        padding : 5px;
-        border-right: solid 0.5px grey;
-        border-left: solid 0.5px grey;
-        margin-left: -1px;
-        i {
-            cursor : pointer;
+        &--left {
+            margin-right: -1px;   
+        }
+        &--right {
+            margin-left: -1px;
         }
     }
-    &-content-left {
+    &__topic-container {
         max-height: 0;
         font-size: 0.8rem;
         transition:0.3s;
         border:0px solid $black;
+        // width:100%;
         overflow:scroll;
-        margin-right:-1px;
+        &--left {
+            margin-right:-1px;
+        }
+        &--right {
+            margin-left:-1px;
+        }
         &--active {
             max-height:400px;
             border-left : solid 0.5px grey;
             border-right : solid 0.5px grey;
         }
-        &-bottom--active {
-            max-height:400px;
-            border-left : solid 0.5px grey;
-            border-right : solid 0.5px grey;
+        &--bottom {
             border-bottom : solid 0.5px grey;
-        }
-        .patient-measurements-content  {
-            padding:5px;
-            width:100%;
-            p {
-                padding:2px 5px;
-                overflow-wrap: break-word;
-                label {
-                    font-weight : bold;
-                }
-            }
-        }
-        .patient-demo-content {
-            padding:5px;
-            width:100%;
-            display: flex;
-            p {
-                padding:2px 0;
-                overflow-wrap: break-word;
-                label {
-                    font-weight : bold;
-                }
-            }
-            &-infos {
-                width:70%;
-            }
-            &-avatar {
-                width: 30%;
-                height: 100px;
-                overflow: hidden;
-                img {
-                    width: 100%;
-                }
-            }
-        }
-        .patient-med-history-content, .patient-fam-history-content, .patient-risk-content, .patient-medications-content, .patient-pharmacies-content,.patient-doctors-content, .patient-relationships-content,  .patient-measurements-content, .patient-electronic-content {
-            width: 100%;
-            display:flex;
-            flex-direction: column;
-            padding: 5px;
-            &-err {
-                background:$red;
-                padding: 10px;
-                font-size: 0.8rem;
-            }
-            &-event {
-                // border-bottom: solid 1px $black;
-                // padding: 5px;
-                ul{
-                    margin-bottom : 5px;
-                    li{
-                        display : flex;
-                        justify-content: flex-start;
-                        align-items: flex-start;
-                        label {
-                            font-weight: bold;
-                            margin-right: 5px;
-                        }
-                        p{
-                            word-break: break-all;
-                            text-align: justify;
-                        }
-                    }
-                }
-            }
-            &-link {
-                color: blue;
-                text-decoration: underline;
-            }
-        }
-    }
-    &-content-right {
-        max-height: 0;
-        font-size: 0.8rem;
-        transition:0.3s;
-        border:0px solid $black;
-        overflow:scroll;
-        margin-left:-1px;
-        &--active {
-            max-height:400px;
-            border-left : solid 0.5px grey;
-            border-right : solid 0.5px grey;
-        } 
-        &-bottom--active {
-            max-height:400px;
-            border-left : solid 0.5px grey;
-            border-right : solid 0.5px grey;
-            border-bottom : solid 0.5px grey;
-        }
-        .patient-soc-history-content, .patient-reminders-content, .patient-pregnancies-content, .patient-allergies-content, .patient-concerns-content, .patient-documents-content, .patient-appointments-content, .patient-vaccines-content, .patient-messages-content {
-            padding : 5px;
-            width: 100%;
-            display:flex;
-            flex-direction: column;
-            &-err {
-                background:$red;
-                padding: 10px;
-                font-size: 0.8rem;
-            }
-            &-event {
-                ul{
-                    margin-bottom : 5px;
-                    li{
-                        display : flex;
-                        justify-content: flex-start;
-                        align-items: flex-start;
-                        label {
-                            font-weight: bold;
-                            margin-right: 5px;
-                        }
-                        p{
-                            word-break: break-all;
-                            text-align: justify;
-                        }
-                    }
-                }
-                &-link {
-                    cursor:pointer;
-                    text-decoration: underline;
-                    color:rgba(0, 0, 255, 0.469);
-                    &:hover {
-                        color:blue;
-                    }
-                }
-            }
-        }
-        .patient-messages-content{
-            padding : 5px;
-            width: 100%;
-            &-item{
-                display: flex;
-                overflow: hidden;
-                justify-content: space-between;
-                border-bottom: solid 0.5px grey;
-                width: 100%;
-                padding: 5px 0;
-                &-overview{
-                    width:70%;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                }
-                &-date{
-                    width:30%;
-                    text-align: end;
-                  
-                }
-                &-link {
-                    text-decoration: underline;
-                    color:blue;
-                }
-            }
-        }
-        .patient-soc-history-content {
-            padding:5px;
-            width:100%;
-            p {
-                padding:2px 0;
-                overflow-wrap: break-word;
-                label {
-                    font-weight : bold;
-                }
-            }
         }
     }
 }
+.topic-content {
+    display:flex;
+    flex-direction: column;
+    padding: 5px;
+    &__err {
+        background:$red;
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+    &__link {
+        color: blue;
+        text-decoration: underline;
+    }
+    p {
+        padding:2px 0;
+        overflow-wrap: break-word;
+        label {
+            font-weight : bold;
+        }
+    }
+    &__infos {
+        width:70%;
+    }
+    &__avatar {
+        width: 30%;
+        height: 100px;
+        overflow: hidden;
+        img {
+            width: 100%;
+        }
+    }
+    &__item{
+        display: flex;
+        overflow: hidden;
+        justify-content: space-between;
+        border-bottom: solid 0.5px grey;
+        width: 100%;
+        padding: 5px 0;
+    }
+    &__overview{
+        width:70%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    &__date{
+        width:30%;
+        text-align: end;  
+    }
+    
+}
+        

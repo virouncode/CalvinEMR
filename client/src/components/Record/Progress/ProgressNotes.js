@@ -35,7 +35,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
   };
 
   return (
-    <section className="progress-notes">
+    <div className="progress-notes">
       <ProgressNotesHeader
         patientInfos={patientInfos}
         allContentsVisible={allContentsVisible}
@@ -85,8 +85,8 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
       <div
         className={
           allContentsVisible
-            ? "progress-notes-content progress-notes-content--active"
-            : "progress-notes-content"
+            ? "progress-notes__content progress-notes__content--active"
+            : "progress-notes__content"
         }
         ref={contentRef}
       >
@@ -100,7 +100,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
         )}
         {!isLoading ? (
           errMsg ? (
-            <p className="progress-notes-err">{errMsg}</p>
+            <p className="progress-notes__err">{errMsg}</p>
           ) : progressNotes && progressNotes.length ? (
             progressNotes
               .filter(
@@ -145,7 +145,7 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
           <CircularProgress size="1rem" style={{ margin: "5px" }} />
         )}
       </div>
-    </section>
+    </div>
   );
 };
 

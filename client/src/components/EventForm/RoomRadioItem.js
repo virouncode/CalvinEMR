@@ -7,7 +7,7 @@ const RoomRadioItem = ({
   isRoomSelected,
 }) => {
   return (
-    <div className="event-form-row-item event-form-row-item--radio">
+    <div className="event-form__item event-form__item--radio">
       <input
         type="radio"
         name="room"

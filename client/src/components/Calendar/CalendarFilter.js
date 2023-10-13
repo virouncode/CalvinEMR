@@ -8,8 +8,8 @@ const CalendarFilter = ({
   remainingStaff,
 }) => {
   return (
-    <div className="calendar-filter">
-      <p className="calendar-filter-title">Show Calendars</p>
+    <div className="calendar__filter">
+      <p className="calendar__filter-title">Show Calendars</p>
       <FilterCheckboxes
         staffInfos={staffInfos}
         hostsIds={hostsIds}

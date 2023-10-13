@@ -12,9 +12,11 @@ import { patientIdToName } from "../../../utils/patientIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import FakeWindow from "../../Presentation/FakeWindow";
-import TriangleButtonProgress from "./../Buttons/TriangleButtonProgress";
 import CalvinAI from "./CalvinAI/CalvinAI";
 import ProgressNotesAttachments from "./ProgressNotesAttachments";
+import ProgressNotesCardBody from "./ProgressNotesCardBody";
+import ProgressNotesCardHeader from "./ProgressNotesCardHeader";
+import ProgressNotesCardHeaderFolded from "./ProgressNotesCardHeaderFolded";
 var _ = require("lodash");
 
 const ProgressNotesCard = ({
@@ -124,7 +126,7 @@ const ProgressNotesCard = ({
   const handleTriangleProgressClick = (e) => {
     setBodyVisible((v) => !v);
     bodyRef.current.classList.toggle(
-      "progress-notes-card-body-container--active"
+      "progress-notes__card-body-container--active"
     );
   };
 
@@ -264,201 +266,52 @@ const ProgressNotesCard = ({
     return checkedNotes.includes(progressNoteId);
   };
 
-  const getAuthorTitle = () => {
-    if (
-      progressNote.updated_by_title?.title &&
-      progressNote.updated_by_title?.title === "Doctor"
-    ) {
-      return "Dr. ";
-    } else if (progressNote.created_by_title?.title === "Doctor") {
-      return "Dr. ";
-    } else {
-      return "";
-    }
-  };
-
   return (
     tempFormDatas &&
     versions && (
-      <div className="progress-notes-card">
+      <div className="progress-notes__card">
         {bodyVisible ? (
-          <div className="progress-notes-card-header">
-            <div className="progress-notes-card-header-row">
-              <div className="progress-notes-card-header-author">
-                <input
-                  className="progress-notes-card-header-check"
-                  type="checkbox"
-                  checked={isChecked(progressNote.id)}
-                  onChange={handleCheck}
-                />
-                <p>
-                  <strong>From: </strong>
-                  {staffIdToTitleAndName(
-                    clinic.staffInfos,
-                    tempFormDatas.updated_by_id,
-                    true
-                  ) ||
-                    staffIdToTitleAndName(
-                      clinic.staffInfos,
-                      tempFormDatas.created_by_id,
-                      true
-                    )}
-                  {tempFormDatas.updated_by_name?.full_name
-                    ? ` (${toLocalDateAndTimeWithSeconds(
-                        tempFormDatas.date_updated
-                      )})`
-                    : ` (${toLocalDateAndTimeWithSeconds(
-                        tempFormDatas.date_created
-                      )})`}
-                </p>
-              </div>
-              <div className="progress-notes-card-header-version">
-                <label>
-                  <strong style={{ marginRight: "5px" }}>Version: </strong>
-                </label>
-                {!editVisible ? (
-                  <select
-                    name="version_nbr"
-                    value={tempFormDatas.version_nbr.toString()}
-                    onChange={handleVersionChange}
-                  >
-                    {versions.map(({ version_nbr }) => (
-                      <option value={version_nbr.toString()} key={version_nbr}>
-                        {"V" + version_nbr.toString()}
-                      </option>
-                    ))}
-                    <option value={(versions.length + 1).toString()}>
-                      {"V" + (versions.length + 1).toString()}
-                    </option>
-                  </select>
-                ) : (
-                  "V" + (versions.length + 2).toString()
-                )}
-                <div className="progress-notes-card-header-btns">
-                  {!editVisible ? (
-                    <>
-                      <button onClick={handleEditClick}>Edit</button>
-                      <button onClick={handleCalvinAIClick}>CalvinAI</button>
-                    </>
-                  ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <button
-                        style={{ margin: "0 2px" }}
-                        onClick={handleSaveClick}
-                      >
-                        Save
-                      </button>
-                      <button
-                        style={{ margin: "0 2px" }}
-                        onClick={handleCancelClick}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="progress-notes-card-header-row">
-              <div className="progress-notes-card-header-object">
-                <label>
-                  <strong>Subject: </strong>
-                </label>
-                {!editVisible ? (
-                  tempFormDatas.object
-                ) : (
-                  <input
-                    type="text"
-                    value={tempFormDatas.object}
-                    onChange={handleChange}
-                    name="object"
-                    autoComplete="off"
-                  />
-                )}
-              </div>
-              <div>
-                <TriangleButtonProgress
-                  handleTriangleClick={handleTriangleProgressClick}
-                  color="dark"
-                  className={
-                    "triangle-progress-notes  triangle-progress-notes--active"
-                  }
-                />
-              </div>
-            </div>
-          </div>
+          <ProgressNotesCardHeader
+            isChecked={isChecked}
+            handleCheck={handleCheck}
+            progressNote={progressNote}
+            tempFormDatas={tempFormDatas}
+            editVisible={editVisible}
+            versions={versions}
+            handleVersionChange={handleVersionChange}
+            handleEditClick={handleEditClick}
+            handleCalvinAIClick={handleCalvinAIClick}
+            handleSaveClick={handleSaveClick}
+            handleCancelClick={handleCancelClick}
+            handleChange={handleChange}
+            handleTriangleProgressClick={handleTriangleProgressClick}
+          />
         ) : (
-          <div className="progress-notes-card-header progress-notes-card-header--folded">
-            <div className="progress-notes-card-header--folded-title">
-              <label>
-                <strong>From: </strong>
-              </label>
-              {staffIdToTitleAndName(
-                clinic.staffInfos,
-                tempFormDatas.updated_by_id,
-                true
-              ) ||
-                staffIdToTitleAndName(
-                  clinic.staffInfos,
-                  tempFormDatas.created_by_id,
-                  true
-                )}
-              {tempFormDatas.updated_by_name?.full_name
-                ? ` (${toLocalDateAndTimeWithSeconds(
-                    tempFormDatas.date_updated
-                  )})`
-                : ` (${toLocalDateAndTimeWithSeconds(
-                    tempFormDatas.date_created
-                  )})`}
-              {" / "}
-              <label>
-                <strong>Subject: </strong>
-              </label>
-              {tempFormDatas.object}
-            </div>
-            <div>
-              <TriangleButtonProgress
-                handleTriangleClick={handleTriangleProgressClick}
-                color="dark"
-                className={"triangle-progress-notes"}
-              />
-            </div>
-          </div>
+          <ProgressNotesCardHeaderFolded
+            tempFormDatas={tempFormDatas}
+            handleTriangleProgressClick={handleTriangleProgressClick}
+          />
         )}
         <div
           ref={bodyRef}
           className={
             bodyVisible
-              ? "progress-notes-card-body-container progress-notes-card-body-container--active"
-              : "progress-notes-card-body-container"
+              ? "progress-notes__card-body-container progress-notes__card-body-container--active"
+              : "progress-notes__card-body-container"
           }
         >
-          <div className="progress-notes-card-body">
-            {!editVisible ? (
-              <p>{tempFormDatas.body}</p>
-            ) : (
-              <textarea
-                className="progress-notes-card-body-edit"
-                name="body"
-                cols="90"
-                rows="20"
-                value={tempFormDatas.body}
-                onChange={handleChange}
-              />
-            )}
-          </div>
+          <ProgressNotesCardBody
+            tempFormDatas={tempFormDatas}
+            editVisible={editVisible}
+            handeChange={handleChange}
+          />
           <ProgressNotesAttachments
             attachments={attachments}
             deletable={false}
             patientId={patientId}
           />
           {!editVisible && (
-            <div className="progress-notes-card-body-footer">
+            <div className="progress-notes__card-sign">
               {tempFormDatas.updated_by_id ? (
                 <p style={{ padding: "0 10px" }}>
                   Updated by{" "}

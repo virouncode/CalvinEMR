@@ -16,7 +16,9 @@ const PatientRecordPage = () => {
         </title>
       </Helmet>
       <section className="patient-record-section">
-        <h2 className="patient-record-section-title">Patient Medical Record</h2>
+        <h2 className="patient-record-section__title">
+          Patient Medical Record
+        </h2>
         <PatientRecord />
       </section>
     </>

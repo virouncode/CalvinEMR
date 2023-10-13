@@ -8,17 +8,26 @@
     min-height : 100%;
     display: grid;
     grid-template-columns: 15% 85%;
-    @media (max-width: 950px){
-        display:block;
+    &__options{
+        border : 1px solid rgb(218,218,218);
+        border-radius: 6px;
+        margin-top: 5px;
+        overflow: hidden;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     }
-    &-left-bar {   
+    &__options-title {
+        @include childCenter;
+        border-radius: 4px 4px 0 0;
+        font-size : 0.85rem;
+        height: 50px;
+        color : #FEFEFE;
+        background : #42A6F5;
+    }
+    &__left-bar {   
         width : 95%;
         display:flex;
         flex-direction: column;
         justify-content: flex-start;
-        @media (max-width: 950px){
-            display:none;
-        }
         .calendar-shortcutpickr {
             overflow:hidden;
             border-bottom : 1px solid rgb(218,218,218);
@@ -75,28 +84,9 @@
             }
 
         }
-       
-        &-options{
-            border : 1px solid rgb(218,218,218);
-            border-radius: 6px;
-            margin-top: 5px;
-            overflow: hidden;
-            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-            &-title {
-                @include childCenter;
-                border-radius: 4px 4px 0 0;
-                font-size : 0.85rem;
-                height: 50px;
-                color : #FEFEFE;
-                background : #42A6F5;
-                @media (max-width: 1380px){
-                    font-size : 0.8rem;
-                }
-            }
-        }
-        
     }
-    &-display { //fullcalendar
+    &__display { 
+        //fullcalendar
         .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
             .fc-header-toolbar.fc-toolbar {
                 margin-bottom: 20px;
@@ -191,15 +181,13 @@
             }         
         }
     } 
-    &-event-patient-link {
+    &__patient-link {
         color:$white;
         &:hover{
             text-decoration: underline !important;
             color:$white;
         }
     }  
-
-    
 }
 
 .flatpickr {

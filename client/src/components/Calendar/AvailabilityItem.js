@@ -14,9 +14,9 @@ const AvailabilityItem = ({
   unavailable,
 }) => {
   return (
-    <div className="availability-form-row">
-      <div className="availability-form-row-day">{firstLetterUpper(day)}</div>
-      <div className="availability-form-row-time">
+    <div className="availability__row">
+      <div className="availability__column--day">{firstLetterUpper(day)}</div>
+      <div className="availability__column--time">
         <TimePickerAvailability
           day={day}
           handleChange={handleStartMorningChange}
@@ -35,7 +35,7 @@ const AvailabilityItem = ({
           timeValueAMPM={scheduleMorning[1].ampm}
         />
       </div>
-      <div className="availability-form-row-time">
+      <div className="availability__column--time">
         <TimePickerAvailability
           day={day}
           handleChange={handleStartAfternoonChange}
@@ -54,7 +54,7 @@ const AvailabilityItem = ({
           timeValueAMPM={scheduleAfternoon[1].ampm}
         />
       </div>
-      <div className="availability-form-row-checkbox">
+      <div className="availability__column--checkbox">
         <input
           type="checkbox"
           id="notavailable"

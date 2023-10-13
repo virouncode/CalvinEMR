@@ -59,7 +59,7 @@ const PatientTopic = ({
   const [popUpVisible, setPopUpVisible] = useState(false);
   const [{ datas, isLoading, errMsg }, fetchRecord, setDatas] =
     usePatientRecord(url, patientId);
-  const contentRef = useRef("null");
+  const containerRef = useRef("null");
 
   //STYLE
   const TOPIC_STYLE = { color: textColor, background: backgroundColor };
@@ -71,15 +71,9 @@ const PatientTopic = ({
 
   const handleTriangleClick = (e) => {
     e.target.classList.toggle("triangle--active");
-    if (topic === "E-FORMS" || topic === "MESSAGES WITH PATIENT") {
-      contentRef.current.classList.toggle(
-        `patient-topic-content-${side}-bottom--active`
-      );
-    } else {
-      contentRef.current.classList.toggle(
-        `patient-topic-content-${side}--active`
-      );
-    }
+    containerRef.current.classList.toggle(
+      `patient-record__topic-container--active`
+    );
   };
 
   const showDocument = async (docUrl, docMime) => {
@@ -106,8 +100,11 @@ const PatientTopic = ({
   };
 
   return (
-    <div className="patient-topic">
-      <div className={`patient-topic-title-${side}`} style={TOPIC_STYLE}>
+    <div className="patient-record__topic">
+      <div
+        className={`patient-record__topic-header patient-record__topic-header--${side}`}
+        style={TOPIC_STYLE}
+      >
         <PatientTopicHeader
           topic={topic}
           handleTriangleClick={handleTriangleClick}
@@ -125,11 +122,11 @@ const PatientTopic = ({
         className={
           allContentsVisible
             ? topic === "E-FORMS" || topic === "MESSAGES WITH PATIENT"
-              ? `patient-topic-content-${side} patient-topic-content-${side}-bottom--active`
-              : `patient-topic-content-${side} patient-topic-content-${side}--active`
-            : `patient-topic-content-${side}`
+              ? `patient-record__topic-container patient-record__topic-container--${side} patient-record__topic-container--active patient-record__topic-container--bottom`
+              : `patient-record__topic-container patient-record__topic-container--${side} patient-record__topic-container--active`
+            : `patient-record__topic-container patient-record__topic-container--${side} `
         }
-        ref={contentRef}
+        ref={containerRef}
       >
         {/* DEMOGRAPHICS */}
         {topic === "DEMOGRAPHICS" && (

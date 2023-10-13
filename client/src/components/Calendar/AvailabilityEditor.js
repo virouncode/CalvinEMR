@@ -149,12 +149,12 @@ const AvailabilityEditor = ({ setEditVisible }) => {
     scheduleMorning &&
     unavailability && (
       <div>
-        {errMsg && <p className="availability-err">{errMsg}</p>}
-        <div className="availability-heads">
+        {errMsg && <p className="availability__err">{errMsg}</p>}
+        <div className="availability__heads">
           <p>Morning</p>
           <p>Afternoon</p>
         </div>
-        <form className="availability-form" onSubmit={handleSubmit}>
+        <form className="availability__form" onSubmit={handleSubmit}>
           {days.map((day) => (
             <AvailabilityItem
               day={day}
@@ -169,7 +169,7 @@ const AvailabilityEditor = ({ setEditVisible }) => {
               key={day}
             />
           ))}
-          <div className="availability-form-duration">
+          <div className="availability__duration">
             <label>Default appointment duration</label>
             <DurationPicker
               durationHours={defaultDurationHours.toString()}
@@ -180,7 +180,7 @@ const AvailabilityEditor = ({ setEditVisible }) => {
               title={false}
             />
           </div>
-          <div className="availability-form-btn">
+          <div className="availability__btns">
             <input type="submit" value="Save" />
             <button onClick={handleCancel}>Cancel</button>
           </div>

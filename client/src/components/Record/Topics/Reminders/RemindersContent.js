@@ -14,9 +14,9 @@ const RemindersContent = ({ datas, isLoading, errMsg }) => {
 
   return !isLoading ? (
     errMsg ? (
-      <p className="patient-reminders-content-err">{errMsg}</p>
+      <p className="topic-content__err">{errMsg}</p>
     ) : (
-      <div className="patient-reminders-content">
+      <div className="topic-content">
         {datas && datas.length >= 1 ? (
           <ul>
             {datas.filter((reminder) => reminder.active).length >= 1

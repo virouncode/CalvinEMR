@@ -5,9 +5,9 @@ import { toLocalDate } from "../../../../utils/formatDates";
 const DocumentsContent = ({ showDocument, datas, isLoading, errMsg }) => {
   return !isLoading ? (
     errMsg ? (
-      <p className="patient-documents-content-err">{errMsg}</p>
+      <p className="topic-content__err">{errMsg}</p>
     ) : (
-      <div className="patient-documents-content">
+      <div className="topic-content">
         {datas && datas.length >= 1 ? (
           <ul>
             {datas

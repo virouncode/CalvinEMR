@@ -17,13 +17,17 @@ const Header = () => {
   };
   return (
     <header className="header">
-      <div className="logo" onClick={() => navigate("/")}></div>
-      <nav className="navigation">
+      <div className="header__logo" onClick={() => navigate("/")}></div>
+      <nav className="header__nav">
         <ul>
           <li>
             <NavLink
               to="/"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               Calendar
@@ -32,7 +36,11 @@ const Header = () => {
           <li>
             <NavLink
               to="search-patient"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               Patients
@@ -41,7 +49,11 @@ const Header = () => {
           <li>
             <NavLink
               to="signup-patient"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               New Patient
@@ -50,7 +62,11 @@ const Header = () => {
           <li>
             <NavLink
               to="signup-staff"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               New Staff Account
@@ -59,7 +75,11 @@ const Header = () => {
           <li>
             <NavLink
               to="doc-inbox"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               Documents Mailbox
@@ -68,7 +88,11 @@ const Header = () => {
           <li>
             <NavLink
               to="messages"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               {"Messages" + (user.unreadNbr ? ` (${user.unreadNbr})` : "")}
@@ -77,7 +101,11 @@ const Header = () => {
           <li>
             <NavLink
               to="reference"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               Reference
@@ -86,7 +114,11 @@ const Header = () => {
           <li>
             <NavLink
               to="calvinai"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               CalvinAI
@@ -95,7 +127,11 @@ const Header = () => {
           <li>
             <NavLink
               to="billing"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               Billing
@@ -104,20 +140,32 @@ const Header = () => {
           <li>
             <NavLink
               to="my-account"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
               target="_blank"
             >
               My Account
             </NavLink>
           </li>
           <li>
-            <NavLink to="login" onClick={handleLogout}>
+            <NavLink
+              to="login"
+              onClick={handleLogout}
+              className={(nav) =>
+                nav.isActive
+                  ? "header__link header__link--active"
+                  : "header__link"
+              }
+            >
               Log out
             </NavLink>
           </li>
         </ul>
       </nav>
-      <h1>Electronic Medical Records</h1>
+      <h1 className="header__title">Electronic Medical Records</h1>
     </header>
   );
 };

@@ -1,18 +1,12 @@
 .patient-search {
     font-size: 0.8rem;
-    form {
-    display : flex;
-    justify-content: space-between;
-    width : 80%;
-    margin : 0 auto 40px;
+    &__form {
+        display : flex;
+        justify-content: space-between;
+        width : 80%;
+        margin : 0 auto 40px;
     }
-    &-title {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 1.25rem;
-        font-weight:bold;
-    }
-    &-item {
+    &__item {
         display : flex;
         flex-direction: column;
         justify-content: space-between;

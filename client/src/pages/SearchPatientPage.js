@@ -9,7 +9,7 @@ const SearchPatientPage = () => {
         <title>Patients</title>
       </Helmet>
       <section className="search-patient-section">
-        <h2 className="search-patient-section-title">Search Patient</h2>
+        <h2 className="search-patient-section__title">Search Patient</h2>
         <SearchPatient />
       </section>
     </>

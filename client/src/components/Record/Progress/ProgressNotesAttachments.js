@@ -6,10 +6,11 @@ const ProgressNotesAttachments = ({
   attachments,
   deletable,
   handleRemoveAttachment = null,
+  addable,
 }) => {
   return (
     attachments && (
-      <div className="progress-notes-attachments">
+      <div className="progress-notes__attachments">
         {attachments.map((attachment) => (
           <AttachmentCard
             handleRemoveAttachment={handleRemoveAttachment}
@@ -17,6 +18,7 @@ const ProgressNotesAttachments = ({
             key={attachment.id}
             deletable={deletable}
             patientId={patientId}
+            addable={addable}
           />
         ))}
       </div>

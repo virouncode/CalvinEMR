@@ -1,71 +1,56 @@
 .header {
-  // background: rgb(255,201,201);
-  // background: linear-gradient(90deg, rgba(255,201,201,1) 0%, rgba(148,186,232,1) 38%);
-  background: $blue;
-  display: grid;
-  grid-template-columns: 20% 60% 20%;
-  border-bottom: solid 0.5px grey;
-  @media (max-width: 950px) {
-    grid-template-columns: 20% 60% 20%;
-  }
-  @media (max-width: 800px) {
-    grid-template-columns: 20% 80%;
-  }
-  &--patient {
-    grid-template-columns: 15% 70% 15%;
-  }
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 15px;
   position: sticky;
   top: 0px;
   z-index: 10;
-  .logo {
-    background: url(../../assets/img/logo.png) center/cover;
-    cursor:pointer;
+  padding: 10px 15px;
+  background: $blue;
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  border-bottom: solid 0.5px $grey;
+  justify-content: space-between;
+  align-items: center;
+  &--patient {
+    grid-template-columns: 15% 70% 15%;
+  }
+  &--login {
+    background: rgb(238, 174, 202);
+    background: linear-gradient(
+      90deg,
+      rgba(238, 174, 202, 1) 0%,
+      rgba(148, 187, 233, 1) 100%
+    );
+    grid-template-columns: 25% 75%;
+  }
+  &__logo {
     height: 35px;
     width: 130px;
-    text-align: center;
-    @media (max-width: 950px) {
-      height: 30px;
-      width: 100px;
-    }
+    background: url(../../assets/img/logo.png) center/cover;
+    cursor:pointer;
   }
-  .navigation {
+  &__nav {
     ul {
       display: flex;
       justify-content: space-between;
       font-size: 0.8rem;
-      transition: 0.2s;
-      @media (max-width: 950px) {
-        font-size: 0.7rem;
-      }
     }
     &--patient {
       ul{
         justify-content: flex-end;
-        li {
-          margin-right: 40px;
-        }
-       
       }
     }
   }
-  h1 {
+  &__link {
+    &--active {
+      font-weight: bold;
+    }
+    &--patient {
+      margin-right: 40px;
+    }
+  }
+  &__title {
     font-family: $font1;
     text-align: right;
     font-size: 1rem;
-    @media (max-width: 950px) {
-      font-size: 0.75rem;
-    }
-    @media (max-width: 800px) {
-      display: none;
-    }
-  }
-  .nav-active {
-    font-weight: bold;
-    @media (max-width: 950px) {
-      font-size: 0.7rem;
-    }
+    text-align: end;
   }
 }

@@ -16,7 +16,7 @@ const ProgressNotesTitle = ({
   };
 
   return (
-    <div className="progress-notes-title">
+    <div className="progress-notes__title">
       <div>
         <TriangleButton
           handleTriangleClick={handleTriangleClick}
