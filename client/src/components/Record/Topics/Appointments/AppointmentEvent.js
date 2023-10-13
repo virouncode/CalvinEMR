@@ -17,7 +17,7 @@ import {
 import { rooms } from "../../../../utils/rooms";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { statuses } from "../../../../utils/statuses";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import HostsList from "../../../EventForm/HostsList";
 import RoomsList from "../../../EventForm/RoomsList";
 import StatusList from "../../../EventForm/StatusList";
@@ -102,7 +102,7 @@ const AppointmentEvent = ({
     const value = e.target.value;
     if (
       (isRoomOccupied(value) &&
-        (await confirmAlertPopUp({
+        (await confirmAlert({
           content: `${value} will be occupied at this time slot, choose this room anyway ?`,
         }))) ||
       !isRoomOccupied(value)
@@ -162,7 +162,7 @@ const AppointmentEvent = ({
         eventInfos.room === "To be determined" ||
         hypotheticAvailableRooms.includes(eventInfos.room) ||
         (!hypotheticAvailableRooms.includes(eventInfos.room) &&
-          (await confirmAlertPopUp({
+          (await confirmAlert({
             content: `${eventInfos.room} will be occupied at this time slot, book it anyway ?`,
           })))
       ) {
@@ -261,7 +261,7 @@ const AppointmentEvent = ({
         eventInfos.room === "To be determined" ||
         hypotheticAvailableRooms.includes(eventInfos.room) ||
         (!hypotheticAvailableRooms.includes(eventInfos.room) &&
-          (await confirmAlertPopUp({
+          (await confirmAlert({
             content: `${eventInfos.room} will be occupied at this time slot, book it anyway ?`,
           })))
       ) {
@@ -389,7 +389,7 @@ const AppointmentEvent = ({
 
   const handleDeleteClick = async (e) => {
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this item ?",
       })
     ) {

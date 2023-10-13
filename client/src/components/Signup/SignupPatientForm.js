@@ -15,8 +15,8 @@ import RelationshipsForm from "./RelationshipsForm";
 
 const SignupPatientForm = () => {
   const { auth, user, clinic, setClinic } = useAuth();
-  const [patientAdded, setPatientAdded] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
   const [relationships, setRelationships] = useState([]);
   const [formDatas, setFormDatas] = useState({
@@ -274,7 +274,9 @@ const SignupPatientForm = () => {
         "clinic",
         JSON.stringify({ ...clinic, patientsInfos: response2.data })
       );
-      setPatientAdded(true);
+      setSuccessMsg(
+        "Patient added successfully, you will be redirected to the login page"
+      );
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setErrMsg(err.message);
@@ -322,9 +324,10 @@ const SignupPatientForm = () => {
 
   const navigate = useNavigate();
 
-  return !patientAdded ? (
+  return (
     <>
       {errMsg && <p className="signup-patient-err">{errMsg}</p>}
+      {successMsg && <p className="signup-patient-success">{successMsg}</p>}
       <form className="signup-patient-form" onSubmit={handleSubmit}>
         <div className="signup-patient-form-column">
           <div className="signup-patient-form-row">
@@ -574,8 +577,6 @@ const SignupPatientForm = () => {
         </div>
       </form>
     </>
-  ) : (
-    <span className="signup-patient-confirm">Patient added successfully</span>
   );
 };
 

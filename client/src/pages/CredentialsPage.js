@@ -5,19 +5,20 @@ import VerifyPassword from "../components/Credentials/VerifyPassword";
 
 const CredentialsPage = () => {
   const [verified, setVerified] = useState(false);
-
   return (
-    <div className="credentials">
+    <>
       <Helmet>
         <title>Credentials</title>
       </Helmet>
-      <div className="credentials-title">Change email/password</div>
-      {!verified ? (
-        <VerifyPassword setVerified={setVerified} />
-      ) : (
-        <CredentialsForm />
-      )}
-    </div>
+      <section className="credentials-section">
+        <h2 className="credentials-section-title">Change email/password</h2>
+        {!verified ? (
+          <VerifyPassword setVerified={setVerified} />
+        ) : (
+          <CredentialsForm />
+        )}
+      </section>
+    </>
   );
 };
 

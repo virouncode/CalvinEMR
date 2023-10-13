@@ -6,7 +6,7 @@ import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { pharmacySchema } from "../../../../validation/pharmacyValidation";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import CountriesList from "../../../Lists/CountriesList";
 
 const PharmacyItem = ({
@@ -57,7 +57,7 @@ const PharmacyItem = ({
     }
 
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: `You're about to update ${itemInfos.name} infos. This pharmacy will be updated for all patients, proceed ?`,
       })
     ) {
@@ -91,7 +91,7 @@ const PharmacyItem = ({
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content:
           "Do you really want to remove this pharmacy from the patient record ?",
       })

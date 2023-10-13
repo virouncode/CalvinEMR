@@ -9,14 +9,17 @@ const PatientRecordPage = () => {
   const params = useParams();
   const { clinic } = useAuth();
   return (
-    <main className="patient-display">
+    <>
       <Helmet>
         <title>
           Patient: {patientIdToName(clinic.patientsInfos, parseInt(params.id))}
         </title>
       </Helmet>
-      <PatientRecord />
-    </main>
+      <setion className="patient-record-section">
+        <h2 className="patient-record-section-title">Patient Medical Record</h2>
+        <PatientRecord />
+      </setion>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NewWindow from "react-new-window";
+import FakeWindow from "../Presentation/FakeWindow";
 import AvailabilityEditor from "./AvailabilityEditor";
 
 const Availability = () => {
@@ -18,23 +18,17 @@ const Availability = () => {
         ></i>
       </div>
       {editVisible && (
-        <NewWindow
-          title="Edit my availabilty"
-          features={{
-            toolbar: "no",
-            scrollbars: "no",
-            menubar: "no",
-            status: "no",
-            directories: "no",
-            width: 1000,
-            height: 350,
-            left: 320,
-            top: 200,
-          }}
-          onUnload={() => setEditVisible(false)}
+        <FakeWindow
+          title="MY AVAILABILITY"
+          width={1000}
+          height={350}
+          x={(window.innerWidth - 1000) / 2}
+          y={(window.innerHeight - 350) / 2}
+          color={"#94bae8"}
+          setPopUpVisible={setEditVisible}
         >
           <AvailabilityEditor setEditVisible={setEditVisible} />
-        </NewWindow>
+        </FakeWindow>
       )}
     </>
   );

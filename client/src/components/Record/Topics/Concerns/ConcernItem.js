@@ -9,7 +9,7 @@ import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { concernSchema } from "../../../../validation/concernValidation";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
 const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
@@ -28,7 +28,7 @@ const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this item ?",
       })
     ) {

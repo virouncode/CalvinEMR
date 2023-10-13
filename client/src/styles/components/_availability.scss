@@ -43,6 +43,9 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 5px;
+            &-day {
+                font-weight: bold;
+            }
             &-time {
                 margin-right: 15px;
                 margin-left: 15px;
@@ -62,15 +65,18 @@
         &-btn {
             text-align: center;
             margin-top: 10px;
+            button {
+                margin-left: 10px;
+            }
         }
         &-duration {
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            width:45%;
+            width:100%;
             margin-top: 20px;
-            p {
-                padding:0;
+            label {
+                font-weight: bold;
                 margin-right: 10px;
             }
         }

@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const ConfirmDialog = ({ title, content, onConfirm, onCancel }) => {
+  useEffect(() => {
+    const handleKeyboardShortcut = (e) => {
+      if (e.keyCode === 13) {
+        onConfirm();
+      }
+    };
+    window.addEventListener("keydown", handleKeyboardShortcut);
+    return () => window.removeEventListener("keydown", handleKeyboardShortcut);
+  }, [onConfirm]);
   return (
     <>
       <div className="confirm-container">

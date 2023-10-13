@@ -5,7 +5,7 @@ import { putPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
 import { formatAge } from "../../../utils/formatAge";
 import { vaccinesList } from "../../../utils/vaccines";
-import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal from "../../Confirm/ConfirmGlobal";
 import SplittedHeader from "../../Presentation/SplittedHeader";
 import VaccineCaption from "../Topics/Vaccines/VaccineCaption";
 import VaccineHeaderAge from "../Topics/Vaccines/VaccineHeaderAge";
@@ -142,7 +142,7 @@ const VaccinesPU = ({
                   )}
                 </div>
               </div>
-              <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+              <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
               <ToastContainer
                 enableMultiContainer
                 containerId={"B"}

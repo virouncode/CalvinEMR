@@ -16,7 +16,7 @@ import {
 } from "../../../../utils/measurements";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { measurementSchema } from "../../../../validation/measurementValidation";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
 const MeasurementEvent = ({
   event,
@@ -39,7 +39,7 @@ const MeasurementEvent = ({
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this item ?",
       })
     ) {

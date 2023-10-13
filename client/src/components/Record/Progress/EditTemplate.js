@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal, { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import EditTemplatesList from "./EditTemplatesList";
 
 const EditTemplate = ({
@@ -56,7 +56,7 @@ const EditTemplate = ({
 
   const handleDelete = async () => {
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this template ?",
       })
     ) {
@@ -163,7 +163,7 @@ const EditTemplate = ({
         </button>
         <button onClick={handleCancel}>Cancel</button>
       </div>
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

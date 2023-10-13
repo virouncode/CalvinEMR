@@ -88,7 +88,7 @@ const MessagesExternal = () => {
         selectAllVisible={selectAllVisible}
         setSelectAllVisible={setSelectAllVisible}
       />
-      <div className="messages-section">
+      <div className="messages-content">
         <MessagesLeftBar
           msgType="external"
           section={section}

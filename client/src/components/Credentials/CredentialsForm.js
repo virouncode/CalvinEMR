@@ -78,7 +78,7 @@ const CredentialsForm = () => {
   };
 
   return successMsg ? (
-    <div className="credentials-success">{successMsg}</div>
+    <p className="credentials-success">{successMsg}</p>
   ) : (
     <>
       <form className="credentials-form" onSubmit={handleSubmit}>

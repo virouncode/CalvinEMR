@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal, { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import MedHistoryEvent from "../Topics/MedHistory/MedHistoryEvent";
 import MedHistoryForm from "../Topics/MedHistory/MedHistoryForm";
 
@@ -32,7 +32,7 @@ const MedHistoryPU = ({
     if (
       editCounter.current === 0 ||
       (editCounter.current > 0 &&
-        (await confirmAlertPopUp({
+        (await confirmAlert({
           content:
             "Do you really want to close the window ? Your changes will be lost",
         })))
@@ -169,7 +169,7 @@ const MedHistoryPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp />
+      <ConfirmGlobal />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

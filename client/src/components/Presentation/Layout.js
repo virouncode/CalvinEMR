@@ -8,11 +8,13 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <Welcome />
+
       <main>
+        <Welcome />
         {/* all the children of the Layout component */}
         <Outlet />
-        <ConfirmGlobal />
+        {/********************************************/}
+        <ConfirmGlobal /> {/******* custom confirm modal ********/}
         <ToastContainer
           enableMultiContainer
           containerId={"A"}
@@ -27,7 +29,8 @@ const Layout = () => {
           pauseOnHover
           theme="light"
           limit={1}
-        />
+        />{" "}
+        {/******* toast system *****************/}
       </main>
       {/* <Footer /> */}
     </>

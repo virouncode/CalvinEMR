@@ -9,7 +9,7 @@ import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper"
 import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { medHistorySchema } from "../../../../validation/medHistoryValidation";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
 const MedHistoryEvent = ({
   event,
@@ -86,7 +86,7 @@ const MedHistoryEvent = ({
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this item ?",
       })
     ) {

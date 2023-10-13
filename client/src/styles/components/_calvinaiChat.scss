@@ -4,7 +4,8 @@
       height: 100%;
       margin:40px auto 0;
       display: grid;
-      grid-template-rows: 80% 2% 18%;
+      grid-template-rows: 80% 3% 17%;
+      padding: 10px 0 40px;
       &-content {
           overflow: scroll;
           font-size: 0.85rem;

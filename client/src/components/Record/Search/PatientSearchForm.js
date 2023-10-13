@@ -7,8 +7,7 @@ const PatientSearchForm = ({ search, setSearch }) => {
     setSearch({ ...search, [name]: value });
   };
   return (
-    <section className="patient-search">
-      <h1 className="patient-search-title">Search Patient</h1>
+    <div className="patient-search">
       <form>
         <div className="patient-search-item">
           <label htmlFor="name">Name</label>
@@ -78,7 +77,7 @@ const PatientSearchForm = ({ search, setSearch }) => {
           />
         </div>
       </form>
-    </section>
+    </div>
   );
 };
 

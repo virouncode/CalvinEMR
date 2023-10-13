@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal, { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import MeasurementEvent from "../Topics/Measurements/MeasurementEvent";
 import MeasurementForm from "../Topics/Measurements/MeasurementForm";
 
@@ -47,7 +47,7 @@ const MeasurementsPU = ({
     if (
       editCounter.current === 0 ||
       (editCounter.current > 0 &&
-        (await confirmAlertPopUp({
+        (await confirmAlert({
           content:
             "Do you really want to close the window ? Your changes will be lost",
         })))
@@ -169,7 +169,7 @@ const MeasurementsPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

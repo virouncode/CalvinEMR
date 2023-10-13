@@ -32,6 +32,7 @@ const Calendar = ({ timelineVisible }) => {
   const currentEventElt = useRef(null);
   const currentView = useRef(null);
   const lastCurrentId = useRef("");
+  const eventCounter = useRef(0);
   const [rangeStart, setRangeStart] = useState(
     Date.parse(getWeekRange(user.settings.first_day)[0])
   );
@@ -75,14 +76,24 @@ const Calendar = ({ timelineVisible }) => {
   }, [clinic.staffInfos, user.id, user.title]);
 
   useEffect(() => {
-    const handleDelete = async (e) => {
-      if (
+    const handleKeyboardShortcut = async (event) => {
+      if (event.keyCode === 37 && event.shiftKey) {
+        //arrow left
+        fcRef.current.calendar.prev();
+      } else if (event.keyCode === 39 && event.shiftKey) {
+        //arrow right
+        fcRef.current.calendar.next();
+      } else if (event.keyCode === 84 && event.shiftKey) {
+        //T
+        fcRef.current.calendar.today();
+      } else if (
         currentEvent.current &&
         (currentEvent.current.extendedProps.host === user.id ||
           isSecretary()) &&
-        (e.key === "Backspace" || e.key === "Delete") &&
+        (event.key === "Backspace" || event.key === "Delete") &&
         !formVisible
       ) {
+        //backspace
         if (
           await confirmAlert({
             content: "Do you really want to remove this event ?",
@@ -108,13 +119,36 @@ const Calendar = ({ timelineVisible }) => {
             });
           }
         }
+      } else if (event.keyCode === 40 && event.shiftKey) {
+        const eventsList = document.getElementsByClassName("fc-event");
+        eventCounter.current += 1;
+        eventsList[eventCounter.current % eventsList.length].click();
+        eventsList[eventCounter.current % eventsList.length].scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
+      } else if (event.keyCode === 38 && event.shiftKey) {
+        const eventsList = document.getElementsByClassName("fc-event");
+        eventCounter.current - 1 < 0
+          ? (eventCounter.current = eventsList.length - 1)
+          : (eventCounter.current -= 1);
+        eventsList[eventCounter.current % eventsList.length].click();
+        eventsList[eventCounter.current % eventsList.length].scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
       }
     };
-    document.addEventListener("keydown", handleDelete);
+
+    window.addEventListener("keydown", handleKeyboardShortcut);
+
+    // Clean up the event listener when the component unmounts
     return () => {
-      document.removeEventListener("keydown", handleDelete);
+      window.removeEventListener("keydown", handleKeyboardShortcut);
     };
-  }, [auth.authToken, user.id, events, formVisible, isSecretary, setEvents]);
+  }, [auth.authToken, events, formVisible, isSecretary, setEvents, user.id]); // Empty dependency array means this effect runs once, like componentDidMount
 
   //====================== EVENTS HANDLERS ==========================//
   const handleDeleteEvent = async (e) => {
@@ -786,10 +820,10 @@ const Calendar = ({ timelineVisible }) => {
 
   return events && clinic.staffInfos ? (
     <div className="calendar">
-      <section className="calendar-left-bar">
+      <div className="calendar-left-bar">
         <Shortcutpickr handleShortcutpickrChange={handleShortcutpickrChange} />
         <div className="calendar-left-bar-options">
-          <p>Options</p>
+          <p className="calendar-left-bar-options-title">Options</p>
           <SlotSelect />
           <FirstDaySelect />
           <Availability />
@@ -800,8 +834,8 @@ const Calendar = ({ timelineVisible }) => {
           setHostsIds={setHostsIds}
           remainingStaff={remainingStaff}
         />
-      </section>
-      <section className="calendar-display">
+      </div>
+      <div className="calendar-display">
         {!timelineVisible ? (
           <CalendarView
             slotDuration={user.settings.slot_duration}
@@ -860,7 +894,7 @@ const Calendar = ({ timelineVisible }) => {
             />
           </FakeWindow>
         )}
-      </section>
+      </div>
     </div>
   ) : (
     <div

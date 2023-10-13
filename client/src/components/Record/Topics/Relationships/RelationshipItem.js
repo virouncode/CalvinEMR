@@ -12,7 +12,7 @@ import { patientIdToName } from "../../../../utils/patientIdToName";
 import { relations } from "../../../../utils/relations";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { toInverseRelation } from "../../../../utils/toInverseRelation";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import PatientsSelect from "../../../Lists/PatientsSelect";
 import RelationshipList from "../../../Lists/RelationshipList";
 
@@ -112,7 +112,7 @@ const RelationshipItem = ({
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this item ?",
       })
     ) {

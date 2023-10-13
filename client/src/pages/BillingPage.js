@@ -1,11 +1,22 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import Billing from "../components/Billing/Billing";
+import useAuth from "../hooks/useAuth";
 
 const BillingPage = () => {
+  const { user } = useAuth();
   return (
-    <div className="billing-section">
-      <Billing />
-    </div>
+    <>
+      <Helmet>
+        <title>CalvinAI Chat</title>
+      </Helmet>
+      <section className="billing-section">
+        <h2 className="billing-section-title">
+          {user.title === "Secretary" ? "Billings" : "My billings"}
+        </h2>
+        <Billing />
+      </section>
+    </>
   );
 };
 

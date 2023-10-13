@@ -6,7 +6,7 @@ import useAuth from "../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../utils/firstLetterUpper";
 import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal, { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import SocHistoryForm from "../Topics/Social/SocHistoryForm";
 
 const SocHistoryPU = ({
@@ -51,7 +51,7 @@ const SocHistoryPU = ({
       setPopUpVisible(false);
     } else if (
       editVisible &&
-      (await confirmAlertPopUp({
+      (await confirmAlert({
         content:
           "Do you really want to close the window ? Your changes will be lost",
       }))
@@ -294,7 +294,7 @@ const SocHistoryPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

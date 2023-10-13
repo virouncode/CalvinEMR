@@ -9,7 +9,7 @@ import { toLocalDate, toLocalDateAndTime } from "../../../utils/formatDates";
 import { getAge } from "../../../utils/getAge";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { demographicsSchema } from "../../../validation/demographicsValidation";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal, { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import CountriesList from "../../Lists/CountriesList";
 import DoctorsList from "../../Lists/DoctorsLists";
 import NursesList from "../../Lists/NursesList";
@@ -96,7 +96,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
       setPopUpVisible(false);
     } else if (
       editVisible &&
-      (await confirmAlertPopUp({
+      (await confirmAlert({
         content:
           "Do you really want to close the window ? Your changes will be lost",
       }))
@@ -663,7 +663,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp />
+      <ConfirmGlobal />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

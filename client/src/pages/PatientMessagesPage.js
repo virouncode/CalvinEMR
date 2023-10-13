@@ -15,23 +15,26 @@ const PatientMessagesPage = () => {
       <Helmet>
         <title>Messages</title>
       </Helmet>
-      <MessagesPatient />
-      {popUpVisible && (
-        <FakeWindow
-          title="AI AGREEMENT"
-          width={800}
-          height={600}
-          x={(window.innerWidth - 800) / 2}
-          y={(window.innerHeight - 600) / 2}
-          color="red"
-          setPopUpVisible={setPopUpVisible}
-        >
-          <PatientAIAgreement
-            patientInfos={user.demographics}
+      <section className="patient-messages-section">
+        <h2 className="patient-messages-section-title">Messages</h2>
+        <MessagesPatient />
+        {popUpVisible && (
+          <FakeWindow
+            title="AI AGREEMENT"
+            width={800}
+            height={600}
+            x={(window.innerWidth - 800) / 2}
+            y={(window.innerHeight - 600) / 2}
+            color="red"
             setPopUpVisible={setPopUpVisible}
-          />
-        </FakeWindow>
-      )}
+          >
+            <PatientAIAgreement
+              patientInfos={user.demographics}
+              setPopUpVisible={setPopUpVisible}
+            />
+          </FakeWindow>
+        )}
+      </section>
     </>
   );
 };

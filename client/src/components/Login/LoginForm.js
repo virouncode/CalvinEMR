@@ -44,7 +44,6 @@ const LoginForm = () => {
       setErrMsg(err.message);
       return;
     }
-
     const formDatasToPost = {
       ...formDatas,
       email: formDatas.email.toLowerCase(),
@@ -81,6 +80,8 @@ const LoginForm = () => {
         const title = response2?.data?.title;
         const sign = response2?.data?.sign;
         const licence_nbr = response2?.data?.licence_nbr;
+        const ai_consent = response2?.data?.ai_consent;
+        console.log(ai_consent);
         //Get user settings
         const response3 = await axiosXano.get(`/settings?staff_id=${id}`, {
           headers: {
@@ -121,6 +122,7 @@ const LoginForm = () => {
           title,
           sign,
           licence_nbr,
+          ai_consent,
           settings,
           unreadMessagesNbr,
           unreadMessagesExternalNbr,
@@ -135,6 +137,7 @@ const LoginForm = () => {
             title,
             sign,
             licence_nbr,
+            ai_consent,
             settings,
             unreadMessagesNbr,
             unreadMessagesExternalNbr,

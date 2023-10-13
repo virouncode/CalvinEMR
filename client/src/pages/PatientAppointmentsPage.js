@@ -6,16 +6,21 @@ import PastAppointments from "../components/PatientPortal/AppointmentsPatient/Pa
 
 const PatientAppointmentsPage = () => {
   return (
-    <div className="patient-appointments-section">
+    <>
       <Helmet>
         <title>Appointments</title>
       </Helmet>
-      <div>
-        <PastAppointments />
-        <NextAppointments />
-      </div>
-      <NewAppointment />
-    </div>
+      <section className="patient-appointments-section">
+        <h2 className="patient-appointments-section-title">Appointments</h2>
+        <div className="patient-appointments-section-content">
+          <div>
+            <PastAppointments />
+            <NextAppointments />
+          </div>
+          <NewAppointment />
+        </div>
+      </section>
+    </>
   );
 };
 

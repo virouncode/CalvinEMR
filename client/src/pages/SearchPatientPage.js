@@ -1,15 +1,18 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import BrowsePatient from "../components/Record/Search/BrowsePatient";
+import SearchPatient from "../components/Record/Search/SearchPatient";
 
 const SearchPatientPage = () => {
   return (
-    <main className="browse-patient">
+    <>
       <Helmet>
         <title>Patients</title>
       </Helmet>
-      <BrowsePatient />
-    </main>
+      <section className="search-patient-section">
+        <h2 className="search-patient-section-title">Search Patient</h2>
+        <SearchPatient />
+      </section>
+    </>
   );
 };
 

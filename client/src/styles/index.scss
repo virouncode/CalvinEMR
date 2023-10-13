@@ -1,6 +1,7 @@
 @import "./settings";
 @import "./pages/loginPage";
 @import "./pages/calendarPage";
+@import "./pages/searchPatientPage";
 @import "./pages/missingPage";
 @import "./pages/unauthorizedPage";
 @import "./pages/signupPage";
@@ -11,6 +12,11 @@
 @import "./pages/resetPage";
 @import "./pages/calvinAIPage";
 @import "./pages/referencePage";
+@import "./pages/patientRecordPage";
+@import "./pages/docMailboxPage";
+@import "./pages/messagesPage";
+@import "./pages/billingPage";
+@import "./pages/messagesPatientPage";
 @import "../../node_modules/@fortawesome/fontawesome-free/css/fontawesome";
 @import "../../node_modules/@fortawesome/fontawesome-free/css/brands";
 @import "../../node_modules/@fortawesome/fontawesome-free/css/solid";
@@ -30,7 +36,6 @@
 @import "./components/firstDaySelect";
 @import "./components/welcome";
 @import "./components/toggleView";
-@import "./components/browsePatient";
 @import "./components/patientSearchForm";
 @import "./components/patientSearchResult";
 @import "./components/patientRecord";
@@ -80,6 +85,8 @@
 @import "./components/diagnosisSearch";
 @import "./components/hinSearch";
 @import "./components/reference";
+@import "./components/missing";
+@import "./components/unauthorized";
 
 
 

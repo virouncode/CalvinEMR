@@ -83,7 +83,7 @@ const Messages = () => {
         selectAllVisible={selectAllVisible}
         setSelectAllVisible={setSelectAllVisible}
       />
-      <div className="messages-section">
+      <div className="messages-content">
         <MessagesLeftBar
           msgType="internal"
           section={section}

@@ -7,17 +7,19 @@ const PatientCredentialsPage = () => {
   const [verified, setVerified] = useState(false);
 
   return (
-    <div className="credentials">
+    <>
       <Helmet>
         <title>Credentials</title>
       </Helmet>
-      <div className="credentials-title">Change email/password</div>
-      {!verified ? (
-        <VerifyPasswordPatient setVerified={setVerified} />
-      ) : (
-        <CredentialsFormPatient />
-      )}
-    </div>
+      <section className="credentials-section">
+        <h2 className="credentials-section-title">Change email/password</h2>
+        {!verified ? (
+          <VerifyPasswordPatient setVerified={setVerified} />
+        ) : (
+          <CredentialsFormPatient />
+        )}
+      </section>
+    </>
   );
 };
 

@@ -28,15 +28,15 @@ const Welcome = () => {
 
   return (
     user.id && (
-      <div className="welcome">
-        <h2>New Life Fertility Center</h2>
+      <section className="welcome-section">
+        <h2>New Life Fertility Center</h2> {/* To customize for each clinic */}
         <div>
           {helloMessage}
           {", "}
           {user.title === "Doctor" && "Dr. "}
           {user.name}
         </div>
-      </div>
+      </section>
     )
   );
 };

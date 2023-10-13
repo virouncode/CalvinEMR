@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 import { patientIdToName } from "../../../utils/patientIdToName";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal, { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import FakeWindow from "../../Presentation/FakeWindow";
 import MedicationEvent from "../Topics/Medications/MedicationEvent";
 import MedicationForm from "../Topics/Medications/MedicationForm";
@@ -46,7 +46,7 @@ const MedicationsPU = ({
     if (
       editCounter.current === 0 ||
       (editCounter.current > 0 &&
-        (await confirmAlertPopUp({
+        (await confirmAlert({
           content:
             "Do you really want to close the window ? Your changes will be lost",
         })))
@@ -223,7 +223,7 @@ const MedicationsPU = ({
           <PrescriptionPU medsRx={medsRx} patientInfos={patientInfos} />
         </FakeWindow>
       )}
-      <ConfirmPopUp />
+      <ConfirmGlobal />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

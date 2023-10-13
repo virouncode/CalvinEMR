@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { putPatientRecord } from "../../../api/fetchRecords";
 import useAuth from "../../../hooks/useAuth";
-import ConfirmPopUp, { confirmAlertPopUp } from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal, { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import FamilyDoctorItem from "../Topics/FamilyDoctors/FamilyDoctorItem";
 import FamilyDoctorsList from "../Topics/FamilyDoctors/FamilyDoctorsList";
 
@@ -30,7 +30,7 @@ const FamilyDoctorsPU = ({
     if (
       editCounter.current === 0 ||
       (editCounter.current > 0 &&
-        (await confirmAlertPopUp({
+        (await confirmAlert({
           content: "Do you really want to close the window ?",
         })))
     ) {
@@ -172,7 +172,7 @@ const FamilyDoctorsPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp />
+      <ConfirmGlobal />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

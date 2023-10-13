@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal from "../../Confirm/ConfirmGlobal";
 import Eform from "../Topics/Eforms/Eform";
 import EformItem from "../Topics/Eforms/EformItem";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
@@ -226,7 +226,7 @@ const EformsPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

@@ -4,12 +4,15 @@ import Reference from "../components/Reference/Reference";
 
 const ReferencePage = () => {
   return (
-    <div className="reference-section">
+    <>
       <Helmet>
         <title>Reference</title>
       </Helmet>
-      <Reference />
-    </div>
+      <section className="reference-section">
+        <h2 className="reference-section-title">Useful Links</h2>
+        <Reference />
+      </section>
+    </>
   );
 };
 

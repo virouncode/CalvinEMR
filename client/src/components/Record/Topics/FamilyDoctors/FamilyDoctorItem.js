@@ -6,7 +6,7 @@ import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { doctorSchema } from "../../../../validation/doctorValidation";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import CountriesList from "../../../Lists/CountriesList";
 
 const FamilyDoctorItem = ({
@@ -59,7 +59,7 @@ const FamilyDoctorItem = ({
     }
 
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: `You're about to update ${itemInfos.name} infos. This doctor will be updated for all patients, proceed ?`,
       })
     ) {
@@ -93,7 +93,7 @@ const FamilyDoctorItem = ({
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content:
           "Do you really want to remove this doctor from the patient record ?",
       })

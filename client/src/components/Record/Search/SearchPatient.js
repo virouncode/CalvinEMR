@@ -3,7 +3,7 @@ import useAuth from "../../../hooks/useAuth";
 import PatientSearchForm from "./PatientSearchForm";
 import PatientSearchResult from "./PatientSearchResult";
 
-const BrowsePatient = () => {
+const SearchPatient = () => {
   const direction = useRef(false);
   const { clinic } = useAuth();
   const [sortedPatientsInfos, setSortedPatientsInfos] = useState(
@@ -65,4 +65,4 @@ const BrowsePatient = () => {
   );
 };
 
-export default BrowsePatient;
+export default SearchPatient;

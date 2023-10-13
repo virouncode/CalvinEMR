@@ -140,6 +140,10 @@ const AvailabilityEditor = ({ setEditVisible }) => {
     setDefaultDurationMin(parseInt(value));
   };
 
+  const handleCancel = () => {
+    setEditVisible(false);
+  };
+
   return (
     scheduleAfternoon &&
     scheduleMorning &&
@@ -166,7 +170,7 @@ const AvailabilityEditor = ({ setEditVisible }) => {
             />
           ))}
           <div className="availability-form-duration">
-            <p>Default Appointment Duration</p>
+            <label>Default appointment duration</label>
             <DurationPicker
               durationHours={defaultDurationHours.toString()}
               durationMin={defaultDurationMin.toString()}
@@ -178,6 +182,7 @@ const AvailabilityEditor = ({ setEditVisible }) => {
           </div>
           <div className="availability-form-btn">
             <input type="submit" value="Save" />
+            <button onClick={handleCancel}>Cancel</button>
           </div>
         </form>
       </div>

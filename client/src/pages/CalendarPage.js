@@ -7,16 +7,19 @@ const CalendarPage = () => {
   const [timelineVisible, setTimelineVisible] = useState(false);
 
   return (
-    <section className="calendar-section">
+    <>
       <Helmet>
         <title>Calendar</title>
       </Helmet>
-      <ToggleView
-        setTimelineVisible={setTimelineVisible}
-        timelineVisible={timelineVisible}
-      />
-      <Calendar timelineVisible={timelineVisible} />
-    </section>
+      <section className="calendar-section">
+        <h2 className="calendar-section-title">Calendar</h2>
+        <ToggleView
+          setTimelineVisible={setTimelineVisible}
+          timelineVisible={timelineVisible}
+        />
+        <Calendar timelineVisible={timelineVisible} />
+      </section>
+    </>
   );
 };
 

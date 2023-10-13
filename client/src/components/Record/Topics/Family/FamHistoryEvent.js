@@ -9,7 +9,7 @@ import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper"
 import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { famHistorySchema } from "../../../../validation/famHistoryValidation";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import RelativesList from "../../../Lists/RelativesList";
 
 const FamHistoryEvent = ({
@@ -87,7 +87,7 @@ const FamHistoryEvent = ({
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this item ?",
       })
     ) {

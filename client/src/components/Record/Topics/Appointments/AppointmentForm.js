@@ -13,7 +13,7 @@ import formatName from "../../../../utils/formatName";
 import { rooms } from "../../../../utils/rooms";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { statuses } from "../../../../utils/statuses";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import HostsList from "../../../EventForm/HostsList";
 import RoomsList from "../../../EventForm/RoomsList";
 import StatusList from "../../../EventForm/StatusList";
@@ -86,7 +86,7 @@ const AppointmentForm = ({
     const value = e.target.value;
     if (
       (isRoomOccupied(value) &&
-        (await confirmAlertPopUp({
+        (await confirmAlert({
           content: `${value} will be occupied at this time slot, choose this room anyway ?`,
         }))) ||
       !isRoomOccupied(value)
@@ -132,7 +132,7 @@ const AppointmentForm = ({
         formDatas.room === "To be determined" ||
         hypotheticAvailableRooms.includes(formDatas.room) ||
         (!hypotheticAvailableRooms.includes(formDatas.room) &&
-          (await confirmAlertPopUp({
+          (await confirmAlert({
             content: `${formDatas.room} will be occupied at this time slot, book it anyway ?`,
           })))
       ) {
@@ -236,7 +236,7 @@ const AppointmentForm = ({
         formDatas.room === "To be determined" ||
         hypotheticAvailableRooms.includes(formDatas.room) ||
         (!hypotheticAvailableRooms.includes(formDatas.room) &&
-          (await confirmAlertPopUp({
+          (await confirmAlert({
             content: `${formDatas.room} will be occupied at this time slot, book it anyway ?`,
           })))
       ) {

@@ -4,15 +4,17 @@ import AccountPatientForm from "../components/PatientPortal/AccountPatient/Accou
 
 const PatientAccountPage = () => {
   return (
-    <div className="patient-account-section">
+    <>
       <Helmet>
         <title>My account</title>
       </Helmet>
-      <div className="patient-account-section-title">
-        My personal informations
-      </div>
-      <AccountPatientForm />
-    </div>
+      <section className="patient-account-section">
+        <h2 className="patient-account-section-title">
+          My personal informations
+        </h2>
+        <AccountPatientForm />
+      </section>
+    </>
   );
 };
 

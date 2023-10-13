@@ -65,13 +65,10 @@ const Billing = () => {
     };
     fetchBillings();
     return () => abortController.abort();
-  }, [auth.authToken, user.id]);
+  }, [auth.authToken, user.id, user.title]);
 
   return (
     <div className="billing-table">
-      <h2 className="billing-table-title">
-        {user.title === "Secretary" ? "Billings" : "My billings"}
-      </h2>
       {errMsg && <p className="billing-table-err">{errMsg}</p>}
       <div className="billing-table-btn-container">
         {user.title !== "Secretary" && (

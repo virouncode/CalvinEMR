@@ -1,19 +1,17 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { NavLink } from "react-router-dom";
+import Unauthorized from "../components/Unauthorized/Unauthorized";
 
 const UnauthorizedPage = () => {
   return (
-    <main className="unauthorized">
+    <>
       <Helmet>
-        <title>Calvin EMR Unauthorized</title>
+        <title>Unauthorized</title>
       </Helmet>
-      <h2>Unauthorized Page : you don't have access to the requested page</h2>
-      <p>Please contact admin</p>
-      <p style={{ textDecoration: "underline" }}>
-        <NavLink to="/login">Return to login page</NavLink>
-      </p>
-    </main>
+      <section className="unauthorized-section">
+        <Unauthorized />
+      </section>
+    </>
   );
 };
 

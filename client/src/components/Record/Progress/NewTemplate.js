@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import AlertMsg from "../../Alert/AlertMsg";
-import ConfirmPopUp from "../../Confirm/ConfirmPopUp";
+import ConfirmGlobal from "../../Confirm/ConfirmGlobal";
 import CopyTemplatesList from "./CopyTemplatesList";
 
 const NewTemplate = ({
@@ -135,7 +135,7 @@ const NewTemplate = ({
         <button onClick={handleSave}>Save</button>
         <button onClick={handleCancel}>Cancel</button>
       </div>
-      <ConfirmPopUp containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

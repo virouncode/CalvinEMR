@@ -25,8 +25,8 @@ import PatientRecordPage from "./pages/PatientRecordPage";
 import ReferencePage from "./pages/ReferencePage";
 import ResetPage from "./pages/ResetPage";
 import SearchPatientPage from "./pages/SearchPatientPage";
-import SignupPagePatient from "./pages/SignupPagePatient";
-import SignupPageStaff from "./pages/SignupPageStaff";
+import SignupPatientPage from "./pages/SignupPatientPage";
+import SignupStaffPage from "./pages/SignupStaffPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 const App = () => {
@@ -70,34 +70,32 @@ const App = () => {
           <Route index element={<CalendarPage />} />
           <Route path="search-patient" element={<SearchPatientPage />} />
           <Route path="patient-record/:id" element={<PatientRecordPage />} />
-          <Route path="signup-patient" element={<SignupPagePatient />} />
-          <Route path="messages" element={<MessagesPage />} />
+          <Route path="signup-patient" element={<SignupPatientPage />} />
           <Route path="doc-inbox" element={<DocMailboxPage />} />
+          <Route path="messages" element={<MessagesPage />} />
           <Route
             path="messages/:messageId/:sectionName/:msgType"
             element={<MessagesPage />}
           />
           <Route path="reference" element={<ReferencePage />} />
-          <Route path="credentials" element={<CredentialsPage />} />
           <Route path="calvinai" element={<CalvinAIPage />} />
           <Route path="billing" element={<BillingPage />} />
           <Route path="my-account" element={<MyAccountPage />} />
+          <Route path="credentials" element={<CredentialsPage />} />
         </Route>
         <Route element={<RequireAuth allowedAccesses={["Admin"]} />}>
-          <Route path="signup-staff" element={<SignupPageStaff />} />
+          <Route path="signup-staff" element={<SignupStaffPage />} />
         </Route>
       </Route>
       <Route path="/" element={<Layout3 />}>
-        {/* public routes */}
-        <Route path="patient/unauthorized" element={<UnauthorizedPage />} />
         {/* protected routes */}
         <Route element={<RequireAuthPatient allowedAccesses={["Patient"]} />}>
           <Route path="patient/messages" element={<PatientMessagesPage />} />
-          <Route path="patient/my-account" element={<PatientAccountPage />} />
           <Route
             path="patient/appointments"
             element={<PatientAppointmentsPage />}
           />
+          <Route path="patient/my-account" element={<PatientAccountPage />} />
           <Route
             path="patient/credentials"
             element={<PatientCredentialsPage />}

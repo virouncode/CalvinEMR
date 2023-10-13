@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 
@@ -10,7 +11,7 @@ const StaffAIChatAgreement = ({ setStart }) => {
     else setAgreed(false);
   };
   const handleStart = async () => {
-    if (agreed) {
+    try {
       const response = await axiosXano.get(`/staff/${user.id}`, {
         headers: {
           "Content-Type": "application/json",
@@ -25,8 +26,16 @@ const StaffAIChatAgreement = ({ setStart }) => {
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...user, ai_consent: true })
+      );
       setStart(true);
-    } else alert("Please agree to the terms and conditions");
+    } catch (err) {
+      toast.error(`Unable to save agreement: ${err.message}`, {
+        containerId: "A",
+      });
+    }
   };
 
   return (
@@ -167,7 +176,9 @@ const StaffAIChatAgreement = ({ setStart }) => {
         <label htmlFor="agreement">
           I agree to the terms and conditions outlined in this disclaimer.
         </label>
-        <button onClick={handleStart}>Start</button>
+        <button disabled={!agreed} onClick={handleStart}>
+          Start
+        </button>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import { staffSchema } from "../../validation/staffValidation";
 
 const SignupStaffForm = () => {
   const { auth, clinic, setClinic } = useAuth();
-  const [staffAdded, setStaffAdded] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
   const navigate = useNavigate();
@@ -311,15 +311,18 @@ const SignupStaffForm = () => {
         "clinic",
         JSON.stringify({ ...clinic, staffInfos: response2.data })
       );
-      setStaffAdded(true);
+      setSuccessMsg(
+        "Staff member added successfully, you will be redirected to the login page"
+      );
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setErrMsg(err.message);
     }
   };
-  return !staffAdded ? (
+  return (
     <>
       {errMsg && <p className="signup-staff-err">{errMsg}</p>}
+      {successMsg && <p className="signup-staff-success">{successMsg}</p>}
       <form className="signup-staff-form" onSubmit={handleSubmit}>
         <div className="signup-staff-form-column">
           <div className="signup-staff-form-row">
@@ -519,8 +522,6 @@ const SignupStaffForm = () => {
         </div>
       </form>
     </>
-  ) : (
-    <p className="signup-staff-confirm">Staff added successfully</p>
   );
 };
 

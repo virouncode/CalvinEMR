@@ -25,19 +25,9 @@ const PatientRecord = () => {
 
   return patientInfos ? (
     <>
-      <div className="patient-header">
-        <p></p>
-        <h1>Patient Medical Record</h1>
-        <p>
-          <button
-            type="button"
-            className="patient-btn-fold"
-            onClick={handleClick}
-          >
-            {allContentsVisible ? "Fold All" : "Unfold All"}
-          </button>
-        </p>
-      </div>
+      <button type="button" className="patient-btn-fold" onClick={handleClick}>
+        {allContentsVisible ? "Fold All" : "Unfold All"}
+      </button>
       <div className="patient-record">
         <PatientMenuLeft
           patientInfos={patientInfos}

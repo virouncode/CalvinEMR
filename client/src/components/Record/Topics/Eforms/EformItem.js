@@ -4,7 +4,7 @@ import { deletePatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
 const EformItem = ({ item, fetchRecord, showDocument }) => {
   //HOOKS
@@ -12,7 +12,7 @@ const EformItem = ({ item, fetchRecord, showDocument }) => {
 
   const handleDeleteClick = async (e) => {
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this item ?",
       })
     ) {

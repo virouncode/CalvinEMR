@@ -6,24 +6,8 @@
     grid-template-columns: 20% 60% 20%;
     align-items: flex-start;
 }
-
-.patient-header {
-    margin: 0 auto 20px;
-    width : 97%;
-    display:flex;
-    align-items: center;
-    .patient-btn-fold {
-        padding : 5px 10px;
-        cursor : pointer;
-        font-size: 0.8rem;
-    }
-    p {
-        flex:1.5;
-    }
-    h1{
-        flex:0.6;
-        font-size: 1.2rem;
-        text-align: center;
-    }
-
+.patient-btn-fold {
+    display:block;
+    padding : 5px 10px;
+    margin: 0 auto 5px;
 }

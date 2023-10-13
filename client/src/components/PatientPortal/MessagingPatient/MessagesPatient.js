@@ -75,7 +75,7 @@ const MessagesPatient = () => {
         selectAllVisible={selectAllVisible}
         setSelectAllVisible={setSelectAllVisible}
       />
-      <div className="messages-section">
+      <div className="messages-content">
         <MessagesPatientLeftBar
           section={section}
           setSection={setSection}

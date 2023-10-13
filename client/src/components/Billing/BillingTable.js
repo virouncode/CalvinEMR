@@ -10,11 +10,6 @@ const BillingTable = ({ billings, setBillings, setErrMsg, filterDatas }) => {
     (billing) =>
       billing.date_created >= Date.parse(new Date(filterDatas.date_start)) &&
       billing.date_created <= Date.parse(new Date(filterDatas.date_end))
-    // &&
-    // billing.referrer_ohip_billing_nbr.toString().includes(filterDatas.ohip) &&
-    // clinic.patientsInfos
-    //   .find(({ id }) => id === billing.patient_id)
-    //   .health_insurance_nbr.includes(filterDatas.hin)
   );
 
   const handleSort = (columnName) => {
@@ -28,7 +23,18 @@ const BillingTable = ({ billings, setBillings, setErrMsg, filterDatas }) => {
       <thead>
         <tr>
           <th onClick={() => handleSort("date_created")}>Date</th>
-          <th style={{ textDecoration: "none", cursor: "default" }}>
+          <th
+            style={
+              user.title === "Secretary"
+                ? { textDecoration: "underline", cursor: "pointer" }
+                : { textDecoration: "none", cursor: "default" }
+            }
+            onClick={
+              user.title === "Secretary"
+                ? () => handleSort("provider_id")
+                : null
+            }
+          >
             Provider OHIP nbr
           </th>
           <th onClick={() => handleSort("referrer_ohip_billing_nbr")}>

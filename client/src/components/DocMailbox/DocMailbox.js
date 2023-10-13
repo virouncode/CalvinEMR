@@ -7,14 +7,13 @@ import DocMailboxAssignedPracticianForward from "./DocMailboxAssignedPracticianF
 import DocMailboxForm from "./DocMailboxForm";
 import DocMailboxItem from "./DocMailboxItem";
 
-const DocMailboxTable = () => {
+const DocMailbox = () => {
   //HOOKS
   const { user, auth, clinic } = useAuth();
   const editCounter = useRef(0);
   const [documents, setDocuments] = useState(null);
   const [addVisible, setAddVisible] = useState(false);
   const [forwardVisible, setForwardVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
@@ -94,72 +93,33 @@ const DocMailboxTable = () => {
 
   return (
     <>
-      {!isLoading ? (
-        documents && (
-          <>
-            <h1 className="docmailbox-title">Documents Mailbox</h1>
-            {errMsg && <div className="docmailbox-err">{errMsg}</div>}
-            <table className="docmailbox-table">
-              <thead>
-                <tr>
-                  <th onClick={() => handleSort("description")}>Description</th>
-                  <th onClick={() => handleSort("name")}>File Name</th>
-                  <th onClick={() => handleSort("type")}>Type</th>
-                  <th onClick={() => handleSort("patient_id")}>
-                    Related patient
-                  </th>
-                  <th onClick={() => handleSort("created_by_id")}>
-                    Created By
-                  </th>
-                  <th onClick={() => handleSort("date_created")}>Created On</th>
-                  <th style={{ textDecoration: "none", cursor: "default" }}>
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {columnToSort === "name" || columnToSort === "type"
-                  ? direction.current
-                    ? documents
-                        .sort((a, b) =>
-                          a.file[columnToSort]
-                            ?.toString()
-                            .localeCompare(b.file[columnToSort]?.toString())
-                        )
-                        .map((document) => (
-                          <DocMailboxItem
-                            item={document}
-                            key={document.id}
-                            showDocument={showDocument}
-                            setErrMsg={setErrMsg}
-                            setDocuments={setDocuments}
-                            setForwardVisible={setForwardVisible}
-                            forwardVisible={forwardVisible}
-                          />
-                        ))
-                    : documents
-                        .sort((a, b) =>
-                          b.file[columnToSort]
-                            ?.toString()
-                            .localeCompare(a.file[columnToSort]?.toString())
-                        )
-                        .map((document) => (
-                          <DocMailboxItem
-                            item={document}
-                            key={document.id}
-                            showDocument={showDocument}
-                            setErrMsg={setErrMsg}
-                            setDocuments={setDocuments}
-                            setForwardVisible={setForwardVisible}
-                            forwardVisible={forwardVisible}
-                          />
-                        ))
-                  : direction.current
+      {documents ? (
+        <>
+          {errMsg && <div className="docmailbox-err">{errMsg}</div>}
+          <table className="docmailbox-table">
+            <thead>
+              <tr>
+                <th onClick={() => handleSort("description")}>Description</th>
+                <th onClick={() => handleSort("name")}>File Name</th>
+                <th onClick={() => handleSort("type")}>Type</th>
+                <th onClick={() => handleSort("patient_id")}>
+                  Related patient
+                </th>
+                <th onClick={() => handleSort("created_by_id")}>Created By</th>
+                <th onClick={() => handleSort("date_created")}>Created On</th>
+                <th style={{ textDecoration: "none", cursor: "default" }}>
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {columnToSort === "name" || columnToSort === "type"
+                ? direction.current
                   ? documents
                       .sort((a, b) =>
-                        a[columnToSort]
+                        a.file[columnToSort]
                           ?.toString()
-                          .localeCompare(b[columnToSort]?.toString())
+                          .localeCompare(b.file[columnToSort]?.toString())
                       )
                       .map((document) => (
                         <DocMailboxItem
@@ -174,9 +134,9 @@ const DocMailboxTable = () => {
                       ))
                   : documents
                       .sort((a, b) =>
-                        b[columnToSort]
+                        b.file[columnToSort]
                           ?.toString()
-                          .localeCompare(a[columnToSort]?.toString())
+                          .localeCompare(a.file[columnToSort]?.toString())
                       )
                       .map((document) => (
                         <DocMailboxItem
@@ -188,36 +148,67 @@ const DocMailboxTable = () => {
                           setForwardVisible={setForwardVisible}
                           forwardVisible={forwardVisible}
                         />
-                      ))}
-              </tbody>
-            </table>
-            <div className="docmailbox-btn-container">
-              <button
-                disabled={addVisible || forwardVisible}
-                onClick={handleAdd}
-              >
-                Upload a document
-              </button>
-            </div>
-            {addVisible && (
-              <DocMailboxForm
-                setAddVisible={setAddVisible}
-                setErrMsg={setErrMsg}
-                setDocuments={setDocuments}
-              />
-            )}
-            {forwardVisible && (
-              <DocMailboxAssignedPracticianForward
-                staffInfos={clinic.staffInfos}
-                handleCheckPractician={handleCheckPractician}
-                isPracticianChecked={isPracticianChecked}
-                assignedId={assignedId}
-                setForwardVisible={setForwardVisible}
-                setDocuments={setDocuments}
-              />
-            )}
-          </>
-        )
+                      ))
+                : direction.current
+                ? documents
+                    .sort((a, b) =>
+                      a[columnToSort]
+                        ?.toString()
+                        .localeCompare(b[columnToSort]?.toString())
+                    )
+                    .map((document) => (
+                      <DocMailboxItem
+                        item={document}
+                        key={document.id}
+                        showDocument={showDocument}
+                        setErrMsg={setErrMsg}
+                        setDocuments={setDocuments}
+                        setForwardVisible={setForwardVisible}
+                        forwardVisible={forwardVisible}
+                      />
+                    ))
+                : documents
+                    .sort((a, b) =>
+                      b[columnToSort]
+                        ?.toString()
+                        .localeCompare(a[columnToSort]?.toString())
+                    )
+                    .map((document) => (
+                      <DocMailboxItem
+                        item={document}
+                        key={document.id}
+                        showDocument={showDocument}
+                        setErrMsg={setErrMsg}
+                        setDocuments={setDocuments}
+                        setForwardVisible={setForwardVisible}
+                        forwardVisible={forwardVisible}
+                      />
+                    ))}
+            </tbody>
+          </table>
+          <div className="docmailbox-btn-container">
+            <button disabled={addVisible || forwardVisible} onClick={handleAdd}>
+              Upload a document
+            </button>
+          </div>
+          {addVisible && (
+            <DocMailboxForm
+              setAddVisible={setAddVisible}
+              setErrMsg={setErrMsg}
+              setDocuments={setDocuments}
+            />
+          )}
+          {forwardVisible && (
+            <DocMailboxAssignedPracticianForward
+              staffInfos={clinic.staffInfos}
+              handleCheckPractician={handleCheckPractician}
+              isPracticianChecked={isPracticianChecked}
+              assignedId={assignedId}
+              setForwardVisible={setForwardVisible}
+              setDocuments={setDocuments}
+            />
+          )}
+        </>
       ) : (
         <CircularProgress />
       )}
@@ -225,4 +216,4 @@ const DocMailboxTable = () => {
   );
 };
 
-export default DocMailboxTable;
+export default DocMailbox;

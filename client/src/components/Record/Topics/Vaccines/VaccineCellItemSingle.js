@@ -4,7 +4,7 @@ import { putPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { getVaccinationLogo } from "../../../../utils/getVaccinationLogo";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import VaccineForm from "./VaccineForm";
 
 const VaccineCellItemSingle = ({
@@ -43,7 +43,7 @@ const VaccineCellItemSingle = ({
       setEditable(false);
     } else {
       if (
-        await confirmAlertPopUp({
+        await confirmAlert({
           content:
             "Do you really want to remove this vaccination ? (vaccination date will be lost",
         })

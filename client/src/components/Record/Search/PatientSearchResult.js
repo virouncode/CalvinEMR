@@ -5,7 +5,7 @@ import PatientResultItem from "./PatientResultItem";
 
 const PatientSearchResult = ({ search, sortedPatientsInfos, handleSort }) => {
   return sortedPatientsInfos ? (
-    <section className="patient-result">
+    <div className="patient-result">
       <table>
         <thead>
           <tr>
@@ -58,7 +58,7 @@ const PatientSearchResult = ({ search, sortedPatientsInfos, handleSort }) => {
             ))}
         </tbody>
       </table>
-    </section>
+    </div>
   ) : (
     <div
       style={{

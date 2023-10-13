@@ -16,16 +16,19 @@ const MessagesPage = () => {
     setMsgsType(name);
   };
   return (
-    <main className="messages">
+    <>
       <Helmet>
         <title>Messages</title>
       </Helmet>
-      <MessagingToggle
-        isTypeChecked={isTypeChecked}
-        handleMsgsTypeChanged={handleMsgsTypeChanged}
-      />
-      {msgsType === "Internal" ? <Messages /> : <MessagesExternal />}
-    </main>
+      <section className="messages-section">
+        <h2 className="messages-section-title">Messages</h2>
+        <MessagingToggle
+          isTypeChecked={isTypeChecked}
+          handleMsgsTypeChanged={handleMsgsTypeChanged}
+        />
+        {msgsType === "Internal" ? <Messages /> : <MessagesExternal />}
+      </section>
+    </>
   );
 };
 

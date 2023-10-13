@@ -9,7 +9,7 @@ import { firstLetterOfFirstWordUpper } from "../../../../utils/firstLetterUpper"
 import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { riskSchema } from "../../../../validation/riskValidation";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
 const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
@@ -73,7 +73,7 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this item ?",
       })
     ) {

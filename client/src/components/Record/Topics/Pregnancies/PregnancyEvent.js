@@ -9,7 +9,7 @@ import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { pregnancySchema } from "../../../../validation/pregnancyValidation";
-import { confirmAlertPopUp } from "../../../Confirm/ConfirmPopUp";
+import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import PregnanciesList from "../../../Lists/PregnanciesList";
 
 const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
@@ -88,7 +88,7 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
     if (
-      await confirmAlertPopUp({
+      await confirmAlert({
         content: "Do you really want to delete this item ?",
       })
     ) {
