@@ -6,6 +6,7 @@ import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import { staffSchema } from "../../validation/staffValidation";
+const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const SignupStaffForm = () => {
   const { auth, clinic, setClinic } = useAuth();
@@ -321,11 +322,11 @@ const SignupStaffForm = () => {
   };
   return (
     <>
-      {errMsg && <p className="signup-staff-err">{errMsg}</p>}
-      {successMsg && <p className="signup-staff-success">{successMsg}</p>}
-      <form className="signup-staff-form" onSubmit={handleSubmit}>
-        <div className="signup-staff-form-column">
-          <div className="signup-staff-form-row">
+      {errMsg && <p className="signup-staff__err">{errMsg}</p>}
+      {successMsg && <p className="signup-staff__success">{successMsg}</p>}
+      <form className="signup-staff__form" onSubmit={handleSubmit}>
+        <div className="signup-staff__column">
+          <div className="signup-staff__row">
             <label>Email*: </label>
             <input
               type="email"
@@ -335,7 +336,7 @@ const SignupStaffForm = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Password*: </label>
             <input
               type="password"
@@ -345,7 +346,7 @@ const SignupStaffForm = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Confirm Password*: </label>
             <input
               type="password"
@@ -355,7 +356,7 @@ const SignupStaffForm = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>First Name*: </label>
             <input
               type="text"
@@ -365,7 +366,7 @@ const SignupStaffForm = () => {
               autoComplete="off"
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Middle Name: </label>
             <input
               type="text"
@@ -375,7 +376,7 @@ const SignupStaffForm = () => {
               autoComplete="off"
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Last Name*: </label>
             <input
               type="text"
@@ -385,7 +386,7 @@ const SignupStaffForm = () => {
               autoComplete="off"
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Gender*: </label>
             <select
               value={formDatas.gender}
@@ -397,7 +398,7 @@ const SignupStaffForm = () => {
               <option value="Other">Other</option>
             </select>
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Occupation*: </label>
             <select
               value={formDatas.title}
@@ -419,9 +420,34 @@ const SignupStaffForm = () => {
               <option value="Other">Other</option>
             </select>
           </div>
+          <div className="signup-staff__row">
+            <label>E-sign: </label>
+            <div className="signup-staff__image">
+              {isLoadingFile ? (
+                <CircularProgress />
+              ) : formDatas.sign ? (
+                <img
+                  src={`${BASE_URL}${formDatas.sign?.path}`}
+                  alt="e-sign"
+                  width="150px"
+                />
+              ) : (
+                <img
+                  src="https://placehold.co/200x100/png?font=roboto&text=Sign"
+                  alt="user-avatar-placeholder"
+                />
+              )}
+              <input
+                name="sign"
+                type="file"
+                accept=".jpeg, .jpg, .png, .tif, .pdf, .svg"
+                onChange={handleSignChange}
+              />
+            </div>
+          </div>
         </div>
-        <div className="signup-staff-form-column">
-          <div className="signup-staff-form-row">
+        <div className="signup-staff__column">
+          <div className="signup-staff__row">
             <label>Access Level*: </label>
             <select
               value={formDatas.access_level}
@@ -432,7 +458,7 @@ const SignupStaffForm = () => {
               <option value="User">User</option>
             </select>
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Speciality: </label>
             <input
               type="text"
@@ -442,7 +468,7 @@ const SignupStaffForm = () => {
               autoComplete="off"
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Subspeciality: </label>
             <input
               type="text"
@@ -452,7 +478,7 @@ const SignupStaffForm = () => {
               autoComplete="off"
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Licence nbr: </label>
             <input
               type="text"
@@ -463,7 +489,7 @@ const SignupStaffForm = () => {
               required={formDatas.title === "Doctor"}
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>OHIP billing nbr: </label>
             <input
               type="text"
@@ -474,7 +500,7 @@ const SignupStaffForm = () => {
               required={formDatas.title === "Doctor"}
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Cell phone*: </label>
             <input
               type="text"
@@ -484,7 +510,7 @@ const SignupStaffForm = () => {
               autoComplete="off"
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Backup phone: </label>
             <input
               type="text"
@@ -494,7 +520,7 @@ const SignupStaffForm = () => {
               autoComplete="off"
             />
           </div>
-          <div className="signup-staff-form-row">
+          <div className="signup-staff__row">
             <label>Link for video calls: </label>
             <input
               name="video_link"
@@ -504,19 +530,7 @@ const SignupStaffForm = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="signup-staff-form-row">
-            <label>E-sign: </label>
-            <input
-              name="sign"
-              type="file"
-              accept=".jpeg, .jpg, .png, .tif, .pdf, .svg"
-              onChange={handleSignChange}
-            />
-            {isLoadingFile && (
-              <CircularProgress size="1rem" style={{ margin: "5px" }} />
-            )}
-          </div>
-          <div className="signup-staff-form-row-submit">
+          <div className="signup-staff__submit">
             <input type="submit" value="Sign Up" disabled={isLoadingFile} />
           </div>
         </div>

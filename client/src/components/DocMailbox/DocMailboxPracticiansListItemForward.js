@@ -8,7 +8,7 @@ const DocMailboxPracticiansListItemForward = ({
   categoryName,
 }) => {
   return (
-    <li className="practicians-forward-list-item">
+    <li className="practicians-forward__list-item">
       <input
         id={info.id}
         type="checkbox"

@@ -12,7 +12,7 @@ const DocMailboxPage = () => {
         <title>Documents Mailbox</title>
       </Helmet>
       <section className="docmailbox-section">
-        <h2 className="docmailbox-section-title">Documents Mailbox</h2>
+        <h2 className="docmailbox-section__title">Documents Mailbox</h2>
         {user.title === "Secretary" ? <DocMailboxSecretary /> : <DocMailbox />}
       </section>
     </>

@@ -102,10 +102,10 @@ const DocMailboxAssignedPracticianForward = ({
 
   return (
     <div className="practicians-forward">
-      <label className="practicians-forward-title">
+      <label className="practicians-forward__title">
         Forward document to practician
       </label>
-      <div className="practicians-forward-list">
+      <div className="practicians-forward__list">
         {allInfos
           .filter((category) => category.infos.length !== 0)
           .map((category) => (
@@ -118,7 +118,7 @@ const DocMailboxAssignedPracticianForward = ({
             />
           ))}
       </div>
-      <div className="practicians-forward-btn">
+      <div className="practicians-forward__btn">
         <button onClick={handleForwardDocument} disabled={!assignedId}>
           Forward
         </button>

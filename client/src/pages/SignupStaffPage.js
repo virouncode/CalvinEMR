@@ -9,7 +9,7 @@ const SignupStaffPage = () => {
         <title>New Staff Member</title>
       </Helmet>
       <section className="signup-section">
-        <h2 className="signup-section-title">
+        <h2 className="signup-section__title">
           Create a new staff member account
         </h2>
         <SignupStaffForm />

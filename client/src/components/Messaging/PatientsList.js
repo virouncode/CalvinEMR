@@ -5,7 +5,7 @@ import PatientsListItem from "./PatientsListItem";
 const PatientsList = ({ isPatientChecked, handleCheckPatient, search }) => {
   const { clinic } = useAuth();
   return (
-    <ul className="patients-list">
+    <ul>
       {clinic.patientsInfos
         .filter(
           (patient) =>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
@@ -20,6 +21,35 @@ const AllergyForm = ({
     patient_id: patientId,
     allergy: "",
   });
+
+  useEffect(() => {
+    const socket = io(
+      "https://fierce-retreat-45158-56541fefe81e.herokuapp.com/"
+    );
+    socket.on("xano message", (message) => {
+      alert(message);
+      // if (message.action === 'create') {
+      //   // Handle message creation
+      //   setMessages([...messages, message.data]);
+      // } else if (message.action === 'update') {
+      //   // Handle message update
+      //   setMessages((prevMessages) => {
+      //     return prevMessages.map((prevMessage) =>
+      //       prevMessage.id === message.data.id ? message.data : prevMessage
+      //     );
+      //   });
+      // } else if (message.action === 'delete') {
+      //   // Handle message deletion
+      //   setMessages((prevMessages) =>
+      //     prevMessages.filter((prevMessage) => prevMessage.id !== message.data.id)
+      //   );
+      // }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   //HANDLERS
   const handleChange = (e) => {

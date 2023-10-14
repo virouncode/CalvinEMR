@@ -1,5 +1,25 @@
 .signup-patient {
-    &-form {
+    &__success {
+        padding : 10px 20px;
+        width : 50%;
+        font-size: 0.9rem;
+        margin:0 auto;
+        border-radius: 4px;
+        text-align: center;
+        color: forestgreen;
+        background-color: rgba(34, 139, 34, 0.4);
+    }
+    &__err {
+        padding : 10px 20px;
+        font-size: 0.9rem;
+        width : 50%;
+        margin:0 auto;
+        color : red;
+        background-color:rgba(255, 0, 0, 0.403);
+        border-radius: 4px;
+        text-align: center;
+    }
+    &__form {
         padding : 20px;
         width : 55%;
         margin:0 auto;
@@ -9,24 +29,24 @@
         border: solid 2px $blue;
         border-radius: 4px;
         background:$white;
-        &-column {
-            width:45%;
-        }
-        &-row {
+    }
+    &__column {
+        width:45%;
+    }
+    &__row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        &-relationship {
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
-            &-relationship {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 10px;
-                align-items: center;
-                select{
-                    width:40% !important;
-                }
-                &-name {
-                    width : 40%;
-                }
+            align-items: center;
+            select{
+                width:40% !important;
+            }
+            &-name {
+                width : 40%;
             }
         }
         label {
@@ -46,33 +66,15 @@
         select {
             width:200px;
         }
-        &-row-submit {
-            text-align: end;
-            margin-top: 20px;
-            input[type="submit"]{
-                width: 100px;
-            }
+    }
+        
+    &__submit {
+        text-align: end;
+        margin-top: 20px;
+        input[type="submit"]{
+            width: 100px;
         }
     }
-    &-success {
-        padding : 10px 20px;
-        width : 50%;
-        font-size: 0.9rem;
-        margin:0 auto;
-        border-radius: 4px;
-        text-align: center;
-        color: forestgreen;
-        background-color: rgba(34, 139, 34, 0.4);
-    }
-    &-err {
-        padding : 10px 20px;
-        font-size: 0.9rem;
-        width : 50%;
-        margin:0 auto;
-        color : red;
-        background-color:rgba(255, 0, 0, 0.403);
-        border-radius: 4px;
-        text-align: center;
-    }
+    
 }
 

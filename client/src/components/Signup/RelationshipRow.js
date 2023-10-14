@@ -9,7 +9,7 @@ const RelationshipRow = ({
   handleRelationshipChange,
 }) => {
   return (
-    <div className="signup-patient-form-row-relationship">
+    <div className="signup-patient__row-relationship">
       <RelationshipList
         itemId={item.id}
         handleChange={handleRelationshipChange}

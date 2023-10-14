@@ -68,9 +68,6 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
         auth.authToken,
         datasToPost
       );
-      //   const abortController = new AbortController();
-      //   fetchRecord(abortController);
-      //   editCounter.current -= 1;
 
       setAddVisible(false);
       const response = await axiosXano.get(
@@ -135,9 +132,9 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
   };
 
   return (
-    <div className="docmailbox-form">
-      <form className="docmailbox-form-content" onSubmit={handleSubmit}>
-        <div className="docmailbox-form-content-row">
+    <div className="docmailbox__form">
+      <form className="docmailbox__form-content" onSubmit={handleSubmit}>
+        <div className="docmailbox__form-row">
           <label>Description</label>
           <input
             name="description"
@@ -147,7 +144,7 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
             autoComplete="off"
           />
         </div>
-        <div className="docmailbox-form-content-row docmailbox-form-content-row--patients">
+        <div className="docmailbox__form-row docmailbox__form-row--patients">
           <label>Related patient</label>
           <DocMailboxPatients
             isPatientChecked={isPatientChecked}
@@ -155,7 +152,7 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
             label={false}
           />
         </div>
-        <div className="docmailbox-form-content-row">
+        <div className="docmailbox__form-row">
           <label>Upload document</label>
           <input
             name="file"
@@ -165,16 +162,16 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
             accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx"
           />
         </div>
-        <div className="docmailbox-form-content-row">
+        <div className="docmailbox__form-row">
           {isLoadingFile && (
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}
         </div>
-        <div className="docmailbox-form-content-row">
+        <div className="docmailbox__form-row">
           <input type="submit" value="Post" disabled={saveDisabled} />
         </div>
       </form>
-      <div className="docmailbox-form-content-preview">
+      <div className="docmailbox__form-preview">
         {formDatas.file && formDatas.file.mime.includes("image") ? (
           <img src={`${BASE_URL}${formDatas.file.path}`} alt="" width="100%" />
         ) : formDatas.file && formDatas.file.mime.includes("video") ? (

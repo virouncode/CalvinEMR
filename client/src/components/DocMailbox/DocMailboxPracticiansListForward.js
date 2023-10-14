@@ -10,7 +10,7 @@ const DocMailboxPracticiansListForward = ({
 }) => {
   const { user } = useAuth();
   return (
-    <ul className="practicians-forward-category-list">
+    <ul className="practicians-forward__category-list">
       {categoryInfos
         .filter(({ id }) => id !== user.id)
         .map((info) => (

@@ -95,8 +95,8 @@ const DocMailbox = () => {
     <>
       {documents ? (
         <>
-          {errMsg && <div className="docmailbox-err">{errMsg}</div>}
-          <table className="docmailbox-table">
+          {errMsg && <div className="docmailbox__err">{errMsg}</div>}
+          <table className="docmailbox__table">
             <thead>
               <tr>
                 <th onClick={() => handleSort("description")}>Description</th>
@@ -186,7 +186,7 @@ const DocMailbox = () => {
                     ))}
             </tbody>
           </table>
-          <div className="docmailbox-btn-container">
+          <div className="docmailbox__btn-container">
             <button disabled={addVisible || forwardVisible} onClick={handleAdd}>
               Upload a document
             </button>

@@ -12,8 +12,8 @@ const DocMailboxPatients = ({
     setSearch(value);
   };
   return (
-    <div className="docmailbox-patients">
-      {label && <div className="docmailbox-patients-title">Patients</div>}
+    <div className="docmailbox__patients">
+      {label && <div className="docmailbox__patients-title">Patients</div>}
       <input
         type="text"
         value={search}
@@ -21,7 +21,7 @@ const DocMailboxPatients = ({
         onChange={handleChange}
       />
 
-      <div className="docmailbox-patients-list">
+      <div className="docmailbox__patients-list">
         <PatientsList
           isPatientChecked={isPatientChecked}
           handleCheckPatient={handleCheckPatient}

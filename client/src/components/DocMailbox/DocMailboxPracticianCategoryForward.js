@@ -14,7 +14,7 @@ const DocMailboxPracticianCategoryForward = ({
 
   return (
     <>
-      <div className="practicians-forward-category-overview">
+      <div className="practicians-forward__category-overview">
         {!listVisible ? (
           <i
             onClick={handleClick}

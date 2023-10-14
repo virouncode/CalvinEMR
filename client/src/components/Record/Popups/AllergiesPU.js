@@ -56,7 +56,7 @@ const AllergiesPU = ({
           datas && (
             <>
               <h1 className="allergies-title">
-                Patient allergies <i class="fa-solid fa-hand-dots"></i>
+                Patient allergies <i className="fa-solid fa-hand-dots"></i>
               </h1>
               {errMsgPost && <div className="allergies-err">{errMsgPost}</div>}
               <table className="allergies-table">

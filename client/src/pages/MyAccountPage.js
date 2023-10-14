@@ -9,7 +9,7 @@ const MyAccountPage = () => {
         <title>My account</title>
       </Helmet>
       <section className="myaccount-section">
-        <h2 className="myaccount-section-title">My personal informations</h2>
+        <h2 className="myaccount-section__title">My personal informations</h2>
         <MyAccountForm />
       </section>
     </>

@@ -167,17 +167,17 @@ const MyAccountForm = () => {
   };
 
   return (
-    <div className="myaccount-section-container">
-      {errMsg && <p className="myaccount-section-err">{errMsg}</p>}
-      {successMsg && <p className="myaccount-section-confirm">{successMsg}</p>}
+    <div className="myaccount-section__container">
+      {errMsg && <p className="myaccount-section__err">{errMsg}</p>}
+      {successMsg && <p className="myaccount-section__success">{successMsg}</p>}
       {tempFormDatas && (
-        <div className="myaccount-section-form">
-          <div className="myaccount-section-form-column">
-            <div className="myaccount-section-form-row">
+        <div className="myaccount-section__form">
+          <div className="myaccount-section__column">
+            <div className="myaccount-section__row">
               <label>Email*: </label>
               <p>{tempFormDatas.email}</p>
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>First Name*: </label>
               {editVisible ? (
                 <input
@@ -192,7 +192,7 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.first_name}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>Middle Name: </label>
               {editVisible ? (
                 <input
@@ -206,7 +206,7 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.middle_name}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>Last Name*: </label>
               {editVisible ? (
                 <input
@@ -221,7 +221,7 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.last_name}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>Gender*: </label>
               {editVisible ? (
                 <select
@@ -238,7 +238,7 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.gender}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>Occupation*: </label>
               {/* {editVisible ? (
                 <select
@@ -265,7 +265,7 @@ const MyAccountForm = () => {
               <p>{tempFormDatas.title}</p>
               {/* )} */}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>Speciality: </label>
               {editVisible ? (
                 <input
@@ -280,8 +280,8 @@ const MyAccountForm = () => {
               )}
             </div>
           </div>
-          <div className="signup-staff-form-column">
-            <div className="myaccount-section-form-row">
+          <div className="myaccount-section__column">
+            <div className="myaccount-section__row">
               <label>Subspeciality: </label>
               {editVisible ? (
                 <input
@@ -295,7 +295,7 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.subspeciality}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>Licence nbr: </label>
               {editVisible ? (
                 <input
@@ -310,7 +310,7 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.licence_nbr}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>OHIP billing nbr: </label>
               {editVisible ? (
                 <input
@@ -325,7 +325,7 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.licence_nbr}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>Cell phone*: </label>
               {editVisible ? (
                 <input
@@ -340,7 +340,7 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.cell_phone}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>Backup phone: </label>
               {editVisible ? (
                 <input
@@ -354,7 +354,7 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.backup_phone}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>Link for video calls: </label>
               {editVisible ? (
                 <input
@@ -368,9 +368,9 @@ const MyAccountForm = () => {
                 <p>{tempFormDatas.video_link}</p>
               )}
             </div>
-            <div className="myaccount-section-form-row">
+            <div className="myaccount-section__row">
               <label>E-sign: </label>
-              <div className="myaccount-section-form-row-image">
+              <div className="myaccount-section__image">
                 {isLoadingFile ? (
                   <CircularProgress />
                 ) : tempFormDatas.sign ? (
@@ -398,7 +398,7 @@ const MyAccountForm = () => {
           </div>
         </div>
       )}
-      <div className="myaccount-section-btns">
+      <div className="myaccount-section__btns">
         {editVisible ? (
           <>
             <button onClick={handleSave} disabled={isLoadingFile}>

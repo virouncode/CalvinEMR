@@ -46,7 +46,7 @@ const RelationshipsForm = ({ relationships, setRelationships }) => {
   };
   return (
     <>
-      <div className="signup-patient-form-row">
+      <div className="signup-patient__row">
         <label>Relationships: </label>
         <button onClick={handleAdd}>Add a relationship</button>
       </div>

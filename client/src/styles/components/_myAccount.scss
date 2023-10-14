@@ -1,5 +1,5 @@
 .myaccount-section {
-    &-container {
+    &__container {
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         border: solid 2px $blue;
         border-radius: 4px;
@@ -8,7 +8,7 @@
         width : 55%;
         margin:0 auto;
     }
-    &-confirm {
+    &__success {
         padding : 10px 20px;
         width : 100%;
         font-size: 0.9rem;
@@ -19,7 +19,7 @@
         background-color: rgba(34, 139, 34, 0.4);
         margin-bottom: 10px;
     }
-    &-err {
+    &__err {
         padding : 10px 20px;
         font-size: 0.9rem;
         width : 100%;
@@ -30,7 +30,7 @@
         text-align: center;
         margin-bottom: 10px;
     }
-    &-btns {
+    &__btns {
         width : 50%;
         margin:0 auto;
         display: flex;
@@ -39,31 +39,23 @@
             margin-left: 10px;
         }
     }
-    &-form {
+    &__form {
         font-size: 0.85rem;
-       
         display: flex;
         justify-content: space-between;
-        &-column {
-            width:45%;
-            
-        }
-        &-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            p {
-                padding:0;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-            &-image {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                width:50%;
-            }
+    }
+    &__column {
+        width:45%;
+    }
+    &__row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        p {
+            padding:0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
         label {
             font-size: 0.85rem;
@@ -90,6 +82,11 @@
                 width: 100px;
             }
         }
-        
+    }
+    &__image {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width:50%;
     }
 }
