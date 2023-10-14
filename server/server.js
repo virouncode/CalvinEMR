@@ -21,10 +21,9 @@ const httpServer = http.createServer(app);
 const io = new socketIo.Server(httpServer, {
   cors: {
     origin:
-      process.env.NODE_ENV === "production" ? false : ["http://localhost:3000"],
+      process.env.NODE_ENV === "production" ? "*" : ["http://localhost:3000"],
   },
 });
-app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "client", "build")));
 app.use(bodyParser.urlencoded({ extended: false }));
