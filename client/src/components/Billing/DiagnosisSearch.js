@@ -6,7 +6,7 @@ import useAuth from "../../hooks/useAuth";
 const DiagnosisSearch = ({ handleClickDiagnosis }) => {
   const [userInput, setUserInput] = useState("");
   const [results, setResults] = useState([]);
-  const { user, auth } = useAuth();
+  const { auth } = useAuth();
 
   useEffect(() => {
     const abortController = new AbortController();

@@ -20,6 +20,30 @@ const AllergiesPU = ({
   const [errMsgPost, setErrMsgPost] = useState("");
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
+  // useEffect(() => {
+  //   const socket = io("http://localhost:3000");
+  //   socket.on(`xano message`, (message) => {
+  //     console.log(message);
+  //     if (message.action === "create") {
+  //       // Handle message creation
+  //       setDatas([...datas, message.content.data]);
+  //     } else if (message.action === "update") {
+  //       // Handle message update
+  //       let updatedDatas = [...datas];
+  //       updatedDatas = updatedDatas.map((data) =>
+  //         data.id === message.content.id ? message.content.data : data
+  //       );
+  //       setDatas(updatedDatas);
+  //     } else if (message.action === "delete") {
+  //       // Handle message deletion
+  //       setDatas(datas.filter((data) => data.id !== message.content.id));
+  //     }
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [datas, setDatas]);
 
   //HANDLERS
   const handleSort = (columnName) => {
@@ -82,6 +106,8 @@ const AllergiesPU = ({
                       patientId={patientId}
                       fetchRecord={fetchRecord}
                       setErrMsgPost={setErrMsgPost}
+                      setDatas={setDatas}
+                      datas={datas}
                     />
                   )}
                   {direction.current

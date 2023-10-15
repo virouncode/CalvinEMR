@@ -17,17 +17,11 @@ const PORT = process.env.PORT || 4000;
 
 //****************** APP ***************************//
 const app = express();
-const httpServer = http.createServer(app);
-const io = new socketIo.Server(httpServer, {
-  cors: {
-    origin:
-      process.env.NODE_ENV === "production" ? "*" : ["http://localhost:3000"],
-  },
-});
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "client", "build")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+const httpServer = http.createServer(app);
 
 //***************** Endpoint TWILIO ******************//
 app.post("/api/twilio/messages", async (req, res) => {
@@ -66,10 +60,9 @@ app.post("/api/extractToText", async (req, res) => {
 // Create a custom API endpoint to receive data
 app.post("/xano-message", (req, res) => {
   // Extract the message from the request body
-  const allergy = req.body.allergy;
-  console.log(allergy);
+  const message = req.body;
   // Broadcast the message to all connected clients
-  io.emit("xano message", message);
+  io.emit(`xano message`, message);
   // Respond to the HTTP request
   res.status(200).send("Message sent successfully");
 });
@@ -82,13 +75,22 @@ app.get("/*", (_, res) => {
 });
 
 //****************** SOCKET **************************//
+const io = socketIo(httpServer, {
+  cors: {
+    origin:
+      process.env.NODE_ENV === "production" ? false : ["http://localhost:3000"],
+  },
+});
+
 io.on("connection", (socket) => {
   console.log(`User ${socket.id} connected`);
-
-  // Handle incoming WebSocket messages
-  socket.on("xano message", (message) => {
-    io.emit("xano message", message); // Broadcast the message to all connected clients
+  socket.on("disconnect", () => {
+    console.log(`User ${socket.id} disconnected`);
   });
+  // // Handle incoming WebSocket messages
+  // socket.on("xano message", (message) => {
+  //   io.emit("xano message", message); // Broadcast the message to all connected clients
+  // });
 });
 //***************************************************/
 

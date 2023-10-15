@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { io } from "socket.io-client";
 import { postPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
@@ -22,35 +21,6 @@ const AllergyForm = ({
     allergy: "",
   });
 
-  useEffect(() => {
-    const socket = io(
-      "https://fierce-retreat-45158-56541fefe81e.herokuapp.com/"
-    );
-    socket.on("xano message", (message) => {
-      alert(message);
-      // if (message.action === 'create') {
-      //   // Handle message creation
-      //   setMessages([...messages, message.data]);
-      // } else if (message.action === 'update') {
-      //   // Handle message update
-      //   setMessages((prevMessages) => {
-      //     return prevMessages.map((prevMessage) =>
-      //       prevMessage.id === message.data.id ? message.data : prevMessage
-      //     );
-      //   });
-      // } else if (message.action === 'delete') {
-      //   // Handle message deletion
-      //   setMessages((prevMessages) =>
-      //     prevMessages.filter((prevMessage) => prevMessage.id !== message.data.id)
-      //   );
-      // }
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
   //HANDLERS
   const handleChange = (e) => {
     setErrMsgPost("");
@@ -61,6 +31,7 @@ const AllergyForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     //Formatting
     setFormDatas({
       ...formDatas,
@@ -79,12 +50,20 @@ const AllergyForm = ({
     }
     //Submission
     try {
-      await postPatientRecord(
+      const response = await postPatientRecord(
         "/allergies",
         user.id,
         auth.authToken,
         datasToPost
       );
+
+      // const xanoMessage = {
+      //   route: "ALLERGIES",
+      //   content: { data: { id: response.data.id, ...datasToPost } },
+      //   action: "create",
+      // };
+      // await axios.post("/xano-message", xanoMessage);
+
       const abortController = new AbortController();
       await fetchRecord(abortController);
       editCounter.current -= 1;

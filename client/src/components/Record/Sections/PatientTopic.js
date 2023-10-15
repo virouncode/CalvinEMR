@@ -61,6 +61,24 @@ const PatientTopic = ({
     usePatientRecord(url, patientId);
   const containerRef = useRef("null");
 
+  // const socketUrl = "ws://localhost:3000";
+
+  // const {
+  //   sendMessage,
+  //   sendJsonMessage,
+  //   lastMessage,
+  //   lastJsonMessage,
+  //   readyState,
+  // } = useWebSocket(socketUrl, {
+  //   onOpen: () => console.log("opened"),
+  //   onClose: () => console.log("closed"),
+  //   //Will attempt to reconnect on all close events, such as server shutting down
+  //   share: true,
+  //   filter: () => false,
+  //   retryOnError: true,
+  //   shouldReconnect: () => true,
+  // });
+
   //STYLE
   const TOPIC_STYLE = { color: textColor, background: backgroundColor };
 

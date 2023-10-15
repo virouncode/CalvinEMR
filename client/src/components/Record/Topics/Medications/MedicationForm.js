@@ -4,7 +4,6 @@ import {
   getPatientRecord,
   postPatientRecord,
 } from "../../../../api/fetchRecords";
-import { getActiveIngredients, getRoute } from "../../../../api/medsService";
 import useAuth from "../../../../hooks/useAuth";
 import { medicationSchema } from "../../../../validation/medicationValidation";
 
@@ -97,16 +96,16 @@ const MedicationForm = ({
     }
   };
 
-  const handleMedClick = async (drugName, drugCode) => {
-    const activeIngredients = await getActiveIngredients(drugCode);
-    const route = await getRoute(drugCode);
-    setFormDatas({
-      ...formDatas,
-      name: drugName,
-      active_ingredients: activeIngredients,
-      route_of_administration: route,
-    });
-  };
+  // const handleMedClick = async (drugName, drugCode) => {
+  //   const activeIngredients = await getActiveIngredients(drugCode);
+  //   const route = await getRoute(drugCode);
+  //   setFormDatas({
+  //     ...formDatas,
+  //     name: drugName,
+  //     active_ingredients: activeIngredients,
+  //     route_of_administration: route,
+  //   });
+  // };
 
   return (
     <div className="medications-form-container">

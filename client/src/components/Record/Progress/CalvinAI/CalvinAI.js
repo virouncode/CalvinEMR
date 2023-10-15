@@ -28,7 +28,6 @@ What is the diagnosis and what treatment would you suggest ?`,
   ]);
   const [lastResponse, setLastResponse] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const abortController = useRef(null);
   const abortControllerAI = useRef(null);
 
   useEffect(() => {

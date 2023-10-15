@@ -30,11 +30,11 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
     //Formatting
     const formDatas = {
       ...itemInfos,
-      allergy: firstLetterUpper(itemInfos.allery),
+      allergy: firstLetterUpper(itemInfos.allergy),
     };
     setItemInfos({
       ...itemInfos,
-      allergy: firstLetterUpper(itemInfos.allery),
+      allergy: firstLetterUpper(itemInfos.allergy),
     });
     //Validation
     try {
@@ -52,6 +52,13 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         auth.authToken,
         formDatas
       );
+      // const xanoMessage = {
+      //   route: "ALLERGIES",
+      //   content: { id: item.id, datas: formDatas },
+      //   action: "update",
+      // };
+      // await axios.post("/xano-message", xanoMessage);
+
       const abortController = new AbortController();
       fetchRecord(abortController);
       editCounter.current -= 1;
@@ -79,6 +86,12 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
     ) {
       try {
         await deletePatientRecord("/allergies", item.id, auth.authToken);
+        // const xanoMessage = {
+        //   route: "ALLERGIES",
+        //   content: { id: item.id },
+        //   action: "delete",
+        // };
+        // await axios.post("/xano-message", xanoMessage);
         const abortController = new AbortController();
         fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
