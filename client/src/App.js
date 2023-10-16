@@ -56,9 +56,13 @@ const App = () => {
   }, [navigate, setAuth, setClinic, setSocket, setUser]);
 
   useEffect(() => {
-    const socket = socketIOClient("http://localhost:3000");
+    // const socket = socketIOClient("http://localhost:3000");
+    const socket = socketIOClient(
+      "https://fierce-retreat-45158-56541fefe81e.herokuapp.com/"
+    );
     setSocket(socket);
     return () => socket.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
