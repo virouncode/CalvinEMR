@@ -29,7 +29,8 @@ import SearchPatientPage from "./pages/SearchPatientPage";
 import SignupPatientPage from "./pages/SignupPatientPage";
 import SignupStaffPage from "./pages/SignupStaffPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
-const socket = io("https://fierce-retreat-45158-56541fefe81e.herokuapp.com");
+// const socket = io("https://fierce-retreat-45158-56541fefe81e.herokuapp.com");
+const socket = io("http://localhost:3000");
 
 const App = () => {
   const navigate = useNavigate();

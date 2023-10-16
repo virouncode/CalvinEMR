@@ -62,6 +62,7 @@ const PatientTopic = ({
   const containerRef = useRef("null");
 
   useEffect(() => {
+    console.log("useEffect");
     const onMessage = (message) => {
       if (message.route !== topic) return;
       console.log("message", message);
@@ -85,7 +86,7 @@ const PatientTopic = ({
     };
     socket.on("message", onMessage);
     return () => socket.off("message", onMessage);
-  });
+  }, [datas, setDatas, socket, topic]);
 
   //STYLE
   const TOPIC_STYLE = { color: textColor, background: backgroundColor };
