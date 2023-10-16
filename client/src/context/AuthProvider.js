@@ -14,11 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(
     localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
   );
-  const [socket, setSocket] = useState(
-    localStorage.getItem("socket")
-      ? JSON.parse(localStorage.getItem("socket"))
-      : {}
-  );
+  const [socket, setSocket] = useState(null);
   return (
     <AuthContext.Provider
       value={{

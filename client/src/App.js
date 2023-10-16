@@ -1,12 +1,11 @@
 //Librairies
 import React, { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import RequireAuth from "./components/Presentation/RequireAuth";
-//Pages Components
-import io from "socket.io-client";
+import socketIOClient from "socket.io-client";
 import Layout from "./components/Presentation/Layout";
 import Layout2 from "./components/Presentation/Layout2";
 import Layout3 from "./components/Presentation/Layout3";
+import RequireAuth from "./components/Presentation/RequireAuth";
 import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
 import useAuth from "./hooks/useAuth";
 import BillingPage from "./pages/BillingPage";
@@ -29,8 +28,7 @@ import SearchPatientPage from "./pages/SearchPatientPage";
 import SignupPatientPage from "./pages/SignupPatientPage";
 import SignupStaffPage from "./pages/SignupStaffPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
-const socket = io("https://fierce-retreat-45158-56541fefe81e.herokuapp.com");
-// const socket = io("http://localhost:3000");
+// const socket = io("https://fierce-retreat-45158-56541fefe81e.herokuapp.com");
 
 const App = () => {
   const navigate = useNavigate();
@@ -48,7 +46,6 @@ const App = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("auth");
         localStorage.removeItem("clinic");
-        localStorage.removeItem("socket");
         navigate("/");
       }
     };
@@ -59,10 +56,10 @@ const App = () => {
   }, [navigate, setAuth, setClinic, setSocket, setUser]);
 
   useEffect(() => {
-    socket.connect();
+    const socket = socketIOClient("http://localhost:3000");
     setSocket(socket);
     return () => socket.disconnect();
-  }, [setSocket]);
+  }, []);
 
   return (
     <Routes>

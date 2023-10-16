@@ -11,7 +11,6 @@ const AllergyForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
@@ -63,15 +62,6 @@ const AllergyForm = ({
         action: "create",
       });
 
-      // const xanoMessage = {
-      //   route: "ALLERGIES",
-      //   content: { data: { id: response.data.id, ...datasToPost } },
-      //   action: "create",
-      // };
-      // await axios.post("/xano-message", xanoMessage);
-
-      // const abortController = new AbortController();
-      // await fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

@@ -15,7 +15,7 @@ const PregnancyForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user, clinic, socket } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -65,11 +65,11 @@ const PregnancyForm = ({
       );
       // const abortController = new AbortController();
       // fetchRecord(abortController);
-      socket.emit("message", {
-        route: "PREGNANCIES",
-        content: { data: { id: response.data.id, ...formDatas } },
-        action: "create",
-      });
+      // socket.emit("message", {
+      //   route: "PREGNANCIES",
+      //   content: { data: { id: response.data.id, ...formDatas } },
+      //   action: "create",
+      // });
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

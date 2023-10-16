@@ -14,7 +14,7 @@ import PregnanciesList from "../../../Lists/PregnanciesList";
 
 const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user, clinic, socket } = useAuth();
+  const { auth, user, clinic } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -69,11 +69,11 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
       );
       // const abortController = new AbortController();
       // fetchRecord(abortController);
-      socket.emit("message", {
-        route: "PREGNANCIES",
-        content: { id: event.id, data: formDatas },
-        action: "update",
-      });
+      // socket.emit("message", {
+      //   route: "PREGNANCIES",
+      //   content: { id: event.id, data: formDatas },
+      //   action: "update",
+      // });
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
@@ -99,11 +99,11 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
     ) {
       try {
         await deletePatientRecord("/pregnancies", event.id, auth.authToken);
-        socket.emit("message", {
-          route: "PREGNANCIES",
-          content: { id: event.id },
-          action: "delete",
-        });
+        // socket.emit("message", {
+        //   route: "PREGNANCIES",
+        //   content: { id: event.id },
+        //   action: "delete",
+        // });
         // const abortController = new AbortController();
         // fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });

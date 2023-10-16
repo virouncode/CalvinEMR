@@ -11,7 +11,7 @@ import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { allergySchema } from "../../../../validation/allergyValidation";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
-const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
+const AllergyItem = ({ item, editCounter, setErrMsgPost }) => {
   //HOOKS
   const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
@@ -52,12 +52,6 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         auth.authToken,
         formDatas
       );
-      // const xanoMessage = {
-      //   route: "ALLERGIES",
-      //   content: { id: item.id, datas: formDatas },
-      //   action: "update",
-      // };
-      // await axios.post("/xano-message", xanoMessage);
       socket.emit("message", {
         route: "ALLERGIES",
         content: { id: item.id, data: formDatas },
@@ -90,19 +84,12 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
     ) {
       try {
         await deletePatientRecord("/allergies", item.id, auth.authToken);
-        // const xanoMessage = {
-        //   route: "ALLERGIES",
-        //   content: { id: item.id },
-        //   action: "delete",
-        // };
-        // await axios.post("/xano-message", xanoMessage);
         socket.emit("message", {
           route: "ALLERGIES",
           content: { id: item.id },
           action: "delete",
         });
-        // const abortController = new AbortController();
-        // fetchRecord(abortController);
+
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error: unable to delete item: ${err.message}`, {

@@ -56,9 +56,6 @@ const PatientTopic = ({
 }) => {
   //HOOKS
   const { clinic, socket } = useAuth();
-  if (topic === "ALLERGIES") {
-    console.log(socket);
-  }
   const [popUpVisible, setPopUpVisible] = useState(false);
   const [{ datas, isLoading, errMsg }, fetchRecord, setDatas] =
     usePatientRecord(url, patientId);
@@ -68,7 +65,6 @@ const PatientTopic = ({
     const onMessage = (message) => {
       console.log("onMessage");
       if (message.route !== topic) return;
-      console.log("message", message);
       switch (message.action) {
         case "create":
           setDatas([...datas, message.content.data]);
@@ -88,7 +84,9 @@ const PatientTopic = ({
       }
     };
     socket.on("message", onMessage);
-    return () => socket.off("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
   }, [datas, setDatas, socket, topic]);
 
   //STYLE

@@ -14,7 +14,7 @@ const USERINFO_URL = "/auth/me";
 
 const LoginForm = () => {
   //HOOKS
-  const { setAuth, setClinic, setUser, setSocket } = useAuth();
+  const { setAuth, setClinic, setUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [from, setFrom] = useState(location.state?.from?.pathname || "/"); //où on voulait aller ou calendar staff

@@ -9,9 +9,7 @@ const twilio = require("twilio")(
   process.env.TWILIO_AUTH_TOKEN
 );
 const extractTextFromDoc = require("./extractTextFromDoc");
-const bodyParser = require("body-parser");
-const { log } = require("console");
-const cors = require("cors"); // Import the cors middleware
+// const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 4000;
 
@@ -19,8 +17,8 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 app.use(express.json());
 app.use(express.static(join(__dirname, "..", "client", "build")));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 const httpServer = createServer(app); //my http server
 const io = new Server(httpServer, {
   cors: {
@@ -89,7 +87,7 @@ io.on("connection", (socket) => {
   });
   socket.on("message", (message) => {
     console.log("message");
-    socket.emit("message", message);
+    io.emit("message", message);
   });
 });
 io.on("connect_error", (err) => {
