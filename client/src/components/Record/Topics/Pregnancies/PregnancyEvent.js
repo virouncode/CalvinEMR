@@ -14,7 +14,7 @@ import PregnanciesList from "../../../Lists/PregnanciesList";
 
 const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -67,8 +67,13 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
         auth.authToken,
         formDatas
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+      // const abortController = new AbortController();
+      // fetchRecord(abortController);
+      socket.emit("message", {
+        route: "PREGNANCIES",
+        content: { id: event.id, data: formDatas },
+        action: "update",
+      });
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
@@ -94,8 +99,13 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
     ) {
       try {
         await deletePatientRecord("/pregnancies", event.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        socket.emit("message", {
+          route: "PREGNANCIES",
+          content: { id: event.id },
+          action: "delete",
+        });
+        // const abortController = new AbortController();
+        // fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error: unable to delete pregnancy event: ${err.message}`, {

@@ -58,7 +58,6 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
       //   action: "update",
       // };
       // await axios.post("/xano-message", xanoMessage);
-      console.log(formDatas);
       socket.emit("message", {
         route: "ALLERGIES",
         content: { id: item.id, data: formDatas },

@@ -88,6 +88,7 @@ io.on("connection", (socket) => {
     console.log(reason);
   });
   socket.on("message", (message) => {
+    console.log("message");
     socket.emit("message", message);
   });
 });
