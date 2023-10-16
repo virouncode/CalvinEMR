@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { usePatientRecord } from "../../../hooks/usePatientRecord";
 import { patientIdToName } from "../../../utils/patientIdToName";
+import { onMessageTopic } from "../../../utils/socketHandlers/onMessageTopic";
 import FakeWindow from "../../Presentation/FakeWindow";
 import AllergiesPU from "../Popups/AllergiesPU";
 import AppointmentsPU from "../Popups/AppointmentsPU";
@@ -62,32 +63,14 @@ const PatientTopic = ({
   const containerRef = useRef("null");
 
   useEffect(() => {
-    const onMessage = (message) => {
-      console.log("onMessage");
-      if (message.route !== topic) return;
-      switch (message.action) {
-        case "create":
-          setDatas([...datas, message.content.data]);
-          break;
-        case "update":
-          setDatas(
-            datas.map((item) =>
-              item.id === message.content.id ? message.content.data : item
-            )
-          );
-          break;
-        case "delete":
-          setDatas(datas.filter((item) => item.id !== message.content.id));
-          break;
-        default:
-          break;
-      }
-    };
+    if (!socket || topic === "DEMOGRAPHICS") return;
+    const onMessage = (message) =>
+      onMessageTopic(message, topic, datas, setDatas, patientId);
     socket.on("message", onMessage);
     return () => {
       socket.off("message", onMessage);
     };
-  }, [datas, setDatas, socket, topic]);
+  }, [datas, patientId, setDatas, socket, topic]);
 
   //STYLE
   const TOPIC_STYLE = { color: textColor, background: backgroundColor };

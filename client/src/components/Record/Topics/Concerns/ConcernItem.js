@@ -11,9 +11,9 @@ import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { concernSchema } from "../../../../validation/concernValidation";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
-const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
+const ConcernItem = ({ item, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -33,9 +33,14 @@ const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
       })
     ) {
       try {
-        await deletePatientRecord("/ongoing_concerns", item.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/ongoing_concerns",
+          item.id,
+          auth.authToken,
+          socket,
+          "ONGOING CONCERNS"
+        );
+
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error unable to delete ongoing concern: ${err.message}`, {
@@ -77,10 +82,11 @@ const ConcernItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         item.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "ONGOING CONCERNS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

@@ -11,11 +11,10 @@ const MedHistoryForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     ongoing: "false",
@@ -57,10 +56,11 @@ const MedHistoryForm = ({
         "/medical_history",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "MEDICAL HISTORY"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

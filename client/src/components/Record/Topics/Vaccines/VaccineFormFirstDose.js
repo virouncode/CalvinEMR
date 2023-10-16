@@ -14,7 +14,7 @@ const VaccineFormFirstDose = ({
   fetchRecord,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [formDatas, setFormDatas] = useState(datas);
   //STYLE
   const FORM_STYLE = {
@@ -46,7 +46,9 @@ const VaccineFormFirstDose = ({
         formDatas.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "VACCINES"
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

@@ -14,7 +14,7 @@ import CountriesList from "../Lists/CountriesList";
 import RelationshipsForm from "./RelationshipsForm";
 
 const SignupPatientForm = () => {
-  const { auth, user, clinic, setClinic } = useAuth();
+  const { auth, user, clinic, setClinic, socket } = useAuth();
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -117,7 +117,9 @@ const SignupPatientForm = () => {
         "/patients",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "PATIENTS"
       );
 
       datasToPost.chart_nbr = createChartNbr(
@@ -131,7 +133,9 @@ const SignupPatientForm = () => {
         response.data.id,
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "PATIENTS"
       );
 
       const vaccinesDatas = {

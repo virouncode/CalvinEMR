@@ -10,13 +10,12 @@ const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const DocumentForm = ({
   patientId,
-  fetchRecord,
   setAddVisible,
   editCounter,
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     assigned_id: user.id,
@@ -56,10 +55,11 @@ const DocumentForm = ({
         "/documents",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "DOCUMENTS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

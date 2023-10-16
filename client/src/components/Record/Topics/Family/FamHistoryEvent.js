@@ -19,7 +19,7 @@ const FamHistoryEvent = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -63,7 +63,9 @@ const FamHistoryEvent = ({
         event.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "FAMILY HISTORY"
       );
       const abortController = new AbortController();
       fetchRecord(abortController);
@@ -92,9 +94,13 @@ const FamHistoryEvent = ({
       })
     ) {
       try {
-        await deletePatientRecord("/family_history", event.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/family_history",
+          event.id,
+          auth.authToken,
+          socket,
+          "FAMILY HISTORY"
+        );
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(

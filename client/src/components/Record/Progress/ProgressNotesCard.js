@@ -40,7 +40,7 @@ const ProgressNotesCard = ({
   const [attachments, setAttachments] = useState([]);
   const [bodyVisible, setBodyVisible] = useState(true);
   const bodyRef = useRef(null);
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
 
   useEffect(() => {
@@ -177,7 +177,9 @@ const ProgressNotesCard = ({
           "/progress_notes_log",
           user.id,
           auth.authToken,
-          logDatas
+          logDatas,
+          socket,
+          "PROGRESS NOTES LOG"
         );
         //then put the new progress note version in the progress note tbl
         tempFormDatas.version_nbr = progressNote.version_nbr + 1; //increment version
@@ -186,7 +188,9 @@ const ProgressNotesCard = ({
           progressNote.id,
           user.id,
           auth.authToken,
-          tempFormDatas
+          tempFormDatas,
+          socket,
+          "PROGRESS NOTES"
         );
         setEditVisible(false);
         const abortController = new AbortController();

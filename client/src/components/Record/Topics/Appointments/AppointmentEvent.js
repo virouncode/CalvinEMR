@@ -23,14 +23,9 @@ import RoomsList from "../../../EventForm/RoomsList";
 import StatusList from "../../../EventForm/StatusList";
 import TimePicker from "../../../Pickers/TimePicker";
 
-const AppointmentEvent = ({
-  event,
-  fetchRecord,
-  editCounter,
-  setErrMsgPost,
-}) => {
+const AppointmentEvent = ({ event, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, clinic, user } = useAuth();
+  const { auth, clinic, user, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
   const [availableRooms, setAvailableRooms] = useState([]);
@@ -367,10 +362,11 @@ const AppointmentEvent = ({
         event.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "APPOINTMENTS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
@@ -394,9 +390,13 @@ const AppointmentEvent = ({
       })
     ) {
       try {
-        await deletePatientRecord("/appointments", event.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/appointments",
+          event.id,
+          auth.authToken,
+          socket,
+          "APPOINTMENTS"
+        );
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error: unable to delete appointment: ${err.message}`, {
@@ -425,7 +425,6 @@ const AppointmentEvent = ({
             />
           ) : (
             <p>
-              {eventInfos.host_title.title === "Doctor" ? "Dr. " : ""}{" "}
               {staffIdToTitleAndName(
                 clinic.staffInfos,
                 eventInfos.host_id,

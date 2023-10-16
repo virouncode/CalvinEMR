@@ -11870,6 +11870,9 @@ readers do not read off random characters that represent icons */
   flex-direction: column;
   padding: 5px;
 }
+.topic-content--demographics {
+  flex-direction: row;
+}
 .topic-content__err {
   background: rgba(255, 0, 0, 0.536);
   padding: 10px;

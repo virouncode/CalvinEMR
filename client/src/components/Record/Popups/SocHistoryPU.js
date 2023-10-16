@@ -18,7 +18,7 @@ const SocHistoryPU = ({
   errMsg,
 }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
   const [formDatas, setFormDatas] = useState(datas ? datas[0] : null);
@@ -105,7 +105,9 @@ const SocHistoryPU = ({
         formDatas.id,
         user.id,
         auth.authToken,
-        datasToPut
+        datasToPut,
+        socket,
+        "SOCIAL HISTORY"
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

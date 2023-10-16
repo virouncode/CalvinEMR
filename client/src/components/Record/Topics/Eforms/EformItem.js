@@ -6,9 +6,9 @@ import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
-const EformItem = ({ item, fetchRecord, showDocument }) => {
+const EformItem = ({ item, showDocument }) => {
   //HOOKS
-  const { auth, clinic } = useAuth();
+  const { auth, clinic, socket } = useAuth();
 
   const handleDeleteClick = async (e) => {
     if (
@@ -17,9 +17,13 @@ const EformItem = ({ item, fetchRecord, showDocument }) => {
       })
     ) {
       try {
-        await deletePatientRecord("/eforms", item.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/eforms",
+          item.id,
+          auth.authToken,
+          socket,
+          "E-FORMS"
+        );
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error: unable to delete item: ${err.message}`, {

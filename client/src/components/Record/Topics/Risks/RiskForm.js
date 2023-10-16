@@ -7,15 +7,9 @@ import { toISOStringNoMs, toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { riskSchema } from "../../../../validation/riskValidation";
 
-const RiskForm = ({
-  editCounter,
-  setAddVisible,
-  patientId,
-  fetchRecord,
-  setErrMsgPost,
-}) => {
+const RiskForm = ({ editCounter, setAddVisible, patientId, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -49,10 +43,11 @@ const RiskForm = ({
         "/risk_factors",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "RISK FACTORS/PREVENTION"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

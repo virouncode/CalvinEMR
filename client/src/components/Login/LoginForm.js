@@ -81,7 +81,6 @@ const LoginForm = () => {
         const sign = response2?.data?.sign;
         const licence_nbr = response2?.data?.licence_nbr;
         const ai_consent = response2?.data?.ai_consent;
-        console.log(ai_consent);
         //Get user settings
         const response3 = await axiosXano.get(`/settings?staff_id=${id}`, {
           headers: {

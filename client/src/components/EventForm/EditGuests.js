@@ -18,25 +18,21 @@ const EditGuests = ({
   //=========================== HOOKS =========================//
 
   useEffect(() => {
-    const staffGuestsIds = tempFormDatas.staff_guests.map(
-      ({ staff_id }) => staff_id
-    );
     setStaffGuestsInfos(
-      staffInfos.filter(({ id }) => staffGuestsIds.includes(id))
-    );
-
-    const patientsGuestsIds = tempFormDatas.patients_guests.map(
-      ({ patients_id }) => patients_id
+      staffInfos.filter(({ id }) => tempFormDatas.staff_guests_ids.includes(id))
     );
     setPatientsGuestsInfos(
-      patientsInfos.filter(({ id }) => patientsGuestsIds.includes(id))
+      patientsInfos.filter(({ id }) =>
+        tempFormDatas.patients_guests_ids.includes(id)
+      )
     );
   }, [
     patientsInfos,
     setPatientsGuestsInfos,
     setStaffGuestsInfos,
     staffInfos,
-    tempFormDatas,
+    tempFormDatas.patients_guests_ids,
+    tempFormDatas.staff_guests_ids,
   ]);
 
   // //========================== EVENTS HANDLERS =======================//
@@ -45,36 +41,28 @@ const EditGuests = ({
     const guestId = parseInt(e.target.parentElement.getAttribute("data-key"));
     const guestType = e.target.parentElement.getAttribute("data-type");
 
-    let staffGuestsIdsUpdated = [...tempFormDatas.staff_guests];
-    let patientsGuestsIdsUpdated = [...tempFormDatas.patients_guests];
+    let staffGuestsIdsUpdated = [...tempFormDatas.staff_guests_ids];
+    let patientsGuestsIdsUpdated = [...tempFormDatas.patients_guests_ids];
 
     if (guestType === "staff") {
-      staffGuestsIdsUpdated = [
-        ...staffGuestsIdsUpdated,
-        { staff_id: guestId, staff_name: { full_name: guest.full_name } },
-      ];
+      staffGuestsIdsUpdated = [...staffGuestsIdsUpdated, guestId];
       setTempFormDatas({
         ...tempFormDatas,
-        staff_guests: staffGuestsIdsUpdated,
+        staff_guests_ids: staffGuestsIdsUpdated,
       });
       currentEvent.current.setExtendedProp(
-        "staffGuestsNames",
-        staffGuestsIdsUpdated.map(({ staff_name }) => staff_name.full_name)
+        "staffGuestsIds",
+        staffGuestsIdsUpdated
       );
     } else {
-      patientsGuestsIdsUpdated = [
-        ...patientsGuestsIdsUpdated,
-        { patients_id: guestId, patient_name: { full_name: guest.full_name } },
-      ];
+      patientsGuestsIdsUpdated = [...patientsGuestsIdsUpdated, guestId];
       setTempFormDatas({
         ...tempFormDatas,
-        patients_guests: patientsGuestsIdsUpdated,
+        patients_guests_ids: patientsGuestsIdsUpdated,
       });
       currentEvent.current.setExtendedProp(
-        "patientsGuestsNames",
-        patientsGuestsIdsUpdated.map(
-          ({ patient_name }) => patient_name.full_name
-        )
+        "patientsGuestsIds",
+        patientsGuestsIdsUpdated
       );
     }
   };
@@ -83,37 +71,34 @@ const EditGuests = ({
     const parentKey = parseInt(e.target.parentElement.getAttribute("data-key")); //from GuestStaffItem
     const parentType = e.target.parentElement.getAttribute("data-type");
 
-    let staffGuestsIdsUpdated = [...tempFormDatas.staff_guests];
-    let patientsGuestsIdsUpdated = [...tempFormDatas.patients_guests];
+    let staffGuestsIdsUpdated = [...tempFormDatas.staff_guests_ids];
+    let patientsGuestsIdsUpdated = [...tempFormDatas.patients_guests_ids];
 
     //FAIRE DES FILTER AU LIEU DE INDEX TO REMOVE CAR L'ORDRE N'EST PAS LE MEME
     if (parentType === "staff") {
       //i want to remove a staff guest
       staffGuestsIdsUpdated = staffGuestsIdsUpdated.filter(
-        ({ staff_id }) => staff_id !== parentKey
+        (id) => id !== parentKey
       );
       setTempFormDatas({
         ...tempFormDatas,
-        staff_guests: staffGuestsIdsUpdated,
+        staff_guests_ids: staffGuestsIdsUpdated,
       });
       currentEvent.current.setExtendedProp(
-        "staffGuestsNames",
-        staffGuestsIdsUpdated.map(({ staff_name }) => staff_name.full_name)
+        "staffGuestsIds",
+        staffGuestsIdsUpdated
       );
     } else {
       patientsGuestsIdsUpdated = patientsGuestsIdsUpdated.filter(
-        (guest) => guest.patients_id !== parentKey
+        (id) => id !== parentKey
       );
-
       setTempFormDatas({
         ...tempFormDatas,
-        patients_guests: patientsGuestsIdsUpdated,
+        patients_guests_ids: patientsGuestsIdsUpdated,
       });
       currentEvent.current.setExtendedProp(
-        "patientsGuestsNames",
-        patientsGuestsIdsUpdated.map(
-          ({ patient_name }) => patient_name.full_name
-        )
+        "patientsGuestsIds",
+        patientsGuestsIdsUpdated
       );
     }
   };

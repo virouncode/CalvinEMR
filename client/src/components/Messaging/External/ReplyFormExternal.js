@@ -18,7 +18,7 @@ const ReplyFormExternal = ({
   section,
   setCurrentMsgId,
 }) => {
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [body, setBody] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -29,9 +29,16 @@ const ReplyFormExternal = ({
   const handleSend = async (e) => {
     try {
       let attach_ids = (
-        await postPatientRecord("/attachments", user.id, auth.authToken, {
-          attachments_array: attachments,
-        })
+        await postPatientRecord(
+          "/attachments",
+          user.id,
+          auth.authToken,
+          {
+            attachments_array: attachments,
+          },
+          socket,
+          "ATTACHMENTS"
+        )
       ).data;
 
       attach_ids = [...message.attachments_ids, ...attach_ids];

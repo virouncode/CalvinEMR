@@ -15,7 +15,7 @@ const MedicationForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [allergies, setAllergies] = useState([]);
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
@@ -82,10 +82,11 @@ const MedicationForm = ({
         "/medications",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "MEDICATIONS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

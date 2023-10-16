@@ -18,7 +18,7 @@ const FamilyDoctorsPU = ({
   errMsg,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const editCounter = useRef(0);
   const direction = useRef(false);
   const [addVisible, setAddVisible] = useState(false);
@@ -45,7 +45,7 @@ const FamilyDoctorsPU = ({
   };
 
   const handleAddItemClick = async (item, e) => {
-    //add patient id in pharmacies list
+    //add patient id in doctors list
     const doctor = { ...item };
     const patients = [...doctor.patients, patientId];
     doctor.patients = patients;
@@ -57,8 +57,12 @@ const FamilyDoctorsPU = ({
         auth.authToken,
         doctor
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+      socket.emit("message", {
+        route: "FAMILY DOCTORS/SPECIALISTS",
+        action: "create",
+        content: { data: doctor },
+      });
+
       toast.success("Doctor added to patient", { containerId: "B" });
     } catch (err) {
       toast.error(`Error: unable to add doctor: ${err.message}`, {

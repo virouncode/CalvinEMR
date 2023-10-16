@@ -12,11 +12,10 @@ const FamHistoryForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -59,10 +58,11 @@ const FamHistoryForm = ({
         "/family_history",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "FAMILY HISTORY"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

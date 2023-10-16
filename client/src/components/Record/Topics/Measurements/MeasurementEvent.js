@@ -25,7 +25,7 @@ const MeasurementEvent = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -44,9 +44,13 @@ const MeasurementEvent = ({
       })
     ) {
       try {
-        await deletePatientRecord("/measurements", event.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/measurements",
+          event.id,
+          auth.authToken,
+          socket,
+          "MEASUREMENTS"
+        );
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error unable to delete measurement: ${err.message}`, {
@@ -84,7 +88,9 @@ const MeasurementEvent = ({
         event.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "MEASUREMENTS"
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

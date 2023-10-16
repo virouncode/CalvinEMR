@@ -7,6 +7,7 @@ import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { useEvents } from "../../hooks/useEvents";
 import { getWeekRange } from "../../utils/formatDates";
+import { patientIdToName } from "../../utils/patientIdToName";
 import { rooms } from "../../utils/rooms";
 import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
@@ -161,11 +162,7 @@ const Calendar = ({ timelineVisible }) => {
           headers: { Authorization: `Bearer ${auth.authToken}` },
         });
         toast.success("Deleted Successfully", { containerId: "A" });
-        let newEvents = [...events];
-        newEvents = newEvents.filter(
-          ({ id }) => id !== currentEvent.current.id
-        );
-        setEvents(newEvents);
+        setEvents(events.filter(({ id }) => id !== currentEvent.current.id));
         setFormVisible(false);
         setCalendarSelectable(true);
         currentEvent.current = null;
@@ -257,21 +254,21 @@ const Calendar = ({ timelineVisible }) => {
           <div>
             {patientsGuestsIds.length || staffGuestsIds.length ? (
               <span>
-                {patientsGuestsIds.map((patient) => (
+                {patientsGuestsIds.map((id) => (
                   <NavLink
                     className="calendar__patient-link"
-                    to={`/patient-record/${patient.patients_id}`}
+                    to={`/patient-record/${id}`}
                     target="_blank"
-                    key={patient.patients_id}
+                    key={id}
                   >
-                    {patient.patient_name.full_name.toUpperCase()},{" "}
+                    {patientIdToName(clinic.patientsInfos, id).toUpperCase()},{" "}
                   </NavLink>
                 ))}
-                {staffGuestsIds.map((staff) => (
-                  <span key={staff.staff_id}>
+                {staffGuestsIds.map((id) => (
+                  <span key={id}>
                     {staffIdToTitleAndName(
                       clinic.staffInfos,
-                      staff.staff_id,
+                      id,
                       true
                     ).toUpperCase()}
                     ,{" "}
@@ -318,25 +315,25 @@ const Calendar = ({ timelineVisible }) => {
             {patientsGuestsIds.length || staffGuestsIds.length ? (
               <span>
                 {/* <strong>{guestsCaption}</strong> */} /{" "}
-                {patientsGuestsIds.map((patient) => (
+                {patientsGuestsIds.map((id) => (
                   <NavLink
                     className="calendar__patient-link"
-                    to={`/patient-record/${patient.patients_id}`}
+                    to={`/patient-record/${id}`}
                     target="_blank"
-                    key={patient.patients_id}
+                    key={id}
                   >
                     <strong>
-                      {patient.patient_name.full_name.toUpperCase()}
+                      {patientIdToName(clinic.patientsInfos, id).toUpperCase()}
                     </strong>
                     ,{" "}
                   </NavLink>
                 ))}
-                {staffGuestsIds.map((staff) => (
-                  <span key={staff.staff_id}>
+                {staffGuestsIds.map((id) => (
+                  <span key={id}>
                     <strong>
                       {staffIdToTitleAndName(
                         clinic.staffInfos,
-                        staff.staff_id,
+                        id,
                         true
                       ).toUpperCase()}
                     </strong>
@@ -387,25 +384,25 @@ const Calendar = ({ timelineVisible }) => {
           <div>
             {patientsGuestsIds.length || staffGuestsIds.length ? (
               <span>
-                {patientsGuestsIds.map((patient) => (
+                {patientsGuestsIds.map((id) => (
                   <NavLink
                     className="calendar__patient-link"
-                    to={`/patient-record/${patient.patients_id}`}
+                    to={`/patient-record/${id}`}
                     target="_blank"
-                    key={patient.patients_id}
+                    key={id}
                   >
                     <strong>
-                      {patient.patient_name.full_name.toUpperCase()}
+                      {patientIdToName(clinic.patientsInfos, id).toUpperCase()}
                     </strong>
                     ,{" "}
                   </NavLink>
                 ))}
-                {staffGuestsIds.map((staff) => (
-                  <span key={staff.staff_id}>
+                {staffGuestsIds.map((id) => (
+                  <span key={id}>
                     <strong>
                       {staffIdToTitleAndName(
                         clinic.staffInfos,
-                        staff.staff_id,
+                        id,
                         true
                       ).toUpperCase()}
                     </strong>
@@ -447,7 +444,6 @@ const Calendar = ({ timelineVisible }) => {
 
   //DATE SELECT
   const handleDateSelect = async (info) => {
-    console.log(info.jsEvent.type);
     if (currentEventElt.current) currentEventElt.current.style.opacity = 0.65;
     const startDate = Date.parse(info.startStr);
     const endDate = Date.parse(info.endStr);
@@ -507,8 +503,8 @@ const Calendar = ({ timelineVisible }) => {
           end: Date.parse(newEvent.end),
           duration: newEvent.extendedProps.duration,
           all_day: newEvent.allDay,
-          staff_guests: [],
-          patients_guests: [],
+          staff_guests_ids: [],
+          patients_guests_ids: [],
           status: newEvent.extendedProps.status,
           reason: newEvent.extendedProps.reason,
           room: newEvent.extendedProps.room,
@@ -544,8 +540,8 @@ const Calendar = ({ timelineVisible }) => {
         end: newEvent.end,
         duration: newEvent.extendedProps.duration,
         all_day: newEvent.allDay,
-        staff_guests: [],
-        patients_guests: [],
+        staff_guests_ids: [],
+        patients_guests_ids: [],
         status: newEvent.extendedProps.status,
         reason: newEvent.extendedProps.reason,
         room: newEvent.extendedProps.room,
@@ -620,8 +616,8 @@ const Calendar = ({ timelineVisible }) => {
         ? 1440
         : Math.floor((endDate - startDate) / (1000 * 60)),
       all_day: event.allDay,
-      staff_guests: event.extendedProps.staffGuestsIds,
-      patients_guests: event.extendedProps.patientsGuestsIds,
+      staff_guests_ids: event.extendedProps.staffGuestsIds,
+      patients_guests_ids: event.extendedProps.patientsGuestsIds,
       status: event.extendedProps.status,
       reason: event.extendedProps.reason,
       created_by_id: user.id,
@@ -744,8 +740,8 @@ const Calendar = ({ timelineVisible }) => {
           ? 1440
           : Math.floor((endDate - startDate) / (1000 * 60)),
         all_day: event.allDay,
-        staff_guests: event.extendedProps.staffGuestsIds,
-        patients_guests: event.extendedProps.patientsGuestsIds,
+        staff_guests_ids: event.extendedProps.staffGuestsIds,
+        patients_guests_ids: event.extendedProps.patientsGuestsIds,
         status: event.extendedProps.status,
         reason: event.extendedProps.reason,
         room: event.extendedProps.room,

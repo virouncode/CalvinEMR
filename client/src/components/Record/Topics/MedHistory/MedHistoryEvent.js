@@ -18,7 +18,7 @@ const MedHistoryEvent = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -62,7 +62,9 @@ const MedHistoryEvent = ({
         event.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "MEDICAL HISTORY"
       );
       const abortController = new AbortController();
       fetchRecord(abortController);
@@ -91,9 +93,13 @@ const MedHistoryEvent = ({
       })
     ) {
       try {
-        await deletePatientRecord("/medical_history", event.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/medical_history",
+          event.id,
+          auth.authToken,
+          socket,
+          "MEDICAL HISTORY"
+        );
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(

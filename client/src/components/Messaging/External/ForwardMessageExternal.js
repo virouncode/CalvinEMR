@@ -19,7 +19,7 @@ const ForwardMessageExternal = ({
   previousMsgs,
   patient,
 }) => {
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [attachments, setAttachments] = useState([]);
   const [recipientsIds, setRecipientsIds] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -107,9 +107,16 @@ const ForwardMessageExternal = ({
     }
     try {
       let attach_ids = (
-        await postPatientRecord("/attachments", user.id, auth.authToken, {
-          attachments_array: attachments,
-        })
+        await postPatientRecord(
+          "/attachments",
+          user.id,
+          auth.authToken,
+          {
+            attachments_array: attachments,
+          },
+          socket,
+          "ATTACHMENTS"
+        )
       ).data;
 
       attach_ids = [...message.attachments_ids, ...attach_ids];

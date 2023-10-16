@@ -11,7 +11,7 @@ const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 const DemographicsContent = ({ patientInfos }) => {
   const { clinic } = useAuth();
   return patientInfos ? (
-    <div className="topic-content">
+    <div className="topic-content topic-content--demographics">
       <div className="topic-content__infos">
         <p>
           <label>First Name: </label>

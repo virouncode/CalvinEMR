@@ -14,7 +14,7 @@ const AttachmentCard = ({
   deletable,
   addable = true,
 }) => {
-  const { user, auth } = useAuth();
+  const { user, auth, socket } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
   const handleImgClick = () => {
     setPopUpVisible(true);
@@ -23,13 +23,20 @@ const AttachmentCard = ({
 
   const handleAddToRecord = async () => {
     try {
-      await postPatientRecord("/documents", user.id, auth.authToken, {
-        patient_id: patientId,
-        assigned_id: user.id,
-        description: attachment.alias,
-        file: attachment.file,
-        acknowledged: true,
-      });
+      await postPatientRecord(
+        "/documents",
+        user.id,
+        auth.authToken,
+        {
+          patient_id: patientId,
+          assigned_id: user.id,
+          description: attachment.alias,
+          file: attachment.file,
+          acknowledged: true,
+        },
+        socket,
+        "DOCUMENTS"
+      );
       toast.success("Saved successfully", { containerId: "A" });
       navigate(0); //to refresh the patient record
     } catch (err) {

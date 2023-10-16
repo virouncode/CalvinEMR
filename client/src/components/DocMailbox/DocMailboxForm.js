@@ -10,7 +10,7 @@ const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: 0,
     assigned_id: user.id,
@@ -66,7 +66,9 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
         "/documents",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "DOCUMENTS"
       );
 
       setAddVisible(false);

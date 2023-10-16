@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { putPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
@@ -9,17 +9,15 @@ import { pharmacySchema } from "../../../../validation/pharmacyValidation";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import CountriesList from "../../../Lists/CountriesList";
 
-const PharmacyItem = ({
-  patientId,
-  item,
-  fetchRecord,
-  editCounter,
-  setErrMsgPost,
-}) => {
+const PharmacyItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [itemInfos, setItemInfos] = useState(item);
+  const [itemInfos, setItemInfos] = useState(null);
+
+  useEffect(() => {
+    setItemInfos(item);
+  }, [item]);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -67,10 +65,10 @@ const PharmacyItem = ({
           item.id,
           user.id,
           auth.authToken,
-          formDatas
+          formDatas,
+          socket,
+          "PHARMACIES"
         );
-        const abortController = new AbortController();
-        fetchRecord(abortController);
         editCounter.current -= 1;
         setEditVisible(false);
         toast.success("Saved successfully", { containerId: "B" });
@@ -110,8 +108,11 @@ const PharmacyItem = ({
           auth.authToken,
           pharmacy
         );
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        socket.emit("message", {
+          route: "PHARMACIES",
+          action: "delete",
+          content: { id: pharmacy.id },
+        });
         toast.success("Saved successfully", { containerId: "B" });
       } catch (err) {
         toast.error(err.message, { containerId: "B" });

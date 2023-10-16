@@ -5,8 +5,8 @@ import useAuth from "../../../../hooks/useAuth";
 import { firstLetterUpper } from "../../../../utils/firstLetterUpper";
 import { socialSchema } from "../../../../validation/socialValidation";
 
-const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
-  const { user, auth } = useAuth();
+const SocHistoryForm = ({ setPopUpVisible, patientId }) => {
+  const { user, auth, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({});
   const [errMsgPost, setErrMsgPost] = useState("");
 
@@ -54,10 +54,11 @@ const SocHistoryForm = ({ fetchRecord, setPopUpVisible, patientId }) => {
         "/social_history",
         user.id,
         auth.authToken,
-        formDatasToPost
+        formDatasToPost,
+        socket,
+        "SOCIAL HISTORY"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       toast.success("Saved successfully", { containerId: "A" });
     } catch (err) {
       toast.error(`Error unable to save social history: ${err.message}`, {

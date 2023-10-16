@@ -13,7 +13,7 @@ import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
 const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -53,7 +53,9 @@ const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         item.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "REMINDERS/ALERTS"
       );
       const abortController = new AbortController();
       fetchRecord(abortController);
@@ -81,9 +83,13 @@ const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
       })
     ) {
       try {
-        await deletePatientRecord("/reminders", item.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/reminders",
+          item.id,
+          auth.authToken,
+          socket,
+          "REMINDERS/ALERTS"
+        );
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error: unable to delete reminder: ${err.message}`, {

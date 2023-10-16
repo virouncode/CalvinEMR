@@ -50,13 +50,10 @@ const AllergyItem = ({ item, editCounter, setErrMsgPost }) => {
         item.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "ALLERGIES"
       );
-      socket.emit("message", {
-        route: "ALLERGIES",
-        content: { id: item.id, data: formDatas },
-        action: "update",
-      });
       // const abortController = new AbortController();
       // fetchRecord(abortController);
       editCounter.current -= 1;
@@ -83,12 +80,13 @@ const AllergyItem = ({ item, editCounter, setErrMsgPost }) => {
       })
     ) {
       try {
-        await deletePatientRecord("/allergies", item.id, auth.authToken);
-        socket.emit("message", {
-          route: "ALLERGIES",
-          content: { id: item.id },
-          action: "delete",
-        });
+        await deletePatientRecord(
+          "/allergies",
+          item.id,
+          auth.authToken,
+          socket,
+          "ALLERGIES"
+        );
 
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {

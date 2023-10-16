@@ -27,7 +27,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
   const [errMsgPost, setErrMsgPost] = useState("");
   const [formDatas, setFormDatas] = useState(patientInfos);
   const datas = useRef({});
-  const { auth, user, clinic, setClinic } = useAuth();
+  const { auth, user, clinic, setClinic, socket } = useAuth();
   const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   const handleChange = (e) => {
@@ -151,15 +151,10 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         patientInfos.id,
         user.id,
         auth.authToken,
-        datas.current
+        datas.current,
+        socket,
+        "DEMOGRAPHICS"
       );
-      const response = await axiosXano.get(`/patients/${patientInfos.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
-      setPatientInfos(response.data);
       setEditVisible(false);
 
       //update patientsInfos

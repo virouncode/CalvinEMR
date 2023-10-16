@@ -17,7 +17,7 @@ const RelationshipForm = ({
   fetchRecord,
   setErrMsgPost,
 }) => {
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     relationship: "",
@@ -51,7 +51,9 @@ const RelationshipForm = ({
         "/relationships",
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "RELATIONSHIPS"
       );
 
       //Post the inverse relationship
@@ -71,7 +73,9 @@ const RelationshipForm = ({
           "/relationships",
           user.id,
           auth.authToken,
-          inverseRelationToPost
+          inverseRelationToPost,
+          socket,
+          "RELATIONSHIPS"
         );
       }
       const abortController = new AbortController();

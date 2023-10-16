@@ -30,6 +30,8 @@ export const putPatientRecord = async (
   authId,
   authToken,
   datas,
+  socket = null,
+  topic = null,
   abortController = null
 ) => {
   if (
@@ -44,13 +46,20 @@ export const putPatientRecord = async (
     datas.date_created = Date.now();
   }
   try {
-    return await axiosXano.put(`${tableName}/${recordId}`, datas, {
+    await axiosXano.put(`${tableName}/${recordId}`, datas, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
       ...(abortController && { signal: abortController.signal }),
     });
+    if (socket && topic) {
+      socket.emit("message", {
+        route: topic,
+        action: "update",
+        content: { id: recordId, data: datas },
+      });
+    }
   } catch (err) {
     if (err.name !== "CanceledError") throw err;
   }
@@ -61,6 +70,8 @@ export const postPatientRecord = async (
   authId,
   authToken,
   datas,
+  socket = null,
+  topic = null,
   abortController = null
 ) => {
   if (tableName !== "/progress_notes_log") {
@@ -70,13 +81,21 @@ export const postPatientRecord = async (
   }
 
   try {
-    return await axiosXano.post(tableName, datas, {
+    const response = await axiosXano.post(tableName, datas, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
       ...(abortController && { signal: abortController.signal }),
     });
+    if (socket && topic) {
+      socket.emit("message", {
+        route: topic,
+        action: "create",
+        content: { data: { id: response.data.id, ...datas } },
+      });
+    }
+    return response;
   } catch (err) {
     if (err.name !== "CanceledError") throw err;
   }
@@ -112,17 +131,29 @@ export const deletePatientRecord = async (
   tableName,
   recordId,
   authToken,
+  socket,
+  topic,
   abortController = null
 ) => {
   try {
-    return await axiosXano.delete(`${tableName}/${recordId}`, {
+    await axiosXano.delete(`${tableName}/${recordId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
       ...(abortController && { signal: abortController.signal }),
     });
+
+    socket.emit("message", {
+      route: topic,
+      action: "delete",
+      content: { id: recordId },
+    });
   } catch (err) {
     if (err.name !== "CanceledError") throw err;
   }
 };
+
+// message = { route: , content : { id : id du record }, action: “delete” }
+// message = { route:  ,content : { id : id du record, data : datas à updater }, action: “update” }
+// message = { route: ,content : { data : datas à crée }, action: “create” }

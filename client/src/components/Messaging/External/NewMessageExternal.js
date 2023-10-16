@@ -11,7 +11,7 @@ import MessagesAttachments from "../MessagesAttachments";
 import Patients from "../Patients";
 
 const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [attachments, setAttachments] = useState([]);
   const [recipientId, setRecipientId] = useState(0);
   const [subject, setSubject] = useState("");
@@ -57,9 +57,16 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
     }
     try {
       const attach_ids = (
-        await postPatientRecord("/attachments", user.id, auth.authToken, {
-          attachments_array: attachments,
-        })
+        await postPatientRecord(
+          "/attachments",
+          user.id,
+          auth.authToken,
+          {
+            attachments_array: attachments,
+          },
+          socket,
+          "ATTACHMENTS"
+        )
       ).data;
 
       //create the message

@@ -89,14 +89,8 @@ export const parseToEvent = (
       duration: appointment.duration,
       reason: appointment.reason,
       status: appointment.status,
-      staffGuestsIds: appointment.staff_guests,
-      patientsGuestsIds: appointment.patients_guests,
-      staffGuestsNames: appointment.staff_guests.map(
-        ({ staff_name }) => staff_name.full_name
-      ),
-      patientsGuestsNames: appointment.patients_guests.map(
-        ({ patient_name }) => patient_name.full_name
-      ),
+      staffGuestsIds: appointment.staff_guests_ids,
+      patientsGuestsIds: appointment.patients_guests_ids,
       room: appointment.room,
     },
   };

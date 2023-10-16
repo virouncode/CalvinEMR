@@ -13,7 +13,7 @@ import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
 const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -50,7 +50,9 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         item.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "RISK FACTORS/PREVENTION"
       );
       const abortController = new AbortController();
       fetchRecord(abortController);
@@ -78,9 +80,13 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
       })
     ) {
       try {
-        await deletePatientRecord("/risk_factors", item.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/risk_factors",
+          item.id,
+          auth.authToken,
+          socket,
+          "RISK FACTORS/PREVENTION"
+        );
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error unable to delete risk factor: ${err.message}`, {

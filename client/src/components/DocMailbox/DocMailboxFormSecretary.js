@@ -11,7 +11,7 @@ const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: 0,
     assigned_id: 0,
@@ -81,7 +81,9 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
         "/documents",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "DOCUMENTS"
       );
       toast.success("Posted successfully", { containerId: "A" });
       fileInputRef.current.value = null;

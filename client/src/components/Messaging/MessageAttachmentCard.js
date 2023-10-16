@@ -14,7 +14,7 @@ const MessageAttachmentCard = ({
   cardWidth = "30%",
   addable = true,
 }) => {
-  const { user, auth } = useAuth();
+  const { user, auth, socket } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
   const handleImgClick = () => {
     setPopUpVisible(true);
@@ -22,12 +22,19 @@ const MessageAttachmentCard = ({
 
   const handleAddToRecord = async () => {
     try {
-      await postPatientRecord("/documents", user.id, auth.authToken, {
-        patient_id: patientId,
-        assigned_id: user.id,
-        description: attachment.alias,
-        file: attachment.file,
-      });
+      await postPatientRecord(
+        "/documents",
+        user.id,
+        auth.authToken,
+        {
+          patient_id: patientId,
+          assigned_id: user.id,
+          description: attachment.alias,
+          file: attachment.file,
+        },
+        socket,
+        "DOCUMENTS"
+      );
       toast.success("Saved successfully", { containerId: "A" });
     } catch (err) {
       toast.error(`Error unable to save document: ${err.message}`, {

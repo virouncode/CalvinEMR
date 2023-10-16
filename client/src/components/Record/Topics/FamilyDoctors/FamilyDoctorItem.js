@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { putPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
@@ -9,17 +9,15 @@ import { doctorSchema } from "../../../../validation/doctorValidation";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import CountriesList from "../../../Lists/CountriesList";
 
-const FamilyDoctorItem = ({
-  patientId,
-  item,
-  fetchRecord,
-  editCounter,
-  setErrMsgPost,
-}) => {
+const FamilyDoctorItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [itemInfos, setItemInfos] = useState(item);
+  const [itemInfos, setItemInfos] = useState(null);
+
+  useEffect(() => {
+    setItemInfos(item);
+  }, [item]);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -69,10 +67,10 @@ const FamilyDoctorItem = ({
           item.id,
           user.id,
           auth.authToken,
-          formDatas
+          formDatas,
+          socket,
+          "FAMILY DOCTORS/SPECIALISTS"
         );
-        const abortController = new AbortController();
-        fetchRecord(abortController);
         editCounter.current -= 1;
         setEditVisible(false);
         toast.success("Saved successfully", { containerId: "B" });
@@ -112,8 +110,11 @@ const FamilyDoctorItem = ({
           auth.authToken,
           doctor
         );
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        socket.emit("message", {
+          route: "FAMILY DOCTORS/SPECIALISTS",
+          action: "delete",
+          content: { id: doctor.id },
+        });
         toast.success("Saved successfully", { containerId: "B" });
       } catch (err) {
         toast.error(err.message, { containerId: "B" });

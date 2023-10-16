@@ -19,7 +19,7 @@ const ProgressNotesForm = ({
   order,
 }) => {
   //hooks
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     object: "Progress note",
@@ -77,15 +77,29 @@ const ProgressNotesForm = ({
     e.preventDefault();
     try {
       const attach_ids = (
-        await postPatientRecord("/attachments", user.id, auth.authToken, {
-          attachments_array: attachments,
-        })
+        await postPatientRecord(
+          "/attachments",
+          user.id,
+          auth.authToken,
+          {
+            attachments_array: attachments,
+          },
+          socket,
+          "ATTACHMENTS"
+        )
       ).data;
 
-      await postPatientRecord("/progress_notes", user.id, auth.authToken, {
-        ...formDatas,
-        attachments_ids: attach_ids,
-      });
+      await postPatientRecord(
+        "/progress_notes",
+        user.id,
+        auth.authToken,
+        {
+          ...formDatas,
+          attachments_ids: attach_ids,
+        },
+        socket,
+        "PROGRESS NOTES"
+      );
 
       setAddVisible(false);
       const abortController = new AbortController();

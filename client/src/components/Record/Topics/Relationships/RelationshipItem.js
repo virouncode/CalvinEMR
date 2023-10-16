@@ -22,7 +22,7 @@ const RelationshipItem = ({
   editCounter,
   setErrMsgPost,
 }) => {
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -73,7 +73,9 @@ const RelationshipItem = ({
         item.id,
         user.id,
         auth.authToken,
-        itemInfos
+        itemInfos,
+        socket,
+        "RELATIONSHIPS"
       );
       //Post the inverse relation ship
       let inverseRelationToPost = {};
@@ -131,15 +133,21 @@ const RelationshipItem = ({
             )
           ).data[0].id;
 
-          deletePatientRecord(
+          await deletePatientRecord(
             "/relationships",
             inverseRelationToDeleteId,
-            auth.authToken
+            auth.authToken,
+            socket,
+            "RELATIONSHIPS"
           );
         }
-        deletePatientRecord("/relationships", item.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/relationships",
+          item.id,
+          auth.authToken,
+          socket,
+          "RELATIONSHIPS"
+        );
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error unable to delete relationship: ${err.message}`, {

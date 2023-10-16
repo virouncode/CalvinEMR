@@ -11,11 +11,10 @@ const ReminderForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     active: true,
@@ -56,10 +55,11 @@ const ReminderForm = ({
         "/reminders",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "REMINDERS/ALERTS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

@@ -21,10 +21,11 @@ const VaccinesPU = ({
   patientInfos,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [editable, setEditable] = useState(true);
   const [editVisible, setEditVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
+  console.log("vaccines", datas);
 
   //STYLES
   const DIALOG_CONTAINER_STYLE = {
@@ -64,7 +65,9 @@ const VaccinesPU = ({
         datas.id,
         user.id,
         auth.authToken,
-        datas
+        datas,
+        socket,
+        "VACCINES"
       );
       toast.success("Observations saved successfully", { containerId: "B" });
       setEditVisible(false);

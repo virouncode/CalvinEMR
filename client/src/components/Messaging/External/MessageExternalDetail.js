@@ -30,7 +30,7 @@ const MessageExternalDetail = ({
   const [replyVisible, setReplyVisible] = useState(false);
   const [forwardVisible, setForwardVisible] = useState(false);
   const [allPersons, setAllPersons] = useState(false);
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [previousMsgs, setPreviousMsgs] = useState(null);
   const [attachments, setAttachments] = useState([]);
   const messageContentRef = useRef(null);
@@ -197,24 +197,38 @@ const MessageExternalDetail = ({
 
     try {
       const attach_ids = (
-        await postPatientRecord("/attachments", user.id, auth.authToken, {
-          attachments_array: datasAttachment,
-        })
+        await postPatientRecord(
+          "/attachments",
+          user.id,
+          auth.authToken,
+          {
+            attachments_array: datasAttachment,
+          },
+          socket,
+          "ATTACHMENTS"
+        )
       ).data;
-      await postPatientRecord("/progress_notes", user.id, auth.authToken, {
-        patient_id:
-          message.from_user_type === "patient"
-            ? message.from_id
-            : message.to_id,
-        object: `Message from: ${
-          message.from_user_type === "patient"
-            ? patientIdToName(clinic.patientsInfos)
-            : staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)
-        } (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
-        body: "See attachment",
-        version_nbr: 1,
-        attachments_ids: attach_ids,
-      });
+      await postPatientRecord(
+        "/progress_notes",
+        user.id,
+        auth.authToken,
+        {
+          patient_id:
+            message.from_user_type === "patient"
+              ? message.from_id
+              : message.to_id,
+          object: `Message from: ${
+            message.from_user_type === "patient"
+              ? patientIdToName(clinic.patientsInfos)
+              : staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)
+          } (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
+          body: "See attachment",
+          version_nbr: 1,
+          attachments_ids: attach_ids,
+        },
+        socket,
+        "PROGRESS NOTES"
+      );
       toast.success("Message successfuly added to patient progress notes", {
         containerId: "A",
       });
@@ -231,12 +245,19 @@ const MessageExternalDetail = ({
   const handleAddAllAttachments = async () => {
     try {
       for (const attachment of attachments) {
-        await postPatientRecord("/documents", user.id, auth.authToken, {
-          patient_id: message.related_patient_id,
-          assigned_id: user.id,
-          description: attachment.alias,
-          file: attachment.file,
-        });
+        await postPatientRecord(
+          "/documents",
+          user.id,
+          auth.authToken,
+          {
+            patient_id: message.related_patient_id,
+            assigned_id: user.id,
+            description: attachment.alias,
+            file: attachment.file,
+          },
+          socket,
+          "DOCUMENTS"
+        );
       }
       toast.success("Attachments added successfully", { containerId: "A" });
     } catch (err) {

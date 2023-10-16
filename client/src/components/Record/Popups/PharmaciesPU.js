@@ -17,7 +17,7 @@ const PharmaciesPU = ({
   errMsg,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const editCounter = useRef(0);
   const direction = useRef(false);
   const [addVisible, setAddVisible] = useState(false);
@@ -56,8 +56,11 @@ const PharmaciesPU = ({
         auth.authToken,
         pharmacy
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+      socket.emit("message", {
+        route: "PHARMACIES",
+        action: "create",
+        content: { data: pharmacy },
+      });
       toast.success("Pharmacy added to patient", { containerId: "B" });
     } catch (err) {
       toast.error(`Error: unable to add pharmacy: ${err.message}`, {

@@ -15,7 +15,7 @@ const VaccineFormMultiple = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [formDatas, setFormDatas] = useState(datas);
   useEffect(() => {
     formDatas[name][age].push({
@@ -64,7 +64,9 @@ const VaccineFormMultiple = ({
         formDatas.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "VACCINES"
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

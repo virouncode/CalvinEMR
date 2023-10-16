@@ -21,7 +21,7 @@ const MedicationEvent = ({
   setMedsRx,
 }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [eventInfos, setEventInfos] = useState(event);
 
@@ -34,9 +34,13 @@ const MedicationEvent = ({
       })
     ) {
       try {
-        await deletePatientRecord("/medications", event.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/medications",
+          event.id,
+          auth.authToken,
+          socket,
+          "MEDICATIONS"
+        );
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error unable to delete medication: ${err.message}`, {
@@ -78,7 +82,9 @@ const MedicationEvent = ({
         event.id,
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "MEDICATIONS"
       );
       const abortController = new AbortController();
       fetchRecord(abortController);

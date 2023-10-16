@@ -20,15 +20,13 @@ import StatusList from "../../../EventForm/StatusList";
 import TimePicker from "../../../Pickers/TimePicker";
 
 const AppointmentForm = ({
-  fetchRecord,
   patientId,
   editCounter,
-  patientInfos,
   setAddVisible,
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, clinic, user } = useAuth();
+  const { auth, clinic, user, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     host_id: user.title === "Secretary" ? 0 : user.id,
     start: null,
@@ -37,8 +35,8 @@ const AppointmentForm = ({
     all_day: false,
     status: "Scheduled",
     reason: "Appointment",
-    staff_guests: [],
-    patients_guests: [{ patients_id: patientId }],
+    staff_guests_ids: [],
+    patients_guests_ids: [patientId],
     room: "To be determined",
   });
   const [availableRooms, setAvailableRooms] = useState([]);
@@ -344,10 +342,10 @@ const AppointmentForm = ({
         "/appointments",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "APPOINTMENTS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

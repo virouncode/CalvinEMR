@@ -21,7 +21,7 @@ const VaccineCellItemSingle = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [formVisible, setFormVisible] = useState(false);
   const [scrollPosition, setScrollPosition] = useState([0, 0]);
 
@@ -45,7 +45,7 @@ const VaccineCellItemSingle = ({
       if (
         await confirmAlert({
           content:
-            "Do you really want to remove this vaccination ? (vaccination date will be lost",
+            "Do you really want to remove this vaccination ? ( vaccination date will be lost)",
         })
       ) {
         const newDatas = { ...datas };
@@ -60,7 +60,9 @@ const VaccineCellItemSingle = ({
             datas.id,
             user.id,
             auth.authToken,
-            newDatas
+            newDatas,
+            socket,
+            "VACCINES"
           );
           const abortController = new AbortController();
           fetchRecord(abortController);

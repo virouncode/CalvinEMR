@@ -47,20 +47,17 @@ const AllergyForm = ({
       setErrMsgPost(err.message);
       return;
     }
+    console.log("datasToost", datasToPost);
     //Submission
     try {
-      const response = await postPatientRecord(
+      await postPatientRecord(
         "/allergies",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "ALLERGIES"
       );
-
-      socket.emit("message", {
-        route: "ALLERGIES",
-        content: { data: { id: response.data.id, ...datasToPost } },
-        action: "create",
-      });
 
       editCounter.current -= 1;
       setAddVisible(false);

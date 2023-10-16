@@ -22,7 +22,7 @@ const EformsPU = ({
   isLoading,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [addVisible, setAddVisible] = useState(false);
   const [columnToSort, setColumnToSort] = useState("date_created");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -119,15 +119,22 @@ const EformsPU = ({
                   },
                 }
               );
-              await postPatientRecord("/eforms", user.id, auth.authToken, {
+              const datasToPost = {
                 patient_id: patientId,
                 assigned_id: user.id,
                 name: file.name,
                 file: response2.data,
                 acknowledged: true,
-              });
-              const abortController = new AbortController();
-              fetchRecord(abortController);
+              };
+              await postPatientRecord(
+                "/eforms",
+                user.id,
+                auth.authToken,
+                datasToPost,
+                socket,
+                "E-FORMS"
+              );
+
               toast.success(`Form successfully added to patient record`, {
                 containerId: "B",
               });

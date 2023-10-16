@@ -17,7 +17,7 @@ import AddressesList from "../../Lists/AddressesList";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const PrescriptionPU = ({ medsRx, patientInfos }) => {
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [addNotes, setAddNotes] = useState("");
   const [progress, setProgress] = useState(false);
   const printRef = useRef();
@@ -167,20 +167,41 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
     ];
 
     try {
-      await postPatientRecord("/documents", user.id, auth.authToken, datas);
+      await postPatientRecord(
+        "/documents",
+        user.id,
+        auth.authToken,
+        datas,
+        socket,
+        "DOCUMENTS"
+      );
       const attach_ids = (
-        await postPatientRecord("/attachments", user.id, auth.authToken, {
-          attachments_array: datasAttachment,
-        })
+        await postPatientRecord(
+          "/attachments",
+          user.id,
+          auth.authToken,
+          {
+            attachments_array: datasAttachment,
+          },
+          socket,
+          "ATTACHMENTS"
+        )
       ).data;
 
-      await postPatientRecord("/progress_notes", user.id, auth.authToken, {
-        patient_id: patientInfos.id,
-        object: `Prescription ${toLocalDateAndTimeWithSeconds(new Date())}`,
-        body: "See attachment",
-        version_nbr: 1,
-        attachments_ids: attach_ids,
-      });
+      await postPatientRecord(
+        "/progress_notes",
+        user.id,
+        auth.authToken,
+        {
+          patient_id: patientInfos.id,
+          object: `Prescription ${toLocalDateAndTimeWithSeconds(new Date())}`,
+          body: "See attachment",
+          version_nbr: 1,
+          attachments_ids: attach_ids,
+        },
+        socket,
+        "PROGRESS NOTES"
+      );
 
       setProgress(false);
       toast.success("Saved succesfully", { containerId: "C" });

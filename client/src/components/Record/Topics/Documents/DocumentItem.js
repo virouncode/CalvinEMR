@@ -7,8 +7,8 @@ import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
-const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
-  const { auth, clinic, user } = useAuth();
+const DocumentItem = ({ item, showDocument, setErrMsgPost, fetchRecord }) => {
+  const { auth, clinic, user, socket } = useAuth();
 
   const handleDeleteClick = async (e) => {
     setErrMsgPost("");
@@ -18,9 +18,14 @@ const DocumentItem = ({ item, fetchRecord, showDocument, setErrMsgPost }) => {
       })
     ) {
       try {
-        await deletePatientRecord("/documents", item.id, auth.authToken);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        await deletePatientRecord(
+          "/documents",
+          item.id,
+          auth.authToken,
+          socket,
+          "DOCUMENTS"
+        );
+
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error unable to delete document: ${err.message}`, {

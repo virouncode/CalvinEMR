@@ -22,7 +22,7 @@ const MeasurementForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     height_cm: "",
@@ -160,10 +160,11 @@ const MeasurementForm = ({
         "/measurements",
         user.id,
         auth.authToken,
-        formDatas
+        formDatas,
+        socket,
+        "MEASUREMENTS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

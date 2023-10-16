@@ -11,11 +11,10 @@ const ConcernForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     description: "",
@@ -52,10 +51,11 @@ const ConcernForm = ({
         "/ongoing_concerns",
         user.id,
         auth.authToken,
-        datasToPost
+        datasToPost,
+        socket,
+        "ONGOING CONCERNS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
