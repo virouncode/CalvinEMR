@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import RequireAuth from "./components/Presentation/RequireAuth";
 //Pages Components
+import io from "socket.io-client";
 import Layout from "./components/Presentation/Layout";
 import Layout2 from "./components/Presentation/Layout2";
 import Layout3 from "./components/Presentation/Layout3";
@@ -28,10 +29,11 @@ import SearchPatientPage from "./pages/SearchPatientPage";
 import SignupPatientPage from "./pages/SignupPatientPage";
 import SignupStaffPage from "./pages/SignupStaffPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+const socket = io("https://fierce-retreat-45158-56541fefe81e.herokuapp.com");
 
 const App = () => {
   const navigate = useNavigate();
-  const { setUser, setClinic, setAuth } = useAuth();
+  const { setUser, setClinic, setAuth, setSocket } = useAuth();
   useEffect(() => {
     const storageListener = (e) => {
       if (e.key !== "message") return;
@@ -41,9 +43,11 @@ const App = () => {
         setUser({});
         setClinic({});
         setAuth({});
+        setSocket({});
         localStorage.removeItem("user");
         localStorage.removeItem("auth");
         localStorage.removeItem("clinic");
+        localStorage.removeItem("socket");
         navigate("/");
       }
     };
@@ -51,7 +55,13 @@ const App = () => {
     return () => {
       window.removeEventListener("storage", storageListener);
     };
-  }, [navigate, setAuth, setClinic, setUser]);
+  }, [navigate, setAuth, setClinic, setSocket, setUser]);
+
+  useEffect(() => {
+    socket.connect();
+    setSocket(socket);
+    return () => socket.disconnect();
+  }, [setSocket]);
 
   return (
     <Routes>

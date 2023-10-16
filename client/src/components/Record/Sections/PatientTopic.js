@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { usePatientRecord } from "../../../hooks/usePatientRecord";
 import { patientIdToName } from "../../../utils/patientIdToName";
@@ -55,29 +55,37 @@ const PatientTopic = ({
   side,
 }) => {
   //HOOKS
-  const { clinic } = useAuth();
+  const { clinic, socket } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
   const [{ datas, isLoading, errMsg }, fetchRecord, setDatas] =
     usePatientRecord(url, patientId);
   const containerRef = useRef("null");
 
-  // const socketUrl = "ws://localhost:3000";
-
-  // const {
-  //   sendMessage,
-  //   sendJsonMessage,
-  //   lastMessage,
-  //   lastJsonMessage,
-  //   readyState,
-  // } = useWebSocket(socketUrl, {
-  //   onOpen: () => console.log("opened"),
-  //   onClose: () => console.log("closed"),
-  //   //Will attempt to reconnect on all close events, such as server shutting down
-  //   share: true,
-  //   filter: () => false,
-  //   retryOnError: true,
-  //   shouldReconnect: () => true,
-  // });
+  useEffect(() => {
+    const onMessage = (message) => {
+      if (message.route !== topic) return;
+      console.log("message", message);
+      switch (message.action) {
+        case "create":
+          setDatas([...datas, message.content.data]);
+          break;
+        case "update":
+          setDatas(
+            datas.map((item) =>
+              item.id === message.content.id ? message.content.data : item
+            )
+          );
+          break;
+        case "delete":
+          setDatas(datas.filter((item) => item.id !== message.content.id));
+          break;
+        default:
+          break;
+      }
+    };
+    socket.on("message", onMessage);
+    return () => socket.off("message", onMessage);
+  });
 
   //STYLE
   const TOPIC_STYLE = { color: textColor, background: backgroundColor };

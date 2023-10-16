@@ -7,6 +7,7 @@ const AllergiesContent = ({ datas, isLoading, errMsg }) => {
       <p className="topic-content__err">{errMsg}</p>
     ) : (
       <div className="topic-content">
+        {console.log(datas)}
         {datas && datas.length >= 1 ? (
           <ul>
             {datas

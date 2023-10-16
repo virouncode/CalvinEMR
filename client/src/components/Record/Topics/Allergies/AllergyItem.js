@@ -13,7 +13,7 @@ import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
 const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState(item);
 
@@ -58,9 +58,14 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
       //   action: "update",
       // };
       // await axios.post("/xano-message", xanoMessage);
-
-      const abortController = new AbortController();
-      fetchRecord(abortController);
+      console.log(formDatas);
+      socket.emit("message", {
+        route: "ALLERGIES",
+        content: { id: item.id, data: formDatas },
+        action: "update",
+      });
+      // const abortController = new AbortController();
+      // fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
@@ -92,8 +97,13 @@ const AllergyItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         //   action: "delete",
         // };
         // await axios.post("/xano-message", xanoMessage);
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        socket.emit("message", {
+          route: "ALLERGIES",
+          content: { id: item.id },
+          action: "delete",
+        });
+        // const abortController = new AbortController();
+        // fetchRecord(abortController);
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error: unable to delete item: ${err.message}`, {

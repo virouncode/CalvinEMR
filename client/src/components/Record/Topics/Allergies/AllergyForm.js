@@ -15,7 +15,7 @@ const AllergyForm = ({
   setErrMsgPost,
 }) => {
   //HOOKS
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     patient_id: patientId,
     allergy: "",
@@ -57,6 +57,12 @@ const AllergyForm = ({
         datasToPost
       );
 
+      socket.emit("message", {
+        route: "ALLERGIES",
+        content: { data: { id: response.data.id, ...datasToPost } },
+        action: "create",
+      });
+
       // const xanoMessage = {
       //   route: "ALLERGIES",
       //   content: { data: { id: response.data.id, ...datasToPost } },
@@ -64,8 +70,8 @@ const AllergyForm = ({
       // };
       // await axios.post("/xano-message", xanoMessage);
 
-      const abortController = new AbortController();
-      await fetchRecord(abortController);
+      // const abortController = new AbortController();
+      // await fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

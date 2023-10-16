@@ -14,9 +14,23 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(
     localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
   );
+  const [socket, setSocket] = useState(
+    localStorage.getItem("socket")
+      ? JSON.parse(localStorage.getItem("socket"))
+      : {}
+  );
   return (
     <AuthContext.Provider
-      value={{ auth, setAuth, user, setUser, clinic, setClinic }}
+      value={{
+        auth,
+        setAuth,
+        user,
+        setUser,
+        clinic,
+        setClinic,
+        socket,
+        setSocket,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,9 +1,9 @@
 //Imports
 const express = require("express");
-const http = require("http");
-const socketIo = require("socket.io");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 require("dotenv").config();
-const path = require("path");
+const { join } = require("path");
 const twilio = require("twilio")(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
@@ -18,10 +18,16 @@ const PORT = process.env.PORT || 4000;
 //****************** APP ***************************//
 const app = express();
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "..", "client", "build")));
+app.use(express.static(join(__dirname, "..", "client", "build")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-const httpServer = http.createServer(app);
+const httpServer = createServer(app); //my http server
+const io = new Server(httpServer, {
+  cors: {
+    origin:
+      process.env.NODE_ENV === "production" ? false : ["http://localhost:3000"],
+  },
+}); //Web socket server
 
 //***************** Endpoint TWILIO ******************//
 app.post("/api/twilio/messages", async (req, res) => {
@@ -48,7 +54,6 @@ app.post("/api/extractToText", async (req, res) => {
     res.send(result);
     res.send(JSON.stringify({ success: true }));
   } catch (err) {
-    console.log(err);
     res.status(500).json({ success: false, error: err.message });
     res.send(JSON.stringify({ success: false }));
   }
@@ -71,28 +76,26 @@ app.post("/xano-message", (req, res) => {
 
 //Dans les autres cas on renvoie la single page app
 app.get("/*", (_, res) => {
-  res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
+  res.sendFile(join(__dirname, "..", "client", "build", "index.html"));
 });
 
-//****************** SOCKET **************************//
-const io = socketIo(httpServer, {
-  cors: {
-    origin:
-      process.env.NODE_ENV === "production" ? false : ["http://localhost:3000"],
-  },
-});
+//****************** SOCKET CONECTION/DECONNECTION EVENT LISTENERS ****************//
 
 io.on("connection", (socket) => {
   console.log(`User ${socket.id} connected`);
-  socket.on("disconnect", () => {
+  socket.on("disconnect", (reason) => {
     console.log(`User ${socket.id} disconnected`);
+    console.log(reason);
   });
-  // // Handle incoming WebSocket messages
-  // socket.on("xano message", (message) => {
-  //   io.emit("xano message", message); // Broadcast the message to all connected clients
-  // });
+  socket.on("message", (message) => {
+    socket.emit("message", message);
+  });
 });
-//***************************************************/
+io.on("connect_error", (err) => {
+  console.log(`connect_error due to ${err.message}`);
+});
+
+//*******************************************************************//
 
 httpServer.listen(PORT, () => {
   console.log(`Le serveur est lancé sur le port ${PORT}`);
