@@ -13,6 +13,9 @@ import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import FakeWindow from "../../Presentation/FakeWindow";
 import CalvinAI from "./CalvinAI/CalvinAI";
+// import ProgressNotesAttachments from "./ProgressNotesAttachments";
+import LinearProgress from "@mui/joy/LinearProgress";
+import { onMessageVersions } from "../../../utils/socketHandlers/onMessageVersions";
 import ProgressNotesAttachments from "./ProgressNotesAttachments";
 import ProgressNotesCardBody from "./ProgressNotesCardBody";
 import ProgressNotesCardHeader from "./ProgressNotesCardHeader";
@@ -23,8 +26,6 @@ const ProgressNotesCard = ({
   progressNote,
   progressNotes,
   setProgressNotes,
-  fetchRecord,
-  order,
   patientId,
   checkedNotes,
   setCheckedNotes,
@@ -42,6 +43,16 @@ const ProgressNotesCard = ({
   const bodyRef = useRef(null);
   const { auth, user, clinic, socket } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
+
+  useEffect(() => {
+    if (!socket || !versions) return;
+    const onMessage = (message) =>
+      onMessageVersions(message, versions, setVersions, progressNote.id);
+    socket.on("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
+  }, [progressNote.id, socket, versions]);
 
   useEffect(() => {
     if (progressNote) {
@@ -177,9 +188,7 @@ const ProgressNotesCard = ({
           "/progress_notes_log",
           user.id,
           auth.authToken,
-          logDatas,
-          socket,
-          "PROGRESS NOTES LOG"
+          logDatas
         );
         //then put the new progress note version in the progress note tbl
         tempFormDatas.version_nbr = progressNote.version_nbr + 1; //increment version
@@ -193,8 +202,8 @@ const ProgressNotesCard = ({
           "PROGRESS NOTES"
         );
         setEditVisible(false);
-        const abortController = new AbortController();
-        fetchRecord(abortController, order);
+        // const abortController = new AbortController();
+        // fetchRecord(abortController, order);
         const versionsResults = (
           await getPatientRecord(
             "/progress_notes_log",
@@ -209,7 +218,11 @@ const ProgressNotesCard = ({
           (version) => (version.id = version.progress_note_id)
         );
         versionsResults.sort((a, b) => a.version_nbr - b.version_nbr);
-        setVersions(versionsResults);
+        socket.emit("message", {
+          route: "VERSIONS",
+          content: { data: versionsResults },
+        });
+        // setVersions(versionsResults);
         toast.success("Progress note saved successfully", { containerId: "A" });
       } catch (err) {
         toast.error(`Error: unable to save progress note: ${err.message}`, {
@@ -270,97 +283,100 @@ const ProgressNotesCard = ({
     return checkedNotes.includes(progressNoteId);
   };
 
-  return (
-    tempFormDatas &&
-    versions && (
-      <div className="progress-notes__card">
-        {bodyVisible ? (
-          <ProgressNotesCardHeader
-            isChecked={isChecked}
-            handleCheck={handleCheck}
-            progressNote={progressNote}
-            tempFormDatas={tempFormDatas}
-            editVisible={editVisible}
-            versions={versions}
-            handleVersionChange={handleVersionChange}
-            handleEditClick={handleEditClick}
-            handleCalvinAIClick={handleCalvinAIClick}
-            handleSaveClick={handleSaveClick}
-            handleCancelClick={handleCancelClick}
-            handleChange={handleChange}
-            handleTriangleProgressClick={handleTriangleProgressClick}
-          />
-        ) : (
-          <ProgressNotesCardHeaderFolded
-            tempFormDatas={tempFormDatas}
-            handleTriangleProgressClick={handleTriangleProgressClick}
-          />
-        )}
-        <div
-          ref={bodyRef}
-          className={
-            bodyVisible
-              ? "progress-notes__card-body-container progress-notes__card-body-container--active"
-              : "progress-notes__card-body-container"
-          }
-        >
-          <ProgressNotesCardBody
-            tempFormDatas={tempFormDatas}
-            editVisible={editVisible}
-            handeChange={handleChange}
-          />
-          <ProgressNotesAttachments
-            attachments={attachments}
-            deletable={false}
-            patientId={patientId}
-          />
-          {!editVisible && (
-            <div className="progress-notes__card-sign">
-              {tempFormDatas.updated_by_id ? (
-                <p style={{ padding: "0 10px" }}>
-                  Updated by{" "}
-                  {staffIdToTitleAndName(
-                    clinic.staffInfos,
-                    tempFormDatas.updated_by_id,
-                    true
-                  )}{" "}
-                  on {toLocalDateAndTimeWithSeconds(tempFormDatas.date_updated)}
-                </p>
-              ) : null}
+  return tempFormDatas && versions ? (
+    <div className="progress-notes__card">
+      {bodyVisible ? (
+        <ProgressNotesCardHeader
+          isChecked={isChecked}
+          handleCheck={handleCheck}
+          progressNote={progressNote}
+          tempFormDatas={tempFormDatas}
+          editVisible={editVisible}
+          versions={versions}
+          handleVersionChange={handleVersionChange}
+          handleEditClick={handleEditClick}
+          handleCalvinAIClick={handleCalvinAIClick}
+          handleSaveClick={handleSaveClick}
+          handleCancelClick={handleCancelClick}
+          handleChange={handleChange}
+          handleTriangleProgressClick={handleTriangleProgressClick}
+        />
+      ) : (
+        <ProgressNotesCardHeaderFolded
+          tempFormDatas={tempFormDatas}
+          handleTriangleProgressClick={handleTriangleProgressClick}
+        />
+      )}
+      <div
+        ref={bodyRef}
+        className={
+          bodyVisible
+            ? "progress-notes__card-body-container progress-notes__card-body-container--active"
+            : "progress-notes__card-body-container"
+        }
+      >
+        <ProgressNotesCardBody
+          tempFormDatas={tempFormDatas}
+          editVisible={editVisible}
+          handleChange={handleChange}
+        />
+        <ProgressNotesAttachments
+          attachments={attachments}
+          deletable={false}
+          patientId={patientId}
+        />
+        {!editVisible && (
+          <div className="progress-notes__card-sign">
+            {tempFormDatas.updated_by_id ? (
               <p style={{ padding: "0 10px" }}>
-                Created by{" "}
+                Updated by{" "}
                 {staffIdToTitleAndName(
                   clinic.staffInfos,
-                  tempFormDatas.created_by_id,
+                  tempFormDatas.updated_by_id,
                   true
                 )}{" "}
-                on {toLocalDateAndTimeWithSeconds(tempFormDatas.date_created)}
+                on {toLocalDateAndTimeWithSeconds(tempFormDatas.date_updated)}
               </p>
-            </div>
-          )}
-        </div>
-        {popUpVisible && (
-          <FakeWindow
-            title={`CALVIN AI talk about ${patientIdToName(
-              clinic.patientsInfos,
-              patientId
-            )}`}
-            width={1000}
-            height={window.innerHeight}
-            x={(window.innerWidth - 1000) / 2}
-            y={0}
-            color="#3C5A76"
-            setPopUpVisible={setPopUpVisible}
-          >
-            <CalvinAI
-              attachments={attachments}
-              initialBody={formDatas.body}
-              patientInfos={patientInfos}
-            />
-          </FakeWindow>
+            ) : null}
+            <p style={{ padding: "0 10px" }}>
+              Created by{" "}
+              {staffIdToTitleAndName(
+                clinic.staffInfos,
+                tempFormDatas.created_by_id,
+                true
+              )}{" "}
+              on {toLocalDateAndTimeWithSeconds(tempFormDatas.date_created)}
+            </p>
+          </div>
         )}
       </div>
-    )
+      {popUpVisible && (
+        <FakeWindow
+          title={`CALVIN AI talk about ${patientIdToName(
+            clinic.patientsInfos,
+            patientId
+          )}`}
+          width={1000}
+          height={window.innerHeight}
+          x={(window.innerWidth - 1000) / 2}
+          y={0}
+          color="#3C5A76"
+          setPopUpVisible={setPopUpVisible}
+        >
+          <CalvinAI
+            attachments={attachments}
+            initialBody={formDatas.body}
+            patientInfos={patientInfos}
+          />
+        </FakeWindow>
+      )}
+    </div>
+  ) : (
+    <LinearProgress
+      thickness={0.5}
+      style={{ margin: "10px" }}
+      color="#cececd"
+    />
   );
 };
 

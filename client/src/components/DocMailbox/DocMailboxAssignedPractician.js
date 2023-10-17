@@ -61,8 +61,8 @@ const DocMailboxAssignedPractician = ({
 
   return (
     <div className="practicians">
-      <label className="practicians-title">Assigned Practician</label>
-      <div className="practicians-list">
+      <label className="practicians__title">Assigned Practician</label>
+      <div className="practicians__list">
         {allInfos
           .filter((category) => category.infos.length !== 0)
           .map((category) => (

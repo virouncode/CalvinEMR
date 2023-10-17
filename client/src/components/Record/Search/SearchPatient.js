@@ -1,11 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
+import { onMessageSearchPatients } from "../../../utils/socketHandlers/onMessageSearchPatients";
 import PatientSearchForm from "./PatientSearchForm";
 import PatientSearchResult from "./PatientSearchResult";
 
 const SearchPatient = () => {
+  console.log("render");
   const direction = useRef(false);
-  const { clinic } = useAuth();
+  const { clinic, socket, setClinic } = useAuth();
   const [sortedPatientsInfos, setSortedPatientsInfos] = useState(
     clinic.patientsInfos
   );
@@ -18,8 +20,24 @@ const SearchPatient = () => {
     health: "",
   });
 
+  useEffect(() => {
+    if (!socket) return;
+    const onMessage = (message) =>
+      onMessageSearchPatients(
+        message,
+        sortedPatientsInfos,
+        setSortedPatientsInfos,
+        clinic,
+        setClinic
+      );
+    socket.on("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
+  }, [clinic, setClinic, socket, sortedPatientsInfos]);
+
   const handleSort = (columnName) => {
-    const sortedPatientsInfos = [...clinic.patientsInfos];
+    const sortedPatientsInfosUpdated = [...sortedPatientsInfos];
     direction.current = !direction.current;
     if (
       columnName === "assigned_md_name" ||
@@ -32,26 +50,26 @@ const SearchPatient = () => {
       columnName === "assigned_nutri_name"
     ) {
       direction.current
-        ? sortedPatientsInfos.sort((a, b) =>
+        ? sortedPatientsInfosUpdated.sort((a, b) =>
             a[columnName]?.full_name
               .toString()
               .localeCompare(b[columnName]?.full_name.toString())
           )
-        : sortedPatientsInfos.sort((a, b) =>
+        : sortedPatientsInfosUpdated.sort((a, b) =>
             b[columnName]?.full_name
               .toString()
               .localeCompare(a[columnName]?.full_name.toString())
           );
     } else {
       direction.current
-        ? sortedPatientsInfos.sort((a, b) =>
+        ? sortedPatientsInfosUpdated.sort((a, b) =>
             a[columnName]?.toString().localeCompare(b[columnName]?.toString())
           )
-        : sortedPatientsInfos.sort((a, b) =>
+        : sortedPatientsInfosUpdated.sort((a, b) =>
             b[columnName]?.toString().localeCompare(a[columnName]?.toString())
           );
     }
-    setSortedPatientsInfos(sortedPatientsInfos);
+    setSortedPatientsInfos(sortedPatientsInfosUpdated);
   };
   return (
     <>

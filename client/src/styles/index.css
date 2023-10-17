@@ -13317,6 +13317,12 @@ readers do not read off random characters that represent icons */
 .signup-patient__submit input[type=submit] {
   width: 100px;
 }
+.signup-patient__image {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 50%;
+}
 
 .signup-staff__success {
   padding: 10px 20px;
@@ -14826,6 +14832,7 @@ readers do not read off random characters that represent icons */
 
 .practicians-forward {
   border: solid 1px rgb(206, 205, 205);
+  border-radius: 4px;
   width: 70%;
   margin: 30px auto 0;
   padding: 10px;
@@ -14860,6 +14867,54 @@ readers do not read off random characters that represent icons */
   margin-right: 5px;
 }
 .practicians-forward__category-list {
+  margin-top: 10px;
+  margin-left: 25px;
+}
+
+.practicians {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.practicians__btn {
+  width: 100%;
+  text-align: end;
+}
+.practicians__btn button {
+  margin-left: 10px;
+}
+.practicians__title {
+  font-size: 0.8rem;
+  font-weight: bold;
+  width: 30%;
+}
+.practicians__list {
+  border: solid 1px rgb(206, 205, 205);
+  border-radius: 4px;
+  width: 70%;
+  padding: 5px 10px;
+  font-size: 0.85rem;
+}
+.practicians__list-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  justify-content: flex-start;
+}
+.practicians__list-item input[type=checkbox] {
+  margin-right: 5px;
+  width: auto;
+}
+.practicians__list-item label {
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+.practicians__category-overview i {
+  margin-right: 5px;
+}
+.practicians__category-list {
   margin-top: 10px;
   margin-left: 25px;
 }

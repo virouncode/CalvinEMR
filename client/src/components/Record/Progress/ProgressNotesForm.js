@@ -12,12 +12,7 @@ import NewTemplate from "./NewTemplate";
 import ProgressNotesAttachments from "./ProgressNotesAttachments";
 import ProgressNotesTemplatesList from "./ProgressNotesTemplatesList";
 
-const ProgressNotesForm = ({
-  setAddVisible,
-  fetchRecord,
-  patientId,
-  order,
-}) => {
+const ProgressNotesForm = ({ setAddVisible, patientId, order }) => {
   //hooks
   const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
@@ -77,16 +72,9 @@ const ProgressNotesForm = ({
     e.preventDefault();
     try {
       const attach_ids = (
-        await postPatientRecord(
-          "/attachments",
-          user.id,
-          auth.authToken,
-          {
-            attachments_array: attachments,
-          },
-          socket,
-          "ATTACHMENTS"
-        )
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: attachments,
+        })
       ).data;
 
       await postPatientRecord(
@@ -100,10 +88,10 @@ const ProgressNotesForm = ({
         socket,
         "PROGRESS NOTES"
       );
-
       setAddVisible(false);
-      const abortController = new AbortController();
-      fetchRecord(abortController, order);
+
+      // const abortController = new AbortController();
+      // fetchRecord(abortController, order);
       toast.success("Saved successfully", { containerId: "A" });
     } catch (err) {
       toast.error(`Error: unable to save progress note: ${err.message}`, {

@@ -1,7 +1,7 @@
 import formatName from "./formatName";
 
 export const staffIdToTitleAndName = (staffInfos, staffId, format = false) => {
-  if (staffId === 0) return "";
+  if (!staffId) return "";
   if (format) {
     return (
       (staffInfos.find(({ id }) => id === staffId)?.title === "Doctor"

@@ -16,7 +16,7 @@ const DocMailboxItem = ({
   setForwardVisible,
   forwardVisible,
 }) => {
-  const { clinic, auth, user, setUser } = useAuth();
+  const { clinic, auth, user, setUser, socket } = useAuth();
 
   const handleAcknowledge = async () => {
     if (
@@ -34,15 +34,26 @@ const DocMailboxItem = ({
             Authorization: `Bearer ${auth.authToken}`,
           },
         });
-        const response = await axiosXano.get(
-          `/documents_for_staff?staff_id=${user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          }
-        );
-        setDocuments(response.data.filter(({ acknowledged }) => !acknowledged));
+        socket.emit("message", {
+          route: "DOCUMENTS",
+          action: "update",
+          content: { id: item.id, data: datasToPut },
+        });
+        socket.emit("message", {
+          route: "DOCMAILBOX",
+          action: "update",
+          content: { id: item.id, data: datasToPut },
+        });
+
+        // const response = await axiosXano.get(
+        //   `/documents_for_staff?staff_id=${user.id}`,
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${auth.authToken}`,
+        //     },
+        //   }
+        // );
+        // setDocuments(response.data.filter(({ acknowledged }) => !acknowledged));
         toast.success("Document acknowledged successfully", {
           containerId: "A",
         });

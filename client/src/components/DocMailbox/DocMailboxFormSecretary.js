@@ -77,7 +77,7 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
     if (!datasToPost.file.type) datasToPost.file.type = "document";
 
     try {
-      await postPatientRecord(
+      const response = await postPatientRecord(
         "/documents",
         user.id,
         auth.authToken,
@@ -85,6 +85,11 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
         socket,
         "DOCUMENTS"
       );
+      socket.emit("message", {
+        route: "DOCMAILBOX",
+        action: "create",
+        content: { data: { id: response.data.id, ...datasToPost } },
+      });
       toast.success("Posted successfully", { containerId: "A" });
       fileInputRef.current.value = null;
       setFormDatas({
@@ -146,9 +151,9 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
   };
 
   return (
-    <div className="docmailbox-form">
-      <form className="docmailbox-form-content" onSubmit={handleSubmit}>
-        <div className="docmailbox-form-content-row">
+    <div className="docmailbox__form">
+      <form className="docmailbox__form-content" onSubmit={handleSubmit}>
+        <div className="docmailbox__form-row">
           <label>Description</label>
           <input
             name="description"
@@ -158,7 +163,7 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
             autoComplete="off"
           />
         </div>
-        <div className="docmailbox-form-content-row docmailbox-form-content-row--patients">
+        <div className="docmailbox__form-row docmailbox__form-row--patients">
           <label>Related patient</label>
           <DocMailboxPatients
             isPatientChecked={isPatientChecked}
@@ -166,14 +171,14 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
             label={false}
           />
         </div>
-        <div className="docmailbox-form-content-row">
+        <div className="docmailbox__form-row">
           <DocMailboxAssignedPractician
             staffInfos={clinic.staffInfos}
             handleCheckPractician={handleCheckPractician}
             isPracticianChecked={isPracticianChecked}
           />
         </div>
-        <div className="docmailbox-form-content-row">
+        <div className="docmailbox__form-row">
           <label>Upload document</label>
           <input
             ref={fileInputRef}
@@ -184,16 +189,16 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
             accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx"
           />
         </div>
-        <div className="docmailbox-form-content-row">
+        <div className="docmailbox__form-row">
           {isLoadingFile && (
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}
         </div>
-        <div className="docmailbox-form-content-row">
+        <div className="docmailbox__form-row">
           <input type="submit" value="Post" disabled={saveDisabled} />
         </div>
       </form>
-      <div className="docmailbox-form-content-preview">
+      <div className="docmailbox__form-preview">
         {formDatas.file && formDatas.file.mime.includes("image") ? (
           <img src={`${BASE_URL}${formDatas.file.path}`} alt="" width="100%" />
         ) : formDatas.file && formDatas.file.mime.includes("video") ? (

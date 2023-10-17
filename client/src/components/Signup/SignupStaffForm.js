@@ -9,7 +9,7 @@ import { staffSchema } from "../../validation/staffValidation";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const SignupStaffForm = () => {
-  const { auth, clinic, setClinic } = useAuth();
+  const { auth, socket } = useAuth();
   const [successMsg, setSuccessMsg] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -145,12 +145,16 @@ const SignupStaffForm = () => {
 
       delete datasToPost.confirm_password;
       //Submission
-
       const response = await axiosXano.post("/staff", datasToPost, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
+      });
+      socket.emit("message", {
+        route: "STAFF",
+        action: "create",
+        content: { data: { id: response.data.id, ...datasToPost } },
       });
 
       await axiosXano.post(
@@ -300,18 +304,6 @@ const SignupStaffForm = () => {
         }
       );
 
-      //update staffInfos
-      const response2 = await axiosXano.get("/staff", {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      setClinic({ ...clinic, staffInfos: response2.data });
-      localStorage.setItem(
-        "clinic",
-        JSON.stringify({ ...clinic, staffInfos: response2.data })
-      );
       setSuccessMsg(
         "Staff member added successfully, you will be redirected to the login page"
       );

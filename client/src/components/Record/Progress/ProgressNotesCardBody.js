@@ -14,8 +14,8 @@ const ProgressNotesCardBody = ({
           name="body"
           cols="90"
           rows="20"
-          value={tempFormDatas.body}
           onChange={handleChange}
+          value={tempFormDatas.body}
         />
       )}
     </div>

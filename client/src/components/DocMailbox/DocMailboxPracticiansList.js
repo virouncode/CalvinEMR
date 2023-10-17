@@ -8,7 +8,7 @@ const DocMailboxPracticiansList = ({
   categoryName,
 }) => {
   return (
-    <ul className="practicians-category-list">
+    <ul className="practicians__category-list">
       {categoryInfos.map((info) => (
         <DocMailboxPracticiansListItem
           info={info}

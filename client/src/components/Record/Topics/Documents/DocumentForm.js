@@ -51,7 +51,7 @@ const DocumentForm = ({
       return;
     }
     try {
-      await postPatientRecord(
+      const response = await postPatientRecord(
         "/documents",
         user.id,
         auth.authToken,
@@ -59,6 +59,11 @@ const DocumentForm = ({
         socket,
         "DOCUMENTS"
       );
+      socket.emit("message", {
+        route: "DOCMAILBOX",
+        action: "create",
+        content: { data: { id: response.data.id, ...datasToPost } },
+      });
 
       editCounter.current -= 1;
       setAddVisible(false);

@@ -10,7 +10,7 @@ const DocMailboxAssignedPracticianForward = ({
   handleCheckPractician,
   assignedId,
   setForwardVisible,
-  setDocuments,
+  setAssignedId,
 }) => {
   const doctorsInfos = {
     name: "Doctors",
@@ -64,7 +64,7 @@ const DocMailboxAssignedPracticianForward = ({
     psychosInfos,
     othersInfos,
   ];
-  const { user, auth } = useAuth();
+  const { user, auth, socket } = useAuth();
   const handleCancelForward = () => {
     setForwardVisible(false);
   };
@@ -78,18 +78,18 @@ const DocMailboxAssignedPracticianForward = ({
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
+      socket.emit("message", {
+        route: "DOCUMENTS",
+        action: "update",
+        content: { id: doc.id, data: doc },
+      });
+      socket.emit("message", {
+        route: "DOCMAILBOX",
+        action: "update",
+        content: { id: doc.id, data: doc },
+      });
       setForwardVisible(false);
-      const response = await axiosXano.get(
-        `/documents_for_staff?staff_id=${user.id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-        }
-      );
-      setDocuments(response.data.filter(({ acknowledged }) => !acknowledged));
-
+      setAssignedId(0);
       toast.success("Document forwarded successfully", {
         containerId: "A",
       });

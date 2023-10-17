@@ -38,7 +38,7 @@ const EventForm = ({
     currentEvent.current.id
   );
   const [availableRooms, setAvailableRooms] = useState([]);
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [staffGuestsInfos, setStaffGuestsInfos] = useState([]);
   const [patientsGuestsInfos, setPatientsGuestsInfos] = useState([]);
   const [invitationVisible, setInvitationVisible] = useState(false);
@@ -380,8 +380,14 @@ const EventForm = ({
         },
       });
       setHostsIds([...hostsIds, tempFormDatas.host_id]);
-      const abortController = new AbortController();
-      fetchEvents(abortController);
+      socket.emit("message", {
+        route: "EVENTS",
+        action: "update",
+        content: {
+          id: currentEvent.current.id,
+          data: { id: currentEvent.current.id, ...datas },
+        },
+      });
       setFormVisible(false);
       setCalendarSelectable(true);
       toast.success("Appointment saved successfully", { containerId: "A" });

@@ -1,17 +1,19 @@
 import { CircularProgress } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NewWindow from "react-new-window";
 import useAuth from "../../../hooks/useAuth";
 import { useProgressNotes } from "../../../hooks/useProgressNotes";
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
+import { onMessageProgressNotes } from "../../../utils/socketHandlers/onMessageProgressNotes";
 import ProgressNotesPU from "../Popups/ProgressNotesPU";
 import ProgressNotesCard from "./ProgressNotesCard";
 import ProgressNotesForm from "./ProgressNotesForm";
 import ProgressNotesHeader from "./ProgressNotesHeader";
 
 const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
+  console.log("render progress notes");
   //hooks
-  const { user } = useAuth();
+  const { user, socket } = useAuth();
   const [addVisible, setAddVisible] = useState(false);
   const [popUpVisible, setPopUpVisible] = useState(false);
   const [search, setSearch] = useState("");
@@ -33,6 +35,23 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
     const allNotesIds = progressNotes.map(({ id }) => id);
     setCheckedNotes(allNotesIds);
   };
+  console.log(progressNotes);
+
+  useEffect(() => {
+    if (!socket) return;
+    const onMessage = (message) =>
+      onMessageProgressNotes(
+        message,
+        progressNotes,
+        setProgressNotes,
+        patientId,
+        order
+      );
+    socket.on("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
+  }, [patientId, progressNotes, setProgressNotes, socket, order]);
 
   return (
     <div className="progress-notes">
@@ -93,7 +112,6 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
         {progressNotes && addVisible && (
           <ProgressNotesForm
             setAddVisible={setAddVisible}
-            fetchRecord={fetchRecord}
             patientId={patientId}
             order={order}
           />

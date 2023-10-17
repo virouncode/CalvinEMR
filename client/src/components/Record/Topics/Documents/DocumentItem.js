@@ -7,7 +7,7 @@ import { toLocalDate } from "../../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
-const DocumentItem = ({ item, showDocument, setErrMsgPost, fetchRecord }) => {
+const DocumentItem = ({ item, showDocument, setErrMsgPost }) => {
   const { auth, clinic, user, socket } = useAuth();
 
   const handleDeleteClick = async (e) => {
@@ -25,7 +25,11 @@ const DocumentItem = ({ item, showDocument, setErrMsgPost, fetchRecord }) => {
           socket,
           "DOCUMENTS"
         );
-
+        socket.emit("message", {
+          route: "DOCMAILBOX",
+          action: "delete",
+          content: { id: item.id },
+        });
         toast.success("Deleted successfully", { containerId: "B" });
       } catch (err) {
         toast.error(`Error unable to delete document: ${err.message}`, {
@@ -51,8 +55,16 @@ const DocumentItem = ({ item, showDocument, setErrMsgPost, fetchRecord }) => {
             Authorization: `Bearer ${auth.authToken}`,
           },
         });
-        const abortController = new AbortController();
-        fetchRecord(abortController);
+        socket.emit("message", {
+          route: "DOCUMENTS",
+          action: "update",
+          content: { id: item.id, data: datasToPut },
+        });
+        socket.emit("message", {
+          route: "DOCMAILBOX",
+          action: "update",
+          content: { id: item.id, data: datasToPut },
+        });
         toast.success("Document acknowledged successfully", {
           containerId: "A",
         });
@@ -91,7 +103,12 @@ const DocumentItem = ({ item, showDocument, setErrMsgPost, fetchRecord }) => {
           <button onClick={handleAcknowledge}>Acknowledge</button>
         )}
         <button>Fax</button>
-        <button onClick={handleDeleteClick}>Delete</button>
+        <button
+          onClick={handleDeleteClick}
+          disabled={user.id !== item.assigned_id}
+        >
+          Delete
+        </button>
       </td>
     </tr>
   );

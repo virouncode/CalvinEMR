@@ -1,5 +1,6 @@
 import React from "react";
-import formatName from "../../utils/formatName";
+import useAuth from "../../hooks/useAuth";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 
 const DocMailboxPracticiansListItem = ({
   info,
@@ -7,8 +8,9 @@ const DocMailboxPracticiansListItem = ({
   isPracticianChecked,
   categoryName,
 }) => {
+  const { clinic } = useAuth();
   return (
-    <li className="practicians-list-item">
+    <li className="practicians__list-item">
       <input
         id={info.id}
         type="checkbox"
@@ -16,7 +18,9 @@ const DocMailboxPracticiansListItem = ({
         checked={isPracticianChecked(info.id)}
         name={categoryName}
       />
-      <label htmlFor={info.id}>{formatName(info.full_name)}</label>
+      <label htmlFor={info.id}>
+        {staffIdToTitleAndName(clinic.staffInfos, info.id, true)}
+      </label>
     </li>
   );
 };

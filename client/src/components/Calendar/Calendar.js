@@ -9,6 +9,7 @@ import { useEvents } from "../../hooks/useEvents";
 import { getWeekRange } from "../../utils/formatDates";
 import { patientIdToName } from "../../utils/patientIdToName";
 import { rooms } from "../../utils/rooms";
+import { onMessageEvents } from "../../utils/socketHandlers/onMessageEvent";
 import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import EventForm from "../EventForm/EventForm";
@@ -23,7 +24,7 @@ var _ = require("lodash");
 //MY COMPONENT
 const Calendar = ({ timelineVisible }) => {
   //====================== HOOKS =======================//
-  const { clinic, auth, user } = useAuth();
+  const { clinic, auth, user, socket } = useAuth();
   const [hostsIds, setHostsIds] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
   const fcRef = useRef(null); //fullcalendar
@@ -103,11 +104,11 @@ const Calendar = ({ timelineVisible }) => {
               headers: { Authorization: `Bearer ${auth.authToken}` },
             });
             toast.success("Deleted Successfully", { containerId: "A" });
-            let newEvents = [...events];
-            newEvents = newEvents.filter(
-              ({ id }) => id !== currentEvent.current.id
-            );
-            setEvents(newEvents);
+            socket.emit("message", {
+              route: "EVENTS",
+              action: "delete",
+              content: { id: currentEvent.current.id },
+            });
             setFormVisible(false);
             setCalendarSelectable(true);
             currentEvent.current = null;
@@ -149,6 +150,23 @@ const Calendar = ({ timelineVisible }) => {
     };
   }, [auth.authToken, events, formVisible, isSecretary, setEvents, user.id]); // Empty dependency array means this effect runs once, like componentDidMount
 
+  useEffect(() => {
+    if (!socket) return;
+    const onMessage = (message) =>
+      onMessageEvents(
+        message,
+        events,
+        setEvents,
+        clinic.staffInfos,
+        user.id,
+        user.title === "Secretary"
+      );
+    socket.on("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
+  }, [clinic.staffInfos, events, setEvents, socket, user.id, user.title]);
+
   //====================== EVENTS HANDLERS ==========================//
   const handleDeleteEvent = async (e) => {
     if (formVisible) return;
@@ -162,7 +180,11 @@ const Calendar = ({ timelineVisible }) => {
           headers: { Authorization: `Bearer ${auth.authToken}` },
         });
         toast.success("Deleted Successfully", { containerId: "A" });
-        setEvents(events.filter(({ id }) => id !== currentEvent.current.id));
+        socket.emit("message", {
+          route: "EVENTS",
+          action: "delete",
+          content: { id: currentEvent.current.id },
+        });
         setFormVisible(false);
         setCalendarSelectable(true);
         currentEvent.current = null;
@@ -519,8 +541,13 @@ const Calendar = ({ timelineVisible }) => {
               Authorization: `Bearer ${auth.authToken}`,
             },
           });
-          const abortController = new AbortController();
-          fetchEvents(abortController);
+          socket.emit("message", {
+            route: "EVENTS",
+            action: "create",
+            content: { data: response.data },
+          });
+          // const abortController = new AbortController();
+          // fetchEvents(abortController);
           lastCurrentId.current = response.data.id.toString();
         } catch (err) {
           if (err.name !== "CanceledError")
@@ -559,8 +586,11 @@ const Calendar = ({ timelineVisible }) => {
             },
           }
         );
-        const abortController = new AbortController();
-        fetchEvents(abortController);
+        socket.emit("message", {
+          route: "EVENTS",
+          action: "create",
+          content: { data: response.data },
+        });
         lastCurrentId.current = response.data.id.toString();
       } catch (err) {
         if (err.name !== "CanceledError")
@@ -641,8 +671,11 @@ const Calendar = ({ timelineVisible }) => {
               Authorization: `Bearer ${auth.authToken}`,
             },
           });
-          const abortController = new AbortController();
-          fetchEvents(abortController);
+          socket.emit("message", {
+            route: "EVENTS",
+            action: "update",
+            content: { id: event.id, data: { id: event.id, ...datas } },
+          });
         } catch (err) {
           if (err.name !== "CanceledError")
             toast.error(`Error: unable to save appointment: ${err.message}`, {
@@ -674,8 +707,11 @@ const Calendar = ({ timelineVisible }) => {
               Authorization: `Bearer ${auth.authToken}`,
             },
           });
-          const abortController = new AbortController();
-          fetchEvents(abortController);
+          socket.emit("message", {
+            route: "EVENTS",
+            action: "update",
+            content: { id: event.id, data: { id: event.id, ...datas } },
+          });
         } catch (err) {
           if (err.name !== "CanceledError")
             toast.error(`Error: unable to save appointment: ${err.message}`, {
@@ -755,8 +791,11 @@ const Calendar = ({ timelineVisible }) => {
             Authorization: `Bearer ${auth.authToken}`,
           },
         });
-        const abortController = new AbortController();
-        fetchEvents(abortController);
+        socket.emit("message", {
+          route: "EVENTS",
+          action: "update",
+          content: { id: event.id, data: { id: event.id, ...datas } },
+        });
       } catch (err) {
         if (err.name !== "CanceledError")
           toast.error(`Error: unable to save appointment: ${err.message}`, {

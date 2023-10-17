@@ -1,5 +1,6 @@
 import axiosXano from "../api/xano";
 import axiosXanoPatient from "../api/xanoPatient";
+import { createChartNbr } from "../utils/createChartNbr";
 
 export const getPatientRecord = async (
   tableName,
@@ -89,11 +90,24 @@ export const postPatientRecord = async (
       ...(abortController && { signal: abortController.signal }),
     });
     if (socket && topic) {
-      socket.emit("message", {
-        route: topic,
-        action: "create",
-        content: { data: { id: response.data.id, ...datas } },
-      });
+      if (topic === "PATIENTS") {
+        datas.chart_nbr = createChartNbr(
+          datas.date_of_birth,
+          datas.gender_identification,
+          response.data.id
+        );
+        socket.emit("message", {
+          route: topic,
+          action: "create",
+          content: { data: { id: response.data.id, ...datas } },
+        });
+      } else {
+        socket.emit("message", {
+          route: topic,
+          action: "create",
+          content: { data: { id: response.data.id, ...datas } },
+        });
+      }
     }
     return response;
   } catch (err) {

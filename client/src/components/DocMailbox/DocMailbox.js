@@ -3,13 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
+import { onMessageDocMailbox } from "../../utils/socketHandlers/onMessageDocMailbox";
 import DocMailboxAssignedPracticianForward from "./DocMailboxAssignedPracticianForward";
 import DocMailboxForm from "./DocMailboxForm";
 import DocMailboxItem from "./DocMailboxItem";
 
 const DocMailbox = () => {
   //HOOKS
-  const { user, auth, clinic } = useAuth();
+  const { user, auth, clinic, socket } = useAuth();
   const editCounter = useRef(0);
   const [documents, setDocuments] = useState(null);
   const [addVisible, setAddVisible] = useState(false);
@@ -18,6 +19,7 @@ const DocMailbox = () => {
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
   const [assignedId, setAssignedId] = useState(0);
+  console.log("render");
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -45,6 +47,16 @@ const DocMailbox = () => {
     fetchDocMailbox();
     return () => abortController.abort();
   }, [auth.authToken, user.id]);
+
+  useEffect(() => {
+    if (!socket) return;
+    const onMessage = (message) =>
+      onMessageDocMailbox(message, documents, setDocuments, user.id, false);
+    socket.on("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
+  }, [documents, socket, user.id]);
 
   const showDocument = async (docUrl, docMime) => {
     let docWindow;
@@ -90,6 +102,7 @@ const DocMailbox = () => {
   const isPracticianChecked = (id) => {
     return assignedId === parseInt(id);
   };
+  console.log("documents", documents);
 
   return (
     <>
@@ -206,6 +219,7 @@ const DocMailbox = () => {
               assignedId={assignedId}
               setForwardVisible={setForwardVisible}
               setDocuments={setDocuments}
+              setAssignedId={setAssignedId}
             />
           )}
         </>

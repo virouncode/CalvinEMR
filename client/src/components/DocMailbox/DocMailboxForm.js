@@ -62,7 +62,7 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
     if (!datasToPost.file.type) datasToPost.file.type = "document";
 
     try {
-      await postPatientRecord(
+      const response1 = await postPatientRecord(
         "/documents",
         user.id,
         auth.authToken,
@@ -70,17 +70,12 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
         socket,
         "DOCUMENTS"
       );
-
+      socket.emit("message", {
+        route: "DOCMAILBOX",
+        action: "create",
+        content: { data: { id: response1.data.id, ...datasToPost } },
+      });
       setAddVisible(false);
-      const response = await axiosXano.get(
-        `/documents_for_staff?staff_id=${user.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-        }
-      );
-      setDocuments(response.data.filter(({ acknowledged }) => !acknowledged));
       toast.success("Posted successfully", { containerId: "B" });
     } catch (err) {
       toast.error(`Error unable to save document: ${err.message}`, {

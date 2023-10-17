@@ -12,6 +12,7 @@ import { toInverseRelation } from "../../utils/toInverseRelation";
 import { patientSchema } from "../../validation/patientValidation";
 import CountriesList from "../Lists/CountriesList";
 import RelationshipsForm from "./RelationshipsForm";
+const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const SignupPatientForm = () => {
   const { auth, user, clinic, setClinic, socket } = useAuth();
@@ -133,9 +134,7 @@ const SignupPatientForm = () => {
         response.data.id,
         user.id,
         auth.authToken,
-        datasToPost,
-        socket,
-        "PATIENTS"
+        datasToPost
       );
 
       const vaccinesDatas = {
@@ -239,6 +238,13 @@ const SignupPatientForm = () => {
             },
           })
       );
+      relationshipsToPost.forEach((relationship) =>
+        socket.emit("message", {
+          route: "RELATIONSHIPS",
+          action: "create",
+          content: { data: relationship },
+        })
+      );
 
       let inverseRelationsToPost = [...relationshipsToPost];
       inverseRelationsToPost.forEach((item) => {
@@ -265,18 +271,12 @@ const SignupPatientForm = () => {
             },
           })
       );
-
-      //update patientsInfos
-      const response2 = await axiosXano.get("/patients", {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      setClinic({ ...clinic, patientsInfos: response2.data });
-      localStorage.setItem(
-        "clinic",
-        JSON.stringify({ ...clinic, patientsInfos: response2.data })
+      inverseRelationsToPost.forEach((relationship) =>
+        socket.emit("message", {
+          route: "RELATIONSHIPS",
+          action: "create",
+          content: { data: relationship },
+        })
       );
       setSuccessMsg(
         "Patient added successfully, you will be redirected to the login page"
@@ -312,13 +312,22 @@ const SignupPatientForm = () => {
     reader.onload = async (e) => {
       let content = e.target.result; // this is the content!
       try {
-        let fileToUpload = await axiosXano.post("/upload/attachment", {
-          content: content,
-        });
+        let fileToUpload = await axiosXano.post(
+          "/upload/attachment",
+          {
+            content: content,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
         setFormDatas({ ...formDatas, avatar: fileToUpload.data });
         setIsLoadingFile(false);
       } catch (err) {
-        toast.error(`Error unable to sload file: ${err.message}`, {
+        toast.error(`Error unable to load file: ${err.message}`, {
           containerId: "A",
         });
         setIsLoadingFile(false);
@@ -564,16 +573,29 @@ const SignupPatientForm = () => {
           />
           <div className="signup-patient__row">
             <label htmlFor="avatar">Avatar: </label>
-            <input
-              name="avatar"
-              type="file"
-              accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg"
-              onChange={handleAvatarChange}
-              id="avatar"
-            />
-            {isLoadingFile && (
-              <CircularProgress size="1rem" style={{ margin: "5px" }} />
-            )}
+            <div className="signup-patient__image">
+              {isLoadingFile ? (
+                <CircularProgress size="1rem" style={{ margin: "5px" }} />
+              ) : formDatas.avatar ? (
+                <img
+                  src={`${BASE_URL}${formDatas.avatar?.path}`}
+                  alt="avatar"
+                  width="150px"
+                />
+              ) : (
+                <img
+                  src="https://placehold.co/200x100/png?font=roboto&text=Avatar"
+                  alt="user-avatar-placeholder"
+                />
+              )}
+              <input
+                name="avatar"
+                type="file"
+                accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg"
+                onChange={handleAvatarChange}
+                id="avatar"
+              />
+            </div>
           </div>
           <div className="signup-patient__submit">
             <input type="submit" value="Sign Up" disabled={isLoadingFile} />
