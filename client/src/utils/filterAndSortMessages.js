@@ -22,7 +22,6 @@ export const getDeletedMessages = (messages, userId) => {
 
 export const filterAndSortMessages = (section, datas, userId) => {
   let newMessages = [];
-  console.log("datas", datas);
   switch (section) {
     case "Inbox":
       newMessages = getInboxMessages(datas, userId);

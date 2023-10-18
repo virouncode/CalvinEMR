@@ -29,8 +29,6 @@ export const onMessagesInboxExternal = (
     )
       return;
   }
-  console.log("onMessageExternal", message.action);
-
   switch (message.action) {
     case "create":
       setMessages(
