@@ -4,7 +4,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { postPatientRecordPatient } from "../../../api/fetchRecords";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import MessageExternal from "../../Messaging/External/MessageExternal";
 import MessagesAttachments from "../../Messaging/MessagesAttachments";
@@ -13,11 +12,9 @@ const ReplyMessagePatient = ({
   setReplyVisible,
   message,
   previousMsgs,
-  setMessages,
-  section,
   setCurrentMsgId,
 }) => {
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [body, setBody] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -60,14 +57,9 @@ const ReplyMessagePatient = ({
         date_created: Date.now(),
       };
 
-      await axiosXanoPatient.post("/messages_external", replyMessage, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
-      const response = await axiosXanoPatient.get(
-        `/messages_external_for_patient?patient_id=${user.id}`,
+      const response = await axiosXanoPatient.post(
+        "/messages_external",
+        replyMessage,
         {
           headers: {
             "Content-Type": "application/json",
@@ -75,13 +67,11 @@ const ReplyMessagePatient = ({
           },
         }
       );
-      const newMessages = filterAndSortExternalMessages(
-        section,
-        response.data,
-        "patient",
-        user.id
-      );
-      setMessages(newMessages);
+      socket.emit("message", {
+        route: "MESSAGES INBOX EXTERNAL",
+        action: "create",
+        content: { data: { id: response.data.id, ...replyMessage } },
+      });
       setReplyVisible(false);
       setCurrentMsgId(0);
       toast.success("Message sent successfully", { containerId: "A" });

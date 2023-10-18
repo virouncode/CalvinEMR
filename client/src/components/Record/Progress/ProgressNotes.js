@@ -11,7 +11,6 @@ import ProgressNotesForm from "./ProgressNotesForm";
 import ProgressNotesHeader from "./ProgressNotesHeader";
 
 const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
-  console.log("render progress notes");
   //hooks
   const { user, socket } = useAuth();
   const [addVisible, setAddVisible] = useState(false);
@@ -35,7 +34,6 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
     const allNotesIds = progressNotes.map(({ id }) => id);
     setCheckedNotes(allNotesIds);
   };
-  console.log(progressNotes);
 
   useEffect(() => {
     if (!socket) return;

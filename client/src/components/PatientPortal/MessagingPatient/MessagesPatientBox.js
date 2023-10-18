@@ -9,13 +9,11 @@ const MessagesPatientBox = ({
   section,
   newVisible,
   setNewVisible,
-  setSection,
   msgsSelectedIds,
   setMsgsSelectedIds,
   currentMsgId,
   setCurrentMsgId,
   messages,
-  setMessages,
   popUpVisible,
   setPopUpVisible,
 }) => {
@@ -40,7 +38,6 @@ const MessagesPatientBox = ({
             currentMsgId === 0 ? (
               <MessagesPatientOverview
                 messages={messages}
-                setMessages={setMessages}
                 setCurrentMsgId={setCurrentMsgId}
                 msgsSelectedIds={msgsSelectedIds}
                 setMsgsSelectedIds={setMsgsSelectedIds}
@@ -50,8 +47,6 @@ const MessagesPatientBox = ({
               <MessagePatientDetail
                 setCurrentMsgId={setCurrentMsgId}
                 message={messages.find(({ id }) => id === currentMsgId)}
-                setMessages={setMessages}
-                setSection={setSection}
                 section={section}
                 popUpVisible={popUpVisible}
                 setPopUpVisible={setPopUpVisible}
@@ -74,11 +69,7 @@ const MessagesPatientBox = ({
           color={"#94bae8"}
           setPopUpVisible={setNewVisible}
         >
-          <NewMessagePatient
-            setNewVisible={setNewVisible}
-            setMessages={setMessages}
-            section={section}
-          />
+          <NewMessagePatient setNewVisible={setNewVisible} />
         </FakeWindow>
       )}
     </>

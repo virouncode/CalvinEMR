@@ -4,7 +4,6 @@ import MessagesOverviewToolbar from "./MessagesOverviewToolbar";
 
 const MessagesOverview = ({
   messages,
-  setMessages,
   setCurrentMsgId,
   msgsSelectedIds,
   setMsgsSelectedIds,
@@ -17,7 +16,6 @@ const MessagesOverview = ({
         <MessageThumbnail
           key={message.id}
           message={message}
-          setMessages={setMessages}
           setCurrentMsgId={setCurrentMsgId}
           setMsgsSelectedIds={setMsgsSelectedIds}
           msgsSelectedIds={msgsSelectedIds}

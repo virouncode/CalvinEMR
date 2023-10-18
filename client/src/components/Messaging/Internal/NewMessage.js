@@ -5,14 +5,13 @@ import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import { categoryToTitle } from "../../../utils/categoryToTitle";
-import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
 import formatName from "../../../utils/formatName";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import Contacts from "../Contacts";
 import MessagesAttachments from "../MessagesAttachments";
 import Patients from "../Patients";
 
-const NewMessage = ({ setNewVisible, setMessages, section }) => {
+const NewMessage = ({ setNewVisible }) => {
   const { auth, user, clinic, socket } = useAuth();
   const [attachments, setAttachments] = useState([]);
   const [recipientsIds, setRecipientsIds] = useState([]);
@@ -126,16 +125,9 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
     }
     try {
       const attach_ids = (
-        await postPatientRecord(
-          "/attachments",
-          user.id,
-          auth.authToken,
-          {
-            attachments_array: attachments,
-          },
-          socket,
-          "ATTACHMENTS"
-        )
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: attachments,
+        })
       ).data;
 
       //create the message
@@ -150,26 +142,17 @@ const NewMessage = ({ setNewVisible, setMessages, section }) => {
         date_created: Date.now(),
       };
 
-      await axiosXano.post("/messages", message, {
+      const response = await axiosXano.post("/messages", message, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
-
-      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
+      socket.emit("message", {
+        route: "MESSAGES INBOX",
+        action: "create",
+        content: { data: { id: response.data.id, ...message } },
       });
-      const newMessages = filterAndSortMessages(
-        section,
-        response.data,
-        "staff",
-        user.id
-      );
-      setMessages(newMessages);
       setNewVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {

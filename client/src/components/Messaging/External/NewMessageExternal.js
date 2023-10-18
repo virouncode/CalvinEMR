@@ -5,12 +5,11 @@ import { postPatientRecord } from "../../../api/fetchRecords";
 import { sendEmail } from "../../../api/sendEmail";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import MessagesAttachments from "../MessagesAttachments";
 import Patients from "../Patients";
 
-const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
+const NewMessageExternal = ({ setNewVisible }) => {
   const { auth, user, clinic, socket } = useAuth();
   const [attachments, setAttachments] = useState([]);
   const [recipientId, setRecipientId] = useState(0);
@@ -57,16 +56,9 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
     }
     try {
       const attach_ids = (
-        await postPatientRecord(
-          "/attachments",
-          user.id,
-          auth.authToken,
-          {
-            attachments_array: attachments,
-          },
-          socket,
-          "ATTACHMENTS"
-        )
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: attachments,
+        })
       ).data;
 
       //create the message
@@ -79,33 +71,20 @@ const NewMessageExternal = ({ setNewVisible, setMessages, section }) => {
         body: body,
         attachments_ids: attach_ids,
         read_by_staff_id: user.id,
-        read_by_ids: [{ user_type: "staff", id: user.id }],
         date_created: Date.now(),
       };
 
-      await axiosXano.post("/messages_external", message, {
+      const response = await axiosXano.post("/messages_external", message, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
-
-      const response = await axiosXano.get(
-        `/messages_external_for_staff?staff_id=${user.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const newMessages = filterAndSortExternalMessages(
-        section,
-        response.data,
-        "staff",
-        user.id
-      );
-      setMessages(newMessages);
+      socket.emit("message", {
+        route: "MESSAGES INBOX EXTERNAL",
+        action: "create",
+        content: { data: { id: response.data.id, ...message } },
+      });
       setNewVisible(false);
 
       //send an email and an SMS to patient

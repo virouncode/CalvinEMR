@@ -5,7 +5,6 @@ import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import { categoryToTitle } from "../../../utils/categoryToTitle";
-import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
 import formatName from "../../../utils/formatName";
 import Contacts from "../Contacts";
 import MessageExternal from "../External/MessageExternal";
@@ -14,8 +13,6 @@ import Message from "./Message";
 
 const ForwardMessage = ({
   setForwardVisible,
-  setMessages,
-  section,
   message,
   previousMsgs,
   patient,
@@ -108,16 +105,9 @@ const ForwardMessage = ({
     }
     try {
       let attach_ids = (
-        await postPatientRecord(
-          "/attachments",
-          user.id,
-          auth.authToken,
-          {
-            attachments_array: attachments,
-          },
-          socket,
-          "ATTACHMENTS"
-        )
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: attachments,
+        })
       ).data;
 
       attach_ids = [...message.attachments_ids, ...attach_ids];
@@ -144,21 +134,18 @@ const ForwardMessage = ({
       };
 
       //post the message
-      await axiosXano.post("/messages", forwardMessage, {
+      const response = await axiosXano.post("/messages", forwardMessage, {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
           "Content-Type": "application/json",
         },
       });
-
-      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
+      socket.emit("message", {
+        route: "MESSAGES INBOX",
+        action: "create",
+        content: { data: { id: response.data.id, ...forwardMessage } },
       });
 
-      setMessages(filterAndSortMessages(section, response.data, user.id));
       setForwardVisible(false);
       toast.success("Transfered successfully", { containerId: "A" });
     } catch (err) {

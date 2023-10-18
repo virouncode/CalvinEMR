@@ -3,7 +3,6 @@ import NewWindow from "react-new-window";
 import { toast } from "react-toastify";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import MessageExternal from "../../Messaging/External/MessageExternal";
 import MessagesExternalPrintPU from "../../Messaging/External/MessagesExternalPrintPU";
@@ -13,15 +12,13 @@ import ReplyMessagePatient from "./ReplyMessagePatient";
 const MessagePatientDetail = ({
   setCurrentMsgId,
   message,
-  setMessages,
-  setSection,
   section,
   popUpVisible,
   setPopUpVisible,
 }) => {
   const [replyVisible, setReplyVisible] = useState(false);
   const [allPersons, setAllPersons] = useState(false);
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [previousMsgs, setPreviousMsgs] = useState(null);
   const [attachments, setAttachments] = useState([]);
 
@@ -112,22 +109,17 @@ const MessagePatientDetail = ({
             },
           }
         );
-        const response2 = await axiosXanoPatient.get(
-          `/messages_external_for_patient?patient_id=${user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-              "Content-Type": "application/json",
+        socket.emit("message", {
+          route: "MESSAGES INBOX EXTERNAL",
+          action: "update",
+          content: {
+            id: message.id,
+            data: {
+              ...message,
+              deleted_by_staff_id: user.id,
             },
-          }
-        );
-        const newMessages = filterAndSortExternalMessages(
-          section,
-          response2.data,
-          "patient",
-          user.id
-        );
-        setMessages(newMessages);
+          },
+        });
         setCurrentMsgId(0);
         toast.success("Message deleted successfully", { containerId: "A" });
       } catch (err) {
@@ -202,11 +194,8 @@ const MessagePatientDetail = ({
       {replyVisible && (
         <ReplyMessagePatient
           setReplyVisible={setReplyVisible}
-          allPersons={allPersons}
           message={message}
           previousMsgs={previousMsgs}
-          setMessages={setMessages}
-          section={section}
           setCurrentMsgId={setCurrentMsgId}
         />
       )}

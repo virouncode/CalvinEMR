@@ -19,7 +19,6 @@ const DocMailbox = () => {
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
   const [assignedId, setAssignedId] = useState(0);
-  console.log("render");
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -102,8 +101,6 @@ const DocMailbox = () => {
   const isPracticianChecked = (id) => {
     return assignedId === parseInt(id);
   };
-  console.log("documents", documents);
-
   return (
     <>
       {documents ? (

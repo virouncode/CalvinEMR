@@ -2,7 +2,6 @@ import React from "react";
 import { toast } from "react-toastify";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
 const MessagesToolBar = ({
@@ -11,7 +10,6 @@ const MessagesToolBar = ({
   newVisible,
   setNewVisible,
   messages,
-  setMessages,
   section,
   setSection,
   msgsSelectedIds,
@@ -21,7 +19,7 @@ const MessagesToolBar = ({
   selectAllVisible,
   setSelectAllVisible,
 }) => {
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
@@ -74,14 +72,12 @@ const MessagesToolBar = ({
               Authorization: `Bearer ${auth.authToken}`,
             },
           });
+          socket.emit("message", {
+            route: "MESSAGES INBOX",
+            action: "update",
+            content: { id: messageId, data: newMessage },
+          });
         }
-        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        setMessages(filterAndSortMessages(section, response.data, user.id));
         setNewVisible(false);
         toast.success("Message(s) deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
@@ -121,6 +117,11 @@ const MessagesToolBar = ({
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
           },
+        });
+        socket.emit("message", {
+          route: "MESSAGES INBOX",
+          action: "update",
+          content: { id: message.id, data: newMessage },
         });
       }
       setSection("Inbox");

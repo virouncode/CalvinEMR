@@ -18,7 +18,7 @@ export const onMessageClinic = (message, clinic, setClinic) => {
       case "update":
         setClinic({
           ...clinic,
-          patientsInfos: clinic.patientsInfos.filter((patient) =>
+          patientsInfos: clinic.patientsInfos.map((patient) =>
             patient.id === message.content.id ? message.content.data : patient
           ),
         });
@@ -26,7 +26,7 @@ export const onMessageClinic = (message, clinic, setClinic) => {
           "clinic",
           JSON.stringify({
             ...clinic,
-            patientsInfos: clinic.patientsInfos.filter((patient) =>
+            patientsInfos: clinic.patientsInfos.map((patient) =>
               patient.id === message.content.id ? message.content.data : patient
             ),
           })
@@ -53,7 +53,7 @@ export const onMessageClinic = (message, clinic, setClinic) => {
       case "update":
         setClinic({
           ...clinic,
-          staffInfos: clinic.staffInfos.filter((staff) =>
+          staffInfos: clinic.staffInfos.map((staff) =>
             staff.id === message.content.id ? message.content.data : staff
           ),
         });
@@ -61,7 +61,7 @@ export const onMessageClinic = (message, clinic, setClinic) => {
           "clinic",
           JSON.stringify({
             ...clinic,
-            staffInfos: clinic.staffInfos.filter((staff) =>
+            staffInfos: clinic.staffInfos.map((staff) =>
               staff.id === message.content.id ? message.content.data : staff
             ),
           })

@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
@@ -22,7 +21,6 @@ import ReplyForm from "./ReplyForm";
 const MessageDetail = ({
   setCurrentMsgId,
   message,
-  setMessages,
   section,
   popUpVisible,
   setPopUpVisible,
@@ -149,13 +147,17 @@ const MessageDetail = ({
             },
           }
         );
-        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
+        socket.emit("message", {
+          route: "MESSAGES INBOX",
+          action: "update",
+          content: {
+            id: message.id,
+            data: {
+              ...message,
+              deleted_by_staff_ids: [...message.deleted_by_staff_ids, user.id],
+            },
           },
         });
-        setMessages(filterAndSortMessages(section, response.data, user.id));
         setCurrentMsgId(0);
         toast.success("Message deleted successfully", { containerId: "A" });
       } catch (err) {
@@ -220,16 +222,9 @@ const MessageDetail = ({
 
     try {
       const attach_ids = (
-        await postPatientRecord(
-          "/attachments",
-          user.id,
-          auth.authToken,
-          {
-            attachments_array: datasAttachment,
-          },
-          socket,
-          "ATTACHMENTS"
-        )
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: datasAttachment,
+        })
       ).data;
       await postPatientRecord(
         "/progress_notes",
@@ -380,8 +375,6 @@ const MessageDetail = ({
             allPersons={allPersons}
             message={message}
             previousMsgs={previousMsgs}
-            setMessages={setMessages}
-            section={section}
             patient={patient}
             setCurrentMsgId={setCurrentMsgId}
           />
@@ -415,8 +408,6 @@ const MessageDetail = ({
           >
             <ForwardMessage
               setForwardVisible={setForwardVisible}
-              setMessages={setMessages}
-              section={section}
               message={message}
               previousMsgs={previousMsgs}
               patient={patient}

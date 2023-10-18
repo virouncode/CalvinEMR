@@ -4,7 +4,6 @@ import MessagesExternalOverviewToolbar from "./MessagesExternalOverviewToolbar";
 
 const MessagesExternalOverview = ({
   messages,
-  setMessages,
   setCurrentMsgId,
   msgsSelectedIds,
   setMsgsSelectedIds,
@@ -17,7 +16,6 @@ const MessagesExternalOverview = ({
         <MessageExternalThumbnail
           key={message.id}
           message={message}
-          setMessages={setMessages}
           setCurrentMsgId={setCurrentMsgId}
           setMsgsSelectedIds={setMsgsSelectedIds}
           msgsSelectedIds={msgsSelectedIds}

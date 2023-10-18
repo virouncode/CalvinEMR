@@ -1,3 +1,4 @@
+import LinearProgress from "@mui/joy/LinearProgress";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -9,13 +10,11 @@ import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import { patientIdToName } from "../../../utils/patientIdToName";
+import { onMessageVersions } from "../../../utils/socketHandlers/onMessageVersions";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 import FakeWindow from "../../Presentation/FakeWindow";
 import CalvinAI from "./CalvinAI/CalvinAI";
-// import ProgressNotesAttachments from "./ProgressNotesAttachments";
-import LinearProgress from "@mui/joy/LinearProgress";
-import { onMessageVersions } from "../../../utils/socketHandlers/onMessageVersions";
 import ProgressNotesAttachments from "./ProgressNotesAttachments";
 import ProgressNotesCardBody from "./ProgressNotesCardBody";
 import ProgressNotesCardHeader from "./ProgressNotesCardHeader";

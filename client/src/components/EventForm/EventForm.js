@@ -92,12 +92,10 @@ const EventForm = ({
           toast.error(`Error: unable to get available rooms ${err.message}`, {
             containerId: "A",
           });
-        else console.log("aborted");
       }
     };
     fetchAvailableRooms();
     return () => {
-      console.log("aborted");
       abortController.abort();
     };
   }, [auth.authToken, currentEvent]);

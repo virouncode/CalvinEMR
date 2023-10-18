@@ -1,9 +1,8 @@
 import React from "react";
+import { toast } from "react-toastify";
 import useAuth from "../../..//hooks/useAuth";
 import axiosXanoPatient from "../../../api/xanoPatient";
-import { toast } from "react-toastify";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 
 const MessagesPatientToolBar = ({
   search,
@@ -11,7 +10,6 @@ const MessagesPatientToolBar = ({
   newVisible,
   setNewVisible,
   messages,
-  setMessages,
   section,
   setSection,
   msgsSelectedIds,
@@ -21,7 +19,7 @@ const MessagesPatientToolBar = ({
   selectAllVisible,
   setSelectAllVisible,
 }) => {
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
@@ -78,23 +76,12 @@ const MessagesPatientToolBar = ({
               },
             }
           );
+          socket.emit("message", {
+            route: "MESSAGES INBOX EXTERNAL",
+            action: "update",
+            content: { id: messageId, data: newMessage },
+          });
         }
-        const response = await axiosXanoPatient.get(
-          `/messages_external_for_patient?patient_id=${user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const newMessages = filterAndSortExternalMessages(
-          section,
-          response.data,
-          "patient",
-          user.id
-        );
-        setMessages(newMessages);
         setNewVisible(false);
         toast.success("Message(s) deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
@@ -136,6 +123,11 @@ const MessagesPatientToolBar = ({
             },
           }
         );
+        socket.emit("message", {
+          route: "MESSAGES INBOX EXTERNAL",
+          action: "update",
+          content: { id: message.id, data: newMessage },
+        });
       }
       setSection("Inbox");
       setMsgsSelectedIds([]);

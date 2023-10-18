@@ -15,7 +15,6 @@ const MessagesBox = ({
   currentMsgId,
   setCurrentMsgId,
   messages,
-  setMessages,
   popUpVisible,
   setPopUpVisible,
 }) => {
@@ -40,7 +39,6 @@ const MessagesBox = ({
             currentMsgId === 0 ? (
               <MessagesOverview
                 messages={messages}
-                setMessages={setMessages}
                 setCurrentMsgId={setCurrentMsgId}
                 msgsSelectedIds={msgsSelectedIds}
                 setMsgsSelectedIds={setMsgsSelectedIds}
@@ -50,8 +48,6 @@ const MessagesBox = ({
               <MessageDetail
                 setCurrentMsgId={setCurrentMsgId}
                 message={messages.find(({ id }) => id === currentMsgId)}
-                setMessages={setMessages}
-                setSection={setSection}
                 section={section}
                 popUpVisible={popUpVisible}
                 setPopUpVisible={setPopUpVisible}
@@ -74,11 +70,7 @@ const MessagesBox = ({
           color={"#94bae8"}
           setPopUpVisible={setNewVisible}
         >
-          <NewMessage
-            setNewVisible={setNewVisible}
-            setMessages={setMessages}
-            section={section}
-          />
+          <NewMessage setNewVisible={setNewVisible} />
         </FakeWindow>
       )}
     </>

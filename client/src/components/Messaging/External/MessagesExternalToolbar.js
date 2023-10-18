@@ -2,7 +2,6 @@ import React from "react";
 import { toast } from "react-toastify";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
 const MessagesExternalToolBar = ({
@@ -11,7 +10,6 @@ const MessagesExternalToolBar = ({
   newVisible,
   setNewVisible,
   messages,
-  setMessages,
   section,
   setSection,
   msgsSelectedIds,
@@ -21,7 +19,7 @@ const MessagesExternalToolBar = ({
   setSelectAllVisible,
   selectAllVisible,
 }) => {
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
@@ -74,25 +72,12 @@ const MessagesExternalToolBar = ({
               Authorization: `Bearer ${auth.authToken}`,
             },
           });
+          socket.emit("message", {
+            route: "MESSAGES INBOX EXTERNAL",
+            action: "update",
+            content: { id: messageId, data: newMessage },
+          });
         }
-        const response = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        setMessages(
-          filterAndSortExternalMessages(
-            section,
-            response.data,
-            "staff",
-            user.id
-          )
-        );
         setNewVisible(false);
         toast.success("Message(s) deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
@@ -129,6 +114,11 @@ const MessagesExternalToolBar = ({
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
           },
+        });
+        socket.emit("message", {
+          route: "MESSAGES INBOX EXTERNAL",
+          action: "update",
+          content: { id: message.id, data: newMessage },
         });
       }
       setSection("Inbox");

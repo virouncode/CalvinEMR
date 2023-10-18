@@ -4,13 +4,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { postPatientRecordPatient } from "../../../api/fetchRecords";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import MessagesAttachments from "../../Messaging/MessagesAttachments";
 import ContactsForPatient from "./ContactsForPatient";
 
-const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
-  const { auth, user, clinic } = useAuth();
+const NewMessagePatient = ({ setNewVisible }) => {
+  const { auth, user, clinic, socket } = useAuth();
   const [attachments, setAttachments] = useState([]);
   const [recipientId, setRecipientId] = useState(0);
   const [subject, setSubject] = useState("");
@@ -79,15 +78,9 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
         date_created: Date.now(),
       };
 
-      await axiosXanoPatient.post("/messages_external", message, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      const response = await axiosXanoPatient.get(
-        `/messages_external_for_patient?patient_id=${user.id}`,
+      const response = await axiosXanoPatient.post(
+        "/messages_external",
+        message,
         {
           headers: {
             Authorization: `Bearer ${auth.authToken}`,
@@ -95,13 +88,11 @@ const NewMessagePatient = ({ setNewVisible, setMessages, section }) => {
           },
         }
       );
-      const newMessages = filterAndSortExternalMessages(
-        section,
-        response.data,
-        "patient",
-        user.id
-      );
-      setMessages(newMessages);
+      socket.emit("message", {
+        route: "MESSAGES INBOX EXTERNAL",
+        action: "create",
+        content: { data: { id: response.data.id, ...message } },
+      });
       setNewVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
     } catch (err) {

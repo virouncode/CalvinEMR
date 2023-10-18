@@ -5,7 +5,6 @@ import PatientSearchForm from "./PatientSearchForm";
 import PatientSearchResult from "./PatientSearchResult";
 
 const SearchPatient = () => {
-  console.log("render");
   const direction = useRef(false);
   const { clinic, socket, setClinic } = useAuth();
   const [sortedPatientsInfos, setSortedPatientsInfos] = useState(

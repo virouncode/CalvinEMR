@@ -4,7 +4,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import MessagesAttachments from "../MessagesAttachments";
 import Message from "./Message";
@@ -14,8 +13,6 @@ const ReplyForm = ({
   allPersons,
   message,
   previousMsgs,
-  setMessages,
-  section,
   patient,
   setCurrentMsgId,
 }) => {
@@ -30,16 +27,9 @@ const ReplyForm = ({
   const handleSend = async (e) => {
     try {
       let attach_ids = (
-        await postPatientRecord(
-          "/attachments",
-          user.id,
-          auth.authToken,
-          {
-            attachments_array: attachments,
-          },
-          socket,
-          "ATTACHMENTS"
-        )
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: attachments,
+        })
       ).data;
 
       attach_ids = [...message.attachments_ids, ...attach_ids];
@@ -67,21 +57,17 @@ const ReplyForm = ({
         date_created: Date.now(),
       };
 
-      await axiosXano.post("/messages", replyMessage, {
+      const response = await axiosXano.post("/messages", replyMessage, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
       });
-      const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
+      socket.emit("message", {
+        route: "MESSAGES INBOX",
+        action: "create",
+        content: { data: { id: response.data.id, ...replyMessage } },
       });
-      setMessages(
-        filterAndSortMessages(section, response.data, "staff", user.id)
-      );
       setReplyVisible(false);
       setCurrentMsgId(0);
       toast.success("Message sent successfully", { containerId: "A" });

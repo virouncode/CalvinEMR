@@ -2,7 +2,7 @@ export const getInboxMessages = (messages, userId) => {
   return messages.filter(
     (message) =>
       message.to_staff_ids.includes(userId) &&
-      !message.deleted_by_staff_ids.includes(userId)
+      !message.deleted_by_staff_ids?.includes(userId)
   );
 };
 
@@ -10,18 +10,19 @@ export const getSentMessages = (messages, userId) => {
   return messages.filter(
     (message) =>
       message.from_id === userId &&
-      !message.deleted_by_staff_ids.includes(userId)
+      !message.deleted_by_staff_ids?.includes(userId)
   );
 };
 
 export const getDeletedMessages = (messages, userId) => {
   return messages.filter((message) =>
-    message.deleted_by_staff_ids.includes(userId)
+    message.deleted_by_staff_ids?.includes(userId)
   );
 };
 
 export const filterAndSortMessages = (section, datas, userId) => {
   let newMessages = [];
+  console.log("datas", datas);
   switch (section) {
     case "Inbox":
       newMessages = getInboxMessages(datas, userId);

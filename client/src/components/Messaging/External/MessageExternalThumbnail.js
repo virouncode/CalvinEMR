@@ -2,7 +2,6 @@ import React from "react";
 import { toast } from "react-toastify";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
@@ -10,15 +9,38 @@ import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
 const MessageExternalThumbnail = ({
   message,
-  setMessages,
   setCurrentMsgId,
   setMsgsSelectedIds,
   msgsSelectedIds,
   section,
 }) => {
-  const { auth, user, setUser, clinic } = useAuth();
+  const { auth, user, setUser, clinic, socket } = useAuth();
 
   const handleMsgClick = async (e) => {
+    if (!message.read_by_staff_id) {
+      //create and replace message with read by user id
+      try {
+        const newMessage = {
+          ...message,
+          read_by_staff_id: user.id,
+        };
+        await axiosXano.put(`/messages_external/${message.id}`, newMessage, {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        socket.emit("message", {
+          route: "MESSAGES INBOX EXTERNAL",
+          action: "update",
+          content: { id: message.id, data: newMessage },
+        });
+      } catch (err) {
+        toast.error(`Error: unable to get messages: ${err.message}`, {
+          containerId: "A",
+        });
+      }
+    }
     //Remove one from the unread messages nbr counter
     if (user.unreadMessagesExternalNbr !== 0) {
       const newUnreadMessagesExternalNbr = user.unreadMessagesExternalNbr - 1;
@@ -37,43 +59,6 @@ const MessageExternalThumbnail = ({
       );
     }
     setCurrentMsgId(message.id);
-
-    if (!message.read_by_staff_id) {
-      //create and replace message with read by user id
-      try {
-        const newMessage = {
-          ...message,
-          read_by_staff_id: user.id,
-        };
-        await axiosXano.put(`/messages_external/${message.id}`, newMessage, {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const response = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          }
-        );
-        setMessages(
-          filterAndSortExternalMessages(
-            section,
-            response.data,
-            "staff",
-            user.id
-          )
-        );
-      } catch (err) {
-        toast.error(`Error: unable to get messages: ${err.message}`, {
-          containerId: "A",
-        });
-      }
-    }
   };
 
   const THUMBNAIL_STYLE = {
@@ -120,22 +105,17 @@ const MessageExternalThumbnail = ({
             },
           }
         );
-        const response = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-              "Content-Type": "application/json",
+        socket.emit("message", {
+          route: "MESSAGES INBOX EXTERNAL",
+          action: "update",
+          content: {
+            id: message.id,
+            data: {
+              ...message,
+              deleted_by_staff_id: user.id,
             },
-          }
-        );
-        const newMessages = filterAndSortExternalMessages(
-          section,
-          response.data,
-          "staff",
-          user.id
-        );
-        setMessages(newMessages);
+          },
+        });
         toast.success("Message deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
       } catch (err) {

@@ -49,7 +49,6 @@ export const onMessageTopic = (message, topic, datas, setDatas, patientId) => {
         setDatas(datas.filter((item) => item.id !== message.content.id));
         break;
       case "refresh":
-        console.log("refresh");
         setDatas([...datas]);
         break;
       default:

@@ -47,7 +47,6 @@ const AllergyForm = ({
       setErrMsgPost(err.message);
       return;
     }
-    console.log("datasToost", datasToPost);
     //Submission
     try {
       await postPatientRecord(

@@ -4,6 +4,7 @@ import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { searchMessagesExternal } from "../../../utils/searchMessagesExternal";
+import { onMessagesInboxExternal } from "../../../utils/socketHandlers/omMessagesInboxExternal";
 import MessagesPatientBox from "./MessagesPatientBox";
 import MessagesPatientLeftBar from "./MessagesPatientLeftBar";
 import MessagesPatientToolBar from "./MessagesPatientToolbar";
@@ -16,7 +17,7 @@ const MessagesPatient = () => {
   const [msgsSelectedIds, setMsgsSelectedIds] = useState([]);
   const [currentMsgId, setCurrentMsgId] = useState(0);
   const [messages, setMessages] = useState(null);
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
   const [selectAllVisible, setSelectAllVisible] = useState(true);
 
@@ -57,6 +58,23 @@ const MessagesPatient = () => {
     };
   }, [auth.authToken, clinic, search, section, user.id]);
 
+  useEffect(() => {
+    if (!socket) return;
+    const onMessage = (message) =>
+      onMessagesInboxExternal(
+        message,
+        messages,
+        setMessages,
+        section,
+        user.id,
+        "patient"
+      );
+    socket.on("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
+  }, [messages, section, socket, user.id]);
+
   return (
     <div className="messages-container">
       <MessagesPatientToolBar
@@ -70,7 +88,6 @@ const MessagesPatient = () => {
         setMsgsSelectedIds={setMsgsSelectedIds}
         currentMsgId={currentMsgId}
         messages={messages}
-        setMessages={setMessages}
         setPopUpVisible={setPopUpVisible}
         selectAllVisible={selectAllVisible}
         setSelectAllVisible={setSelectAllVisible}
@@ -87,13 +104,11 @@ const MessagesPatient = () => {
           section={section}
           newVisible={newVisible}
           setNewVisible={setNewVisible}
-          setSection={setSection}
           msgsSelectedIds={msgsSelectedIds}
           setMsgsSelectedIds={setMsgsSelectedIds}
           currentMsgId={currentMsgId}
           setCurrentMsgId={setCurrentMsgId}
           messages={messages}
-          setMessages={setMessages}
           popUpVisible={popUpVisible}
           setPopUpVisible={setPopUpVisible}
         />

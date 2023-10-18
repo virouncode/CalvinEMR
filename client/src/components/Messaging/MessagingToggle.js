@@ -28,7 +28,7 @@ const MessagingToggle = ({ isTypeChecked, handleMsgsTypeChanged }) => {
           id="external"
         />
         <label htmlFor="external">
-          External
+          External{" "}
           {user.unreadMessagesExternalNbr
             ? `(${user.unreadMessagesExternalNbr})`
             : ""}

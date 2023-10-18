@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
 import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { staffIdListToTitleAndName } from "../../../utils/staffIdListToTitleAndName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
@@ -11,18 +10,41 @@ import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
 const MessageThumbnail = ({
   message,
-  setMessages,
   setCurrentMsgId,
   setMsgsSelectedIds,
   msgsSelectedIds,
   section,
 }) => {
-  const { auth, user, setUser, clinic } = useAuth();
+  const { auth, user, setUser, clinic, socket } = useAuth();
   const patient = clinic.patientsInfos.find(
     ({ id }) => id === message.related_patient_id
   );
 
   const handleMsgClick = async (e) => {
+    if (!message.read_by_staff_ids.includes(user.id)) {
+      //create and replace message with read by user id
+      try {
+        const newMessage = {
+          ...message,
+          read_by_staff_ids: [...message.read_by_staff_ids, user.id],
+        };
+        await axiosXano.put(`/messages/${message.id}`, newMessage, {
+          headers: {
+            Authorization: `Bearer ${auth.authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        socket.emit("message", {
+          route: "MESSAGES INBOX",
+          action: "update",
+          content: { id: message.id, data: newMessage },
+        });
+      } catch (err) {
+        toast.error(`Error: unable to get messages: ${err.message}`, {
+          containerId: "A",
+        });
+      }
+    }
     //Remove one from the unread messages nbr counter
     if (user.unreadMessagesNbr !== 0) {
       const newUnreadMessagesNbr = user.unreadMessagesNbr - 1;
@@ -41,33 +63,6 @@ const MessageThumbnail = ({
       );
     }
     setCurrentMsgId(message.id);
-
-    if (!message.read_by_staff_ids.includes(user.id)) {
-      //create and replace message with read by user id
-      try {
-        const newMessage = {
-          ...message,
-          read_by_staff_ids: [...message.read_by_staff_ids, user.id],
-        };
-        await axiosXano.put(`/messages/${message.id}`, newMessage, {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-        });
-        setMessages(filterAndSortMessages(section, response.data, user.id));
-      } catch (err) {
-        toast.error(`Error: unable to get messages: ${err.message}`, {
-          containerId: "A",
-        });
-      }
-    }
   };
 
   const THUMBNAIL_STYLE = {
@@ -118,13 +113,17 @@ const MessageThumbnail = ({
             },
           }
         );
-        const response = await axiosXano.get(`/messages?staff_id=${user.id}`, {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-            "Content-Type": "application/json",
+        socket.emit("message", {
+          route: "MESSAGES INBOX",
+          action: "update",
+          content: {
+            id: message.id,
+            data: {
+              ...message,
+              deleted_by_staff_ids: [...message.deleted_by_staff_ids, user.id],
+            },
           },
         });
-        setMessages(filterAndSortMessages(section, response.data, user.id));
         toast.success("Message deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
       } catch (err) {

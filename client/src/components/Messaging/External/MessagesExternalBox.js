@@ -9,13 +9,11 @@ const MessagesExternalBox = ({
   section,
   newVisible,
   setNewVisible,
-  setSection,
   msgsSelectedIds,
   setMsgsSelectedIds,
   currentMsgId,
   setCurrentMsgId,
   messages,
-  setMessages,
   popUpVisible,
   setPopUpVisible,
 }) => {
@@ -40,7 +38,6 @@ const MessagesExternalBox = ({
             currentMsgId === 0 ? (
               <MessagesExternalOverview
                 messages={messages}
-                setMessages={setMessages}
                 setCurrentMsgId={setCurrentMsgId}
                 msgsSelectedIds={msgsSelectedIds}
                 setMsgsSelectedIds={setMsgsSelectedIds}
@@ -50,8 +47,6 @@ const MessagesExternalBox = ({
               <MessageExternalDetail
                 setCurrentMsgId={setCurrentMsgId}
                 message={messages.find(({ id }) => id === currentMsgId)}
-                setMessages={setMessages}
-                setSection={setSection}
                 section={section}
                 popUpVisible={popUpVisible}
                 setPopUpVisible={setPopUpVisible}
@@ -74,11 +69,7 @@ const MessagesExternalBox = ({
           color={"#94bae8"}
           setPopUpVisible={setNewVisible}
         >
-          <NewMessageExternal
-            setNewVisible={setNewVisible}
-            setMessages={setMessages}
-            section={section}
-          />
+          <NewMessageExternal setNewVisible={setNewVisible} />
         </FakeWindow>
       )}
     </>

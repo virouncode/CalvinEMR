@@ -5,12 +5,13 @@ import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
 import { filterAndSortMessages } from "../../../utils/filterAndSortMessages";
 import { searchMessages } from "../../../utils/searchMessages";
+import { onMessagesInbox } from "../../../utils/socketHandlers/onMessagesInbox";
 import MessagesLeftBar from "../MessagesLeftBar";
 import MessagesBox from "./MessagesBox";
 import MessagesToolBar from "./MessagesToolBar";
 
 const Messages = () => {
-  //HOOKSs
+  //HOOKS
   const { messageId, sectionName } = useParams();
   const [search, setSearch] = useState("");
   const [section, setSection] = useState(sectionName || "Inbox");
@@ -18,7 +19,7 @@ const Messages = () => {
   const [msgsSelectedIds, setMsgsSelectedIds] = useState([]);
   const [currentMsgId, setCurrentMsgId] = useState(0);
   const [messages, setMessages] = useState(null);
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [popUpVisible, setPopUpVisible] = useState(false);
   const [selectAllVisible, setSelectAllVisible] = useState(true);
   const navigate = useNavigate();
@@ -65,6 +66,16 @@ const Messages = () => {
     };
   }, [auth.authToken, clinic, search, section, sectionName, user.id]);
 
+  useEffect(() => {
+    if (!socket) return;
+    const onMessage = (message) =>
+      onMessagesInbox(message, messages, setMessages, section, user.id);
+    socket.on("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
+  }, [messages, section, socket, user.id]);
+
   return (
     <div className="messages-container">
       <MessagesToolBar
@@ -78,7 +89,6 @@ const Messages = () => {
         setMsgsSelectedIds={setMsgsSelectedIds}
         currentMsgId={currentMsgId}
         messages={messages}
-        setMessages={setMessages}
         setPopUpVisible={setPopUpVisible}
         selectAllVisible={selectAllVisible}
         setSelectAllVisible={setSelectAllVisible}
@@ -102,7 +112,6 @@ const Messages = () => {
           currentMsgId={currentMsgId}
           setCurrentMsgId={setCurrentMsgId}
           messages={messages}
-          setMessages={setMessages}
           popUpVisible={popUpVisible}
           setPopUpVisible={setPopUpVisible}
         />

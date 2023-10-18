@@ -10,7 +10,6 @@ export const onMessageProgressNotes = (
     message.content.data.patient_id !== patientId
   )
     return;
-  console.log("progress notes", progressNotes);
   switch (message.action) {
     case "create":
       const newProgressNotes = [...progressNotes, message.content.data];

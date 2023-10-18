@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
@@ -21,8 +20,6 @@ import ReplyFormExternal from "./ReplyFormExternal";
 const MessageExternalDetail = ({
   setCurrentMsgId,
   message,
-  setMessages,
-  setSection,
   section,
   popUpVisible,
   setPopUpVisible,
@@ -126,23 +123,17 @@ const MessageExternalDetail = ({
             },
           }
         );
-        const response = await axiosXano.get(
-          `/messages_external_for_staff?staff_id=${user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-              "Content-Type": "application/json",
+        socket.emit("message", {
+          route: "MESSAGES INBOX EXTERNAL",
+          action: "update",
+          content: {
+            id: message.id,
+            data: {
+              ...message,
+              deleted_by_staff_id: user.id,
             },
-          }
-        );
-        setMessages(
-          filterAndSortExternalMessages(
-            section,
-            response.data,
-            "staff",
-            user.id
-          )
-        );
+          },
+        });
         setCurrentMsgId(0);
         toast.success("Message deleted successfully", { containerId: "A" });
       } catch (err) {
@@ -197,16 +188,9 @@ const MessageExternalDetail = ({
 
     try {
       const attach_ids = (
-        await postPatientRecord(
-          "/attachments",
-          user.id,
-          auth.authToken,
-          {
-            attachments_array: datasAttachment,
-          },
-          socket,
-          "ATTACHMENTS"
-        )
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: datasAttachment,
+        })
       ).data;
       await postPatientRecord(
         "/progress_notes",
@@ -351,8 +335,6 @@ const MessageExternalDetail = ({
           allPersons={allPersons}
           message={message}
           previousMsgs={previousMsgs}
-          setMessages={setMessages}
-          section={section}
           setCurrentMsgId={setCurrentMsgId}
         />
       )}
@@ -381,8 +363,6 @@ const MessageExternalDetail = ({
         >
           <ForwardMessageExternal
             setForwardVisible={setForwardVisible}
-            setMessages={setMessages}
-            section={section}
             message={message}
             previousMsgs={previousMsgs}
           />

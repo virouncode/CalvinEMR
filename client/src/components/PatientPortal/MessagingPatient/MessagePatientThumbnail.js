@@ -2,7 +2,6 @@ import React from "react";
 import { toast } from "react-toastify";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { toLocalDateAndTime } from "../../../utils/formatDates";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
@@ -10,32 +9,14 @@ import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
 const MessagePatientThumbnail = ({
   message,
-  setMessages,
   setCurrentMsgId,
   setMsgsSelectedIds,
   msgsSelectedIds,
   section,
 }) => {
-  const { auth, user, setUser, clinic } = useAuth();
+  const { auth, user, setUser, clinic, socket } = useAuth();
 
   const handleMsgClick = async (e) => {
-    //Remove one from the unread messages nbr counter
-    if (user.unreadNbr !== 0) {
-      const newUnreadNbr = user.unreadNbr - 1;
-      setUser({
-        ...user,
-        unreadNbr: newUnreadNbr,
-      });
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...user,
-          unreadNbr: newUnreadNbr,
-        })
-      );
-    }
-    setCurrentMsgId(message.id);
-
     if (message.read_by_patient_id !== user.id) {
       //create and replace message with read by user id
       try {
@@ -53,28 +34,33 @@ const MessagePatientThumbnail = ({
             },
           }
         );
-        const response = await axiosXanoPatient.get(
-          `/messages_external_for_patient?patient_id=${user.id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          }
-        );
-        const newMessages = filterAndSortExternalMessages(
-          section,
-          response.data,
-          "patient",
-          user.id
-        );
-        setMessages(newMessages);
+        socket.emit("message", {
+          route: "MESSAGES INBOX EXTERNAL",
+          action: "update",
+          content: { id: message.id, data: newMessage },
+        });
       } catch (err) {
         toast.error(`Error: unable to get messages: ${err.message}`, {
           containerId: "A",
         });
       }
     }
+    //Remove one from the unread messages nbr counter
+    if (user.unreadNbr !== 0) {
+      const newUnreadNbr = user.unreadNbr - 1;
+      setUser({
+        ...user,
+        unreadNbr: newUnreadNbr,
+      });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          unreadNbr: newUnreadNbr,
+        })
+      );
+    }
+    setCurrentMsgId(message.id);
   };
 
   const THUMBNAIL_STYLE = {
@@ -121,22 +107,17 @@ const MessagePatientThumbnail = ({
             },
           }
         );
-        const response2 = await axiosXanoPatient.get(
-          `/messages_external_for_patientf?patient_id=${user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-              "Content-Type": "application/json",
+        socket.emit("message", {
+          route: "MESSAGES INBOX EXTERNAL",
+          action: "update",
+          content: {
+            id: message.id,
+            data: {
+              ...message,
+              deleted_by_staff_id: user.id,
             },
-          }
-        );
-        const newMessages = filterAndSortExternalMessages(
-          section,
-          response2.data,
-          "patient",
-          user.id
-        );
-        setMessages(newMessages);
+          },
+        });
         toast.success("Message deleted successfully", { containerId: "A" });
         setMsgsSelectedIds([]);
       } catch (err) {

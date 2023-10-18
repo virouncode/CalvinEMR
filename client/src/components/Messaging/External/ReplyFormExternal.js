@@ -5,7 +5,6 @@ import { postPatientRecord } from "../../../api/fetchRecords";
 import { sendEmail } from "../../../api/sendEmail";
 import axiosXano from "../../../api/xano";
 import useAuth from "../../../hooks/useAuth";
-import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { patientIdToName } from "../../../utils/patientIdToName";
 import MessagesAttachments from "../MessagesAttachments";
 import MessageExternal from "./MessageExternal";
@@ -14,8 +13,6 @@ const ReplyFormExternal = ({
   setReplyVisible,
   message,
   previousMsgs,
-  setMessages,
-  section,
   setCurrentMsgId,
 }) => {
   const { auth, user, clinic, socket } = useAuth();
@@ -29,16 +26,9 @@ const ReplyFormExternal = ({
   const handleSend = async (e) => {
     try {
       let attach_ids = (
-        await postPatientRecord(
-          "/attachments",
-          user.id,
-          auth.authToken,
-          {
-            attachments_array: attachments,
-          },
-          socket,
-          "ATTACHMENTS"
-        )
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: attachments,
+        })
       ).data;
 
       attach_ids = [...message.attachments_ids, ...attach_ids];
@@ -63,14 +53,9 @@ const ReplyFormExternal = ({
         date_created: Date.now(),
       };
 
-      await axiosXano.post("/messages_external", replyMessage, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
-      const response = await axiosXano.get(
-        `/messages_external_for_staff?staff_id=${user.id}`,
+      const response = await axiosXano.post(
+        "/messages_external",
+        replyMessage,
         {
           headers: {
             "Content-Type": "application/json",
@@ -78,16 +63,13 @@ const ReplyFormExternal = ({
           },
         }
       );
-      const newMessages = filterAndSortExternalMessages(
-        section,
-        response.data,
-        "staff",
-        user.id
-      );
-      setMessages(newMessages);
+      socket.emit("message", {
+        route: "MESSAGES INBOX EXTERNAL",
+        action: "create",
+        content: { data: { id: response.data.id, ...replyMessage } },
+      });
       setReplyVisible(false);
       setCurrentMsgId(0);
-
       //send an email and an SMS to patient
       await sendEmail(
         "virounk@gmail.com", //to be changed to patient email
