@@ -63,17 +63,10 @@
             min-width: 170px;
         }
         input {
-            width: 200px;
-        }
-        input[type="file"] {
-            width: 200px;
-            padding:0;
-            &::-webkit-file-upload-button {
-                cursor: pointer;
-            }
+            width: 100%;
         }
         select {
-            width:200px;
+            width:100%;
         }
         &-row-submit {
             text-align: end;
@@ -87,6 +80,13 @@
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        width:50%;
+        width:100%;
+        input[type="file"] {
+            width: 100%;
+            padding:0;
+            &::-webkit-file-upload-button {
+                cursor: pointer;
+            }
+        }
     }
 }

@@ -4,7 +4,7 @@ import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
 import { filterAndSortExternalMessages } from "../../../utils/filterAndSortExternalMessages";
 import { searchMessagesExternal } from "../../../utils/searchMessagesExternal";
-import { onMessagesInboxExternal } from "../../../utils/socketHandlers/omMessagesInboxExternal";
+import { onMessagesInboxExternal } from "../../../utils/socketHandlers/onMessagesInboxExternal";
 import MessagesPatientBox from "./MessagesPatientBox";
 import MessagesPatientLeftBar from "./MessagesPatientLeftBar";
 import MessagesPatientToolBar from "./MessagesPatientToolbar";

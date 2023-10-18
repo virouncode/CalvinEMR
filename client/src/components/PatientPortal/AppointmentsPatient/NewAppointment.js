@@ -24,7 +24,7 @@ const optionsTime = {
 };
 
 const NewAppointment = () => {
-  const { user, auth, clinic } = useAuth();
+  const { user, auth, clinic, socket } = useAuth();
   const [appointmentsInRange, setAppointmentsInRange] = useState(null);
   const [availability, setAvailability] = useState(null);
   const [rangeStart, setRangeStart] = useState(
@@ -190,6 +190,11 @@ Cellphone: ${user.demographics.cell_phone}`,
               Authorization: `Bearer ${auth.authToken}`,
               "Content-Type": "application/json",
             },
+          });
+          socket.emit("message", {
+            route: "MESSAGES INBOX EXTERNAL",
+            action: "create",
+            content: { data: message },
           });
         }
         window.alert(

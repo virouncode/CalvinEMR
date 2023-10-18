@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 // import axiosXano from "../../api/xano";
 // import useAuth from "../../hooks/useAuth";
 
@@ -6,6 +6,21 @@ const BillingFilter = ({ filterDatas, setFilterDatas }) => {
   // const { auth } = useAuth();
   // const [hinSearchVisible, setHinSearchVisible] = useState(false);
   // const [diagnosisSearchVisible, setDiagnosisSearchVisible] = useState(false);
+  const initialFilterDatas = useRef(filterDatas);
+  const [all, setAll] = useState(false);
+
+  const handleCheckAll = (e) => {
+    if (e.target.checked) {
+      setAll(true);
+      setFilterDatas({ date_start: "1970-01-01", date_end: "3000-01-01" });
+    } else {
+      setAll(false);
+      setFilterDatas({
+        date_start: initialFilterDatas.current.date_start,
+        date_end: initialFilterDatas.current.date_end,
+      });
+    }
+  };
   const handleDateChange = (e) => {
     let value = e.target.value;
     const name = e.target.name;
@@ -48,6 +63,7 @@ const BillingFilter = ({ filterDatas, setFilterDatas }) => {
             value={filterDatas.date_start}
             name="date_start"
             onChange={handleDateChange}
+            disabled={all}
           />
         </div>
         <div className="billing-filter-row-item">
@@ -57,8 +73,19 @@ const BillingFilter = ({ filterDatas, setFilterDatas }) => {
             value={filterDatas.date_end}
             name="date_end"
             onChange={handleDateChange}
+            disabled={all}
           />
         </div>
+        <div className="billing-filter-row-item">
+          <input
+            type="checkbox"
+            value={all}
+            name="all"
+            onChange={handleCheckAll}
+          />
+          <label htmlFor="">All</label>
+        </div>
+
         {/* <div className="billing-filter-row-item">
           <label htmlFor="">Referrer OHIP nbr</label>
           <input

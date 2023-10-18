@@ -10,7 +10,7 @@ import DiagnosisSearch from "./DiagnosisSearch";
 import HinSearch from "./HinSearch";
 
 const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
-  const { auth, user, clinic } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     date: toLocalDate(Date.now()),
     provider_ohip_nbr: staffIdToOhip(clinic.staffInfos, user.id),
@@ -138,22 +138,58 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
           ).data.id,
           billing_code_id,
         };
-        await axiosXano.post("/billings", datasToPost, {
+        const response2 = await axiosXano.post("/billings", datasToPost, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${auth.authToken}`,
           },
         });
+        const feeSchedule = await axiosXano.get(
+          `/ohip_fee_schedule/${response2.data.billing_code_id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
+        const diagnosis = await axiosXano.get(
+          `/diagnosis_codes/${response2.data.diagnosis_id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
+          }
+        );
+        const datasToEmit = {
+          ...response2.data,
+          provider_ohip_billing_nbr: {
+            ohip_billing_nbr: clinic.staffInfos.find(
+              ({ id }) => id === response2.data.provider_id
+            ).ohip_billing_nbr,
+          },
+          patient_hin: {
+            health_insurance_nbr: clinic.patientsInfos.find(
+              ({ id }) => id === response2.data.patient_id
+            ).health_insurance_nbr,
+          },
+          billing_code: {
+            billing_code: feeSchedule.data.billing_code,
+            provider_fee: feeSchedule.data.provider_fee,
+            specialist_fee: feeSchedule.data.specialist_fee,
+          },
+          diagnosis_code: {
+            code: diagnosis.data.code,
+          },
+        };
+        socket.emit("message", {
+          route: "BILLING",
+          action: "create",
+          content: { data: datasToEmit },
+        });
       }
-      const response = await axiosXano.get(`/billings?staff_id=${user.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
-      setBillings(
-        response.data.sort((a, b) => b.date_created - a.date_created)
-      );
+
       setAddVisible(false);
       toast.success(`Billing(s) saved successfully`, { containerId: "A" });
     } catch (err) {

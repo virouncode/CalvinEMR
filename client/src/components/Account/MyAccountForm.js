@@ -13,7 +13,7 @@ const MyAccountForm = () => {
   const [editVisible, setEditVisible] = useState(false);
   const [formDatas, setFormDatas] = useState(null);
   const [tempFormDatas, setTempFormDatas] = useState(null);
-  const { auth, user, clinic, setClinic } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
   const [successMsg, setSuccessMsg] = useState("");
@@ -143,17 +143,11 @@ const MyAccountForm = () => {
       });
       setSuccessMsg("Infos changed successfully");
       //update clinic context staffInfos
-      const response = await axiosXano.get("/staff", {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
+      socket.emit("message", {
+        route: "STAFF",
+        action: "update",
+        content: { id: user.id, data: datasToPut },
       });
-      setClinic({ ...clinic, staffInfos: response.data });
-      localStorage.setItem(
-        "clinic",
-        JSON.stringify({ ...clinic, staffInfos: response.data })
-      );
       setTimeout(() => setSuccessMsg(""), 2000);
     } catch (err) {
       setErrMsg(`Error: unable to save infos: ${err.message}`);
@@ -240,30 +234,7 @@ const MyAccountForm = () => {
             </div>
             <div className="myaccount-section__row">
               <label>Occupation*: </label>
-              {/* {editVisible ? (
-                <select
-                  required
-                  value={tempFormDatas.title}
-                  onChange={handleChange}
-                  name="title"
-                >
-                  <option value="Doctor">Doctor</option>
-                  <option value="Medical Student">Medical Student</option>
-                  <option value="Nurse">Nurse</option>
-                  <option value="Nursing Student">Nursing Student</option>
-                  <option value="Secretary">Secretary</option>
-                  <option value="Lab Technician">Lab Technician</option>
-                  <option value="Ultra Sound Technician">
-                    Ultra Sound Technician
-                  </option>
-                  <option value="Nutritionist">Nutritionist</option>
-                  <option value="Physiotherapist">Physiotherapist</option>
-                  <option value="Psychologist">Psychologist</option>
-                  <option value="Other">Other</option>
-                </select>
-              ) : ( */}
               <p>{tempFormDatas.title}</p>
-              {/* )} */}
             </div>
             <div className="myaccount-section__row">
               <label>Speciality: </label>

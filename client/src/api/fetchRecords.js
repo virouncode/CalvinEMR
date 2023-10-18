@@ -60,6 +60,13 @@ export const putPatientRecord = async (
         action: "update",
         content: { id: recordId, data: datas },
       });
+      if (topic === "APPOINTMENTS") {
+        socket.emit("message", {
+          route: "EVENTS",
+          action: "update",
+          content: { id: recordId, data: datas },
+        });
+      }
     }
   } catch (err) {
     if (err.name !== "CanceledError") throw err;
@@ -80,7 +87,6 @@ export const postPatientRecord = async (
     datas.created_by_id = authId;
     datas.date_created = Date.now();
   }
-
   try {
     const response = await axiosXano.post(tableName, datas, {
       headers: {
@@ -107,6 +113,13 @@ export const postPatientRecord = async (
           action: "create",
           content: { data: { id: response.data.id, ...datas } },
         });
+        if (topic === "APPOINTMENTS") {
+          socket.emit("message", {
+            route: "EVENTS",
+            action: "create",
+            content: { data: { id: response.data.id, ...datas } },
+          });
+        }
       }
     }
     return response;
@@ -157,12 +170,20 @@ export const deletePatientRecord = async (
       },
       ...(abortController && { signal: abortController.signal }),
     });
-
-    socket.emit("message", {
-      route: topic,
-      action: "delete",
-      content: { id: recordId },
-    });
+    if (socket && topic) {
+      socket.emit("message", {
+        route: topic,
+        action: "delete",
+        content: { id: recordId },
+      });
+      if (topic === "APPOINTMENTS") {
+        socket.emit("message", {
+          route: "EVENTS",
+          action: "delete",
+          content: { id: recordId },
+        });
+      }
+    }
   } catch (err) {
     if (err.name !== "CanceledError") throw err;
   }

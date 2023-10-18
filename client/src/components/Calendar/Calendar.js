@@ -9,7 +9,7 @@ import { useEvents } from "../../hooks/useEvents";
 import { getWeekRange } from "../../utils/formatDates";
 import { patientIdToName } from "../../utils/patientIdToName";
 import { rooms } from "../../utils/rooms";
-import { onMessageEvents } from "../../utils/socketHandlers/onMessageEvent";
+import { onMessageEvents } from "../../utils/socketHandlers/onMessageEvents";
 import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../Confirm/ConfirmGlobal";
 import EventForm from "../EventForm/EventForm";
@@ -109,6 +109,11 @@ const Calendar = ({ timelineVisible }) => {
               action: "delete",
               content: { id: currentEvent.current.id },
             });
+            socket.emit("message", {
+              route: "APPOINTMENTS",
+              action: "delete",
+              content: { id: currentEvent.current.id },
+            });
             setFormVisible(false);
             setCalendarSelectable(true);
             currentEvent.current = null;
@@ -148,7 +153,7 @@ const Calendar = ({ timelineVisible }) => {
     return () => {
       window.removeEventListener("keydown", handleKeyboardShortcut);
     };
-  }, [auth.authToken, events, formVisible, isSecretary, setEvents, user.id]); // Empty dependency array means this effect runs once, like componentDidMount
+  }, [auth.authToken, formVisible, isSecretary, socket, user.id]);
 
   useEffect(() => {
     if (!socket) return;
@@ -182,6 +187,11 @@ const Calendar = ({ timelineVisible }) => {
         toast.success("Deleted Successfully", { containerId: "A" });
         socket.emit("message", {
           route: "EVENTS",
+          action: "delete",
+          content: { id: currentEvent.current.id },
+        });
+        socket.emit("message", {
+          route: "APPOINTMENTS",
           action: "delete",
           content: { id: currentEvent.current.id },
         });
@@ -546,8 +556,11 @@ const Calendar = ({ timelineVisible }) => {
             action: "create",
             content: { data: response.data },
           });
-          // const abortController = new AbortController();
-          // fetchEvents(abortController);
+          socket.emit("message", {
+            route: "APPOINTMENTS",
+            action: "create",
+            content: { data: response.data },
+          });
           lastCurrentId.current = response.data.id.toString();
         } catch (err) {
           if (err.name !== "CanceledError")
@@ -588,6 +601,11 @@ const Calendar = ({ timelineVisible }) => {
         );
         socket.emit("message", {
           route: "EVENTS",
+          action: "create",
+          content: { data: response.data },
+        });
+        socket.emit("message", {
+          route: "APPOINTMENTS",
           action: "create",
           content: { data: response.data },
         });
@@ -676,6 +694,11 @@ const Calendar = ({ timelineVisible }) => {
             action: "update",
             content: { id: event.id, data: { id: event.id, ...datas } },
           });
+          socket.emit("message", {
+            route: "APPOINTMENTS",
+            action: "update",
+            content: { id: event.id, data: { id: event.id, ...datas } },
+          });
         } catch (err) {
           if (err.name !== "CanceledError")
             toast.error(`Error: unable to save appointment: ${err.message}`, {
@@ -709,6 +732,11 @@ const Calendar = ({ timelineVisible }) => {
           });
           socket.emit("message", {
             route: "EVENTS",
+            action: "update",
+            content: { id: event.id, data: { id: event.id, ...datas } },
+          });
+          socket.emit("message", {
+            route: "APPOINTMENTS",
             action: "update",
             content: { id: event.id, data: { id: event.id, ...datas } },
           });
@@ -793,6 +821,11 @@ const Calendar = ({ timelineVisible }) => {
         });
         socket.emit("message", {
           route: "EVENTS",
+          action: "update",
+          content: { id: event.id, data: { id: event.id, ...datas } },
+        });
+        socket.emit("message", {
+          route: "APPOINTMENTS",
           action: "update",
           content: { id: event.id, data: { id: event.id, ...datas } },
         });

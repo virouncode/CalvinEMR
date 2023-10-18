@@ -32,6 +32,8 @@ export const onMessageEvents = (
   isSecretary
 ) => {
   if (message.route !== "EVENTS") return;
+  console.log("received");
+  console.log(message.action);
   const remainingStaffObjects = staffInfos
     .filter(({ id }) => id !== userId)
     .map((staff, index) => {
@@ -109,12 +111,16 @@ export const onMessageEvents = (
             );
       setEvents(
         events.map((event) =>
-          event.id === message.content.id ? updatedEvent : event
+          parseInt(event.id) === parseInt(message.content.id)
+            ? updatedEvent
+            : event
         )
       );
       break;
     case "delete":
-      setEvents(events.filter(({ id }) => id !== message.content.id));
+      setEvents(
+        events.filter(({ id }) => parseInt(id) !== parseInt(message.content.id))
+      );
       break;
     default:
       break;

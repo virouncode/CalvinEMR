@@ -8,7 +8,7 @@ const BillingPage = () => {
   return (
     <>
       <Helmet>
-        <title>CalvinAI Chat</title>
+        <title>Billing</title>
       </Helmet>
       <section className="billing-section">
         <h2 className="billing-section-title">

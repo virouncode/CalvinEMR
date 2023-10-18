@@ -4,12 +4,13 @@ import { toast } from "react-toastify";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
 import { toLocalDate } from "../../utils/formatDates";
+import { onMessageBilling } from "../../utils/socketHandlers/onMessageBilling";
 import BillingFilter from "./BillingFilter";
 import BillingForm from "./BillingForm";
 import BillingTable from "./BillingTable";
 
 const Billing = () => {
-  const { user, auth } = useAuth();
+  const { user, auth, socket } = useAuth();
   const [addVisible, setAddVisible] = useState(false);
   const [billings, setBillings] = useState(null);
   const [errMsg, setErrMsg] = useState("");
@@ -66,6 +67,22 @@ const Billing = () => {
     fetchBillings();
     return () => abortController.abort();
   }, [auth.authToken, user.id, user.title]);
+
+  useEffect(() => {
+    if (!socket) return;
+    const onMessage = (message) =>
+      onMessageBilling(
+        message,
+        billings,
+        setBillings,
+        user.id,
+        user.title === "Secretary"
+      );
+    socket.on("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
+  }, [socket, user.id, user.title, billings]);
 
   return (
     <div className="billing-table">

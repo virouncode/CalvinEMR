@@ -386,6 +386,14 @@ const EventForm = ({
           data: { id: currentEvent.current.id, ...datas },
         },
       });
+      socket.emit("message", {
+        route: "APPOINTMENTS",
+        action: "update",
+        content: {
+          id: currentEvent.current.id,
+          data: { id: currentEvent.current.id, ...datas },
+        },
+      });
       setFormVisible(false);
       setCalendarSelectable(true);
       toast.success("Appointment saved successfully", { containerId: "A" });

@@ -10,16 +10,40 @@ export const onMessageTopic = (message, topic, datas, setDatas, patientId) => {
         break;
       case "update":
         if (!message.content.data.patients_guests_ids.includes(patientId)) {
+          if (
+            datas.find(
+              ({ id }) => parseInt(id) === parseInt(message.content.id)
+            )
+          ) {
+            console.log("on est là");
+            setDatas(
+              datas.filter(
+                ({ id }) => parseInt(id) !== parseInt(message.content.id)
+              )
+            );
+            break;
+          } else {
+            break;
+          }
+        } else if (
+          datas.find(({ id }) => parseInt(id) === parseInt(message.content.id))
+        ) {
+          setDatas(
+            datas.map((item) =>
+              item.id === message.content.id ? message.content.data : item
+            )
+          );
+          break;
+        } else {
+          setDatas([...datas, message.content.data]);
           break;
         }
+      case "delete":
         setDatas(
-          datas.map((item) =>
-            item.id === message.content.id ? message.content.data : item
+          datas.filter(
+            ({ id }) => parseInt(id) !== parseInt(message.content.id)
           )
         );
-        break;
-      case "delete":
-        setDatas(datas.filter((item) => item.id !== message.content.id));
         break;
       default:
         break;

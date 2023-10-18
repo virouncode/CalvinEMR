@@ -1,5 +1,5 @@
 import { CircularProgress } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
@@ -7,9 +7,8 @@ import { staffIdToName } from "../../../utils/staffIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
 
-const NextAppointments = () => {
-  const { user, auth, clinic } = useAuth();
-  const [appointments, setAppointments] = useState(null);
+const NextAppointments = ({ nextAppointments }) => {
+  const { user, auth, clinic, socket } = useAuth();
   const [appointmentSelectedId, setAppointmentSelectedId] = useState(null);
 
   const optionsDate = {
@@ -23,40 +22,6 @@ const NextAppointments = () => {
     hour: "2-digit",
     minute: "2-digit",
   };
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    const fetchAppointments = async () => {
-      try {
-        const response = await axiosXanoPatient.get(
-          `/appointments_for_patient?patient_id=${user.id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-            signal: abortController.signal,
-          }
-        );
-        if (abortController.signal.aborted) return;
-        setAppointments(
-          response.data
-            .filter(({ start }) => start >= Date.now())
-            .sort((a, b) => b.date_created - a.date_created)
-        );
-      } catch (err) {
-        if (err.name !== "CanceledError")
-          toast.error(
-            `Error : unable fetch your account infos: ${err.message}`,
-            {
-              containerId: "A",
-            }
-          );
-      }
-    };
-    fetchAppointments();
-    return () => abortController.abort();
-  }, [auth.authToken, user.id]);
 
   const isAppointmentSelected = (id) => appointmentSelectedId === id;
   const handleCheck = (e) => {
@@ -78,7 +43,7 @@ const NextAppointments = () => {
           .map(({ id }) => id);
         //create the message
         //send to all secretaries
-        const appointment = appointments.find(
+        const appointment = nextAppointments.find(
           ({ id }) => id === appointmentSelectedId
         );
 
@@ -117,6 +82,11 @@ Cellphone: ${user.demographics.cell_phone}`,
               "Content-Type": "application/json",
             },
           });
+          socket.emit("message", {
+            route: "MESSAGES INBOX EXTERNAL",
+            action: "create",
+            content: { data: message },
+          });
         }
         window.alert(
           "YOUR CANCELATION IS NOT CONFIRMED YET. A secretary will contact you"
@@ -139,9 +109,9 @@ Cellphone: ${user.demographics.cell_phone}`,
     <div className="patient-next-appointments">
       <div className="patient-next-appointments-title">Next Appointments</div>
       <div className="patient-next-appointments-content">
-        {appointments ? (
-          appointments.length ? (
-            appointments.map((appointment) => (
+        {nextAppointments ? (
+          nextAppointments.length ? (
+            nextAppointments.map((appointment) => (
               <div
                 key={appointment.id}
                 className="patient-next-appointments-content-item"
