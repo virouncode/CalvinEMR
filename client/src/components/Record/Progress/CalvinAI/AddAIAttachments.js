@@ -18,7 +18,7 @@ const AddAIAttachments = ({
   const [attachmentsAddedIds, setAttachmentsAddedIds] = useState([]);
 
   return (
-    <div className="calvinai-prompt-attachments">
+    <div className="calvinai-prompt__attachments">
       <p>
         Add attachments datas
         {isLoadingAttachmentText && (

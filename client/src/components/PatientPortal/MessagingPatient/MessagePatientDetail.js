@@ -17,7 +17,6 @@ const MessagePatientDetail = ({
   setPopUpVisible,
 }) => {
   const [replyVisible, setReplyVisible] = useState(false);
-  const [allPersons, setAllPersons] = useState(false);
   const { auth, user, socket } = useAuth();
   const [previousMsgs, setPreviousMsgs] = useState(null);
   const [attachments, setAttachments] = useState([]);
@@ -132,7 +131,6 @@ const MessagePatientDetail = ({
 
   const handleClickReply = (e) => {
     setReplyVisible(true);
-    setAllPersons(false);
   };
 
   return (
@@ -160,21 +158,21 @@ const MessagePatientDetail = ({
           />
         </NewWindow>
       )}
-      <div className="message-detail-toolbar">
+      <div className="message-detail__toolbar">
         <i
-          className="fa-solid fa-arrow-left message-detail-toolbar-arrow"
+          className="fa-solid fa-arrow-left message-detail__arrow"
           style={{ cursor: "pointer" }}
           onClick={handleClickBack}
         ></i>
-        <div className="message-detail-toolbar-subject">{message.subject}</div>
+        <div className="message-detail__subject">{message.subject}</div>
         {section !== "Deleted messages" && (
           <i
-            className="fa-solid fa-trash  message-detail-toolbar-trash"
+            className="fa-solid fa-trash  message-detail__trash"
             onClick={handleDeleteMsg}
           ></i>
         )}
       </div>
-      <div className="message-detail-content">
+      <div className="message-detail__content">
         <MessageExternal message={message} key={message.id} index={0} />
         {previousMsgs &&
           previousMsgs.map((message, index) => (
@@ -200,7 +198,7 @@ const MessagePatientDetail = ({
         />
       )}
       {section !== "Deleted messages" && !replyVisible && (
-        <div className="message-detail-btns">
+        <div className="message-detail__btns">
           {section !== "Sent messages" && (
             <button onClick={handleClickReply}>Reply</button>
           )}

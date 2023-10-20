@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { sendMsgToOpenAI } from "../../../../api/openapi";
-import TypingDots from "../../../Presentation/TypingDots";
+import CalvinAIInput from "../../../CalvinAIChat/CalvinAIInput";
 import CalvinAIDiscussionContent from "./CalvinAIDiscussionContent";
 
 const CalvinAIDiscussion = ({
@@ -12,17 +12,36 @@ const CalvinAIDiscussion = ({
   abortController,
 }) => {
   const msgEndRef = useRef(null);
+  const contentRef = useRef(null);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [autoScroll, setAutoScroll] = useState(true);
 
   useEffect(() => {
-    msgEndRef.current.scrollIntoView();
-  }, [lastResponse]);
+    if (autoScroll) {
+      msgEndRef.current.scrollIntoView();
+    }
+  }, [autoScroll, lastResponse]);
+
+  // Event handler for user scrolling.
+  const handleMouseWheel = () => {
+    setAutoScroll(false);
+  };
+
+  // Add a scroll event listener to the discussion feed.
+  useEffect(() => {
+    const currentContent = contentRef.current;
+    currentContent.addEventListener("mousewheel", handleMouseWheel);
+    return () => {
+      currentContent.removeEventListener("mousewheel", handleMouseWheel);
+    };
+  }, []);
 
   const handleChangeInput = (e) => {
     setInputText(e.target.value);
   };
   const handleAskGPT = async () => {
+    setAutoScroll(true);
     const text = inputText;
     setInputText("");
     const updatedMessages = [...messages];
@@ -52,29 +71,19 @@ const CalvinAIDiscussion = ({
       <CalvinAIDiscussionContent
         messages={messages}
         msgEndRef={msgEndRef}
-        lastResponse={lastResponse}
+        contentRef={contentRef}
       />
-      <button
-        className="calvinai-discussion-stop-btn"
-        onClick={() => abortController.current.abort()}
-      >
-        Stop generating
-      </button>
-      <textarea
-        className="calvinai-discussion-textarea"
-        onChange={handleChangeInput}
+      <div className="calvinai-discussion__stop-btn">
+        <button onClick={() => abortController.current.abort()}>
+          Stop generating
+        </button>
+      </div>
+      <CalvinAIInput
+        handleChangeInput={handleChangeInput}
         value={inputText}
-        autoFocus
-        placeholder="Please write your message here"
+        handleAskGPT={handleAskGPT}
+        isLoading={isLoading}
       />
-      {isLoading ? (
-        <TypingDots text="" style={{ bottom: "9.5%", right: "6%" }} />
-      ) : (
-        <button
-          onClick={handleAskGPT}
-          className="calvinai-discussion-send-btn"
-        />
-      )}
     </div>
   );
 };

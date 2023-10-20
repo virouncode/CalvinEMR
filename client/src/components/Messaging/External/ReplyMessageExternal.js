@@ -9,7 +9,7 @@ import { patientIdToName } from "../../../utils/patientIdToName";
 import MessagesAttachments from "../MessagesAttachments";
 import MessageExternal from "./MessageExternal";
 
-const ReplyFormExternal = ({
+const ReplyMessageExternal = ({
   setReplyVisible,
   message,
   previousMsgs,
@@ -186,14 +186,14 @@ Powered by Calvin EMR`,
   };
 
   return (
-    <div className="reply-form">
-      <div className="reply-form-title">
+    <div className="reply-message__form">
+      <div className="reply-message__title">
         <p>
           <strong>To: </strong>
           {patientIdToName(clinic.patientsInfos, message.from_id)}
         </p>
       </div>
-      <div className="reply-form-subject">
+      <div className="reply-message__subject">
         <strong>Subject:</strong>
         {previousMsgs.length
           ? `\u00A0Re ${previousMsgs.length + 1}: ${message.subject.slice(
@@ -201,7 +201,7 @@ Powered by Calvin EMR`,
             )}`
           : `\u00A0Re: ${message.subject}`}
       </div>
-      <div className="reply-form-attach">
+      <div className="reply-message__attach">
         <strong>Attach files</strong>
         <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
         {attachments.map((attachment) => (
@@ -210,9 +210,9 @@ Powered by Calvin EMR`,
           </span>
         ))}
       </div>
-      <div className="reply-form-body">
+      <div className="reply-message__body">
         <textarea value={body} onChange={handleChange}></textarea>
-        <div className="reply-form-history">
+        <div className="reply-message__history">
           <MessageExternal message={message} key={message.id} index={0} />
           {previousMsgs.map((message, index) => (
             <MessageExternal
@@ -230,7 +230,7 @@ Powered by Calvin EMR`,
           addable={false}
         />
       </div>
-      <div className="reply-form-btns">
+      <div className="reply-message__btns">
         <button onClick={handleSend} disabled={isLoadingFile}>
           Send
         </button>
@@ -258,4 +258,4 @@ Powered by Calvin EMR`,
   );
 };
 
-export default ReplyFormExternal;
+export default ReplyMessageExternal;

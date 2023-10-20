@@ -47,16 +47,15 @@ const DiagnosisSearch = ({ handleClickDiagnosis }) => {
         />
       </div>
       {results.length > 0 ? (
-        <ul className="diagnosis-search-results">
+        <ul className="diagnosis-results">
           {results.map((result) => (
             <li
+              className="diagnosis-results__item"
               key={result.id}
               onClick={(e) => handleClickDiagnosis(e, result.code)}
             >
-              <span className="diagnosis-search-results-code">
-                {result.code}
-              </span>{" "}
-              <span className="diagnosis-search-results-name">
+              <span className="diagnosis-results__code">{result.code}</span>{" "}
+              <span className="diagnosis-results__name">
                 {result.diagnosis}, {result.category}
               </span>
             </li>

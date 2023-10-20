@@ -7,7 +7,7 @@ import DurationPicker from "../Pickers/DurationPicker";
 import AvailabilityItem from "./AvailabilityItem";
 
 const AvailabilityEditor = ({ setEditVisible }) => {
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [scheduleMorning, setScheduleMorning] = useState(null);
   const [scheduleAfternoon, setScheduleAfternoon] = useState(null);
   const [unavailability, setUnavailability] = useState(null);
@@ -83,6 +83,11 @@ const AvailabilityEditor = ({ setEditVisible }) => {
         headers: {
           Authorization: `Bearer ${auth.authToken}`,
         },
+      });
+      socket.emit("message", {
+        route: "AVAILABILITY",
+        action: "update",
+        content: { data: datasToPost },
       });
       setEditVisible(false);
       toast.success("Availability saved successfully", { containerId: "A" });

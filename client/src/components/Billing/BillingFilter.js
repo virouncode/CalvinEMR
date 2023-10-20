@@ -54,9 +54,9 @@ const BillingFilter = ({ filterDatas, setFilterDatas }) => {
   // };
   return (
     <div className="billing-filter">
-      <div className="billing-filter-row">
-        <div className="billing-filter-title">Filter</div>
-        <div className="billing-filter-row-item">
+      <div className="billing-filter__row">
+        <div className="billing-filter__title">Filter</div>
+        <div className="billing-filter__item">
           <label htmlFor="">From</label>
           <input
             type="date"
@@ -66,7 +66,7 @@ const BillingFilter = ({ filterDatas, setFilterDatas }) => {
             disabled={all}
           />
         </div>
-        <div className="billing-filter-row-item">
+        <div className="billing-filter__item">
           <label htmlFor="">To</label>
           <input
             type="date"
@@ -76,7 +76,7 @@ const BillingFilter = ({ filterDatas, setFilterDatas }) => {
             disabled={all}
           />
         </div>
-        <div className="billing-filter-row-item">
+        <div className="billing-filter__item">
           <input
             type="checkbox"
             value={all}

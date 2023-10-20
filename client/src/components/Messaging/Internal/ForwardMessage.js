@@ -220,8 +220,8 @@ const ForwardMessage = ({
   };
 
   return (
-    <div className="forward">
-      <div className="forward-contacts">
+    <div className="forward-message">
+      <div className="forward-message__contacts">
         <Contacts
           staffInfos={clinic.staffInfos}
           handleCheckContact={handleCheckContact}
@@ -230,8 +230,8 @@ const ForwardMessage = ({
           isCategoryChecked={isCategoryChecked}
         />
       </div>
-      <div className="forward-form">
-        <div className="forward-form-recipients">
+      <div className="forward-message__form">
+        <div className="forward-message__recipients">
           <strong>To: </strong>
           <input
             type="text"
@@ -247,7 +247,7 @@ const ForwardMessage = ({
             readOnly
           />
         </div>
-        <div className="forward-form-subject">
+        <div className="forward-message__subject">
           <strong>Subject:</strong>
           {previousMsgs.length
             ? `\u00A0Fwd ${previousMsgs.length + 1}: ${message.subject.slice(
@@ -256,11 +256,11 @@ const ForwardMessage = ({
             : `\u00A0Fwd: ${message.subject}`}
         </div>
         {patient?.full_name && (
-          <div className="forward-form-patient">
+          <div className="forward-message__patient">
             <strong>About patient: {"\u00A0"}</strong> {patient.full_name}
           </div>
         )}
-        <div className="forward-attach">
+        <div className="forward-message__attach">
           <strong>Attach files</strong>
           <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
           {attachments.map((attachment) => (
@@ -269,9 +269,9 @@ const ForwardMessage = ({
             </span>
           ))}
         </div>
-        <div className="forward-form-body">
+        <div className="forward-message__body">
           <textarea value={body} onChange={handleChange}></textarea>
-          <div className="forward-form-history">
+          <div className="forward-message__history">
             <Message message={message} key={message.id} index={0} />
             {previousMsgs.map((message, index) =>
               message.type === "Internal" ? (
@@ -293,7 +293,7 @@ const ForwardMessage = ({
             addable={false}
           />
         </div>
-        <div className="forward-form-btns">
+        <div className="forward-message__btns">
           <button onClick={handleSend} disabled={isLoadingFile}>
             Send
           </button>

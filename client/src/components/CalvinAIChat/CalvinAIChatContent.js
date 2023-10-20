@@ -3,7 +3,7 @@ import CalvinAIChatMessage from "./CalvinAIChatMessage";
 
 const CalvinAIChatContent = ({ messages, msgEndRef, contentRef }) => {
   return (
-    <div className="calvinai-chat-content" ref={contentRef}>
+    <div className="calvinai-chat__content" ref={contentRef}>
       {messages.map((message, i) => (
         <CalvinAIChatMessage role={message.role} key={i} message={message} />
       ))}

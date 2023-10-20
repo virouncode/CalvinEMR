@@ -7,7 +7,7 @@ const PatientsListItem = ({
   patientName,
 }) => {
   return (
-    <li className="docmailbox__patients-list-item">
+    <li className="patients__list-item">
       <input
         id={info.id}
         type="checkbox"

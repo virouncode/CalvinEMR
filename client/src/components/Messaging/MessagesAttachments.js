@@ -11,7 +11,7 @@ const MessagesAttachments = ({
 }) => {
   return (
     attachments && (
-      <div className="messages-attachments">
+      <div className="message-attachments">
         {attachments.map((attachment) => (
           <MessageAttachmentCard
             patientId={patientId}

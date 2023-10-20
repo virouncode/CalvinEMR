@@ -50,8 +50,8 @@ const Reference = () => {
   };
 
   return (
-    <div className="reference-content">
-      <div className="reference-content-column">
+    <div className="reference">
+      <div className="reference__column">
         <h3>Ontario</h3>
         <ul>
           <li>
@@ -235,7 +235,7 @@ const Reference = () => {
         </ul>
       </div>
 
-      <div className="reference-content-column">
+      <div className="reference__column">
         <h3>USA</h3>
         <ul>
           <li>
@@ -360,8 +360,8 @@ const Reference = () => {
           </li>
         </ul>
       </div>
-      <div className="reference-content-column">
-        <div className="reference-content-column-personal-title">
+      <div className="reference__column">
+        <div className="reference__personal-title">
           <h3>Personal Links</h3>
           <button onClick={handleAdd} disabled={addVisible}>
             Add

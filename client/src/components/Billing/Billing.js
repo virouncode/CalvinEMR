@@ -1,5 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
@@ -10,6 +11,7 @@ import BillingForm from "./BillingForm";
 import BillingTable from "./BillingTable";
 
 const Billing = () => {
+  const { hin } = useParams();
   const { user, auth, socket } = useAuth();
   const [addVisible, setAddVisible] = useState(false);
   const [billings, setBillings] = useState(null);
@@ -24,6 +26,12 @@ const Billing = () => {
       )
     ),
   });
+
+  useEffect(() => {
+    if (hin) {
+      setAddVisible(true);
+    }
+  }, [hin]);
 
   const handleAdd = () => {
     setAddVisible(true);
@@ -85,9 +93,9 @@ const Billing = () => {
   }, [socket, user.id, user.title, billings]);
 
   return (
-    <div className="billing-table">
-      {errMsg && <p className="billing-table-err">{errMsg}</p>}
-      <div className="billing-table-btn-container">
+    <div className="billing">
+      {errMsg && <p className="billing__err">{errMsg}</p>}
+      <div className="billing__btn-container">
         {user.title !== "Secretary" && (
           <button onClick={handleAdd} disabled={addVisible}>
             Add Billing

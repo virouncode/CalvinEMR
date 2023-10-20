@@ -14,7 +14,7 @@ const ContactsForPatientCategory = ({
 
   return (
     <>
-      <div className="contacts-category-overview">
+      <div className="contacts__category-overview">
         {!listVisible ? (
           <i
             onClick={handleClick}

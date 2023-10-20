@@ -5,23 +5,23 @@
     font-weight: bold;
     margin-right: 10px;
   }
-  &-results {
-    padding:20px;
-    &-code {
-      font-weight: bold;
-      display: inline-block;
-      width:20%;
+}
+.hin-results {
+  padding:20px;
+  &_item {
+    cursor:pointer;
+    display: flex;
+    justify-content: flex-start;
+    &:hover {
+      text-decoration: underline;
     }
-    &-name {
-      width:80%;
-    }
-    li {
-      cursor:pointer;
-      display: flex;
-      justify-content: flex-start;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+  }   
+  &__code {
+    font-weight: bold;
+    display: inline-block;
+    width:20%;
+  }
+  &__name {
+    width:80%;
   }
 }

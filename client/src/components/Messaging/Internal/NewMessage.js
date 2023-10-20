@@ -220,7 +220,7 @@ const NewMessage = ({ setNewVisible }) => {
 
   return (
     <div className="new-message">
-      <div className="new-message-contacts">
+      <div className="new-message__contacts">
         <Contacts
           staffInfos={clinic.staffInfos}
           handleCheckContact={handleCheckContact}
@@ -229,8 +229,8 @@ const NewMessage = ({ setNewVisible }) => {
           isCategoryChecked={isCategoryChecked}
         />
       </div>
-      <div className="new-message-form">
-        <div className="new-message-form-recipients">
+      <div className="new-message__form">
+        <div className="new-message__recipients">
           <strong>To: </strong>
           <input
             type="text"
@@ -246,7 +246,7 @@ const NewMessage = ({ setNewVisible }) => {
             readOnly
           />
         </div>
-        <div className="new-message-form-subject">
+        <div className="new-message__subject">
           <strong>Subject: </strong>
           <input
             type="text"
@@ -255,7 +255,7 @@ const NewMessage = ({ setNewVisible }) => {
             value={subject}
           />
         </div>
-        <div className="new-message-form-patient">
+        <div className="new-message__patient">
           <strong>About patient: </strong>
           <input
             type="text"
@@ -266,7 +266,7 @@ const NewMessage = ({ setNewVisible }) => {
             readOnly
           />
         </div>
-        <div className="new-message-form-attach">
+        <div className="new-message__attach">
           <strong>Attach files</strong>
           <i className="fa-solid fa-paperclip" onClick={handleAttach}></i>
           {attachments.map((attachment) => (
@@ -275,7 +275,7 @@ const NewMessage = ({ setNewVisible }) => {
             </span>
           ))}
         </div>
-        <div className="new-message-form-body">
+        <div className="new-message__body">
           <textarea value={body} onChange={handleChange}></textarea>
           <MessagesAttachments
             attachments={attachments}
@@ -284,7 +284,7 @@ const NewMessage = ({ setNewVisible }) => {
             addable={false}
           />
         </div>
-        <div className="new-message-form-btns">
+        <div className="new-message__btns">
           <button onClick={handleSend} disabled={isLoadingFile}>
             Send
           </button>
@@ -294,7 +294,7 @@ const NewMessage = ({ setNewVisible }) => {
           )}
         </div>
       </div>
-      <div className="new-message-patients">
+      <div className="new-message__patients">
         <Patients
           handleCheckPatient={handleCheckPatient}
           isPatientChecked={isPatientChecked}

@@ -13,39 +13,16 @@ const MyAccountForm = () => {
   const [editVisible, setEditVisible] = useState(false);
   const [formDatas, setFormDatas] = useState(null);
   const [tempFormDatas, setTempFormDatas] = useState(null);
-  const { auth, user, socket } = useAuth();
+  const { auth, user, socket, clinic } = useAuth();
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const fetchMyInfos = async () => {
-      try {
-        const response = await axiosXano.get(`/staff/${user.id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-          signal: abortController.signal,
-        });
-        if (abortController.signal.aborted) return;
-        setFormDatas(response.data);
-        setTempFormDatas(response.data);
-      } catch (err) {
-        if (err.name !== "CanceledError")
-          toast.error(
-            `Error : unable fetch your account infos: ${err.message}`,
-            {
-              containerId: "A",
-            }
-          );
-      }
-    };
-    fetchMyInfos();
-    return () => abortController.abort();
-  }, [auth.authToken, user.id]);
+    setFormDatas(clinic.staffInfos.find(({ id }) => id === user.id));
+    setTempFormDatas(clinic.staffInfos.find(({ id }) => id === user.id));
+  }, [clinic.staffInfos, user.id]);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -148,6 +125,7 @@ const MyAccountForm = () => {
         action: "update",
         content: { id: user.id, data: datasToPut },
       });
+      setEditVisible(false);
       setTimeout(() => setSuccessMsg(""), 2000);
     } catch (err) {
       setErrMsg(`Error: unable to save infos: ${err.message}`);
@@ -352,7 +330,7 @@ const MyAccountForm = () => {
                   />
                 ) : (
                   <img
-                    src="https://placehold.co/200x100/png?font=roboto&text=Sign"
+                    src="https://placehold.co/150x100/png?font=roboto&text=Sign"
                     alt="user-avatar-placeholder"
                   />
                 )}

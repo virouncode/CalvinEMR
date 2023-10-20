@@ -55,9 +55,9 @@ const LinkForm = ({ setAddVisible, setMyLinks }) => {
     setAddVisible(false);
   };
   return (
-    <form className="reference-form" onSubmit={handleSubmit}>
-      {errMsg && <p className="reference-form-err">{errMsg}</p>}
-      <div className="reference-form-row">
+    <form className="reference__form" onSubmit={handleSubmit}>
+      {errMsg && <p className="reference__form-err">{errMsg}</p>}
+      <div className="reference__form-row">
         <label htmlFor="name">Enter a name</label>
         <input
           type="text"
@@ -68,7 +68,7 @@ const LinkForm = ({ setAddVisible, setMyLinks }) => {
           autoFocus
         />
       </div>
-      <div className="reference-form-row">
+      <div className="reference__form-row">
         <label htmlFor="url">Enter a URL</label>
         <input
           type="text"
@@ -78,7 +78,7 @@ const LinkForm = ({ setAddVisible, setMyLinks }) => {
           autoComplete="off"
         />
       </div>
-      <div className="reference-form-btns">
+      <div className="reference__form-btns">
         <input type="submit" value="Save" />
         <button onClick={handleCancel}>Cancel</button>
       </div>

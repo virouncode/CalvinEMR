@@ -25,18 +25,17 @@ const HinSearch = ({ handleClickHin }) => {
         />
       </div>
       {results.length > 0 ? (
-        <ul className="hin-search-results">
+        <ul className="hin-results">
           {results.map((result) => (
             <li
+              className="hin-results__item"
               key={result.id}
               onClick={(e) => handleClickHin(e, result.health_insurance_nbr)}
             >
-              <span className="hin-search-results-code">
+              <span className="hin-results__code">
                 {result.health_insurance_nbr}
               </span>{" "}
-              <span className="hin-search-results-name">
-                {result.full_name}
-              </span>
+              <span className="hin-results__name">{result.full_name}</span>
             </li>
           ))}
         </ul>

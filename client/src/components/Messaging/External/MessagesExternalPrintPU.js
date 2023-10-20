@@ -13,15 +13,15 @@ const MessagesExternalPrintPU = ({
     e.nativeEvent.view.print();
   };
   return (
-    <div className="message-detail-print-container">
-      <div className="message-detail-print">
-        <div className="message-detail-print-title">
-          <p className="message-detail-print-subject">
+    <div className="messages-print__container">
+      <div className="messages-print__section">
+        <div className="messages-print__title">
+          <p className="messages-print__subject">
             <strong>Subject:{"\u00A0"}</strong>
             {message.subject}
           </p>
         </div>
-        <div className="message-detail-content">
+        <div className="messages-print__content">
           <MessageExternal
             message={message}
             author={author}
@@ -44,7 +44,7 @@ const MessagesExternalPrintPU = ({
             addable={false}
           />
         </div>
-        <div className="message-detail-print-btn">
+        <div className="messages-print__btn">
           <button onClick={handleClickPrint}>Print</button>
         </div>
       </div>

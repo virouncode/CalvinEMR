@@ -32,7 +32,7 @@ const MessagesExternalBox = ({
 
   return (
     <>
-      <div className="messages-content-box">
+      <div className="messages-content__box">
         {messages ? (
           messages?.length !== 0 ? (
             currentMsgId === 0 ? (

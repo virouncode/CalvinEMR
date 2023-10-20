@@ -75,16 +75,16 @@ const CalvinAIPrompt = ({
   };
   return (
     <div className="calvinai-prompt">
-      <h2 className="calvinai-prompt-title">
+      <h2 className="calvinai-prompt__title">
         Prepare prompt to CalvinAI <i className="fa-solid fa-robot"></i>
       </h2>
       <textarea
-        className="calvinai-prompt-textarea"
+        className="calvinai-prompt__textarea"
         onChange={handleChange}
         value={messages[0].content}
       />
-      <div className="calvinai-prompt-footer">
-        <div className="calvinai-prompt-add">
+      <div className="calvinai-prompt__footer">
+        <div className="calvinai-prompt__add">
           {attachments.length ? (
             <AddAIAttachments
               messages={messages}

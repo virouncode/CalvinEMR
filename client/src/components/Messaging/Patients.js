@@ -9,8 +9,8 @@ const Patients = ({ isPatientChecked, handleCheckPatient, label = true }) => {
   };
   return (
     <div className="patients">
-      {label && <div className="patients-title">Patients</div>}
-      <div className="patients-search-input">
+      {label && <div className="patients__title">Patients</div>}
+      <div className="patients__search-input">
         <input
           type="text"
           value={search}
@@ -18,7 +18,7 @@ const Patients = ({ isPatientChecked, handleCheckPatient, label = true }) => {
           onChange={handleChange}
         />
       </div>
-      <div className="patients-list">
+      <div className="patients__list">
         <PatientsList
           isPatientChecked={isPatientChecked}
           handleCheckPatient={handleCheckPatient}

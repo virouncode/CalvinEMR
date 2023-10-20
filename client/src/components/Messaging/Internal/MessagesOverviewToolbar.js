@@ -2,15 +2,15 @@ import React from "react";
 
 const MessagesOverviewToolbar = ({ section }) => {
   return (
-    <div className="messages-overview-toolbar">
-      <div className="messages-overview-toolbar-from">
+    <div className="messages-overview__toolbar">
+      <div className="messages-overview__from">
         {section === "Sent messages" ? "To" : "From"}
       </div>
-      <div className="messages-overview-toolbar-subject">
+      <div className="messages-overview__subject">
         Subject / Message overview
       </div>
-      <div className="messages-overview-toolbar-patient">Related patient</div>
-      <div className="messages-overview-toolbar-date">Date</div>
+      <div className="messages-overview__patient">Related patient</div>
+      <div className="messages-overview__date">Date</div>
     </div>
   );
 };

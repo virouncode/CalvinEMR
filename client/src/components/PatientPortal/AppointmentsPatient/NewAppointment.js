@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
 import { getWeekRange } from "../../../utils/formatDates";
+import { onMessageAvailability } from "../../../utils/socketHandlers/onMessageAvailability";
 import { staffIdToName } from "../../../utils/staffIdToName";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
 import { confirmAlert } from "../../Confirm/ConfirmGlobal";
@@ -108,6 +109,16 @@ const NewAppointment = () => {
     fetchAvailability();
     return () => abortController.abort();
   }, [auth.authToken, practicianSelectedId]);
+
+  useEffect(() => {
+    if (!socket) return;
+    const onMessage = (message) =>
+      onMessageAvailability(message, setAvailability, practicianSelectedId);
+    socket.on("message", onMessage);
+    return () => {
+      socket.off("message", onMessage);
+    };
+  }, [practicianSelectedId, socket]);
 
   const handlePracticianChange = (e) => {
     const value = parseInt(e.target.value);

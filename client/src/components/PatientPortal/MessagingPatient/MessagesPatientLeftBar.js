@@ -17,13 +17,13 @@ const MessagesPatientLeftBar = ({
   };
   const isActive = (id) =>
     section === id
-      ? "messages-content-leftbar-category messages-content-leftbar-category--active"
-      : "messages-content-leftbar-category";
+      ? "messages-content__category messages-content__category--active"
+      : "messages-content__category";
 
   const { user } = useAuth();
 
   return (
-    <div className="messages-content-leftbar">
+    <div className="messages-content__leftbar">
       <ul>
         <li
           className={isActive("Inbox")}

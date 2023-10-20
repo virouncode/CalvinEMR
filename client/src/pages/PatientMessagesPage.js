@@ -16,7 +16,7 @@ const PatientMessagesPage = () => {
         <title>Messages</title>
       </Helmet>
       <section className="patient-messages-section">
-        <h2 className="patient-messages-section-title">Messages</h2>
+        <h2 className="patient-messages-section__title">Messages</h2>
         <MessagesPatient />
         {popUpVisible && (
           <FakeWindow

@@ -9,7 +9,7 @@ const ReferencePage = () => {
         <title>Reference</title>
       </Helmet>
       <section className="reference-section">
-        <h2 className="reference-section-title">Useful Links</h2>
+        <h2 className="reference-section__title">Useful Links</h2>
         <Reference />
       </section>
     </>

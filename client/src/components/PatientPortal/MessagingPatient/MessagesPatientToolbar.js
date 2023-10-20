@@ -149,14 +149,14 @@ const MessagesPatientToolBar = ({
 
   return (
     <div className="messages-toolbar">
-      <p className="messages-toolbar-title">Messaging</p>
+      <p className="messages-toolbar__title">Messaging</p>
       <input
         type="text"
         placeholder="Search in messages"
         value={search}
         onChange={handleChange}
       />
-      <div className="messages-toolbar-btns">
+      <div className="messages-toolbar__btns">
         <button onClick={handleClickNew}>New</button>
         {section === "Deleted messages" && msgsSelectedIds.length !== 0 && (
           <button onClick={handleClickMoveBack}>Undelete</button>

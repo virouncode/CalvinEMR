@@ -66,8 +66,8 @@ const ContactsForPatient = ({
 
   return (
     <div className="contacts">
-      <div className="contacts-title">Recipients</div>
-      <div className="contacts-lists">
+      <div className="contacts__title">Recipients</div>
+      <div className="contacts__lists">
         {allInfos
           .filter((category) => category.infos.length !== 0)
           .map((category) => (

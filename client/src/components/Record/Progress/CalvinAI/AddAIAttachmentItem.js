@@ -87,7 +87,7 @@ What is the diagnosis and what treatment would you suggest ?`;
   };
 
   return (
-    <div className="calvinai-prompt-attachments-item">
+    <div className="calvinai-prompt__attachment-item">
       <input
         type="checkbox"
         id={attachment.id}

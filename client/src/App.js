@@ -8,6 +8,7 @@ import Layout3 from "./components/Presentation/Layout3";
 import RequireAuth from "./components/Presentation/RequireAuth";
 import RequireAuthPatient from "./components/Presentation/RequireAuthPatient";
 import useAuth from "./hooks/useAuth";
+import { useLocalStorageTracker } from "./hooks/useLocalStorageTracker";
 import BillingPage from "./pages/BillingPage";
 import CalendarPage from "./pages/CalendarPage";
 import CalvinAIPage from "./pages/CalvinAIPage";
@@ -29,11 +30,13 @@ import SignupPatientPage from "./pages/SignupPatientPage";
 import SignupStaffPage from "./pages/SignupStaffPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import { onMessageClinic } from "./utils/socketHandlers/onMessageClinic";
-// const socket = io("https://fierce-retreat-45158-56541fefe81e.herokuapp.com");
+import { onMessageUnread } from "./utils/socketHandlers/onMessageUnread";
 
 const App = () => {
+  useLocalStorageTracker();
   const navigate = useNavigate();
-  const { setUser, setClinic, setAuth, setSocket, socket, clinic } = useAuth();
+  const { user, setUser, setClinic, setAuth, setSocket, socket, clinic } =
+    useAuth();
   useEffect(() => {
     const storageListener = (e) => {
       if (e.key !== "message") return;
@@ -57,10 +60,10 @@ const App = () => {
   }, [navigate, setAuth, setClinic, setSocket, setUser]);
 
   useEffect(() => {
-    // const socket = socketIOClient("http://localhost:3000");
-    const socket = socketIOClient(
-      "https://fierce-retreat-45158-56541fefe81e.herokuapp.com/"
-    );
+    const socket = socketIOClient("http://localhost:3000");
+    // const socket = socketIOClient(
+    //   "https://fierce-retreat-45158-56541fefe81e.herokuapp.com/"
+    // );
     setSocket(socket);
     return () => socket.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,11 +72,14 @@ const App = () => {
   useEffect(() => {
     if (!socket) return;
     const onMessage = (message) => onMessageClinic(message, clinic, setClinic);
+    const onMessage2 = (message) => onMessageUnread(message, user, setUser);
     socket.on("message", onMessage);
+    socket.on("message", onMessage2);
     return () => {
       socket.off("message", onMessage);
+      socket.off("message", onMessage2);
     };
-  }, [clinic, setClinic, socket]);
+  }, [clinic, setClinic, setUser, socket, user]);
 
   return (
     <Routes>
@@ -102,6 +108,7 @@ const App = () => {
           <Route path="reference" element={<ReferencePage />} />
           <Route path="calvinai" element={<CalvinAIPage />} />
           <Route path="billing" element={<BillingPage />} />
+          <Route path="billing/:hin" element={<BillingPage />} />
           <Route path="my-account" element={<MyAccountPage />} />
           <Route path="credentials" element={<CredentialsPage />} />
         </Route>

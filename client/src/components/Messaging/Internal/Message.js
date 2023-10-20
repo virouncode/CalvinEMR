@@ -11,16 +11,17 @@ const Message = ({ message, index }) => {
       className="message"
       style={{ marginLeft: `${parseInt(index) * 20}px` }}
     >
-      <div className="message-title">
-        <div className="message-title-author">
+      <div className="message__title">
+        <div className="message__author">
           From:{" "}
           {staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)}
         </div>
-        <div className="message-title-date">
+        <div className="message__date">
           <div>{toLocalDateAndTime(message.date_created)}</div>
         </div>
       </div>
-      <div className="message-subtitle">
+      <div className="message__subtitle">
+        {console.log("message", message)}
         to:{" "}
         {message.type === "Internal"
           ? message.to_staff_ids
@@ -32,7 +33,7 @@ const Message = ({ message, index }) => {
           ? staffIdToTitleAndName(clinic.staffInfos, message.to_staff_id, true)
           : patientIdToName(clinic.patientsInfos, message.to_patient_id)}
       </div>
-      <div className="message-body">{message.body}</div>
+      <div className="message__body">{message.body}</div>
     </div>
   );
 };

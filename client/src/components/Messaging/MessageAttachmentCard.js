@@ -45,8 +45,8 @@ const MessageAttachmentCard = ({
 
   return (
     <>
-      <div className="messages-attachments-card" style={{ width: cardWidth }}>
-        <div className="messages-attachments-card-thumbnail">
+      <div className="message-attachment__card" style={{ width: cardWidth }}>
+        <div className="message-attachment__thumbnail">
           {attachment.file.mime.includes("image") ? (
             <img
               src={`${BASE_URL}${attachment.file.path}`}
@@ -100,8 +100,8 @@ const MessageAttachmentCard = ({
             </div>
           )}
         </div>
-        <div className="messages-attachments-card-footer">
-          <div className="messages-attachments-card-footer-title">
+        <div className="message-attachment__footer">
+          <div className="message-attachment__title">
             <p
               style={{
                 overflow: "hidden",
@@ -121,7 +121,7 @@ const MessageAttachmentCard = ({
             )}
           </div>
           {addable && (
-            <div className="messages-attachments-card-footer-btn">
+            <div className="message-attachment__btn">
               <button onClick={handleAddToRecord}>Add to patient record</button>
             </div>
           )}

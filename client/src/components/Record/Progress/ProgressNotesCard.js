@@ -286,6 +286,7 @@ const ProgressNotesCard = ({
     <div className="progress-notes__card">
       {bodyVisible ? (
         <ProgressNotesCardHeader
+          patientInfos={patientInfos}
           isChecked={isChecked}
           handleCheck={handleCheck}
           progressNote={progressNote}

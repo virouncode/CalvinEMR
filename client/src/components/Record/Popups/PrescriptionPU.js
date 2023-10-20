@@ -79,6 +79,10 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
   };
 
   const handlePrint = async (e) => {
+    if (!addressSelected) {
+      alert("Please choose an address first");
+      return;
+    }
     setProgress(true);
     const element = printRef.current;
     const canvas = await html2canvas(element, {
@@ -115,6 +119,10 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
   };
 
   const handleAddToRecord = async (e) => {
+    if (!addressSelected) {
+      alert("Please choose an address first");
+      return;
+    }
     setProgress(true);
     const element = printRef.current;
 

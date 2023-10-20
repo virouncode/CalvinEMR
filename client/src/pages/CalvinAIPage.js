@@ -13,7 +13,7 @@ const CalvinAIPage = () => {
         <title>CalvinAI Chat</title>
       </Helmet>
       <section className="calvinai-section">
-        <h2 className="calvinai-section-title">Calvin AI Chat</h2>
+        <h2 className="calvinai-section__title">Calvin AI Chat</h2>
         {start ? (
           <CalvinAIChat />
         ) : (

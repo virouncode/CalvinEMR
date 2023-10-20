@@ -16,7 +16,7 @@ import MessagesAttachments from "../MessagesAttachments";
 import ForwardMessage from "./ForwardMessage";
 import Message from "./Message";
 import MessagesPrintPU from "./MessagesPrintPU";
-import ReplyForm from "./ReplyForm";
+import ReplyMessage from "./ReplyMessage";
 
 const MessageDetail = ({
   setCurrentMsgId,
@@ -316,21 +316,19 @@ const MessageDetail = ({
             />
           </NewWindow>
         )}
-        <div className="message-detail-toolbar">
+        <div className="message-detail__toolbar">
           <i
-            className="fa-solid fa-arrow-left message-detail-toolbar-arrow"
+            className="fa-solid fa-arrow-left message-detail__arrow"
             style={{ cursor: "pointer" }}
             onClick={handleClickBack}
           ></i>
-          <div className="message-detail-toolbar-subject">
-            {message.subject}
-          </div>
-          <div className="message-detail-toolbar-patient">
+          <div className="message-detail__subject">{message.subject}</div>
+          <div className="message-detail__patient">
             {patient && (
               <>
                 <NavLink
                   to={`/patient-record/${patient.id}`}
-                  className="message-detail-toolbar-patient-link"
+                  className="message-detail__patient-link"
                 >
                   {patient.full_name}
                 </NavLink>
@@ -342,12 +340,12 @@ const MessageDetail = ({
           </div>
           {section !== "Deleted messages" && (
             <i
-              className="fa-solid fa-trash  message-detail-toolbar-trash"
+              className="fa-solid fa-trash  message-detail__trash"
               onClick={handleDeleteMsg}
             ></i>
           )}
         </div>
-        <div ref={messageContentRef} className="message-detail-content">
+        <div ref={messageContentRef} className="message-detail__content">
           <Message message={message} key={message.id} index={0} />
           {previousMsgs &&
             previousMsgs.map((message, index) =>
@@ -370,7 +368,7 @@ const MessageDetail = ({
           />
         </div>
         {replyVisible && (
-          <ReplyForm
+          <ReplyMessage
             setReplyVisible={setReplyVisible}
             allPersons={allPersons}
             message={message}
@@ -380,7 +378,7 @@ const MessageDetail = ({
           />
         )}
         {section !== "Deleted messages" && !replyVisible && !forwardVisible && (
-          <div className="message-detail-btns">
+          <div className="message-detail__btns">
             {section !== "Sent messages" && (
               <button onClick={handleClickReply}>Reply</button>
             )}

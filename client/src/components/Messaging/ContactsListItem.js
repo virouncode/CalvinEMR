@@ -8,7 +8,7 @@ const ContactsListItem = ({
   categoryName,
 }) => {
   return (
-    <li className="contacts-list-item">
+    <li className="contacts-list__item">
       <input
         id={info.id}
         type="checkbox"

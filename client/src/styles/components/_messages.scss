@@ -1,172 +1,124 @@
-.messages {
-    margin-top: 20px;
-    &-content {
+.messages-container {
+    height:80vh;
+    border:solid 0.5px $grey;
+    border-radius:4px;
+    width:98%;
+    margin: 0 auto;
+}
+.messages-toggle {
+    padding: 5px 10px;
+    border-radius: 4px;
+    border : solid 1px $grey;
+    font-size: 0.9rem;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    width: 14%;
+    align-items: center;
+    margin:0 auto 10px;
+    &__radio {
         display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        width : 98%;
-        margin: 0 auto;
-        &-leftbar {
-            width : 10%;
-            // border: solid 1px $black;
-            min-height: 80vh; 
-            background: rgb(238, 238, 238);
-            ul {
-                font-size: 0.9rem;
-            }
-            &-category {
-                padding: 4px 10px;
-                width: 100%;
-                cursor: pointer;
-                &:hover {
-                    background: rgb(115, 248, 190);
-                }
-                &--active {
-                    font-weight: bold;
-                    background: rgb(115, 248, 190);
-                }
-            }
-        }
-        &-box {
-            width: 90%;
-            p {
-                margin-top: 20px;
-                font-size: 0.9rem;
-                text-align: center;
-            }
-            // border: solid 1px $black;
+        align-items:center;
+        label {
+            margin-left: 5px;
         }
     }
-    &-toolbar {
-        width : 98%;
-        margin: 0 auto;
-        height: 40px;
-        position: sticky;
+}
+.messages-toolbar {
+    margin: 0 auto;
+    height: 7%;
+    position: sticky;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: $blue;
+    border-radius: 4px 4px 0 0;
+    &__title {
+        width: 10%;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    input {
+        width: 60%;
+        font-size: 0.9rem;
+    }
+    &__btns {
+        width:25%;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: $blue;
-        border-radius: 4px 4px 0 0;
-        &-title {
-            width: 10%;
-            font-size: 1.2rem;
-            font-weight: bold;
+        justify-content: flex-end;
+        button {
+            margin-right: 10px;
         }
-        input {
-            width: 60%;
+    }
+}
+.messages-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0 auto;
+    height:93%;
+    &__leftbar {
+        width : 10%;
+        height: 100%; 
+        background: rgb(238, 238, 238);
+        overflow:scroll;
+        ul {
             font-size: 0.9rem;
         }
-        &-magnifying {
-            width:5%;
+    }
+    &__category {
+        padding: 4px 10px;
+        width: 100%;
+        cursor: pointer;
+        &:hover {
+            background: rgb(115, 248, 190);
         }
-        &-btns {
-            width:25%;
-            display: flex;
-            justify-content: flex-end;
-            button {
-                margin-right: 10px;
-            }
+        &--active {
+            font-weight: bold;
+            background: rgb(115, 248, 190);
         }
     }
-    &-overview-toolbar {
+    &__box {
+        width: 90%;
+        height: 100%; 
+        overflow:scroll;
+        position:relative;
+        p {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    }
+}
+.messages-overview {
+    &__toolbar {
         display: flex;
         justify-content: space-between;
         border-bottom: solid 0.5px grey;
         font-size: 0.85rem;
         padding : 5px;
         font-weight: bold;
-        &-from {
-            text-align:center;
-            width: 20%;
-            &-external {
-                text-align:center;
-                width: 20%;
-            }
-        }
-        &-subject{
-            text-align:center;
-            width: 50%;
-            &-external {
-                text-align:center;
-                width: 50%;
-            }
-        }
-        &-patient {
-            text-align:center;
-            width: 13%;
-        }
-        &-date {
-            text-align:center;
-            width: 17%;
-            &-external {
-                text-align:center;
-                width: 30%;
-            }
-        }
     }
-    &-attachments {
-        display:flex;
-        padding:15px;
-        flex-wrap: wrap;
-        &-card {
-            border: solid 0.5px grey;
-            width: 30%;
-            margin: 10px 5px 0;
-            &-thumbnail {
-                height: 80px; 
-                overflow: hidden;
-                position:relative;
-                cursor:pointer;
-                iframe {
-                    border:none;
-                    cursor:pointer;
-                }
-            }
-            &-footer {
-                background: rgb(154, 154, 154);
-                padding: 5px;
-                font-size: 0.7rem;
-                display: flex;
-                flex-direction: column;
-                &-title {
-                    display:flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    p {
-                        margin-top: 0;
-                        font-size: 0.7rem;
-                    }
-                }
-                &-btn {
-                    button {
-                        font-size: 0.65rem;
-                    }
-                }
-            }
-        }
+    &__from {
+        text-align:center;
+        width: 20%;
     }
-    &-toggle {
-        padding: 5px 10px;
-        border-radius: 4px;
-        border : solid 1px $grey;
-        font-size: 0.9rem;
-        text-align: center;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
+    &__subject {
+        text-align:center;
+        width: 50%;
+    }
+    &__patient {
+        text-align:center;
         width: 13%;
-        align-items: center;
-        margin:0 auto 10px;
-        &-radio {
-            display: flex;
-            align-items:center;
-            label {
-                margin-left: 5px;
-            }
+    }
+    &__date {
+        text-align:center;
+        width: 17%;
+        &--external {
+            width: 30%;
         }
     }
 }
-
 .message-thumbnail {
     font-size: 0.8rem;
     display: flex;
@@ -175,166 +127,151 @@
     height: 35px;
     border-bottom: solid 0.5px grey;
     padding: 0 5px;
-    &-checkbox {
-        width: 3%;
+    &--unread {
+        font-weight: bold;
     }
-    &-link {
+    &__checkbox {
+        width:3%;
+    }
+    &__link {
         width : 67%;
         cursor:pointer;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        &-external {
+        &--external {
             width : 70%;
-            cursor:pointer;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
         }
     }
-    &-author {
+    &__author {
         width: 35%;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         padding-right: 10px;
-        &-external {
-            width: 35%;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            padding-right: 10px;
-        }
     }
-    &-sample {
+    &__sample {
         width: 65%;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         margin-right: 20px;
         padding-right: 10px;
-        &-external {
-            width: 65%;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            margin-right: 20px;
-            padding-right: 10px;
-        }
     }
-    &-patient {
+    &__patient {
         width: 13%;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         text-align: center;
-        &-link {
-            text-decoration: underline;
-        }
     }
-    &-date {
+    &__patient-link {
+        text-decoration: underline;
+    }
+    &__date {
         width: 15%;
         text-align: center;
-        &-external {
+        &--external {
             width: 25%;
-            text-align: center;
         }
     }
-    &-trash {
+    &__trash {
         cursor:pointer;
         width: 2%;
     }
 }
-
 .message-detail {
-    &-toolbar {
+    &__content {
+        margin-top: 30px;
+    }
+    &__toolbar {
         padding:5px;
+        background: $white;
         border-bottom: solid 0.5px grey;
         display: flex;
         align-items: center;
         position: sticky;
         justify-content: space-between;
-        &-arrow {
-            width: 5%;
-        }
-        &-subject {
-            font-size: 0.9rem;
-            width:50%;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-        &-patient {
-            width: 40%;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            text-align: center;
-            font-size: 0.8rem;
-            &-link {
-                text-decoration: underline;
-            }
-            button {
-                margin-left: 10px;
-            }
-        }
-        &-trash {
-            width: 5%;
-            cursor:pointer;
-            text-align:end;
-            font-size: 0.8rem;
-        }
-
+        position:sticky;
+        top:0;
+        z-index:10;
+        width:auto;
     }
-    &-btns {
+    &__arrow {
+        width: 5%;
+    }
+    &__subject {
+        font-size: 0.9rem;
+        width:50%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    &__patient {
+        width: 40%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;
+        font-size: 0.8rem;
+        button {
+            margin-left: 10px;
+        }
+    }
+    &__patient-link {
+        text-decoration: underline;
+    }
+    &__trash {
+        width: 5%;
+        cursor:pointer;
+        text-align:end;
+        font-size: 0.8rem;
+    }
+    &__btns {
         padding : 20px;
         button {
             margin-right: 10px;
         }
     }
-    &-print  {
-        &-container {
-            padding:40px;
-        }
+}
+.messages-print {
+    &__container {
+        padding:40px;
+    }
+    &__section {
         print-color-adjust: exact;
         border-radius: 4px;
         border:  solid 0.3px grey;
         overflow: hidden;
-        &-subject, &-patient {
-            border-bottom: solid 0.3px grey;
-            height: 30px;
-            font-size: 0.9rem;
-            background-color: $blue;
-        }
-        &-btn {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0;
-        }
+    }
+    &__subject, &__patient {
+        border-bottom: solid 0.3px grey;
+        height: 30px;
+        font-size: 0.9rem;
+        background-color: $blue;
+    }
+    &__btn {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
     }
 }
-@media print {
-    .message-detail-print-btn {
-        display: none !important;
-    }
-}
-
 .message {
     padding : 20px;
     border-bottom: solid 0.5px rgb(204, 204, 204);
-    &-title {
+    &__title {
         display: flex;
         justify-content: space-between;
         font-size: 0.8rem;
-        &-author {
-            font-weight: bold;
-        }
-        &-date {
-            width:28%;
-            text-align: right;
-        }
     }
-    &-subject {
+    &__author {
+        font-weight: bold;
+    }
+    &__date {
+        width:28%;
+        text-align: right;
+    }
+    &__subject {
         border-bottom: solid 0.3px grey;
         height: 30px;
         display: flex;
@@ -344,25 +281,179 @@
             width: 92%;
         }
     }
-    &-subtitle {
+    &__subtitle {
         font-size: 0.6rem;
     }
-    &-body {
+    &__body {
         padding:20px 20px 0;
         font-size: 0.8rem;
         white-space: pre;
     }
 }
-
-.reply-form {
-    min-height: 250px;
-    border: solid 0.3px grey;
-    border-radius: 4px;
-    padding : 0 10px;
-    margin : 20px auto ;
-    width : 90%;
-    font-size: 0.8rem;
-    &-title {
+.message-attachments {
+    display:flex;
+    padding:15px;
+    flex-wrap: wrap;
+}
+.message-attachment {
+    &__card {
+        border: solid 0.5px grey;
+        width: 30%;
+        margin: 10px 5px 0;
+    }
+    &__thumbnail {
+        height: 80px; 
+        overflow: hidden;
+        position:relative;
+        cursor:pointer;
+        iframe {
+            border:none;
+            cursor:pointer;
+        }
+    }
+    &__footer {
+        background: rgb(154, 154, 154);
+        padding: 5px;
+        font-size: 0.7rem;
+        display: flex;
+        flex-direction: column;
+    }
+    &__title {
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        p {
+            margin-top: 0;
+            font-size: 0.7rem;
+        }
+    }
+    &__btn {
+        button {
+            font-size: 0.65rem;
+        }
+    }
+}
+.new-message {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0 5px;
+    margin-top: 30px;
+    &__contacts {
+        width:24%;
+        border: solid 0.3px grey;
+        border-radius: 4px;
+        margin : 20px auto ;
+        font-size: 0.8rem;
+        padding : 5px 10px;
+        &--patient {
+            width: 20%;
+        }
+    }
+    &__form {
+        min-height: 250px;
+        border: solid 0.3px grey;
+        border-radius: 4px;
+        padding : 0 10px;
+        margin : 20px auto ;
+        width : 50%;
+        font-size: 0.8rem;
+        &--patient {
+            width:75%;
+        }
+    }
+    &__recipients{
+        border-bottom: solid 0.3px grey;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        input {
+            outline: none;
+            width: 90%;
+            text-align: left;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+    &__subject{
+        border-bottom: solid 0.3px grey;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        input {
+            outline: none;
+            width: 92%;
+        }
+    }
+    &__patient{
+        border-bottom: solid 0.3px grey;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        input {
+            outline: none;
+            width: 80%;
+            text-align: left;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+    &__attach{
+        border-bottom: solid 0.3px grey;
+        min-height: 30px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        i {
+            cursor: pointer;
+            margin-left: 5px;
+        }
+    }
+    &__body {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        textarea {
+            border : none;
+            outline: none;
+            padding: 10px 0;
+            width: 100%;
+            min-height: 300px;
+        }
+    }
+    &__btns {
+        border-top: solid 0.3px grey;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        button {
+            margin-right: 10px;
+        }
+    }
+    &__patients {
+        width: 24%;
+        border: solid 0.3px grey;
+        border-radius: 4px;
+        margin : 20px auto ;
+        font-size: 0.8rem;
+        padding : 5px 10px;
+    }
+}
+.reply-message {
+    &__form {
+        min-height: 250px;
+        border: solid 0.3px grey;
+        border-radius: 4px;
+        padding : 0 10px;
+        margin : 20px auto ;
+        width : 90%;
+        font-size: 0.8rem;
+    }
+    &__title {
         display: flex;
         align-items: center;
         border-bottom: solid 0.3px grey;
@@ -375,7 +466,7 @@
             font-size: 0.8rem;
         }
     }
-    &-subject {
+    &__subject {
         border-bottom: solid 0.3px grey;
         height: 40px;
         display: flex;
@@ -385,7 +476,7 @@
             width: 92%;
         }
     }
-    &-patient {
+    &__patient {
         border-bottom: solid 0.3px grey;
         height: 40px;
         display: flex;
@@ -395,7 +486,7 @@
             width: 92%;
         }
     }
-    &-body {
+    &__body {
         width: 95%;
         display: flex;
         flex-direction: column;
@@ -408,11 +499,11 @@
             min-height: 200px;
         }
     }
-    &-history {
+    &__history {
         display: flex;
         flex-direction: column;
     }
-    &-btns {
+    &__btns {
         border-top: solid 0.3px grey;
         height: 40px;
         display: flex;
@@ -421,7 +512,7 @@
             margin-right: 10px;
         }
     }
-    &-attach {
+    &__attach {
         border-bottom: solid 0.3px grey;
         min-height: 40px;
         display: flex;
@@ -435,178 +526,13 @@
         }
     }
 }
-
-.new-message{
+.forward-message {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     padding: 0 5px;
     margin-top: 30px;
-    &-contacts {
-        width:24%;
-        border: solid 0.3px grey;
-        border-radius: 4px;
-        margin : 20px auto ;
-        font-size: 0.8rem;
-        padding : 5px 10px;
-        &--patient {
-            width: 20%;
-        }
-    }
-    &-form {
-        min-height: 250px;
-        border: solid 0.3px grey;
-        border-radius: 4px;
-        padding : 0 10px;
-        margin : 20px auto ;
-        width : 50%;
-        font-size: 0.8rem;
-        &--patient {
-            width:75%;
-        }
-        &-recipients{
-            border-bottom: solid 0.3px grey;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            input {
-                outline: none;
-                width: 90%;
-                text-align: left;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-        }
-        &-subject{
-            border-bottom: solid 0.3px grey;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            input {
-                outline: none;
-                width: 92%;
-            }
-        }
-        &-patient{
-            border-bottom: solid 0.3px grey;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            input {
-                outline: none;
-                width: 80%;
-                text-align: left;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-        }
-        &-attach{
-            border-bottom: solid 0.3px grey;
-            min-height: 30px;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            i {
-                cursor: pointer;
-                margin-left: 5px;
-            }
-        }
-        &-body {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            textarea {
-                border : none;
-                outline: none;
-                padding: 10px 0;
-                width: 100%;
-                min-height: 300px;
-            }
-        }
-        &-btns {
-            border-top: solid 0.3px grey;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            button {
-                margin-right: 10px;
-            }
-        }
-    }
-    &-patients {
-        width: 24%;
-        border: solid 0.3px grey;
-        border-radius: 4px;
-        margin : 20px auto ;
-        font-size: 0.8rem;
-        padding : 5px 10px;
-    }
-}
-
-.contacts {
-    &-title {
-        margin-bottom: 10px;
-    }
-    &-list {
-        &-item {
-            font-size: 0.7rem;
-
-        }
-    }
-}
-
-.contacts-category-overview {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    i {
-        margin-right: 5px;
-    }
-    input[type="checkbox"] {
-        margin-right: 5px;
-    }
-    
-}
-.contacts-list{
-    padding : 5px 0 0 30px;
-    &-item {
-        display: flex;
-        align-items: center;
-        input[type="checkbox"] {
-            margin-right: 5px;
-        }
-    }
-}
-
-.patients {
-    &-title {
-        margin-bottom: 10px;
-    }
-    &-search-input {
-        margin-bottom: 20px;
-    }
-    &-list {
-        &-item {
-            display: flex;
-            align-items: center;
-            input[type="checkbox"] {
-                margin-right: 5px;
-            }
-        }
-    }
-}
-
-.forward{
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 0 5px;
-    margin-top: 30px;
-    &-contacts {
+    &__contacts {
         width:20%;
         border: solid 0.3px grey;
         border-radius: 4px;
@@ -615,7 +541,7 @@
         padding : 5px 10px;
 
     }
-    &-form {
+    &__form {
         min-height: 250px;
         border: solid 0.3px grey;
         border-radius: 4px;
@@ -623,60 +549,60 @@
         margin : 20px auto ;
         width : 75%;
         font-size: 0.8rem;
-        &-recipients{
-            border-bottom: solid 0.3px grey;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            input {
-                outline: none;
-                width: 90%;
-                text-align: left;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-        }
-        &-subject{
-            border-bottom: solid 0.3px grey;
-            height: 30px;
-            display: flex;
-            align-items: center;
-        }
-        &-patient{
-            border-bottom: solid 0.3px grey;
-            height: 30px;
-            display: flex;
-            align-items: center;
-        }
-        &-body {
-            width: 95%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            textarea {
-                border : none;
-                outline: none;
-                padding: 10px 0;
-                width: 100%;
-                min-height: 200px;
-            }
-        }
-        &-history {
-            display: flex;
-            flex-direction: column;
-        }
-        &-btns {
-            border-top: solid 0.3px grey;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            button {
-                margin-right: 10px;
-            }
+    }
+    &__recipients{
+        border-bottom: solid 0.3px grey;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        input {
+            outline: none;
+            width: 90%;
+            text-align: left;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
     }
-    &-attach {
+    &__subject{
+        border-bottom: solid 0.3px grey;
+        height: 30px;
+        display: flex;
+        align-items: center;
+    }
+    &__patient{
+        border-bottom: solid 0.3px grey;
+        height: 30px;
+        display: flex;
+        align-items: center;
+    }
+    &__body {
+        width: 95%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        textarea {
+            border : none;
+            outline: none;
+            padding: 10px 0;
+            width: 100%;
+            min-height: 200px;
+        }
+    }
+    &__history {
+        display: flex;
+        flex-direction: column;
+    }
+    &__btns {
+        border-top: solid 0.3px grey;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        button {
+            margin-right: 10px;
+        }
+    }
+    &__attach {
         border-bottom: solid 0.3px grey;
         min-height: 30px;
         display: flex;
@@ -690,6 +616,66 @@
         }
     }
 }
+.contacts {
+    &__title {
+        margin-bottom: 10px;
+    }
+    &__category-overview {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        i {
+            margin-right: 5px;
+        }
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+    }
+
+}
+.contacts-list{
+    padding : 5px 0 0 30px;
+    &__item {
+        display: flex;
+        align-items: center;
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+    }
+}
+.patients {
+    &__title {
+        margin-bottom: 10px;
+    }
+    &__search-input {
+        margin-bottom: 20px;
+    }
+    &__list-item {
+        display: flex;
+        align-items: center;
+        input[type="checkbox"] {
+            width:auto;
+            margin-right: 5px;
+        }
+    }
+}
+
+@media print {
+    .messages-print__btn {
+        display: none !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .new-template, .edit-template {
     &-err {

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { sendMsgToOpenAI } from "../../api/openapi";
-import TypingDots from "../Presentation/TypingDots";
 import CalvinAIChatContent from "./CalvinAIChatContent";
+import CalvinAIInput from "./CalvinAIInput";
 
 const CalvinAIChat = () => {
   const msgEndRef = useRef(null);
@@ -21,16 +21,16 @@ const CalvinAIChat = () => {
   }, [autoScroll, lastResponse]);
 
   // Event handler for user scrolling.
-  const handleScroll = () => {
+  const handleMouseWheel = () => {
     setAutoScroll(false);
   };
 
   // Add a scroll event listener to the discussion feed.
   useEffect(() => {
     const currentContent = contentRef.current;
-    currentContent.addEventListener("scroll", handleScroll);
+    currentContent.addEventListener("mousewheel", handleMouseWheel);
     return () => {
-      currentContent.removeEventListener("scroll", handleScroll);
+      currentContent.removeEventListener("mousewheel", handleMouseWheel);
     };
   }, []);
 
@@ -68,16 +68,21 @@ const CalvinAIChat = () => {
       <CalvinAIChatContent
         messages={messages}
         msgEndRef={msgEndRef}
-        lastResponse={lastResponse}
         contentRef={contentRef}
       />
-      <button
-        className="calvinai-chat-stop-btn"
-        onClick={() => abortController.current.abort()}
-      >
-        Stop generating
-      </button>
-      <textarea
+      <div className="calvinai-chat__stop-btn">
+        <button onClick={() => abortController.current.abort()}>
+          Stop generating
+        </button>
+      </div>
+
+      <CalvinAIInput
+        handleChangeInput={handleChangeInput}
+        value={inputText}
+        handleAskGPT={handleAskGPT}
+        isLoading={isLoading}
+      />
+      {/* <textarea
         className="calvinai-chat-textarea"
         onChange={handleChangeInput}
         value={inputText}
@@ -92,7 +97,7 @@ const CalvinAIChat = () => {
           className="calvinai-chat-send-btn"
           disabled={isLoading}
         />
-      )}
+      )} */}
     </div>
   );
 };

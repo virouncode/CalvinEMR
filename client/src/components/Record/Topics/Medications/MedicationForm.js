@@ -203,6 +203,16 @@ const MedicationForm = ({
           </button>
         </div>
       </form>
+      <div className="medications-form-link">
+        <a
+          href="https://health-products.canada.ca/dpd-bdpp/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Browse Canada DPD
+        </a>
+      </div>
+
       {/* <MedsSearch handleMedClick={handleMedClick} /> */}
     </div>
   );

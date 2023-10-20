@@ -5,7 +5,7 @@ import useAuth from "../../hooks/useAuth";
 
 const CredentialsForm = () => {
   const navigate = useNavigate();
-  const { auth, user } = useAuth();
+  const { auth, user, socket } = useAuth();
   const [credentials, setCredentials] = useState({
     email: auth.email,
     password: "",
@@ -63,11 +63,16 @@ const CredentialsForm = () => {
       ).data;
       me.email = credentials.email.toLowerCase();
       me.password = credentials.password;
-      axiosXano.put(`/staff/${user.id}`, me, {
+      await axiosXano.put(`/staff/${user.id}`, me, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.authToken}`,
         },
+      });
+      socket.emit("message", {
+        route: "STAFF",
+        action: "update",
+        content: { id: user.id, data: me },
       });
       setSuccessMsg("Credentials changed succesfully");
       setTimeout(() => navigate("/login"), 2000);

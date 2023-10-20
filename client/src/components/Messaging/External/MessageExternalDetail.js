@@ -15,7 +15,7 @@ import MessagesAttachments from "../MessagesAttachments";
 import ForwardMessageExternal from "./ForwardMessageExternal";
 import MessageExternal from "./MessageExternal";
 import MessagesExternalPrintPU from "./MessagesExternalPrintPU";
-import ReplyFormExternal from "./ReplyFormExternal";
+import ReplyMessageExternal from "./ReplyMessageExternal";
 
 const MessageExternalDetail = ({
   setCurrentMsgId,
@@ -276,21 +276,21 @@ const MessageExternalDetail = ({
           />
         </NewWindow>
       )}
-      <div className="message-detail-toolbar">
+      <div className="message-detail__toolbar">
         <i
-          className="fa-solid fa-arrow-left message-detail-toolbar-arrow"
+          className="fa-solid fa-arrow-left message-detail__arrow"
           style={{ cursor: "pointer" }}
           onClick={handleClickBack}
         ></i>
-        <div className="message-detail-toolbar-subject">{message.subject}</div>
-        <div className="message-detail-toolbar-patient">
+        <div className="message-detail__subject">{message.subject}</div>
+        <div className="message-detail__patient">
           <NavLink
             to={`/patient-record/${
               message.from_user_type === "patient"
                 ? message.from_id
                 : message.to_id
             }`}
-            className="message-detail-toolbar-patient-link"
+            className="message-detail__patient-link"
           >
             {message.from_user_type === "patient"
               ? patientIdToName(clinic.patientsInfos, message.from_id)
@@ -302,12 +302,12 @@ const MessageExternalDetail = ({
         </div>
         {section !== "Deleted messages" && (
           <i
-            className="fa-solid fa-trash  message-detail-toolbar-trash"
+            className="fa-solid fa-trash  message-detail__trash"
             onClick={handleDeleteMsg}
           ></i>
         )}
       </div>
-      <div className="message-detail-content" ref={messageContentRef}>
+      <div className="message-detail__content" ref={messageContentRef}>
         <MessageExternal message={message} key={message.id} index={0} />
         {previousMsgs &&
           previousMsgs.map((message, index) => (
@@ -330,7 +330,7 @@ const MessageExternalDetail = ({
         />
       </div>
       {replyVisible && (
-        <ReplyFormExternal
+        <ReplyMessageExternal
           setReplyVisible={setReplyVisible}
           allPersons={allPersons}
           message={message}
@@ -339,7 +339,7 @@ const MessageExternalDetail = ({
         />
       )}
       {section !== "Deleted messages" && !replyVisible && (
-        <div className="message-detail-btns">
+        <div className="message-detail__btns">
           {section !== "Sent messages" && (
             <button onClick={handleClickReply}>Reply</button>
           )}

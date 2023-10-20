@@ -15,7 +15,7 @@ const MessageThumbnail = ({
   msgsSelectedIds,
   section,
 }) => {
-  const { auth, user, setUser, clinic, socket } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const patient = clinic.patientsInfos.find(
     ({ id }) => id === message.related_patient_id
   );
@@ -48,29 +48,20 @@ const MessageThumbnail = ({
     //Remove one from the unread messages nbr counter
     if (user.unreadMessagesNbr !== 0) {
       const newUnreadMessagesNbr = user.unreadMessagesNbr - 1;
-      setUser({
-        ...user,
-        unreadMessagesNbr: newUnreadMessagesNbr,
-        unreadNbr: newUnreadMessagesNbr + user.unreadMessagesExternalNbr,
+      socket.emit("message", {
+        route: "UNREAD",
+        userType: "staff",
+        userId: user.id,
+        type: "internal",
+        content: {
+          data: {
+            unreadMessagesNbr: newUnreadMessagesNbr,
+            unreadNbr: newUnreadMessagesNbr + user.unreadMessagesExternalNbr,
+          },
+        },
       });
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...user,
-          unreadMessagesNbr: newUnreadMessagesNbr,
-          unreadNbr: newUnreadMessagesNbr + user.unreadMessagesExternalNbr,
-        })
-      );
     }
     setCurrentMsgId(message.id);
-  };
-
-  const THUMBNAIL_STYLE = {
-    fontWeight:
-      message.to_staff_ids.includes(user.id) &&
-      !message.read_by_staff_ids.includes(user.id)
-        ? "bold"
-        : "normal",
   };
 
   const handleCheckMsg = (e) => {
@@ -135,16 +126,23 @@ const MessageThumbnail = ({
   };
 
   return (
-    <div className="message-thumbnail" style={THUMBNAIL_STYLE}>
+    <div
+      className={
+        message.to_staff_ids.includes(user.id) &&
+        !message.read_by_staff_ids.includes(user.id)
+          ? "message-thumbnail message-thumbnail--unread"
+          : "message-thumbnail"
+      }
+    >
       <input
-        className="message-thumbnail-checkbox"
+        className="message-thumbnail__checkbox"
         type="checkbox"
         id={message.id}
         checked={isMsgSelected(message.id)}
         onChange={handleCheckMsg}
       />
-      <div onClick={handleMsgClick} className="message-thumbnail-link">
-        <div className="message-thumbnail-author">
+      <div onClick={handleMsgClick} className="message-thumbnail__link">
+        <div className="message-thumbnail__author">
           {section !== "Sent messages"
             ? staffIdToTitleAndName(clinic.staffInfos, message.from_id, true)
             : staffIdListToTitleAndName(
@@ -152,7 +150,7 @@ const MessageThumbnail = ({
                 message.to_staff_ids
               )}
         </div>
-        <div className="message-thumbnail-sample">
+        <div className="message-thumbnail__sample">
           <span>{message.subject}</span> - {message.body}{" "}
           {message.attachments_ids.length !== 0 && (
             <i
@@ -162,23 +160,23 @@ const MessageThumbnail = ({
           )}
         </div>
       </div>
-      <div className="message-thumbnail-patient">
+      <div className="message-thumbnail__patient">
         {patient && (
           <NavLink
             to={`/patient-record/${patient.id}`}
-            className="message-thumbnail-patient-link"
+            className="message-thumbnail__patient-link"
           >
             {patient.full_name}
           </NavLink>
         )}
       </div>
-      <div className="message-thumbnail-date">
+      <div className="message-thumbnail__date">
         {toLocalDateAndTime(message.date_created)}
       </div>
-      <div className="message-thumbnail-logos">
+      <div className="message-thumbnail__logos">
         {section !== "Deleted messages" && (
           <i
-            className="fa-solid fa-trash  message-thumbnail-trash"
+            className="fa-solid fa-trash  message-thumbnail__trash"
             style={{ cursor: "pointer" }}
             onClick={handleDeleteMsg}
           ></i>

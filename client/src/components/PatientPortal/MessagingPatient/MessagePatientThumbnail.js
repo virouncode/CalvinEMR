@@ -48,6 +48,16 @@ const MessagePatientThumbnail = ({
     //Remove one from the unread messages nbr counter
     if (user.unreadNbr !== 0) {
       const newUnreadNbr = user.unreadNbr - 1;
+      socket.emit("message", {
+        route: "UNREAD",
+        userType: "patient",
+        userId: user.id,
+        content: {
+          data: {
+            unreadNbr: newUnreadNbr,
+          },
+        },
+      });
       setUser({
         ...user,
         unreadNbr: newUnreadNbr,
@@ -61,10 +71,6 @@ const MessagePatientThumbnail = ({
       );
     }
     setCurrentMsgId(message.id);
-  };
-
-  const THUMBNAIL_STYLE = {
-    fontWeight: message.read_by_patient_id !== user.id ? "bold" : "normal",
   };
 
   const handleCheckMsg = (e) => {
@@ -129,16 +135,27 @@ const MessagePatientThumbnail = ({
   };
 
   return (
-    <div className="message-thumbnail" style={THUMBNAIL_STYLE}>
+    <div
+      className={
+        message.to_id === user.id &&
+        message.to_user_type === "patient" &&
+        !message.read_by_patient_id
+          ? "message-thumbnail message-thumbnail--unread"
+          : "message-thumbnail"
+      }
+    >
       <input
-        className="message-thumbnail-checkbox"
+        className="message-thumbnail__checkbox"
         type="checkbox"
         id={message.id}
         checked={isMsgSelected(message.id)}
         onChange={handleCheckMsg}
       />
-      <div onClick={handleMsgClick} className="message-thumbnail-link-external">
-        <div className="message-thumbnail-author-external">
+      <div
+        onClick={handleMsgClick}
+        className="message-thumbnail__link message-thumbnail__link--external"
+      >
+        <div className="message-thumbnail__author">
           {section !== "Sent messages" //messages reçus ou effacés
             ? message.from_user_type === "patient" //le from est un patient ou un staff
               ? patientIdToName(clinic.patientsInfos, message.from_id)
@@ -146,7 +163,7 @@ const MessagePatientThumbnail = ({
             : /*messages envoyés, le "To" est un staff*/
               staffIdToTitleAndName(clinic.staffInfos, message.to_id, true)}
         </div>
-        <div className="message-thumbnail-sample-external">
+        <div className="message-thumbnail__sample">
           <span>{message.subject}</span> - {message.body}{" "}
           {message.attachments_ids.length !== 0 && (
             <i
@@ -156,13 +173,13 @@ const MessagePatientThumbnail = ({
           )}
         </div>
       </div>
-      <div className="message-thumbnail-date-external">
+      <div className="message-thumbnail__date message-thumbnail__date--external">
         {toLocalDateAndTime(message.date_created)}
       </div>
-      <div className="message-thumbnail-logos">
+      <div className="message-thumbnail__logos">
         {section !== "Deleted messages" && (
           <i
-            className="fa-solid fa-trash  message-thumbnail-trash"
+            className="fa-solid fa-trash  message-thumbnail__trash"
             style={{ cursor: "pointer" }}
             onClick={handleDeleteMsg}
           ></i>

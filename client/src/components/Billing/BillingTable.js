@@ -19,7 +19,7 @@ const BillingTable = ({ billings, setBillings, setErrMsg, filterDatas }) => {
   };
 
   return (
-    <table className="billing-table-content">
+    <table className="billing-table">
       <thead>
         <tr>
           <th onClick={() => handleSort("date_created")}>Date</th>

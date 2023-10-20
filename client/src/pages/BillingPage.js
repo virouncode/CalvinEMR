@@ -11,7 +11,7 @@ const BillingPage = () => {
         <title>Billing</title>
       </Helmet>
       <section className="billing-section">
-        <h2 className="billing-section-title">
+        <h2 className="billing-section__title">
           {user.title === "Secretary" ? "Billings" : "My billings"}
         </h2>
         <Billing />

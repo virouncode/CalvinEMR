@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosXano from "../../api/xano";
 import useAuth from "../../hooks/useAuth";
@@ -10,6 +11,8 @@ import DiagnosisSearch from "./DiagnosisSearch";
 import HinSearch from "./HinSearch";
 
 const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
+  const navigate = useNavigate();
+  const { hin } = useParams();
   const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     date: toLocalDate(Date.now()),
@@ -21,6 +24,13 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
   });
   const [diagnosisSearchVisible, setDiagnosisSearchVisible] = useState(false);
   const [hinSearchVisible, setHinSearchVisible] = useState(false);
+
+  useEffect(() => {
+    if (hin) {
+      setFormDatas({ ...formDatas, patient_hin: hin });
+      navigate("/billing");
+    }
+  }, [formDatas, hin, navigate]);
 
   const handleChange = (e) => {
     setErrMsg("");
@@ -200,9 +210,9 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
   };
   return (
     <form className="billing-form" onSubmit={handleSubmit}>
-      <div className="billing-form-title">Add a new billing</div>
-      <div className="billing-form-row">
-        <div className="billing-form-item">
+      <div className="billing-form__title">Add a new billing</div>
+      <div className="billing-form__row">
+        <div className="billing-form__item">
           <label htmlFor="">Date</label>
           <input
             type="date"
@@ -211,7 +221,7 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
             onChange={handleChange}
           />
         </div>
-        <div className="billing-form-item">
+        <div className="billing-form__item">
           <label htmlFor="">Provider OHIP nbr</label>
           <input
             type="text"
@@ -221,7 +231,7 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
             style={{ textAlign: "end" }}
           />
         </div>
-        <div className="billing-form-item">
+        <div className="billing-form__item">
           <label htmlFor="">Referrer OHIP nbr</label>
           <input
             type="text"
@@ -233,8 +243,8 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
           />
         </div>
       </div>
-      <div className="billing-form-row">
-        <div className="billing-form-item">
+      <div className="billing-form__row">
+        <div className="billing-form__item">
           <label htmlFor="">Patient HIN</label>
           <input
             type="text"
@@ -249,7 +259,7 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
             onClick={() => setHinSearchVisible(true)}
           ></i>
         </div>
-        <div className="billing-form-item">
+        <div className="billing-form__item">
           <label htmlFor="">Diagnosis code</label>
           <input
             type="text"
@@ -264,7 +274,7 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
             onClick={() => setDiagnosisSearchVisible(true)}
           ></i>
         </div>
-        <div className="billing-form-item">
+        <div className="billing-form__item">
           <label htmlFor="">Billing code(s)</label>
           <input
             type="text"
@@ -280,7 +290,7 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
           />
         </div>
       </div>
-      <div className="billing-form-btns">
+      <div className="billing-form__btns">
         <input type="submit" />
         <button onClick={handleCancel}>Cancel</button>
       </div>

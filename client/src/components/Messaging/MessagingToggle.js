@@ -5,7 +5,7 @@ const MessagingToggle = ({ isTypeChecked, handleMsgsTypeChanged }) => {
   const { user } = useAuth();
   return (
     <div className="messages-toggle">
-      <div className="messages-toggle-radio">
+      <div className="messages-toggle__radio">
         <input
           type="radio"
           value="Internal"
@@ -18,7 +18,7 @@ const MessagingToggle = ({ isTypeChecked, handleMsgsTypeChanged }) => {
           Internal {user.unreadMessagesNbr ? `(${user.unreadMessagesNbr})` : ""}
         </label>
       </div>
-      <div className="messages-toggle-radio">
+      <div className="messages-toggle__radio">
         <input
           type="radio"
           value="External"

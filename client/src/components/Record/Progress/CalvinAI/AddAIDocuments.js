@@ -18,7 +18,7 @@ const AddAIDocuments = ({
   const [documentsAddedIds, setDocumentsAddedIds] = useState([]);
 
   return (
-    <div className="calvinai-prompt-documents">
+    <div className="calvinai-prompt__documents">
       <p>
         Add documents datas
         {isLoadingDocumentText && (
