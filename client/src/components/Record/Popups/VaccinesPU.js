@@ -8,7 +8,7 @@ import { vaccinesList } from "../../../utils/vaccines";
 import ConfirmGlobal from "../../Confirm/ConfirmGlobal";
 import SplittedHeader from "../../Presentation/SplittedHeader";
 import VaccineCaption from "../Topics/Vaccines/VaccineCaption";
-import VaccineHeaderAge from "../Topics/Vaccines/VaccineHeaderAge";
+import VaccineHeadersAge from "../Topics/Vaccines/VaccineHeadersAge";
 import VaccineItem from "../Topics/Vaccines/VaccineItem";
 
 const VaccinesPU = ({
@@ -25,21 +25,7 @@ const VaccinesPU = ({
   const [editable, setEditable] = useState(true);
   const [editVisible, setEditVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
-
-  //STYLES
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "150vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
+  console.log("vaccines datas", datas);
 
   const handleChangeObs = (e) => {
     setErrMsgPost("");
@@ -81,21 +67,21 @@ const VaccinesPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="vaccines-err">{errMsg}</p>
+          <p className="vaccines__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="vaccines-title">
+              <h1 className="vaccines__title">
                 Patient vaccines <i className="fa-solid fa-syringe"></i>
                 <button onClick={handleClose}>Close</button>
               </h1>
-              {errMsgPost && <div className="vaccines-err">{errMsgPost}</div>}
-              <table className="vaccines-table">
+              {errMsgPost && <div className="vaccines__err">{errMsgPost}</div>}
+              <table className="vaccines__table">
                 <thead>
                   <tr>
                     <SplittedHeader left="Vaccine" right="Age" />
                     {datas.ages.map((age) => (
-                      <VaccineHeaderAge key={age} name={formatAge(age)} />
+                      <VaccineHeadersAge key={age} name={formatAge(age)} />
                     ))}
                   </tr>
                 </thead>
@@ -122,7 +108,7 @@ const VaccinesPU = ({
               </table>
               <VaccineCaption />
               <div className="vaccines-obs">
-                <p className="vaccines-obs-title">Observations</p>
+                <p className="vaccines-obs__title">Observations</p>
                 {editVisible ? (
                   <textarea
                     value={datas.observations}
@@ -130,9 +116,9 @@ const VaccinesPU = ({
                     autoFocus
                   />
                 ) : (
-                  <p className="vaccines-obs-content">{datas.observations}</p>
+                  <p className="vaccines-obs__content">{datas.observations}</p>
                 )}
-                <div className="vaccines-obs-btn-container">
+                <div className="vaccines-obs__btn-container">
                   {!editVisible ? (
                     <button type="button" onClick={handleEditClick}>
                       Edit
@@ -144,7 +130,7 @@ const VaccinesPU = ({
                   )}
                 </div>
               </div>
-              <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
+              <ConfirmGlobal />
               <ToastContainer
                 enableMultiContainer
                 containerId={"B"}

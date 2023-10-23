@@ -12,10 +12,8 @@ const VaccineItem = ({
   datas,
   fetchRecord,
   patientInfos,
-  editable,
   setEditable,
-  setFormVisible,
-  setScrollPosition,
+  editable,
   setErrMsgPost,
 }) => {
   //HOOKS
@@ -42,8 +40,6 @@ const VaccineItem = ({
                 patientInfos={patientInfos}
                 editable={editable}
                 setEditable={setEditable}
-                setFormVisible={setFormVisible}
-                setScrollPosition={setScrollPosition}
                 datas={datas}
                 fetchRecord={fetchRecord}
                 setErrMsgPost={setErrMsgPost}
@@ -65,8 +61,6 @@ const VaccineItem = ({
                   patientInfos={patientInfos}
                   editable={editable}
                   setEditable={setEditable}
-                  setFormVisible={setFormVisible}
-                  setScrollPosition={setScrollPosition}
                   datas={datas}
                   fetchRecord={fetchRecord}
                   setErrMsgPost={setErrMsgPost}
@@ -86,8 +80,6 @@ const VaccineItem = ({
                 patientInfos={patientInfos}
                 editable={editable}
                 setEditable={setEditable}
-                setFormVisible={setFormVisible}
-                setScrollPosition={setScrollPosition}
                 datas={datas}
                 fetchRecord={fetchRecord}
                 setErrMsgPost={setErrMsgPost}

@@ -109,9 +109,9 @@ const MedicationForm = ({
   // };
 
   return (
-    <div className="medications-form-container">
+    <div className="medications-form__container">
       <form>
-        <div className="medications-form-allergies">
+        <div className="medications-form__allergies">
           <i
             className="fa-solid fa-triangle-exclamation"
             style={{ color: "#ff0000" }}
@@ -123,7 +123,7 @@ const MedicationForm = ({
             ? allergies.map(({ allergy }) => allergy).join(", ")
             : "No Allergies"}
         </div>
-        <div className="medications-form-row">
+        <div className="medications-form__row">
           <label>Medication Name</label>
           <input
             name="name"
@@ -133,7 +133,7 @@ const MedicationForm = ({
             autoComplete="off"
           />
         </div>
-        <div className="medications-form-row">
+        <div className="medications-form__row">
           <label>Active Ingredients</label>
           <input
             name="active_ingredients"
@@ -143,7 +143,7 @@ const MedicationForm = ({
             autoComplete="off"
           />
         </div>
-        <div className="medications-form-row">
+        <div className="medications-form__row">
           <label>Route of administration</label>
           <input
             name="route_of_administration"
@@ -153,7 +153,7 @@ const MedicationForm = ({
             autoComplete="off"
           />
         </div>
-        <div className="medications-form-row">
+        <div className="medications-form__row">
           <label>Dose</label>
           <input
             name="dose"
@@ -163,7 +163,7 @@ const MedicationForm = ({
             autoComplete="off"
           />
         </div>
-        <div className="medications-form-row">
+        <div className="medications-form__row">
           <label>Frequency</label>
           <input
             name="frequency"
@@ -173,7 +173,7 @@ const MedicationForm = ({
             autoComplete="off"
           />
         </div>
-        <div className="medications-form-row">
+        <div className="medications-form__row">
           <label>Number of doses</label>
           <input
             name="number_of_doses"
@@ -183,7 +183,7 @@ const MedicationForm = ({
             autoComplete="off"
           />
         </div>
-        <div className="medications-form-row">
+        <div className="medications-form__row">
           <label>Duration of treatment</label>
           <input
             name="duration"
@@ -193,7 +193,7 @@ const MedicationForm = ({
             autoComplete="off"
           />
         </div>
-        <div className="medications-form-row">
+        <div className="medications-form__row">
           <button
             type="button"
             onClick={handleSubmit}
@@ -203,7 +203,7 @@ const MedicationForm = ({
           </button>
         </div>
       </form>
-      <div className="medications-form-link">
+      <div className="medications-form__link">
         <a
           href="https://health-products.canada.ca/dpd-bdpp/"
           target="_blank"

@@ -1,5 +1,5 @@
 .prescription {
-  &-actions {
+  &__actions {
     width: 90%;
     margin: 60px auto 0;
     display: flex;
@@ -8,13 +8,13 @@
       margin-right: 10px;
     }
   }
-  &-page {
+  &__page {
     width: 21cm;
     height: 29.7cm;
     display: flex;
     align-items: center;
   }
-  &-container {
+  &__container {
     width: 90%;
     margin: 0 auto;
     border: solid 1px $grey;
@@ -23,7 +23,7 @@
     display: flex;
     flex-direction: column;
   }
-  &-header {
+  &__header {
     background: $blue;
     print-color-adjust: exact;
     display: flex;
@@ -31,19 +31,17 @@
     justify-content: space-between;
     border-bottom: solid 1px $grey;
   }
-  &-logo {
+  &__logo {
     width: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 5px 10px;
-    &-img {
-      background: url(../../assets/img/logo.png) center/cover;
-      height: 60px;
-      width: 220px;
+    img {
+      height: 100%;
     }
   }
-  &-doctor-infos {
+  &__doctor-infos {
     font-size: 0.75rem;
     text-align: end;
     width: 50%;
@@ -56,18 +54,18 @@
       padding: 0;
     }
   }
-  &-subheader {
+  &__subheader {
     display: flex;
     height: 4%;
     justify-content: space-between;
     border-bottom: solid 1px $grey;
     align-items: center;
   }
-  &-date {
+  &__date {
     font-size: 0.9rem;
     font-weight: bold;
   }
-  &-patient-infos {
+  &__patient-infos {
     font-size: 0.9rem;
     font-weight: bold;
     width: 50%;
@@ -76,7 +74,7 @@
       padding: 0;
     }
   }
-  &-body {
+  &__body {
     height: 76%;
     &-title {
       font-weight: bold;
@@ -89,7 +87,7 @@
       font-size: 0.9rem;
     }
   }
-  &-sign {
+  &__sign {
     height: 10%;
     display: flex;
     justify-content: flex-start;
@@ -101,7 +99,7 @@
       }
     }
   }
-  &-add {
+  &__add {
     font-family:$font1, sans-serif;
     font-size: 0.9rem;
     width: 90%;

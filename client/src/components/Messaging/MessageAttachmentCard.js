@@ -22,7 +22,7 @@ const MessageAttachmentCard = ({
 
   const handleAddToRecord = async () => {
     try {
-      await postPatientRecord(
+      const response = await postPatientRecord(
         "/documents",
         user.id,
         auth.authToken,
@@ -35,6 +35,12 @@ const MessageAttachmentCard = ({
         socket,
         "DOCUMENTS"
       );
+      socket.emit("message", {
+        route: "DOCMAILBOX",
+        action: "create",
+        content: { data: response.data },
+      });
+
       toast.success("Saved successfully", { containerId: "A" });
     } catch (err) {
       toast.error(`Error unable to save document: ${err.message}`, {

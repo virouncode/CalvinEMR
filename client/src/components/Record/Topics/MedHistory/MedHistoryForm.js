@@ -73,7 +73,7 @@ const MedHistoryForm = ({
   };
 
   return (
-    <tr className="medhistory-form">
+    <tr className="medhistory__form">
       <td>
         <select
           name="ongoing"

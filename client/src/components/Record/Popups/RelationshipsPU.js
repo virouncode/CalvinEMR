@@ -41,18 +41,18 @@ const RelationshipsPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="relationships-err">{errMsg}</p>
+          <p className="relationships__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="relationships-title">
+              <h1 className="relationships__title">
                 Patient relationships{" "}
                 <i className="fa-solid fa-people-group"></i>
               </h1>
               {errMsgPost && (
-                <div className="relationships-err">{errMsgPost}</div>
+                <div className="relationships__err">{errMsgPost}</div>
               )}
-              <table className="relationships-table">
+              <table className="relationships__table">
                 <thead>
                   <tr>
                     <th style={{ textDecoration: "none" }}>Relation</th>
@@ -83,7 +83,7 @@ const RelationshipsPU = ({
                   ))}
                 </tbody>
               </table>
-              <div className="relationships-btn-container">
+              <div className="relationships__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Relationship
                 </button>

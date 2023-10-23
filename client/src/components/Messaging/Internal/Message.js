@@ -21,7 +21,6 @@ const Message = ({ message, index }) => {
         </div>
       </div>
       <div className="message__subtitle">
-        {console.log("message", message)}
         to:{" "}
         {message.type === "Internal"
           ? message.to_staff_ids

@@ -1,11 +1,11 @@
 .documents {
-    &-title {
+    &__title {
         font-size: 1.2rem;
         margin-top: 60px;
         margin-bottom:30px;
         text-align: center;
     }
-    &-err {
+    &__err {
         padding : 10px 20px;
         font-size: 0.9rem;
         width : 100%;
@@ -15,7 +15,7 @@
         border-radius: 4px;
         text-align: center;
     }
-    &-table {
+    &__table {
         table-layout:fixed;
         min-width:100%;
         border-collapse: collapse;
@@ -31,50 +31,46 @@
             text-decoration: underline;
             cursor: pointer;
         }
-        &-nofilter {
-            text-decoration: none;
-            cursor: default;
-        }
     }
-    &-item {
+    &__item {
         td {
             text-align: center;
             border: solid 1px $black;
             padding: 2px 5px;
             word-break: break-word;
         }
-        &-link {
-            cursor:pointer;
-            color: blue;
-            text-decoration: underline;
-        }
     }
-    &-form {
+    &__link {
+        cursor:pointer;
+        color: blue;
+        text-decoration: underline;
+    }
+    &__form {
         font-size: 0.8rem;
         display: flex;
         justify-content: space-between;
-        padding: 40px;  
-        &-content {
-            width:48%;
-            &-row {
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                padding: 2px 0;
-                label {
-                    width: 45%;
-                    font-weight: bold;
-                }
-                input {
-                    width: 55%;
-                }
-                input[type="submit"]{
-                    width:auto;
-                }
-            }
-        } 
+        padding: 40px; 
     }
-    &-btn-container {
+    &__content {
+        width:48%;
+    }        
+    &__row {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 2px 0;
+        label {
+            width: 45%;
+            font-weight: bold;
+        }
+        input {
+            width: 55%;
+        }
+        input[type="submit"]{
+            width:auto;
+        }
+    }
+    &__btn-container {
         display: flex;
         justify-content: space-between;
         width:170px;

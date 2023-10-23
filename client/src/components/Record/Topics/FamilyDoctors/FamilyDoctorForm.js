@@ -77,7 +77,7 @@ const FamilyDoctorForm = ({
     }
   };
   return (
-    <tr className="doctors-form">
+    <tr className="doctors__form">
       <td>
         <input
           name="name"

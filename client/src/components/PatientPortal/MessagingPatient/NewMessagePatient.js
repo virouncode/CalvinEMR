@@ -1,7 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { postPatientRecordPatient } from "../../../api/fetchRecords";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
@@ -54,13 +53,20 @@ const NewMessagePatient = ({ setNewVisible }) => {
       return;
     }
     try {
-      const attach_ids = (
-        await postPatientRecordPatient(
+      const attachmentsToPost = attachments.map((attachment) => {
+        return { ...attachment, date_created: Date.now() };
+      });
+      let attach_ids = (
+        await axiosXanoPatient.post(
           "/attachments",
-          user.id,
-          auth.authToken,
           {
-            attachments_array: attachments,
+            attachments_array: attachmentsToPost,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
           }
         )
       ).data;
@@ -91,7 +97,7 @@ const NewMessagePatient = ({ setNewVisible }) => {
       socket.emit("message", {
         route: "MESSAGES INBOX EXTERNAL",
         action: "create",
-        content: { data: { id: response.data.id, ...message } },
+        content: { data: response.data },
       });
       setNewVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
@@ -144,6 +150,7 @@ const NewMessagePatient = ({ setNewVisible }) => {
               alias: file.name,
               date_created: Date.now(),
               created_by_id: user.id,
+              created_by_user_type: "patient",
             },
           ]); //meta, mime, name, path, size, type
           setIsLoadingFile(false);

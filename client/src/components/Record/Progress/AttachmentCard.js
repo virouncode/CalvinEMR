@@ -23,7 +23,7 @@ const AttachmentCard = ({
 
   const handleAddToRecord = async () => {
     try {
-      await postPatientRecord(
+      const response = await postPatientRecord(
         "/documents",
         user.id,
         auth.authToken,
@@ -37,6 +37,11 @@ const AttachmentCard = ({
         socket,
         "DOCUMENTS"
       );
+      socket.emit("message", {
+        route: "DOCMAILBOX",
+        action: "create",
+        content: { data: response.data },
+      });
       toast.success("Saved successfully", { containerId: "A" });
       navigate(0); //to refresh the patient record
     } catch (err) {

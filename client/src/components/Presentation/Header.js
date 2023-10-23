@@ -3,15 +3,17 @@ import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
-  const { user, setUser, setAuth, setClinic } = useAuth();
+  const { user, setUser, setAuth, setClinic, setSocket } = useAuth();
   const navigate = useNavigate();
   const handleLogout = () => {
     setAuth({});
     setUser({});
     setClinic({});
+    setSocket(null);
     localStorage.removeItem("auth");
     localStorage.removeItem("user");
     localStorage.removeItem("clinic");
+    localStorage.removeItem("tabCounter");
     localStorage.setItem("message", "logout");
     localStorage.removeItem("message");
   };

@@ -59,7 +59,7 @@ const PharmaciesPU = ({
       socket.emit("message", {
         route: "PHARMACIES",
         action: "create",
-        content: { data: pharmacy },
+        content: { id: item.id, data: pharmacy },
       });
       toast.success("Pharmacy added to patient", { containerId: "B" });
     } catch (err) {
@@ -79,16 +79,18 @@ const PharmaciesPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="pharmacies-err">{errMsg}</p>
+          <p className="pharmacies__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="pharmacies-title">
+              <h1 className="pharmacies__title">
                 Patient pharmacies{" "}
                 <i className="fa-solid fa-prescription-bottle-medical"></i>
               </h1>
-              {errMsgPost && <div className="pharmacies-err">{errMsgPost}</div>}
-              <table className="pharmacies-table">
+              {errMsgPost && (
+                <div className="pharmacies__err">{errMsgPost}</div>
+              )}
+              <table className="pharmacies__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("name")}>Name</th>
@@ -151,7 +153,7 @@ const PharmaciesPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="pharmacies-btn-container">
+              <div className="pharmacies__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add a Pharmacy to patient
                 </button>

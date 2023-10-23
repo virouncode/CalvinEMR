@@ -6,7 +6,7 @@ import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 const FamilyDoctorListItem = ({ item, handleAddItemClick }) => {
   const { clinic } = useAuth();
   return (
-    <tr className="doctors-list-item">
+    <tr className="doctors-list__item">
       <td>{item.name}</td>
       <td>{item.speciality}</td>
       <td>{item.licence_nbr}</td>

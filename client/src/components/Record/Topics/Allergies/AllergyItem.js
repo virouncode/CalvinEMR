@@ -99,7 +99,7 @@ const AllergyItem = ({ item, editCounter, setErrMsgPost }) => {
 
   return (
     itemInfos && (
-      <tr className="allergies-item">
+      <tr className="allergies__item">
         <td>
           {editVisible ? (
             <input
@@ -126,7 +126,7 @@ const AllergyItem = ({ item, editCounter, setErrMsgPost }) => {
           <em>{toLocalDate(itemInfos.date_created)}</em>
         </td>
         <td style={{ textAlign: "center" }}>
-          <div className="allergies-item-btn-container">
+          <div className="allergies__item-btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

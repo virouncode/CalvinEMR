@@ -415,7 +415,7 @@ const AppointmentEvent = ({ event, editCounter, setErrMsgPost }) => {
 
   return (
     eventInfos && (
-      <tr className="appointments-event">
+      <tr className="appointments__event">
         <td style={{ minWidth: "170px" }}>
           {editVisible && isSecretary() ? (
             <HostsList
@@ -448,7 +448,7 @@ const AppointmentEvent = ({ event, editCounter, setErrMsgPost }) => {
         </td>
         <td>
           {editVisible ? (
-            <div className="appointments-event-date-container">
+            <div className="appointments__event-date-container">
               <input
                 type="date"
                 value={
@@ -481,7 +481,7 @@ const AppointmentEvent = ({ event, editCounter, setErrMsgPost }) => {
         </td>
         <td>
           {editVisible ? (
-            <div className="appointments-event-date-container">
+            <div className="appointments__event-date-container">
               <input
                 type="date"
                 value={
@@ -571,12 +571,12 @@ const AppointmentEvent = ({ event, editCounter, setErrMsgPost }) => {
         <td>
           {(isSecretary() || user.id === eventInfos.host_id) &&
             (!editVisible ? (
-              <div className="appointments-event-btn-container">
+              <div className="appointments-event__btn-container">
                 <button onClick={handleEditClick}>Edit</button>
                 <button onClick={handleDeleteClick}>Delete</button>
               </div>
             ) : (
-              <div className="appointments-event-btn-container">
+              <div className="appointments-event__btn-container">
                 <input type="submit" value="Save" onClick={handleSubmit} />
                 <button onClick={handleDeleteClick}>Delete</button>
               </div>

@@ -364,7 +364,7 @@ const AppointmentForm = ({
   };
 
   return (
-    <tr className="appointments-form">
+    <tr className="appointments__form">
       <td style={{ minWidth: "170px" }}>
         {isSecretary() ? (
           <HostsList
@@ -388,7 +388,7 @@ const AppointmentForm = ({
         />
       </td>
       <td>
-        <div className="appointments-form-date-container">
+        <div className="appointments__date-container">
           <input
             type="date"
             value={formDatas.start !== null ? toLocalDate(formDatas.start) : ""}
@@ -408,7 +408,7 @@ const AppointmentForm = ({
         </div>
       </td>
       <td>
-        <div className="appointments-event-date-container">
+        <div className="appointments__date-container">
           <input
             type="date"
             value={formDatas.end !== null ? toLocalDate(formDatas.end) : ""}

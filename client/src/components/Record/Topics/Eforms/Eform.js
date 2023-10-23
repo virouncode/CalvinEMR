@@ -62,8 +62,8 @@ const Eform = ({
 
   return (
     <>
-      <div className="electronic-form">
-        <div className="electronic-form-explainations">
+      <div className="eforms__form">
+        <div className="eforms__explainations">
           <ul>
             <li>
               1. Please choose an e-form in the following list:{" "}
@@ -104,7 +104,7 @@ const Eform = ({
           </button>
         </div>
 
-        <div className="electronic-form-content">
+        <div className="eforms__content">
           {formURL && (
             <iframe src={formURL} title="form" width="800" height="1000" />
           )}

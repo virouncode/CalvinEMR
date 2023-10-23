@@ -93,7 +93,7 @@ const RelationshipForm = ({
   return (
     <tr className="relationships-form">
       <td>
-        <div className="relationships-form-relationship">
+        <div className="relationships-form__relationship">
           <RelationshipList
             value={formDatas.relationship}
             handleChange={handleRelationshipChange}
@@ -101,7 +101,6 @@ const RelationshipForm = ({
           <span>of</span>
         </div>
       </td>
-
       <td>
         <PatientsSelect
           handleChange={handleChange}

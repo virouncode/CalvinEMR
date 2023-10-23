@@ -1,6 +1,6 @@
 import React from "react";
 
-const VaccineHeaderAge = ({ name }) => {
+const VaccineHeadersAge = ({ name }) => {
   const H_STYLE = {
     minWidth: "100px",
     padding: "2px 5px",
@@ -33,4 +33,4 @@ const VaccineHeaderAge = ({ name }) => {
   );
 };
 
-export default VaccineHeaderAge;
+export default VaccineHeadersAge;

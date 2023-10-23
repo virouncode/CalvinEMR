@@ -1,6 +1,57 @@
 export const onMessageTopic = (message, topic, datas, setDatas, patientId) => {
-  if (message.route !== topic) return;
-  if (message.route === "APPOINTMENTS") {
+  if (
+    message.route === "MESSAGES INBOX" &&
+    topic === "MESSAGES ABOUT PATIENT"
+  ) {
+    switch (message.action) {
+      case "create":
+        if (message.content.data.related_patient_id !== patientId) return;
+        setDatas([...datas, message.content.data]);
+        break;
+      case "update":
+        if (message.content.data.related_patient_id !== patientId) return;
+        setDatas(
+          datas.map((item) =>
+            item.id === message.content.id ? message.content.data : item
+          )
+        );
+        break;
+      case "delete":
+        setDatas(datas.filter((item) => item.id !== message.content.id));
+        break;
+      default:
+        break;
+    }
+  } else if (
+    message.route === "MESSAGES INBOX EXTERNAL" &&
+    topic === "MESSAGES WITH PATIENT"
+  ) {
+    switch (message.action) {
+      case "create":
+        if (
+          (message.content.data.from_user_type === "patient" &&
+            message.content.data.from_id !== patientId) ||
+          (message.content.data.to_user_type === "patient" &&
+            message.content.data.to_id !== patientId)
+        )
+          return;
+        setDatas([...datas, message.content.data]);
+        break;
+      case "update":
+        setDatas(
+          datas.map((item) =>
+            item.id === message.content.id ? message.content.data : item
+          )
+        );
+        break;
+      case "delete":
+        setDatas(datas.filter((item) => item.id !== message.content.id));
+        break;
+      default:
+        break;
+    }
+  } else if (message.route !== topic) return;
+  else if (message.route === "APPOINTMENTS") {
     switch (message.action) {
       case "create":
         if (!message.content.data.patients_guests_ids.includes(patientId)) {
@@ -15,7 +66,6 @@ export const onMessageTopic = (message, topic, datas, setDatas, patientId) => {
               ({ id }) => parseInt(id) === parseInt(message.content.id)
             )
           ) {
-            console.log("on est là");
             setDatas(
               datas.filter(
                 ({ id }) => parseInt(id) !== parseInt(message.content.id)
@@ -52,6 +102,7 @@ export const onMessageTopic = (message, topic, datas, setDatas, patientId) => {
     message.route === "FAMILY DOCTORS/SPECIALISTS" ||
     message.route === "PHARMACIES"
   ) {
+    console.log(message.content);
     switch (message.action) {
       case "create":
         if (!message.content.data.patients.includes(patientId)) {

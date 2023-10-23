@@ -104,8 +104,8 @@ const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
       <tr
         className={
           item.active
-            ? "reminders-item"
-            : "reminders-item reminders-item--notactive"
+            ? "reminders__item"
+            : "reminders__item reminders__item--notactive"
         }
       >
         <td>
@@ -150,7 +150,7 @@ const ReminderItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
           <em>{toLocalDate(itemInfos.date_created)}</em>
         </td>
         <td>
-          <div className="reminders-item-btn-container">
+          <div className="reminders__item-btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

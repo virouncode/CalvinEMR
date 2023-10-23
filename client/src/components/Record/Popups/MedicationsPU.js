@@ -59,17 +59,17 @@ const MedicationsPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="medications-err">{errMsg}</p>
+          <p className="medications__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="medications-title">
+              <h1 className="medications__title">
                 Patient medications <i className="fa-solid fa-pills"></i>
               </h1>
               {errMsgPost && (
-                <div className="medications-err">{errMsgPost}</div>
+                <div className="medications__err">{errMsgPost}</div>
               )}
-              <table className="medications-table">
+              <table className="medications__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("active")}>Active</th>
@@ -185,7 +185,7 @@ const MedicationsPU = ({
                 </tbody>
               </table>
               {user.title === "Doctor" && (
-                <div className="medications-btn-container">
+                <div className="medications__btn-container">
                   <button onClick={handleAdd} disabled={addVisible}>
                     Add Medication To Profile
                   </button>

@@ -176,7 +176,7 @@ const MeasurementForm = ({
   };
 
   return (
-    <tr className="measurements-form">
+    <tr className="measurements__form">
       <td>
         <input
           name="height_cm"

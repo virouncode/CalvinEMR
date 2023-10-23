@@ -23,8 +23,8 @@ const VaccineCell = ({
       {dose === "single" ? ( //single dose
         <VaccineCellItemSingle
           age={age}
-          name={name}
           type={type}
+          name={name}
           vaccineInfos={vaccineInfos}
           rangeStart={
             getVaccinationInterval(age, patientInfos.date_of_birth, name)
@@ -58,9 +58,7 @@ const VaccineCell = ({
         <VaccineCellItemMultiple
           age={age}
           name={name}
-          type={type}
           vaccineInfos={vaccineInfos}
-          patientInfos={patientInfos}
           datas={datas}
           fetchRecord={fetchRecord}
           editable={editable}
@@ -70,7 +68,7 @@ const VaccineCell = ({
       )}
     </td>
   ) : (
-    <td className="vaccines-item-empty"></td> //not for this age
+    <td className="vaccines-item__empty"></td> //not for this age
   );
 };
 export default VaccineCell;

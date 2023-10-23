@@ -15,7 +15,7 @@ import RelationshipsForm from "./RelationshipsForm";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
 const SignupPatientForm = () => {
-  const { auth, user, clinic, setClinic, socket } = useAuth();
+  const { auth, user, clinic, socket } = useAuth();
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoadingFile, setIsLoadingFile] = useState(false);
@@ -229,22 +229,19 @@ const SignupPatientForm = () => {
         relationship.date_created = Date.now();
       });
 
-      relationshipsToPost.forEach(
-        async (relationship) =>
-          await axiosXano.post("/relationships", relationship, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          })
-      );
-      relationshipsToPost.forEach((relationship) =>
+      relationshipsToPost.forEach(async (relationship) => {
+        const response = await axiosXano.post("/relationships", relationship, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        });
         socket.emit("message", {
           route: "RELATIONSHIPS",
           action: "create",
-          content: { data: relationship },
-        })
-      );
+          content: { data: response.data },
+        });
+      });
 
       let inverseRelationsToPost = [...relationshipsToPost];
       inverseRelationsToPost.forEach((item) => {
@@ -262,22 +259,20 @@ const SignupPatientForm = () => {
         ({ relationship }) => relationship !== "Undefined"
       );
 
-      inverseRelationsToPost.forEach(
-        async (relationship) =>
-          await axiosXano.post("/relationships", relationship, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${auth.authToken}`,
-            },
-          })
-      );
-      inverseRelationsToPost.forEach((relationship) =>
+      inverseRelationsToPost.forEach(async (relationship) => {
+        const response = await axiosXano.post("/relationships", relationship, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        });
         socket.emit("message", {
           route: "RELATIONSHIPS",
           action: "create",
-          content: { data: relationship },
-        })
-      );
+          content: { data: response.data },
+        });
+      });
+
       setSuccessMsg(
         "Patient added successfully, you will be redirected to the login page"
       );

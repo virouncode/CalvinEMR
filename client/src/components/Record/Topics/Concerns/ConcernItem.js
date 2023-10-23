@@ -99,7 +99,7 @@ const ConcernItem = ({ item, editCounter, setErrMsgPost }) => {
 
   return (
     itemInfos && (
-      <tr className="concerns-item">
+      <tr className="concerns__item">
         <td>
           {editVisible ? (
             <input

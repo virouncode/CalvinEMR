@@ -122,7 +122,7 @@ const PharmacyItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
 
   return (
     itemInfos && (
-      <tr className="pharmacies-item">
+      <tr className="pharmacies__item">
         <td>{itemInfos.name}</td>
         <td>
           {editVisible ? (
@@ -239,7 +239,7 @@ const PharmacyItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
           <em>{toLocalDate(itemInfos.date_created)}</em>
         </td>
         <td>
-          <div className="pharmacies-item-btn-container">
+          <div className="pharmacies__item-btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

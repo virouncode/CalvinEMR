@@ -51,16 +51,16 @@ const RiskPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="risk-err">{errMsg}</p>
+          <p className="risk__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="risk-title">
+              <h1 className="risk__title">
                 Patient risk factors & prevention{" "}
                 <i className="fa-solid fa-triangle-exclamation"></i>
               </h1>
-              {errMsgPost && <div className="risk-err">{errMsgPost}</div>}
-              <table className="risk-table">
+              {errMsgPost && <div className="risk__err">{errMsgPost}</div>}
+              <table className="risk__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("description")}>
@@ -120,7 +120,7 @@ const RiskPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="risk-btn-container">
+              <div className="risk__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Risk
                 </button>

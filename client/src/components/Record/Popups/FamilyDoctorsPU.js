@@ -60,7 +60,7 @@ const FamilyDoctorsPU = ({
       socket.emit("message", {
         route: "FAMILY DOCTORS/SPECIALISTS",
         action: "create",
-        content: { data: doctor },
+        content: { id: item.id, data: doctor },
       });
 
       toast.success("Doctor added to patient", { containerId: "B" });
@@ -80,16 +80,16 @@ const FamilyDoctorsPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="doctors-err">{errMsg}</p>
+          <p className="doctors__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="doctors-title">
+              <h1 className="doctors__title">
                 {" "}
                 Patient Doctors <i className="fa-solid fa-user-doctor"></i>
               </h1>
-              {errMsgPost && <div className="doctors-err">{errMsgPost}</div>}
-              <table className="doctors-table">
+              {errMsgPost && <div className="doctors__err">{errMsgPost}</div>}
+              <table className="doctors__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("name")}>Name</th>
@@ -156,7 +156,7 @@ const FamilyDoctorsPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="doctors-btn-container">
+              <div className="doctors__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Doctor to patient
                 </button>

@@ -51,16 +51,16 @@ const ConcernsPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="concerns-err">{errMsg}</p>
+          <p className="concerns__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="concerns-title">
+              <h1 className="concerns__title">
                 Ongoing concerns{" "}
                 <i className="fa-solid fa-person-circle-question"></i>
               </h1>
-              {errMsgPost && <div className="concerns-err">{errMsgPost}</div>}
-              <table className="concerns-table">
+              {errMsgPost && <div className="concerns__err">{errMsgPost}</div>}
+              <table className="concerns__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("description")}>Concern</th>
@@ -119,7 +119,7 @@ const ConcernsPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="concerns-btn-container">
+              <div className="concerns__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Concern
                 </button>

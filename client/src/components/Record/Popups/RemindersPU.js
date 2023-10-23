@@ -51,15 +51,15 @@ const RemindersPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="reminders-err">{errMsg}</p>
+          <p className="reminders__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="reminders-title">
+              <h1 className="reminders__title">
                 Patient reminders & alerts <i className="fa-solid fa-bell"></i>
               </h1>
-              {errMsgPost && <div className="reminders-err">{errMsgPost}</div>}
-              <table className="reminders-table">
+              {errMsgPost && <div className="reminders__err">{errMsgPost}</div>}
+              <table className="reminders__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("active")}>Active</th>
@@ -153,7 +153,7 @@ const RemindersPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="reminders-btn-container">
+              <div className="reminders__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Reminder
                 </button>

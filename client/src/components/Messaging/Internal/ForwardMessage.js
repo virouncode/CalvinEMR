@@ -143,7 +143,7 @@ const ForwardMessage = ({
       socket.emit("message", {
         route: "MESSAGES INBOX",
         action: "create",
-        content: { data: { id: response.data.id, ...forwardMessage } },
+        content: { data: response.data },
       });
 
       setForwardVisible(false);
@@ -197,6 +197,7 @@ const ForwardMessage = ({
               alias: file.name,
               date_created: Date.now(),
               created_by_id: user.id,
+              created_by_user_type: "staff",
             },
           ]); //meta, mime, name, path, size, type
           setIsLoadingFile(false);

@@ -108,7 +108,7 @@ const EformsPU = ({
           reader2.onload = async (e) => {
             let content = e.target.result;
             try {
-              let response2 = await axiosXano.post(
+              const response2 = await axiosXano.post(
                 "/upload/attachment",
                 {
                   content: content,
@@ -119,21 +119,23 @@ const EformsPU = ({
                   },
                 }
               );
+              console.log("response2 data", response2.data);
               const datasToPost = {
                 patient_id: patientId,
-                assigned_id: user.id,
                 name: file.name,
                 file: response2.data,
-                acknowledged: true,
               };
-              await postPatientRecord(
+              const response = await postPatientRecord(
                 "/eforms",
                 user.id,
                 auth.authToken,
-                datasToPost,
-                socket,
-                "E-FORMS"
+                datasToPost
               );
+              socket.emit("message", {
+                route: "E-FORMS",
+                action: "create",
+                content: { data: response.data },
+              });
 
               toast.success(`Form successfully added to patient record`, {
                 containerId: "B",
@@ -156,14 +158,14 @@ const EformsPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="electronic-err">{errMsg}</p>
+          <p className="eforms__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="electronic-title">
+              <h1 className="eforms__title">
                 Patient e-forms <i className="fa-regular fa-newspaper"></i>
               </h1>
-              <table className="electronic-table">
+              <table className="eforms__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("name")}>Name</th>
@@ -209,7 +211,7 @@ const EformsPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="electronic-btn-container">
+              <div className="eforms__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add e-form
                 </button>

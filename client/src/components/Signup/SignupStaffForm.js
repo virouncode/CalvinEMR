@@ -154,7 +154,7 @@ const SignupStaffForm = () => {
       socket.emit("message", {
         route: "STAFF",
         action: "create",
-        content: { data: { id: response.data.id, ...datasToPost } },
+        content: { data: response.data },
       });
 
       await axiosXano.post(

@@ -136,7 +136,7 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
                   : ""
               }
               onChange={handleChange}
-              className="pregnancies-event-input2"
+              className="pregnancies-event__input2"
             />
           ) : eventInfos.date_of_event !== null ? (
             toLocalDate(eventInfos.date_of_event)
@@ -151,7 +151,7 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
               type="text"
               value={eventInfos.premises}
               onChange={handleChange}
-              className="pregnancies-event-input1"
+              className="pregnancies-event__input1"
               autoComplete="off"
             />
           ) : (
@@ -173,7 +173,7 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
                 type="number"
                 value={eventInfos.term_nbr_of_weeks}
                 onChange={handleChange}
-                className="pregnancies-event-input3"
+                className="pregnancies-event__input3"
                 autoComplete="off"
               />
               w
@@ -182,7 +182,7 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
                 type="number"
                 value={eventInfos.term_nbr_of_days}
                 onChange={handleChange}
-                className="pregnancies-event-input3"
+                className="pregnancies-event__input3"
                 autoComplete="off"
               />
               d
@@ -206,7 +206,7 @@ const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
           <em>{toLocalDate(eventInfos.date_created)}</em>
         </td>
         <td>
-          <div className="pregnancies-event-btn-container">
+          <div className="pregnancies-event__btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

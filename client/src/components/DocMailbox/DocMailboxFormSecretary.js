@@ -88,7 +88,7 @@ const DocMailboxFormSecretary = ({ errMsg, setErrMsg }) => {
       socket.emit("message", {
         route: "DOCMAILBOX",
         action: "create",
-        content: { data: { id: response.data.id, ...datasToPost } },
+        content: { data: response.data },
       });
       toast.success("Posted successfully", { containerId: "A" });
       fileInputRef.current.value = null;

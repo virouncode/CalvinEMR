@@ -66,7 +66,7 @@ const ReplyMessageExternal = ({
       socket.emit("message", {
         route: "MESSAGES INBOX EXTERNAL",
         action: "create",
-        content: { data: { id: response.data.id, ...replyMessage } },
+        content: { data: response.data },
       });
       setReplyVisible(false);
       setCurrentMsgId(0);
@@ -163,6 +163,7 @@ Powered by Calvin EMR`,
               alias: file.name,
               date_created: Date.now(),
               created_by_id: user.id,
+              created_by_user_type: "staff",
             },
           ]); //meta, mime, name, path, size, type
           setIsLoadingFile(false);

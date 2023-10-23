@@ -81,7 +81,7 @@ const VaccineCellItemSingle = ({
   };
 
   return (
-    <div className="vaccines-item-cell">
+    <div className="vaccines-item__cell">
       <input
         type="checkbox"
         onChange={handleCheck}
@@ -90,7 +90,7 @@ const VaccineCellItemSingle = ({
         disabled={!editable}
       />
       {vaccineInfos.vaccine_date ? (
-        <label className="vaccines-item-cell-checked">
+        <label className="vaccines-item__checked">
           {toLocalDate(vaccineInfos.vaccine_date)} {getVaccinationLogo(type)}
         </label>
       ) : (

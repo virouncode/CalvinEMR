@@ -73,7 +73,7 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
       socket.emit("message", {
         route: "DOCMAILBOX",
         action: "create",
-        content: { data: { id: response1.data.id, ...datasToPost } },
+        content: { data: response1.data },
       });
       setAddVisible(false);
       toast.success("Posted successfully", { containerId: "B" });

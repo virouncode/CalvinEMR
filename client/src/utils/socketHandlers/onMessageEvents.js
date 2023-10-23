@@ -32,8 +32,6 @@ export const onMessageEvents = (
   isSecretary
 ) => {
   if (message.route !== "EVENTS") return;
-  console.log("received");
-  console.log(message.action);
   const remainingStaffObjects = staffInfos
     .filter(({ id }) => id !== userId)
     .map((staff, index) => {

@@ -67,7 +67,7 @@ const ConcernForm = ({
   };
 
   return (
-    <tr className="concerns-form">
+    <tr className="concerns__form">
       <td>
         <input
           name="description"

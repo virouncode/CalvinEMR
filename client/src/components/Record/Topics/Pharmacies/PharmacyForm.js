@@ -81,7 +81,7 @@ const PharmacyForm = ({
   };
 
   return (
-    <tr className="pharmacies-form">
+    <tr className="pharmacies__form">
       <td>
         <input
           name="name"

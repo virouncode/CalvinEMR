@@ -1,11 +1,11 @@
-.electronic {
-    &-title {
+.eforms {
+    &__title {
         font-size: 1.2rem;
         margin-top: 60px;
         margin-bottom:30px;
         text-align: center;
     }
-    &-err {
+    &__err {
         padding : 10px 20px;
         font-size: 0.9rem;
         width : 100%;
@@ -15,7 +15,7 @@
         border-radius: 4px;
         text-align: center;
     }
-    &-table {
+    &__table {
         table-layout:fixed;
         min-width:100%;
         border-collapse: collapse;
@@ -31,12 +31,8 @@
             text-decoration: underline;
             cursor: pointer;
         }
-        &-nofilter {
-            text-decoration: none;
-            cursor: default;
-        }
     }
-    &-item {
+    &__item {
         td {
             text-align: center;
             border: solid 1px $black;
@@ -46,34 +42,34 @@
                 width:auto;
             }
         }
-        &-link {
-            cursor:pointer;
-            color: blue;
-            text-decoration: underline;
-        }
-        &-btn-container {
-            display: flex;
-            justify-content: space-around;
-        }
     }
-    &-form {
+    &__link {
+        cursor:pointer;
+        color: blue;
+        text-decoration: underline;
+    }
+    &__item-btn-container {
+        display: flex;
+        justify-content: space-around;
+    }
+    &__form {
         margin-top: 15px;
-        &-explainations {
-            font-size: 0.9rem;
-            border: solid 1px $grey;
-            border-radius: 4px;
-            padding :10px;
-            margin: 0 10px;
-            li {
-                padding: 5px 0;
-            }
-            ul:nth-child(1) {
-                margin-left: 10px;
-                margin-top: 5px;
-            }
+    }
+    &__explainations {
+        font-size: 0.9rem;
+        border: solid 1px $grey;
+        border-radius: 4px;
+        padding :10px;
+        margin: 0 10px;
+        li {
+            padding: 5px 0;
+        }
+        ul:nth-child(1) {
+            margin-left: 10px;
+            margin-top: 5px;
         }
     }
-    &-btn-container {
+    &__btn-container {
         display: flex;
         justify-content: space-between;
         width:150px;

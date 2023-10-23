@@ -69,7 +69,7 @@ const AllergyForm = ({
   };
 
   return (
-    <tr className="allergies-form">
+    <tr className="allergies__form">
       <td>
         <input
           name="allergy"

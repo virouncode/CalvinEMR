@@ -10729,7 +10729,7 @@ readers do not read off random characters that represent icons */
   background: #94bae8;
   display: grid;
   grid-template-columns: 20% 60% 20%;
-  border-bottom: solid 0.5px rgb(206, 205, 205);
+  border-bottom: solid 0.5px #cecdcd;
   justify-content: space-between;
   align-items: center;
 }
@@ -11034,7 +11034,7 @@ readers do not read off random characters that represent icons */
   margin-left: 0;
 }
 .calendar__display .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard .fc-header-toolbar.fc-toolbar .fc-toolbar-chunk .fc-button.fc-button-primary:hover {
-  background: rgb(206, 205, 205);
+  background: #cecdcd;
   color: rgb(70, 70, 70);
 }
 @media (max-width: 1250px) {
@@ -11043,13 +11043,13 @@ readers do not read off random characters that represent icons */
   }
 }
 .calendar__display .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard .fc-header-toolbar.fc-toolbar .fc-toolbar-chunk .fc-button.fc-button-primary:disabled {
-  background: rgb(206, 205, 205);
+  background: #cecdcd;
   color: rgb(70, 70, 70);
   border: none;
   opacity: 1;
 }
 .calendar__display .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard .fc-header-toolbar.fc-toolbar .fc-toolbar-chunk .fc-button.fc-button-primary.fc-button-active {
-  background: rgb(206, 205, 205);
+  background: #cecdcd;
   color: rgb(70, 70, 70);
   border: none;
 }
@@ -11212,7 +11212,7 @@ readers do not read off random characters that represent icons */
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   padding: 10px;
 }
@@ -11257,7 +11257,7 @@ readers do not read off random characters that represent icons */
   height: 200px;
   margin: 0 auto;
   display: grid;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   padding: 10px;
   border-radius: 4px;
   justify-content: space-between;
@@ -11267,7 +11267,7 @@ readers do not read off random characters that represent icons */
 .event-form__item--guestsearch .results {
   height: 170px;
   overflow: scroll;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   padding: 10px;
   border-radius: 4px;
   font-size: 0.75rem;
@@ -11322,7 +11322,7 @@ readers do not read off random characters that represent icons */
   padding: 10px;
 }
 .invitation__row {
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   width: 100%;
   border-radius: 4px;
   padding: 10px;
@@ -11353,7 +11353,7 @@ readers do not read off random characters that represent icons */
   margin-right: 5px;
 }
 .invitation__btns {
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   padding: 10px;
 }
@@ -11490,11 +11490,11 @@ readers do not read off random characters that represent icons */
   cursor: pointer;
 }
 .calendar-section__option:hover {
-  background: rgb(206, 205, 205);
+  background: #cecdcd;
   color: rgb(70, 70, 70);
 }
 .calendar-section__option--active {
-  background: rgb(206, 205, 205);
+  background: #cecdcd;
   color: rgb(70, 70, 70);
   border: none;
 }
@@ -11881,6 +11881,7 @@ readers do not read off random characters that represent icons */
 .topic-content__link {
   color: blue;
   text-decoration: underline;
+  cursor: pointer;
 }
 .topic-content p {
   padding: 2px 0;
@@ -11943,39 +11944,39 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
-.demographics-card-header {
+.demographics-card__header {
   display: flex;
   justify-content: space-between;
   background: #94bae8;
   padding: 10px;
   align-items: center;
 }
-.demographics-card-header h1 {
+.demographics-card__header h1 {
   font-size: 1.2rem;
   font-weight: bold;
 }
-.demographics-card-header-btns {
+.demographics-card__btns {
   display: flex;
   justify-content: space-between;
   width: 18%;
 }
-.demographics-card-form {
+.demographics-card__form {
   margin: 10px;
   display: flex;
   justify-content: space-between;
 }
-.demographics-card-form-content {
+.demographics-card__content {
   width: 70%;
 }
-.demographics-card-form-content label {
+.demographics-card__content label {
   font-weight: bold;
   display: inline-block;
   min-width: 160px;
 }
-.demographics-card-form-content input, .demographics-card-form-content select {
+.demographics-card__content input, .demographics-card__content select {
   width: 160px;
 }
-.demographics-card-form-img {
+.demographics-card__img {
   display: flex;
   flex-direction: column;
   width: 200px;
@@ -11983,18 +11984,18 @@ readers do not read off random characters that represent icons */
   overflow: hidden;
   margin-right: 10px;
 }
-.demographics-card-form-img p {
+.demographics-card__img p {
   padding: 0;
 }
-.demographics-card-form-img img {
+.demographics-card__img img {
   align-self: flex-start;
   height: 80%;
   width: auto;
 }
-.demographics-card-form-img input[type=file]::-webkit-file-upload-button {
+.demographics-card__img input[type=file]::-webkit-file-upload-button {
   cursor: pointer;
 }
-.demographics-card-form-err {
+.demographics-card__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 98%;
@@ -12004,20 +12005,20 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.demographics-card-sign {
+.demographics-card__sign {
   padding: 0 5px;
   text-align: right;
   font-size: 0.6rem;
   margin-bottom: 10px;
 }
 
-.medhistory-title {
+.medhistory__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.medhistory-err {
+.medhistory__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12027,56 +12028,56 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.medhistory-table {
+.medhistory__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.medhistory-table thead {
+.medhistory__table thead {
   background: #94bae8;
   border: solid 1px #21201e;
 }
-.medhistory-table th {
+.medhistory__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.medhistory-event--notgoing, .medhistory-form--notgoing {
-  background: rgb(206, 205, 205);
+.medhistory__event--notgoing, .medhistory__form--notgoing {
+  background: #cecdcd;
 }
-.medhistory-event td, .medhistory-form td {
+.medhistory__event td, .medhistory__form td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.medhistory-event td input, .medhistory-event td input[type=date], .medhistory-form td input, .medhistory-form td input[type=date] {
+.medhistory__event td input, .medhistory__event td input[type=date], .medhistory__form td input, .medhistory__form td input[type=date] {
   width: 100%;
 }
-.medhistory-event td input[type=submit], .medhistory-form td input[type=submit] {
+.medhistory__event td input[type=submit], .medhistory__form td input[type=submit] {
   width: auto;
 }
-.medhistory-event-btn-container, .medhistory-form-btn-container {
+.medhistory__event-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.medhistory-btn-container {
+.medhistory__btn-container {
   display: flex;
   justify-content: space-between;
   width: 150px;
   margin: 20px auto 0;
 }
 
-.famhistory-title {
+.famhistory__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.famhistory-err {
+.famhistory__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12086,40 +12087,40 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.famhistory-table {
+.famhistory__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.famhistory-table thead {
+.famhistory__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.famhistory-table thead th {
+.famhistory__table thead th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.famhistory-event td, .famhistory-form td {
+.famhistory__event td, .famhistory__form td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.famhistory-event td input, .famhistory-event td input[type=date], .famhistory-event td select, .famhistory-form td input, .famhistory-form td input[type=date], .famhistory-form td select {
+.famhistory__event td input, .famhistory__event td input[type=date], .famhistory__event td select, .famhistory__form td input, .famhistory__form td input[type=date], .famhistory__form td select {
   width: 100%;
 }
-.famhistory-event td input[type=submit], .famhistory-form td input[type=submit] {
+.famhistory__event td input[type=submit], .famhistory__form td input[type=submit] {
   width: auto;
 }
-.famhistory-event-btn-container, .famhistory-form-btn-container {
+.famhistory__event-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.famhistory-btn-container {
+.famhistory__btn-container {
   display: flex;
   justify-content: space-between;
   width: 150px;
@@ -12134,44 +12135,45 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
-.sochistory-card-header {
+.sochistory-card__header {
   display: flex;
   justify-content: space-between;
   background-color: #94bae8;
   padding: 10px;
   align-items: center;
 }
-.sochistory-card-header h1 {
+.sochistory-card__header h1 {
   font-size: 1.2rem;
   font-weight: bold;
 }
-.sochistory-card-header-btns {
+.sochistory-card__btns {
   display: flex;
   justify-content: space-between;
 }
-.sochistory-card-header-btns button {
+.sochistory-card__btns button {
   margin-left: 5px;
 }
-.sochistory-card-form {
+
+.sochistory-form {
   margin: 10px 0;
 }
-.sochistory-card-form label {
+.sochistory-form label {
   font-weight: bold;
   display: inline-block;
   min-width: 150px;
 }
-.sochistory-card-form input {
+.sochistory-form input {
   min-width: 30px;
 }
-.sochistory-card-form-btns {
+.sochistory-form__btns {
   width: 100%;
   text-align: center;
   margin-top: 10px;
 }
-.sochistory-card-form-btns button {
+.sochistory-form__btns button {
   margin-right: 10px;
 }
-.sochistory-card-form-err {
+.sochistory-form__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12182,13 +12184,13 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 
-.risk-title {
+.risk__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.risk-err {
+.risk__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12198,53 +12200,53 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.risk-table {
+.risk__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.risk-table thead {
+.risk__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.risk-table thead th {
+.risk__table thead th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.risk-item td, .risk-form td {
+.risk__item td, .risk__form td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.risk-item td input, .risk-form td input {
+.risk__item td input, .risk__form td input {
   width: 100%;
 }
-.risk-item td input[type=submit], .risk-form td input[type=submit] {
+.risk__item td input[type=submit], .risk__form td input[type=submit] {
   width: auto;
 }
-.risk-item-btn-container, .risk-form-btn-container {
+.risk__item-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.risk-btn-container {
+.risk__btn-container {
   display: flex;
   justify-content: space-between;
   width: 150px;
   margin: 20px auto 0;
 }
 
-.medications-title {
+.medications__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.medications-err {
+.medications__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 50%;
@@ -12254,82 +12256,80 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.medications-table {
+.medications__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.medications-table thead {
+.medications__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.medications-table th {
+.medications__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.medications-table-nofilter {
-  text-decoration: none;
-  cursor: default;
+.medications__event--notactive {
+  background: #cecdcd;
 }
-.medications-event--notactive {
-  background: rgb(206, 205, 205);
-}
-.medications-event td {
+.medications__event td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.medications-event td input input {
+.medications__event td input input {
   width: 100%;
 }
-.medications-event td input input[type=submit] {
+.medications__event td input input[type=submit] {
   width: auto;
 }
-.medications-event-btn-container {
+.medications__event-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.medications-btn-container {
+.medications__btn-container {
   display: flex;
   justify-content: space-between;
   width: 200px;
   margin: 20px auto 0;
 }
-.medications-form-container {
+
+.medications-form__container {
   font-size: 0.8rem;
   display: flex;
   justify-content: space-between;
   padding: 40px;
 }
-.medications-form-container form {
+.medications-form__container form {
   width: 48%;
 }
-.medications-form-allergies {
+.medications-form__allergies {
   color: red;
   margin-bottom: 10px;
 }
-.medications-form-row {
+.medications-form__row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 2px 0;
 }
-.medications-form-row label {
+.medications-form__row label {
   width: 45%;
 }
-.medications-form-row input {
+.medications-form__row input {
   width: 55%;
 }
-.medications-form-link {
+.medications-form__link {
   text-decoration: underline;
   font-size: 0.85rem;
   width: 45%;
 }
+
 .medications-search {
   width: 45%;
 }
@@ -12349,13 +12349,13 @@ readers do not read off random characters that represent icons */
   height: 10px;
 }
 
-.pharmacies-title {
+.pharmacies__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.pharmacies-err {
+.pharmacies__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 50%;
@@ -12365,91 +12365,92 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.pharmacies-table {
+.pharmacies__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.pharmacies-table thead {
+.pharmacies__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.pharmacies-table thead th {
+.pharmacies__table thead th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.pharmacies-item td, .pharmacies-form td {
+.pharmacies__item td, .pharmacies__form td {
   text-align: center;
   border: solid 1px black;
   padding: 2px 5px;
   word-break: break-word;
   max-width: 370px;
 }
-.pharmacies-item td input, .pharmacies-item td select, .pharmacies-form td input, .pharmacies-form td select {
+.pharmacies__item td input, .pharmacies__item td select, .pharmacies__form td input, .pharmacies__form td select {
   width: 100%;
 }
-.pharmacies-item td input[type=submit], .pharmacies-form td input[type=submit] {
+.pharmacies__item td input[type=submit], .pharmacies__form td input[type=submit] {
   width: auto;
 }
-.pharmacies-item-btn-container, .pharmacies-form-btn-container {
+.pharmacies__item-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.pharmacies-btn-container {
+.pharmacies__btn-container {
   display: flex;
   justify-content: space-between;
   width: 240px;
   margin: 20px auto 0;
 }
-.pharmacies-list-title {
+
+.pharmacies-list__title {
   margin: 40px 0 20px;
   font-size: 0.9rem;
   font-weight: bold;
 }
-.pharmacies-list-title button {
+.pharmacies-list__title button {
   margin-left: 20px;
 }
-.pharmacies-list-table {
+.pharmacies-list__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.pharmacies-list-table thead {
+.pharmacies-list__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.pharmacies-list-table th {
+.pharmacies-list__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.pharmacies-list-item td {
+.pharmacies-list__item td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.pharmacies-list-item td input, .pharmacies-list-item td select {
+.pharmacies-list__item td input, .pharmacies-list__item td select {
   width: 100%;
 }
-.pharmacies-list-item td input[type=submit] {
+.pharmacies-list__item td input[type=submit] {
   width: auto;
 }
 
-.doctors-title {
+.doctors__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.doctors-err {
+.doctors__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 50%;
@@ -12459,90 +12460,91 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.doctors-table {
+.doctors__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.doctors-table thead {
+.doctors__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.doctors-table thead th {
+.doctors__table thead th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.doctors-item td, .doctors-form td {
+.doctors__item td, .doctors__form td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.doctors-item td input, .doctors-item td select, .doctors-form td input, .doctors-form td select {
+.doctors__item td input, .doctors__item td select, .doctors__form td input, .doctors__form td select {
   width: 100%;
 }
-.doctors-item td input[type=submit], .doctors-form td input[type=submit] {
+.doctors__item td input[type=submit], .doctors__form td input[type=submit] {
   width: auto;
 }
-.doctors-item-btn-container, .doctors-form-btn-container {
+.doctors__item-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.doctors-btn-container {
+.doctors__btn-container {
   display: flex;
   justify-content: space-between;
   width: 220px;
   margin: 20px auto 0;
 }
-.doctors-list-title {
+
+.doctors-list__title {
   margin: 40px 0 20px;
   font-size: 0.9rem;
   font-weight: bold;
 }
-.doctors-list-title button {
+.doctors-list__title button {
   margin-left: 20px;
 }
-.doctors-list-table {
+.doctors-list__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.doctors-list-table thead {
+.doctors-list__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.doctors-list-table th {
+.doctors-list__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.doctors-list-item td {
+.doctors-list__item td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.doctors-list-item td input, .doctors-list-item td select {
+.doctors-list__item td input, .doctors-list__item td select {
   width: 100%;
 }
-.doctors-list-item td input[type=submit] {
+.doctors-list__item td input[type=submit] {
   width: auto;
 }
 
-.measurements-title {
+.measurements__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.measurements-err {
+.measurements__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12552,55 +12554,51 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.measurements-table {
+.measurements__table {
   table-layout: fixed;
   border-collapse: collapse;
   border: solid 1px black;
   font-size: 0.8rem;
   margin: 0 auto;
 }
-.measurements-table thead {
+.measurements__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.measurements-table th {
+.measurements__table th {
   min-width: 80px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.measurements-table-nofilter {
-  text-decoration: none;
-  cursor: default;
-}
-.measurements-event td, .measurements-form td {
+.measurements__event td, .measurements__form td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.measurements-event td input, .measurements-form td input {
+.measurements__event td input, .measurements__form td input {
   width: 100%;
 }
-.measurements-event-btn-container, .measurements-form-btn-container {
+.measurements__event-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.measurements-btn-container {
+.measurements__btn-container {
   display: flex;
   justify-content: space-between;
   width: 190px;
   margin: 20px auto 0;
 }
 
-.reminders-title {
+.reminders__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.reminders-err {
+.reminders__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12610,56 +12608,56 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.reminders-table {
+.reminders__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.reminders-table thead {
+.reminders__table thead {
   background: #94bae8;
   border: solid 1px #21201e;
 }
-.reminders-table th {
+.reminders__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.reminders-item--notactive, .reminders-form--notactive {
-  background-color: rgb(206, 205, 205);
+.reminders__item--notactive, .reminders__form--notactive {
+  background-color: #cecdcd;
 }
-.reminders-item td, .reminders-form td {
+.reminders__item td, .reminders__form td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.reminders-item input, .reminders-form input {
+.reminders__item input, .reminders__form input {
   width: 100%;
 }
-.reminders-item input[type=submit], .reminders-form input[type=submit] {
+.reminders__item input[type=submit], .reminders__form input[type=submit] {
   width: auto;
 }
-.reminders-item-btn-container, .reminders-form-btn-container {
+.reminders__item-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.reminders-btn-container {
+.reminders__btn-container {
   display: flex;
   justify-content: space-between;
   width: 170px;
   margin: 20px auto 0;
 }
 
-.pregnancies-title {
+.pregnancies__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.pregnancies-err {
+.pregnancies__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12669,29 +12667,30 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.pregnancies-table {
+.pregnancies__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.pregnancies-table thead {
+.pregnancies__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.pregnancies-table th {
+.pregnancies__table th {
   min-width: 70px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.pregnancies-btn-container {
+.pregnancies__btn-container {
   display: flex;
   justify-content: space-between;
   width: 150px;
   margin: 20px auto 0;
 }
+
 .pregnancies-event td, .pregnancies-form td {
   text-align: center;
   border: solid 1px #21201e;
@@ -12701,27 +12700,27 @@ readers do not read off random characters that represent icons */
 .pregnancies-event select, .pregnancies-form select {
   width: 180px;
 }
-.pregnancies-event-input1, .pregnancies-form-input1 {
+.pregnancies-event__input1, .pregnancies-form__input1 {
   width: 100px;
 }
-.pregnancies-event-input2, .pregnancies-form-input2 {
+.pregnancies-event__input2, .pregnancies-form__input2 {
   width: 120px;
 }
-.pregnancies-event-input3, .pregnancies-form-input3 {
+.pregnancies-event__input3, .pregnancies-form__input3 {
   width: 50px;
 }
-.pregnancies-event-btn-container, .pregnancies-form-btn-container {
+.pregnancies-event__btn-container, .pregnancies-form__btn-container {
   display: flex;
   justify-content: space-around;
 }
 
-.allergies-title {
+.allergies__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.allergies-err {
+.allergies__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12731,53 +12730,53 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.allergies-table {
+.allergies__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.allergies-table thead {
+.allergies__table thead {
   background: #94bae8;
   border: solid 1px #21201e;
 }
-.allergies-table th {
+.allergies__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.allergies-item td, .allergies-form td {
+.allergies__item td, .allergies__form td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.allergies-item input, .allergies-form input {
+.allergies__item input, .allergies__form input {
   width: 100%;
 }
-.allergies-item input[type=submit], .allergies-form input[type=submit] {
+.allergies__item input[type=submit], .allergies__form input[type=submit] {
   width: auto;
 }
-.allergies-item-btn-container, .allergies-form-btn-container {
+.allergies__item__btn-container, .allergies__form__btn-container {
   display: flex;
   justify-content: space-around;
 }
-.allergies-btn-container {
+.allergies__btn-container {
   display: flex;
   justify-content: space-between;
   width: 170px;
   margin: 20px auto 0;
 }
 
-.concerns-title {
+.concerns__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.concerns-err {
+.concerns__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12787,49 +12786,49 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.concerns-table {
+.concerns__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.concerns-table thead {
+.concerns__table thead {
   background: #94bae8;
   border: solid 1px #21201e;
 }
-.concerns-table th {
+.concerns__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.concerns-item td, .concerns-form td {
+.concerns__item td, .concerns__form td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.concerns-item td input, .concerns-form td input {
+.concerns__item td input, .concerns__form td input {
   width: 100%;
 }
-.concerns-item td input[type=submit], .concerns-form td input[type=submit] {
+.concerns__item td input[type=submit], .concerns__form td input[type=submit] {
   width: auto;
 }
-.concerns-btn-container {
+.concerns__btn-container {
   display: flex;
   justify-content: space-between;
   width: 170px;
   margin: 20px auto 0;
 }
 
-.documents-title {
+.documents__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.documents-err {
+.documents__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -12839,77 +12838,73 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.documents-table {
+.documents__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.documents-table thead {
+.documents__table thead {
   background: #94bae8;
   border: solid 1px #21201e;
 }
-.documents-table th {
+.documents__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.documents-table-nofilter {
-  text-decoration: none;
-  cursor: default;
-}
-.documents-item td {
+.documents__item td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.documents-item-link {
+.documents__link {
   cursor: pointer;
   color: blue;
   text-decoration: underline;
 }
-.documents-form {
+.documents__form {
   font-size: 0.8rem;
   display: flex;
   justify-content: space-between;
   padding: 40px;
 }
-.documents-form-content {
+.documents__content {
   width: 48%;
 }
-.documents-form-content-row {
+.documents__row {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding: 2px 0;
 }
-.documents-form-content-row label {
+.documents__row label {
   width: 45%;
   font-weight: bold;
 }
-.documents-form-content-row input {
+.documents__row input {
   width: 55%;
 }
-.documents-form-content-row input[type=submit] {
+.documents__row input[type=submit] {
   width: auto;
 }
-.documents-btn-container {
+.documents__btn-container {
   display: flex;
   justify-content: space-between;
   width: 170px;
   margin: 20px auto 0;
 }
 
-.appointments-title {
+.appointments__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.appointments-err {
+.appointments__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 50%;
@@ -12919,77 +12914,73 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.appointments-table {
+.appointments__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.appointments-table thead {
+.appointments__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.appointments-table th {
+.appointments__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.appointments-table-nofilter {
-  text-decoration: none;
-  cursor: default;
-}
-.appointments-event td, .appointments-form td {
+.appointments__event td, .appointments__form td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-wrap: break-word;
 }
-.appointments-event select, .appointments-form select {
+.appointments__event select, .appointments__form select {
   width: 150px;
 }
-.appointments-event-date-container, .appointments-form-date-container {
+.appointments__event-date-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 290px;
 }
-.appointments-event input[type=date], .appointments-form input[type=date] {
+.appointments__event-date-container input[type=date] {
   width: 150px;
 }
-.appointments-event-btn-container, .appointments-form-btn-container {
+.appointments__event-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.appointments-btn-container {
+.appointments__btn-container {
   display: flex;
   justify-content: space-between;
   width: 200px;
   margin: 20px auto 0;
 }
 
-.vaccines-err {
+.vaccines__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 50%;
-  margin: auto 10px;
+  margin: 0 auto 10px;
   color: red;
   background-color: rgba(255, 0, 0, 0.403);
   border-radius: 4px;
   text-align: center;
 }
-.vaccines-title {
+.vaccines__title {
   font-size: 1.2rem;
   margin-top: 50px;
   margin-bottom: 10px;
   padding: 10px;
   text-align: center;
 }
-.vaccines-title button {
+.vaccines__title button {
   margin-left: 5px;
 }
-.vaccines-table {
+.vaccines__table {
   padding: 0 10px;
   table-layout: fixed;
   border-collapse: collapse;
@@ -12998,10 +12989,11 @@ readers do not read off random characters that represent icons */
   margin: 0 auto;
   margin-bottom: 10px;
 }
-.vaccines-table thead {
+.vaccines__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
+
 .vaccines-obs {
   margin-top: 20px;
   display: flex;
@@ -13009,11 +13001,11 @@ readers do not read off random characters that represent icons */
   width: 50%;
   padding: 15px;
 }
-.vaccines-obs-title {
+.vaccines-obs__title {
   padding: 0;
   margin: 0;
 }
-.vaccines-obs-content {
+.vaccines-obs__content {
   width: 100%;
   height: 200px;
   outline: solid 1px #21201e;
@@ -13033,49 +13025,51 @@ readers do not read off random characters that represent icons */
   font-family: Lato, sans-serif, sans-serif;
   resize: none;
 }
-.vaccines-obs-btn-container {
+.vaccines-obs__btn-container {
   margin-top: 10px;
   text-align: end;
   width: 100%;
 }
+
 .vaccines-item td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-wrap: break-word;
 }
-.vaccines-item-empty {
-  background: rgb(206, 205, 205);
+.vaccines-item__empty {
+  background: #cecdcd;
 }
-.vaccines-item-cell {
+.vaccines-item__cell {
   display: flex;
   font-size: 0.7rem;
   align-items: center;
   justify-content: flex-start;
 }
-.vaccines-item-cell label {
+.vaccines-item__cell label {
   margin-left: 3px;
 }
-.vaccines-item-cell-checked {
-  color: forestgreen;
-}
-.vaccines-item-cell-multiple-btn {
+.vaccines-item__cell-multiple-btn {
   width: 20px;
   height: 20px;
   margin-left: 5px;
   padding: 0;
 }
-.vaccines-item-cell form label {
+.vaccines-item__checked {
+  color: forestgreen;
+}
+
+.vaccines-form label {
   font-size: 0.8rem;
 }
-.vaccines-item-cell-form-row1 {
+.vaccines-form__row1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 10px auto;
   width: 90%;
 }
-.vaccines-item-cell-form-row2 {
+.vaccines-form__row2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13130,108 +13124,106 @@ readers do not read off random characters that represent icons */
   width: 80px;
 }
 
-.prescription-actions {
+.prescription__actions {
   width: 90%;
   margin: 60px auto 0;
   display: flex;
   align-items: center;
 }
-.prescription-actions button {
+.prescription__actions button {
   margin-right: 10px;
 }
-.prescription-page {
+.prescription__page {
   width: 21cm;
   height: 29.7cm;
   display: flex;
   align-items: center;
 }
-.prescription-container {
+.prescription__container {
   width: 90%;
   margin: 0 auto;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   height: 93%;
   display: flex;
   flex-direction: column;
 }
-.prescription-header {
+.prescription__header {
   background: #94bae8;
   -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
   display: flex;
   height: 10%;
   justify-content: space-between;
-  border-bottom: solid 1px rgb(206, 205, 205);
+  border-bottom: solid 1px #cecdcd;
 }
-.prescription-logo {
+.prescription__logo {
   width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 5px 10px;
 }
-.prescription-logo-img {
-  background: url(../../assets/img/logo.png) center/cover;
-  height: 60px;
-  width: 220px;
+.prescription__logo img {
+  height: 100%;
 }
-.prescription-doctor-infos {
+.prescription__doctor-infos {
   font-size: 0.75rem;
   text-align: end;
   width: 50%;
-  border-left: solid 1px rgb(206, 205, 205);
+  border-left: solid 1px #cecdcd;
   padding: 5px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
-.prescription-doctor-infos p {
+.prescription__doctor-infos p {
   padding: 0;
 }
-.prescription-subheader {
+.prescription__subheader {
   display: flex;
   height: 4%;
   justify-content: space-between;
-  border-bottom: solid 1px rgb(206, 205, 205);
+  border-bottom: solid 1px #cecdcd;
   align-items: center;
 }
-.prescription-date {
+.prescription__date {
   font-size: 0.9rem;
   font-weight: bold;
 }
-.prescription-patient-infos {
+.prescription__patient-infos {
   font-size: 0.9rem;
   font-weight: bold;
   width: 50%;
   padding: 5px 10px;
 }
-.prescription-patient-infos p {
+.prescription__patient-infos p {
   padding: 0;
 }
-.prescription-body {
+.prescription__body {
   height: 76%;
 }
-.prescription-body-title {
+.prescription__body-title {
   font-weight: bold;
   font-size: 1.3rem;
   text-align: center;
   margin: 20px 0;
 }
-.prescription-body-content {
+.prescription__body-content {
   padding: 5px 10px;
   font-size: 0.9rem;
 }
-.prescription-sign {
+.prescription__sign {
   height: 10%;
   display: flex;
   justify-content: flex-start;
   font-size: 0.8rem;
-  border-top: solid 1px rgb(206, 205, 205);
+  border-top: solid 1px #cecdcd;
 }
-.prescription-sign-image img {
+.prescription__sign-image img {
   height: 100%;
 }
-.prescription-add {
+.prescription__add {
   font-family: Lato, sans-serif, sans-serif;
   font-size: 0.9rem;
   width: 90%;
@@ -13239,10 +13231,10 @@ readers do not read off random characters that represent icons */
   display: flex;
   align-items: flex-start;
 }
-.prescription-add label {
+.prescription__add label {
   margin-right: 20px;
 }
-.prescription-add textarea {
+.prescription__add textarea {
   width: 65%;
   height: 200px;
 }
@@ -13493,7 +13485,7 @@ readers do not read off random characters that represent icons */
 
 .messages-container {
   height: 80vh;
-  border: solid 0.5px rgb(206, 205, 205);
+  border: solid 0.5px #cecdcd;
   border-radius: 4px;
   width: 98%;
   margin: 0 auto;
@@ -13502,7 +13494,7 @@ readers do not read off random characters that represent icons */
 .messages-toggle {
   padding: 5px 10px;
   border-radius: 4px;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   font-size: 0.9rem;
   text-align: center;
   display: flex;
@@ -13678,7 +13670,7 @@ readers do not read off random characters that represent icons */
 }
 
 .message-detail__content {
-  margin-top: 30px;
+  margin-top: 0;
 }
 .message-detail__toolbar {
   padding: 5px;
@@ -14207,13 +14199,13 @@ readers do not read off random characters that represent icons */
   margin-right: 10px;
 }
 
-.relationships-title {
+.relationships__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.relationships-err {
+.relationships__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -14223,23 +14215,30 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.relationships-table {
+.relationships__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.relationships-table thead {
+.relationships__table thead {
   background-color: #94bae8;
   border: solid 1px #21201e;
 }
-.relationships-table th {
+.relationships__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
+.relationships__btn-container {
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+  margin: 20px auto 0;
+}
+
 .relationships-item td, .relationships-form td {
   text-align: center;
   border: solid 1px #21201e;
@@ -14252,23 +14251,17 @@ readers do not read off random characters that represent icons */
 .relationships-item td input, .relationships-item td select, .relationships-form td input, .relationships-form td select {
   width: 100%;
 }
-.relationships-item-relationship, .relationships-form-relationship {
+.relationships-item__relationship, .relationships-form__relationship {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.relationships-item-relationship span, .relationships-form-relationship span {
+.relationships-item__relationship span, .relationships-form__relationship span {
   margin-left: 10px;
 }
-.relationships-item-btn-container, .relationships-form-btn-container {
+.relationships-item__btn-container, .relationships-form__btn-container {
   display: flex;
   justify-content: space-around;
-}
-.relationships-btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 150px;
-  margin: 20px auto 0;
 }
 
 .verify-pwd {
@@ -14356,13 +14349,13 @@ readers do not read off random characters that represent icons */
   text-align: center;
 }
 
-.electronic-title {
+.eforms__title {
   font-size: 1.2rem;
   margin-top: 60px;
   margin-bottom: 30px;
   text-align: center;
 }
-.electronic-err {
+.eforms__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 100%;
@@ -14372,63 +14365,59 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   text-align: center;
 }
-.electronic-table {
+.eforms__table {
   table-layout: fixed;
   min-width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
-.electronic-table thead {
+.eforms__table thead {
   background: #94bae8;
   border: solid 1px #21201e;
 }
-.electronic-table th {
+.eforms__table th {
   min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #21201e;
   text-decoration: underline;
   cursor: pointer;
 }
-.electronic-table-nofilter {
-  text-decoration: none;
-  cursor: default;
-}
-.electronic-item td {
+.eforms__item td {
   text-align: center;
   border: solid 1px #21201e;
   padding: 2px 5px;
   word-break: break-word;
 }
-.electronic-item td input {
+.eforms__item td input {
   width: auto;
 }
-.electronic-item-link {
+.eforms__link {
   cursor: pointer;
   color: blue;
   text-decoration: underline;
 }
-.electronic-item-btn-container {
+.eforms__item-btn-container {
   display: flex;
   justify-content: space-around;
 }
-.electronic-form {
+.eforms__form {
   margin-top: 15px;
 }
-.electronic-form-explainations {
+.eforms__explainations {
   font-size: 0.9rem;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   padding: 10px;
   margin: 0 10px;
 }
-.electronic-form-explainations li {
+.eforms__explainations li {
   padding: 5px 0;
 }
-.electronic-form-explainations ul:nth-child(1) {
+.eforms__explainations ul:nth-child(1) {
   margin-left: 10px;
   margin-top: 5px;
 }
-.electronic-btn-container {
+.eforms__btn-container {
   display: flex;
   justify-content: space-between;
   width: 150px;
@@ -14603,7 +14592,7 @@ readers do not read off random characters that represent icons */
 
 .patient-past-appointments, .patient-next-appointments {
   width: 100%;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   padding: 10px;
   font-size: 0.85rem;
@@ -14612,7 +14601,7 @@ readers do not read off random characters that represent icons */
 .patient-past-appointments-title, .patient-next-appointments-title {
   font-size: 0.9rem;
   margin-bottom: 10px;
-  border-bottom: solid 0.5px rgb(206, 205, 205);
+  border-bottom: solid 0.5px #cecdcd;
   font-weight: bold;
 }
 .patient-past-appointments-content, .patient-next-appointments-content {
@@ -14651,7 +14640,7 @@ readers do not read off random characters that represent icons */
 
 .new-appointments {
   width: 100%;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   padding: 10px;
   font-size: 0.85rem;
@@ -14660,7 +14649,7 @@ readers do not read off random characters that represent icons */
 .new-appointments-title {
   font-size: 0.9rem;
   margin-bottom: 10px;
-  border-bottom: solid 0.5px rgb(206, 205, 205);
+  border-bottom: solid 0.5px #cecdcd;
   font-weight: bold;
 }
 .new-appointments .assigned-practicians-list {
@@ -14793,7 +14782,7 @@ readers do not read off random characters that represent icons */
   margin-top: 10px;
   height: 200px;
   overflow: scroll;
-  border: 1px solid rgb(206, 205, 205);
+  border: 1px solid #cecdcd;
   border-radius: 4px;
   padding: 10px;
 }
@@ -14826,7 +14815,7 @@ readers do not read off random characters that represent icons */
 }
 
 .practicians-forward {
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   width: 70%;
   margin: 30px auto 0;
@@ -14886,7 +14875,7 @@ readers do not read off random characters that represent icons */
   width: 30%;
 }
 .practicians__list {
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   width: 70%;
   padding: 5px 10px;
@@ -15065,7 +15054,7 @@ readers do not read off random characters that represent icons */
 .calvinai-discussion__content {
   overflow: scroll;
   font-size: 0.85rem;
-  border-bottom: solid 1px rgb(206, 205, 205);
+  border-bottom: solid 1px #cecdcd;
   height: 80%;
 }
 .calvinai-discussion__stop-btn {
@@ -15078,7 +15067,7 @@ readers do not read off random characters that represent icons */
 .calvinai-discussion__stop-btn button {
   color: #FEFEFE;
   background-color: #3C5A76;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   font-size: 0.8rem;
   padding: 5px 10px;
 }
@@ -15091,7 +15080,7 @@ readers do not read off random characters that represent icons */
   justify-content: space-between;
   align-items: center;
   border-radius: 4px;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 5px 0;
   padding-left: 10px;
@@ -15108,7 +15097,7 @@ readers do not read off random characters that represent icons */
 }
 .calvinai-discussion__card {
   padding: 20px;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   margin-bottom: 10px;
@@ -15140,7 +15129,7 @@ readers do not read off random characters that represent icons */
 .calvinai-chat__content {
   overflow: scroll;
   font-size: 0.85rem;
-  border-bottom: solid 1px rgb(206, 205, 205);
+  border-bottom: solid 1px #cecdcd;
   height: 80%;
 }
 .calvinai-chat__stop-btn {
@@ -15153,7 +15142,7 @@ readers do not read off random characters that represent icons */
 .calvinai-chat__stop-btn button {
   color: #FEFEFE;
   background-color: #3C5A76;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   font-size: 0.8rem;
   padding: 5px 10px;
 }
@@ -15166,7 +15155,7 @@ readers do not read off random characters that represent icons */
   justify-content: space-between;
   align-items: center;
   border-radius: 4px;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 5px 0;
   padding-left: 10px;
@@ -15183,7 +15172,7 @@ readers do not read off random characters that represent icons */
 }
 .calvinai-chat__card {
   padding: 20px;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   margin-bottom: 10px;
@@ -15277,7 +15266,7 @@ readers do not read off random characters that represent icons */
   }
 }
 .window {
-  border: 0.5px solid rgb(206, 205, 205);
+  border: 0.5px solid #cecdcd;
   background-color: #FEFEFE;
   border-radius: 8px;
   z-index: 100;
@@ -15430,7 +15419,7 @@ readers do not read off random characters that represent icons */
   width: 80%;
   font-size: 0.85rem;
   margin: 20px auto;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   padding: 20px;
   border-radius: 4px;
 }
@@ -15466,7 +15455,7 @@ readers do not read off random characters that represent icons */
 .billing-filter {
   width: 80%;
   margin: 20px auto;
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   padding: 20px;
 }
@@ -15633,7 +15622,7 @@ readers do not read off random characters that represent icons */
   margin-right: 10px;
 }
 .reference__form {
-  border: solid 1px rgb(206, 205, 205);
+  border: solid 1px #cecdcd;
   border-radius: 4px;
   padding: 10px;
 }

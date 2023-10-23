@@ -113,7 +113,7 @@ const FamHistoryEvent = ({
 
   return (
     eventInfos && (
-      <tr className="famhistory-event">
+      <tr className="famhistory__event">
         <td>
           {editVisible ? (
             <input
@@ -169,7 +169,7 @@ const FamHistoryEvent = ({
           <em>{toLocalDate(eventInfos.date_created)}</em>
         </td>
         <td>
-          <div className="famhistory-event-btn-container">
+          <div className="famhistory__event-btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

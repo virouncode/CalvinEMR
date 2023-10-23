@@ -15,9 +15,7 @@ const EformsContent = ({ showDocument, datas, isLoading, errMsg }) => {
               .map((eform) => (
                 <li
                   key={eform.id}
-                  onClick={() =>
-                    showDocument(eform.file.url, document.file.mime)
-                  }
+                  onClick={() => showDocument(eform.file.url, eform.file.mime)}
                   className="topic-content__link"
                 >
                   - {eform.name} ({toLocalDate(eform.date_created)})

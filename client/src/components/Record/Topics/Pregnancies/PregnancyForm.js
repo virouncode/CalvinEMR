@@ -94,7 +94,7 @@ const PregnancyForm = ({
               : ""
           }
           onChange={handleChange}
-          className="pregnancies-form-input2"
+          className="pregnancies-form__input2"
         />
       </td>
       <td>
@@ -104,7 +104,7 @@ const PregnancyForm = ({
           value={formDatas.premises}
           onChange={handleChange}
           autoComplete="off"
-          className="pregnancies-form-input1"
+          className="pregnancies-form__input1"
         />
       </td>
       <td>
@@ -122,7 +122,7 @@ const PregnancyForm = ({
             value={formDatas.term_nbr_of_weeks}
             onChange={handleChange}
             autoComplete="off"
-            className="pregnancies-form-input3"
+            className="pregnancies-form__input3"
           />
           w
           <input
@@ -131,7 +131,7 @@ const PregnancyForm = ({
             value={formDatas.term_nbr_of_days}
             onChange={handleChange}
             autoComplete="off"
-            className="pregnancies-form-input3"
+            className="pregnancies-form__input3"
           />
           d
         </div>

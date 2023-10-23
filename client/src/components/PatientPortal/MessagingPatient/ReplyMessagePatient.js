@@ -1,7 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { postPatientRecordPatient } from "../../../api/fetchRecords";
 import axiosXanoPatient from "../../../api/xanoPatient";
 import useAuth from "../../../hooks/useAuth";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
@@ -24,13 +23,20 @@ const ReplyMessagePatient = ({
   };
   const handleSend = async (e) => {
     try {
+      const attachmentsToPost = attachments.map((attachment) => {
+        return { ...attachment, date_created: Date.now() };
+      });
       let attach_ids = (
-        await postPatientRecordPatient(
+        await axiosXanoPatient.post(
           "/attachments",
-          user.id,
-          auth.authToken,
           {
-            attachments_array: attachments,
+            attachments_array: attachmentsToPost,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.authToken}`,
+            },
           }
         )
       ).data;
@@ -70,7 +76,7 @@ const ReplyMessagePatient = ({
       socket.emit("message", {
         route: "MESSAGES INBOX EXTERNAL",
         action: "create",
-        content: { data: { id: response.data.id, ...replyMessage } },
+        content: { data: response.data },
       });
       setReplyVisible(false);
       setCurrentMsgId(0);
@@ -121,6 +127,7 @@ const ReplyMessagePatient = ({
             }
           );
           if (!response.data.type) response.data.type = "document";
+          console.log("userId", typeof user.id, user.id);
           setAttachments([
             ...attachments,
             {
@@ -128,6 +135,7 @@ const ReplyMessagePatient = ({
               alias: file.name,
               date_created: Date.now(),
               created_by_id: user.id,
+              created_by_user_type: "patient",
             },
           ]); //meta, mime, name, path, size, type
           setIsLoadingFile(false);

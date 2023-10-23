@@ -1,11 +1,11 @@
 .pharmacies {
-    &-title {
+    &__title {
         font-size: 1.2rem;
         margin-top: 60px;
         margin-bottom: 30px;
         text-align: center;
     }
-    &-err {
+    &__err {
         padding : 10px 20px;
         font-size: 0.9rem;
         width : 50%;
@@ -15,7 +15,7 @@
         border-radius: 4px;
         text-align: center;
     }
-    &-table {
+    &__table {
         table-layout: fixed;
         min-width:100%;
         border-collapse: collapse;
@@ -32,7 +32,7 @@
             }
         }
     }
-    &-item, &-form {
+    &__item, &__form {
         td {
             text-align: center;
             border: solid 1px black;
@@ -46,58 +46,56 @@
                 width: auto;
             }
         }
-        &-btn-container {
-            display: flex;
-            justify-content: space-around;
-        } 
     }
-    &-btn-container {
+    &__item-btn-container {
+        display: flex;
+        justify-content: space-around;
+    } 
+    &__btn-container {
         display: flex;
         justify-content: space-between;
         width: 240px;
         margin: 20px auto 0;
     }
-    
-    &-list {
-        &-title {
-            margin: 40px 0 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            button {
-                margin-left: 20px;
-            }
+}    
+.pharmacies-list {
+    &__title {
+        margin: 40px 0 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        button {
+            margin-left: 20px;
         }
-        &-table {
-            table-layout: fixed;
-            min-width:100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-            thead {
-                background-color: $blue;
-                border: solid 1px $black;
-            }
-            th {
-                min-width: 120px;
-                padding: 2px 5px;
-                border: solid 1px $black;
-                text-decoration: underline;
-                cursor: pointer;
-            }
+    }
+    &__table {
+        table-layout: fixed;
+        min-width:100%;
+        border-collapse: collapse;
+        font-size: 0.8rem;
+        thead {
+            background-color: $blue;
+            border: solid 1px $black;
         }
-        &-item {
-            td {
-                text-align: center;
-                border: solid 1px $black;
-                padding: 2px 5px;
-                word-break: break-word;
-                input,select {
-                    width:100%;
-                }
-                input[type="submit"]{
-                    width: auto;
-                }
+        th {
+            min-width: 120px;
+            padding: 2px 5px;
+            border: solid 1px $black;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+    &__item {
+        td {
+            text-align: center;
+            border: solid 1px $black;
+            padding: 2px 5px;
+            word-break: break-word;
+            input,select {
+                width:100%;
+            }
+            input[type="submit"]{
+                width: auto;   
             }
         }
     }
-
 }

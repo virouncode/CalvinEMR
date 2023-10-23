@@ -146,7 +146,7 @@ const VaccineCellItemDouble = ({
   };
   return (
     <>
-      <div className="vaccines-item-cell">
+      <div className="vaccines-item__cell">
         <input
           type="checkbox"
           onChange={handleCheckFirstDose}
@@ -155,7 +155,7 @@ const VaccineCellItemDouble = ({
           disabled={!editable}
         />
         {vaccineInfos.length && vaccineInfos[0]?.vaccine_date ? (
-          <label className="vaccines-item-cell-checked">
+          <label className="vaccines-item__checked">
             {toLocalDate(vaccineInfos[0].vaccine_date)}{" "}
             {getVaccinationLogo(type)}
           </label>
@@ -214,7 +214,7 @@ const VaccineCellItemDouble = ({
           />
         )}
       </div>
-      <div className="vaccines-item-cell">
+      <div className="vaccines-item__cell">
         {name !== "Tdap_pregnancy" &&
           name !== "Inf" &&
           name !== "Td_booster" && (
@@ -227,7 +227,7 @@ const VaccineCellItemDouble = ({
                 disabled={!editable}
               />
               {vaccineInfos.length === 2 && vaccineInfos[1]?.vaccine_date ? (
-                <label className="vaccines-item-cell-checked">
+                <label className="vaccines-item__checked">
                   {toLocalDate(vaccineInfos[1].vaccine_date)}{" "}
                   {getVaccinationLogo(type)}
                 </label>

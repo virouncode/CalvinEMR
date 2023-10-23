@@ -127,16 +127,16 @@ const SocHistoryPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="sochistory-err">{errMsg}</p>
+          <p className="sochistory__err">{errMsg}</p>
         ) : formDatas ? (
           <>
             <div className="sochistory-card">
-              <div className="sochistory-card-header">
+              <div className="sochistory-card__header">
                 <h1>
                   Patient social history{" "}
                   <i className="fa-solid fa-champagne-glasses"></i>
                 </h1>
-                <div className="sochistory-card-header-btns">
+                <div className="sochistory-card__btns">
                   {!editVisible ? (
                     <button onClick={() => setEditVisible((v) => !v)}>
                       Edit
@@ -147,9 +147,9 @@ const SocHistoryPU = ({
                   <button onClick={handleClose}>Close</button>
                 </div>
               </div>
-              <form className="sochistory-card-form">
+              <form className="sochistory-form">
                 {errMsgPost && (
-                  <div className="sochistory-card-form-err">{errMsgPost}</div>
+                  <div className="sochistory-form__err">{errMsgPost}</div>
                 )}
                 <p>
                   <label>Occupations: </label>

@@ -98,7 +98,7 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
 
   return (
     itemInfos && (
-      <tr className="risk-item">
+      <tr className="risk__item">
         <td>
           {editVisible ? (
             <input
@@ -125,7 +125,7 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
           <em>{toLocalDate(itemInfos.date_created)}</em>
         </td>
         <td>
-          <div className="risk-item-btn-container">
+          <div className="risk__item-btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

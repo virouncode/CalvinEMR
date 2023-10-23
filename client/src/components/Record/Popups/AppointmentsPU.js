@@ -52,19 +52,19 @@ const AppointmentsPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="appointments-err">{errMsg}</p>
+          <p className="appointments__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="appointments-title">
+              <h1 className="appointments__title">
                 Patient appointments{" "}
                 <i className="fa-regular fa-calendar-check"></i>
               </h1>
               {errMsgPost && (
-                <div className="appointments-err">{errMsgPost}</div>
+                <div className="appointments__err">{errMsgPost}</div>
               )}
 
-              <table className="appointments-table">
+              <table className="appointments__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("host_id")}>Host</th>
@@ -129,7 +129,7 @@ const AppointmentsPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="appointments-btn-container">
+              <div className="appointments__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Appointment
                 </button>

@@ -51,18 +51,18 @@ const PregnanciesPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="pregnancies-err">{errMsg}</p>
+          <p className="pregnancies__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="pregnancies-title">
+              <h1 className="pregnancies__title">
                 Patient pregnancies{" "}
                 <i className="fa-solid fa-person-pregnant"></i>
               </h1>
               {errMsgPost && (
-                <div className="pregnancies-err">{errMsgPost}</div>
+                <div className="pregnancies__err">{errMsgPost}</div>
               )}
-              <table className="pregnancies-table">
+              <table className="pregnancies__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("description")}>
@@ -127,7 +127,7 @@ const PregnanciesPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="pregnancies-btn-container">
+              <div className="pregnancies__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Event
                 </button>

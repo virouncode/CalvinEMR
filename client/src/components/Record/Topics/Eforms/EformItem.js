@@ -34,9 +34,10 @@ const EformItem = ({ item, showDocument }) => {
   };
 
   return (
-    <tr className="electronic-item">
+    <tr className="eforms__item">
+      {console.log("file", item.file)}
       <td
-        className="electronic-item-link"
+        className="eforms__link"
         onClick={() => showDocument(item.file.url, item.file.mime)}
       >
         {item.name}
@@ -50,7 +51,7 @@ const EformItem = ({ item, showDocument }) => {
         <em>{toLocalDate(item.date_created)}</em>
       </td>
       <td>
-        <div className="electronic-item-btn-container">
+        <div className="eforms__item-btn-container">
           <button>Fax</button>
           <button onClick={handleDeleteClick}>Delete</button>
         </div>

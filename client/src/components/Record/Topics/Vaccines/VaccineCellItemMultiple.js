@@ -6,22 +6,18 @@ import VaccineHistory from "./VaccineHistory";
 const VaccineCellItemMultiple = ({
   age,
   name,
-  type,
+  vaccineInfos,
   datas,
   fetchRecord,
   editable,
   setEditable,
-  vaccineInfos,
-  patientInfos,
   setErrMsgPost,
 }) => {
   const [formVisible, setFormVisible] = useState(false);
   const [historyVisible, setHistoryVisible] = useState(false);
-  const [scrollPosition, setScrollPosition] = useState([0, 0]);
 
   const handleAddClick = (e) => {
     setErrMsgPost("");
-    setScrollPosition([e.nativeEvent.view.scrollX, e.nativeEvent.view.scrollY]);
     setFormVisible((v) => !v);
     setEditable(false);
   };
@@ -32,7 +28,7 @@ const VaccineCellItemMultiple = ({
   };
 
   return (
-    <div className="vaccines-item-cell">
+    <div className="vaccines-item__cell">
       {name === "Inf" ? (
         <label>
           Every year in the fall{" "}
@@ -70,7 +66,7 @@ const VaccineCellItemMultiple = ({
       <button
         type="button"
         onClick={handleAddClick}
-        className="vaccines-item-cell-multiple-btn"
+        className="vaccines-item__cell-multiple-btn"
         disabled={!editable}
       >
         {"+"}
@@ -78,7 +74,7 @@ const VaccineCellItemMultiple = ({
       <button
         type="button"
         onClick={handleHistoryClick}
-        className="vaccines-item-cell-multiple-btn"
+        className="vaccines-item__cell-multiple-btn"
         disabled={!editable}
       >
         {"..."}
@@ -87,7 +83,6 @@ const VaccineCellItemMultiple = ({
         <VaccineFormMultiple
           setFormVisible={setFormVisible}
           setEditable={setEditable}
-          scrollPosition={scrollPosition}
           name={name}
           age={age}
           datas={datas}

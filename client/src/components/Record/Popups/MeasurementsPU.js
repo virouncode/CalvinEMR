@@ -21,21 +21,6 @@ const MeasurementsPU = ({
   const [columnToSort, setColumnToSort] = useState("date_created");
   const direction = useRef(false);
 
-  //STYLE
-  const DIALOG_CONTAINER_STYLE = {
-    height: "100vh",
-    width: "100vw",
-    fontFamily: "Arial",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    top: "0px",
-    left: "0px",
-    background: "rgba(0,0,0,0.8)",
-    zIndex: "100000",
-  };
-
   //HANDLERS
   const handleSort = (columnName) => {
     direction.current = !direction.current;
@@ -66,18 +51,18 @@ const MeasurementsPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="measurements-err">{errMsg}</p>
+          <p className="measurements__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="measurements-title">
+              <h1 className="measurements__title">
                 Patient measurements{" "}
                 <i className="fa-solid fa-ruler-combined"></i>
               </h1>
               {errMsgPost && (
-                <div className="measurements-err">{errMsgPost}</div>
+                <div className="measurements__err">{errMsgPost}</div>
               )}
-              <table className="measurements-table">
+              <table className="measurements__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("height_cm")}>Height(cm)</th>
@@ -157,7 +142,7 @@ const MeasurementsPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="measurements-btn-container">
+              <div className="measurements__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Measurement
                 </button>
@@ -169,7 +154,7 @@ const MeasurementsPU = ({
       ) : (
         <CircularProgress />
       )}
-      <ConfirmGlobal containerStyle={DIALOG_CONTAINER_STYLE} />
+      <ConfirmGlobal />
       <ToastContainer
         enableMultiContainer
         containerId={"B"}

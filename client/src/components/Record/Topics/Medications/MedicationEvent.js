@@ -123,8 +123,8 @@ const MedicationEvent = ({
       <tr
         className={
           event.active
-            ? "medications-event"
-            : "medications-event medications-event--notactive"
+            ? "medications__event"
+            : "medications__event medications__event--notactive"
         }
       >
         <td>
@@ -248,7 +248,7 @@ const MedicationEvent = ({
         </td>
         {user.title === "Doctor" && (
           <td>
-            <div className="medications-event-btn-container">
+            <div className="medications__event-btn-container">
               {!editVisible ? (
                 <button onClick={handleEditClick}>Edit</button>
               ) : (

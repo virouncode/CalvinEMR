@@ -1,5 +1,4 @@
 import axiosXano from "../api/xano";
-import axiosXanoPatient from "../api/xanoPatient";
 import { createChartNbr } from "../utils/createChartNbr";
 
 export const getPatientRecord = async (
@@ -20,6 +19,61 @@ export const getPatientRecord = async (
       }
     );
     return response?.data;
+  } catch (err) {
+    if (err.name !== "CanceledError") throw err;
+  }
+};
+
+export const postPatientRecord = async (
+  tableName,
+  authId,
+  authToken,
+  datas,
+  socket = null,
+  topic = null,
+  abortController = null
+) => {
+  if (tableName !== "/progress_notes_log") {
+    //if it's the log we don't want to change the date of creation, for attachments this is assured by the bulk add
+    datas.created_by_id = authId;
+    datas.date_created = Date.now();
+  }
+  try {
+    const response = await axiosXano.post(tableName, datas, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      ...(abortController && { signal: abortController.signal }),
+    });
+    if (socket && topic) {
+      if (topic === "PATIENTS") {
+        response.data.chart_nbr = createChartNbr(
+          datas.date_of_birth,
+          datas.gender_identification,
+          response.data.id
+        );
+        socket.emit("message", {
+          route: topic,
+          action: "create",
+          content: { data: response.data },
+        });
+      } else {
+        socket.emit("message", {
+          route: topic,
+          action: "create",
+          content: { data: response.data },
+        });
+        if (topic === "APPOINTMENTS") {
+          socket.emit("message", {
+            route: "EVENTS",
+            action: "create",
+            content: { data: response.data },
+          });
+        }
+      }
+    }
+    return response;
   } catch (err) {
     if (err.name !== "CanceledError") throw err;
   }
@@ -68,87 +122,6 @@ export const putPatientRecord = async (
         });
       }
     }
-  } catch (err) {
-    if (err.name !== "CanceledError") throw err;
-  }
-};
-
-export const postPatientRecord = async (
-  tableName,
-  authId,
-  authToken,
-  datas,
-  socket = null,
-  topic = null,
-  abortController = null
-) => {
-  if (tableName !== "/progress_notes_log") {
-    //if it's the log we don't want to change the date of creation, for attachments this is assured by the bulk add
-    datas.created_by_id = authId;
-    datas.date_created = Date.now();
-  }
-  try {
-    const response = await axiosXano.post(tableName, datas, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-      ...(abortController && { signal: abortController.signal }),
-    });
-    if (socket && topic) {
-      if (topic === "PATIENTS") {
-        datas.chart_nbr = createChartNbr(
-          datas.date_of_birth,
-          datas.gender_identification,
-          response.data.id
-        );
-        socket.emit("message", {
-          route: topic,
-          action: "create",
-          content: { data: { id: response.data.id, ...datas } },
-        });
-      } else {
-        socket.emit("message", {
-          route: topic,
-          action: "create",
-          content: { data: { id: response.data.id, ...datas } },
-        });
-        if (topic === "APPOINTMENTS") {
-          socket.emit("message", {
-            route: "EVENTS",
-            action: "create",
-            content: { data: { id: response.data.id, ...datas } },
-          });
-        }
-      }
-    }
-    return response;
-  } catch (err) {
-    if (err.name !== "CanceledError") throw err;
-  }
-};
-
-export const postPatientRecordPatient = async (
-  tableName,
-  authId,
-  authToken,
-  datas,
-  abortController = null
-) => {
-  if (tableName !== "/progress_notes_log") {
-    //if it's the log we don't want to change the date of creation, for attachments this is assured by the bulk add
-    datas.created_by_id = authId;
-    datas.date_created = Date.now();
-  }
-
-  try {
-    return await axiosXanoPatient.post(tableName, datas, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-      ...(abortController && { signal: abortController.signal }),
-    });
   } catch (err) {
     if (err.name !== "CanceledError") throw err;
   }

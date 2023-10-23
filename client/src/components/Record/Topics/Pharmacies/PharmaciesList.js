@@ -63,13 +63,13 @@ const PharmaciesList = ({
 
   return (
     <>
-      <div className="pharmacies-list-title">
+      <div className="pharmacies-list__title">
         Pharmacies database
         <button onClick={handleAddNewClick}>
           Add a new Pharmacy to database
         </button>
       </div>
-      <table className="pharmacies-list-table">
+      <table className="pharmacies-list__table">
         <thead>
           <tr>
             <th onClick={() => handleSort("name")}>Name</th>

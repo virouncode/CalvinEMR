@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
+import logo from "../../../assets/img/logo.png";
 import useAuth from "../../../hooks/useAuth";
 import {
   toLocalDate,
@@ -171,11 +172,12 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
         )} ${toLocalDateAndTimeWithSeconds(new Date())}`,
         date_created: Date.now(),
         created_by_id: user.id,
+        created_by_user_type: "staff",
       },
     ];
 
     try {
-      await postPatientRecord(
+      const response = await postPatientRecord(
         "/documents",
         user.id,
         auth.authToken,
@@ -183,17 +185,15 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
         socket,
         "DOCUMENTS"
       );
+      socket.emit("message", {
+        route: "DOCMAILBOX",
+        action: "create",
+        content: { data: response.data },
+      });
       const attach_ids = (
-        await postPatientRecord(
-          "/attachments",
-          user.id,
-          auth.authToken,
-          {
-            attachments_array: datasAttachment,
-          },
-          socket,
-          "ATTACHMENTS"
-        )
+        await postPatientRecord("/attachments", user.id, auth.authToken, {
+          attachments_array: datasAttachment,
+        })
       ).data;
 
       await postPatientRecord(
@@ -243,7 +243,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
 
   return (
     <>
-      <div className="prescription-actions">
+      <div className="prescription__actions">
         <button onClick={handlePrint} disabled={progress}>
           Print
         </button>
@@ -260,14 +260,13 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
         />
         {progress && <CircularProgress />}
       </div>
-      <div ref={printRef} className="prescription-page">
-        <div className="prescription-container">
-          <div className="prescription-header">
-            <div className="prescription-logo">
-              <div className="prescription-logo-img"></div>
-              {/* <img src={logo} alt="CalvinEMR-logo" width="200px" /> */}
+      <div ref={printRef} className="prescription__page">
+        <div className="prescription__container">
+          <div className="prescription__header">
+            <div className="prescription__logo">
+              <img src={logo} alt="CalvinEMR-logo" />
             </div>
-            <div className="prescription-doctor-infos">
+            <div className="prescription__doctor-infos">
               <p>
                 Prescriber: Dr. {formatName(user.name)} (LIC. {user.licence_nbr}
                 )
@@ -294,8 +293,8 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
               </p>
             </div>
           </div>
-          <div className="prescription-subheader">
-            <div className="prescription-patient-infos">
+          <div className="prescription__subheader">
+            <div className="prescription__patient-infos">
               <p>
                 Patient:{" "}
                 {patientInfos.gender_identification.toLowerCase() === "male"
@@ -312,13 +311,13 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
                 )}
               </p>
             </div>
-            <p className="prescription-date">
+            <p className="prescription__date">
               Date emitted: {toLocalDate(new Date())}
             </p>
           </div>
-          <div className="prescription-body">
-            <p className="prescription-body-title">Prescription</p>
-            <div className="prescription-body-content">
+          <div className="prescription__body">
+            <p className="prescription__body-title">Prescription</p>
+            <div className="prescription__body-content">
               {medsRx.map((med) => (
                 <p key={med.id}>
                   {med.name} {med.dose ? `, ${med.dose}` : ""}{" "}
@@ -335,9 +334,9 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
               </p>
             </div>
           </div>
-          <div className="prescription-sign">
+          <div className="prescription__sign">
             <p>Sign: </p>
-            <div className="prescription-sign-image">
+            <div className="prescription__sign-image">
               <img
                 src={user.sign?.url}
                 alt="doctor sign"
@@ -347,7 +346,7 @@ const PrescriptionPU = ({ medsRx, patientInfos }) => {
           </div>
         </div>
       </div>
-      <div className="prescription-add">
+      <div className="prescription__add">
         <label>Additional Notes: </label>
         <textarea
           name="addNotes"

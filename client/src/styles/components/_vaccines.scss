@@ -1,15 +1,15 @@
 .vaccines {
-    &-err {
+    &__err {
         padding : 10px 20px;
         font-size: 0.9rem;
         width : 50%;
-        margin: auto 10px;
+        margin: 0 auto 10px;
         color : red;
         background-color:rgba(255, 0, 0, 0.403);
         border-radius: 4px;
         text-align: center;
     }
-    &-title {
+    &__title {
         font-size: 1.2rem;
         margin-top: 50px;
         margin-bottom: 10px;
@@ -19,7 +19,7 @@
             margin-left: 5px;
         }
     }
-    &-table {
+    &__table {
         padding:0 10px;
         table-layout: fixed;
         border-collapse: collapse;
@@ -32,88 +32,89 @@
             border: solid 1px $black;
         }
     }
-    &-obs {
-        margin-top: 20px;
+}
+.vaccines-obs {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 15px;
+    &__title {
+        padding: 0;
+        margin: 0;
+    }
+    &__content {
+        width: 100%;
+        height: 200px;
+        outline: solid 1px $black;
+        border: none;
+        padding: 10px;
+        font-size: 0.8rem;
+        margin: 10px 0 0;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+    textarea {
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+        margin: 10px 0 0;
+        box-sizing: border-box;
+        font-family: $font1, sans-serif;
+        resize: none;
+    }
+    &__btn-container {
+        margin-top: 10px;
+        text-align: end;
+        width: 100%;
+    }
+}
+
+.vaccines-item {
+    td {
+        text-align: center;
+        border: solid 1px $black;
+        padding:2px 5px;
+        word-wrap: break-word;
+    }
+    &__empty {
+        background: $grey;
+    }
+    &__cell {
         display: flex;
-        flex-direction: column;
-        width: 50%;
-        padding: 15px;
-        &-title {
-            padding: 0;
-            margin: 0;
+        font-size: 0.7rem;
+        align-items: center;
+        justify-content: flex-start;
+        label {
+            margin-left: 3px;
         }
-        &-content {
-            width: 100%;
-            height: 200px;
-            outline: solid 1px $black;
-            border: none;
-            padding: 10px;
-            font-size: 0.8rem;
-            margin: 10px 0 0;
-            border-radius: 3px;
-            box-sizing: border-box;
-        }
-        textarea {
-            width: 100%;
-            height: 200px;
-            padding: 10px;
-            margin: 10px 0 0;
-            box-sizing: border-box;
-            font-family: $font1, sans-serif;
-            resize: none;
-        }
-        &-btn-container {
-            margin-top: 10px;
-            text-align: end;
-            width: 100%;
+        &-multiple-btn {
+            width: 20px;
+            height: 20px;
+            margin-left: 5px;
+            padding:0;
         }
     }
-    &-item {
-        td {
-            text-align: center;
-            border: solid 1px $black;
-            padding:2px 5px;
-            word-wrap: break-word;
-        }
-        &-empty {
-            background: $grey;
-        }
-        &-cell {
-            display: flex;
-            font-size: 0.7rem;
-            align-items: center;
-            justify-content: flex-start;
-            label {
-                margin-left: 3px;
-            }
-            &-checked {
-                color: forestgreen;
-            }
-            &-multiple-btn {
-                width: 20px;
-                height: 20px;
-                margin-left: 5px;
-                padding:0;
-            }
-            form {
-                label {
-                    font-size: 0.8rem;
-                }
-            }
-            &-form-row1 {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin: 10px auto;
-                width: 90%;
-            }
-            &-form-row2 {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin: 20px auto 0;
-                width: 45%;
-            }
-        }
+    &__checked {
+        color: forestgreen;
+    }
+}
+.vaccines-form {
+    label {
+        font-size: 0.8rem;
+    }
+    &__row1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px auto;
+        width: 90%;
+    }
+    &__row2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px auto 0;
+        width: 45%;
     }
 }

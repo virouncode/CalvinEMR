@@ -204,7 +204,7 @@ const MeasurementEvent = ({
 
   return (
     eventInfos && (
-      <tr className="measurements-event">
+      <tr className="measurements__event">
         <td>
           {editVisible ? (
             <input
@@ -333,7 +333,7 @@ const MeasurementEvent = ({
           <em>{toLocalDate(eventInfos.date_created)}</em>
         </td>
         <td>
-          <div className="measurements-event-btn-container">
+          <div className="measurements__event-btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

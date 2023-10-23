@@ -161,7 +161,7 @@ const RelationshipItem = ({
     itemInfos && (
       <tr className="relationships-item">
         <td>
-          <div className="relationships-item-relationship">
+          <div className="relationships-item__relationship">
             {editVisible ? (
               <RelationshipList
                 value={itemInfos.relationship}
@@ -198,7 +198,7 @@ const RelationshipItem = ({
           <em>{toLocalDate(itemInfos.date_created)}</em>
         </td>
         <td>
-          <div className="relationships-item-btn-container">
+          <div className="relationships-item__btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

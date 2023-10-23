@@ -2,6 +2,7 @@ import React from "react";
 import { toLocalDate } from "../../../../utils/formatDates";
 
 const VaccineHistory = ({ vaccineInfos, name }) => {
+  console.log(name, vaccineInfos);
   const HISTORY_STYLE = {
     border: "solid 1px black",
     position: "absolute",

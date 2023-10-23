@@ -62,13 +62,13 @@ const FamilyDoctorsList = ({
 
   return (
     <>
-      <div className="doctors-list-title">
+      <div className="doctors-list__title">
         Doctors database
         <button onClick={handleAddNewClick}>
           Add a new doctor to database
         </button>
       </div>
-      <table className="doctors-list-table">
+      <table className="doctors-list__table">
         <thead>
           <tr>
             <th onClick={() => handleSort("name")}>Name</th>

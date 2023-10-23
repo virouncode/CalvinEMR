@@ -51,15 +51,15 @@ const AllergiesPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="allergies-err">{errMsg}</p>
+          <p className="allergies__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="allergies-title">
+              <h1 className="allergies__title">
                 Patient allergies <i className="fa-solid fa-hand-dots"></i>
               </h1>
-              {errMsgPost && <div className="allergies-err">{errMsgPost}</div>}
-              <table className="allergies-table">
+              {errMsgPost && <div className="allergies__err">{errMsgPost}</div>}
+              <table className="allergies__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("allergy")}>Allergy</th>
@@ -119,7 +119,7 @@ const AllergiesPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="allergies-btn-container">
+              <div className="allergies__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Allergy
                 </button>

@@ -123,7 +123,7 @@ const FamilyDoctorItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
   };
   return (
     itemInfos && (
-      <tr className="doctors-item">
+      <tr className="doctors-list__item">
         <td>{itemInfos.name}</td>
         <td>
           {editVisible ? (
@@ -266,7 +266,7 @@ const FamilyDoctorItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
           <em>{toLocalDate(itemInfos.date_created)}</em>
         </td>
         <td>
-          <div className="doctors-item-btn-container">
+          <div className="doctors__item-btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

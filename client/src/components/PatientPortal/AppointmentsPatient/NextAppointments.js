@@ -76,16 +76,20 @@ Cellphone: ${user.demographics.cell_phone}`,
             date_created: Date.now(),
             type: "External",
           };
-          await axiosXanoPatient.post("/messages_external", message, {
-            headers: {
-              Authorization: `Bearer ${auth.authToken}`,
-              "Content-Type": "application/json",
-            },
-          });
+          const response = await axiosXanoPatient.post(
+            "/messages_external",
+            message,
+            {
+              headers: {
+                Authorization: `Bearer ${auth.authToken}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
           socket.emit("message", {
             route: "MESSAGES INBOX EXTERNAL",
             action: "create",
-            content: { data: message },
+            content: { data: response.data },
           });
         }
         window.alert(

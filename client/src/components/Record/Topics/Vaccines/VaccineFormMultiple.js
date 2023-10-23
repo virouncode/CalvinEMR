@@ -7,7 +7,6 @@ import { toLocalDate } from "../../../../utils/formatDates";
 const VaccineFormMultiple = ({
   setFormVisible,
   setEditable,
-  scrollPosition,
   name,
   age,
   datas,
@@ -28,18 +27,19 @@ const VaccineFormMultiple = ({
   //STYLE
   const FORM_STYLE = {
     position: "absolute",
-    top: (300 - 50 + scrollPosition[1]).toString(),
-    left: (600 - 150 + scrollPosition[0]).toString(),
+    top: 700 / 2,
+    left: 1400 / 2,
+    transform: "translate(-50%,-50%)",
     background: "#FEFEFE",
     width: "300px",
     height: "100px",
     zIndex: "1000",
-    border: "solid 1px black",
+    border: "solid 1px #cecdcd",
+    boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
     borderRadius: "4px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    fontFamily: "Arial",
   };
 
   //HANDLERS
@@ -98,8 +98,12 @@ const VaccineFormMultiple = ({
   };
   return (
     <div style={FORM_STYLE}>
-      <form style={{ width: "100%" }} onSubmit={handleSubmit}>
-        <div className="vaccines-item-cell-form-row1">
+      <form
+        style={{ width: "100%" }}
+        onSubmit={handleSubmit}
+        className="vaccines-form"
+      >
+        <div className="vaccines-form__row1">
           {" "}
           <label>Date of vaccination: </label>
           <input
@@ -113,7 +117,7 @@ const VaccineFormMultiple = ({
             required
           />
         </div>
-        <div className="vaccines-item-cell-form-row2">
+        <div className="vaccines-form__row2">
           {" "}
           <input type="submit" value="Save" />
           <button type="button" onClick={handleCancel}>

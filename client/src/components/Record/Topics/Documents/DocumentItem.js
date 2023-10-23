@@ -77,9 +77,9 @@ const DocumentItem = ({ item, showDocument, setErrMsgPost }) => {
   };
 
   return (
-    <tr className="documents-item">
+    <tr className="documents__item">
       <td
-        className="documents-item-link"
+        className="documents__link"
         onClick={() => showDocument(item.file.url, item.file.mime)}
         style={{
           fontWeight: item.acknowledged ? "normal" : "bold",

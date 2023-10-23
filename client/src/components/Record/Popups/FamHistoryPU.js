@@ -51,16 +51,18 @@ const FamHistoryPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="famhistory-err">{errMsg}</p>
+          <p className="famhistory__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="famhistory-title">
+              <h1 className="famhistory__title">
                 Patient family history{" "}
                 <i className="fa-solid fa-people-roof"></i>
               </h1>
-              {errMsgPost && <div className="famhistory-err">{errMsgPost}</div>}
-              <table className="famhistory-table">
+              {errMsgPost && (
+                <div className="famhistory__err">{errMsgPost}</div>
+              )}
+              <table className="famhistory__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("description")}>Event</th>
@@ -124,7 +126,7 @@ const FamHistoryPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="famhistory-btn-container">
+              <div className="famhistory__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Event
                 </button>

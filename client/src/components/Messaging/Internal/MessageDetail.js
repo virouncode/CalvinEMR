@@ -217,6 +217,7 @@ const MessageDetail = ({
         )} (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
         date_created: Date.now(),
         created_by_id: user.id,
+        created_by_user_type: "staff",
       },
     ];
 
@@ -262,7 +263,7 @@ const MessageDetail = ({
   const handleAddAllAttachments = async () => {
     try {
       for (const attachment of attachments) {
-        await postPatientRecord(
+        const response = await postPatientRecord(
           "/documents",
           user.id,
           auth.authToken,
@@ -275,6 +276,11 @@ const MessageDetail = ({
           socket,
           "DOCUMENTS"
         );
+        socket.emit("message", {
+          route: "DOCMAILBOX",
+          action: "create",
+          content: { data: response.data },
+        });
       }
       toast.success("Attachments added successfully", { containerId: "A" });
     } catch (err) {

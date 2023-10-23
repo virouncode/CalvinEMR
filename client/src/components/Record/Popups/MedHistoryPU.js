@@ -51,16 +51,18 @@ const MedHistoryPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="medhistory-err">{errMsg}</p>
+          <p className="medhistory__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="medhistory-title">
+              <h1 className="medhistory__title">
                 Patient medical history{" "}
                 <i className="fa-solid fa-laptop-medical"></i>
               </h1>
-              {errMsgPost && <div className="medhistory-err">{errMsgPost}</div>}
-              <table className="medhistory-table">
+              {errMsgPost && (
+                <div className="medhistory__err">{errMsgPost}</div>
+              )}
+              <table className="medhistory__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("ongoing")}>Ongoing</th>
@@ -157,7 +159,7 @@ const MedHistoryPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="medhistory-btn-container">
+              <div className="medhistory__btn-container">
                 <button onClick={handleAdd} disabled={addVisible}>
                   Add Event
                 </button>

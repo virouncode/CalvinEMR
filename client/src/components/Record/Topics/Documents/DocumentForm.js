@@ -62,7 +62,7 @@ const DocumentForm = ({
       socket.emit("message", {
         route: "DOCMAILBOX",
         action: "create",
-        content: { data: { id: response.data.id, ...datasToPost } },
+        content: { data: response.data },
       });
 
       editCounter.current -= 1;
@@ -121,9 +121,9 @@ const DocumentForm = ({
   };
 
   return (
-    <div className="documents-form">
-      <form className="documents-form-content" onSubmit={handleSubmit}>
-        <div className="documents-form-content-row">
+    <div className="documents__form">
+      <form className="documents__content" onSubmit={handleSubmit}>
+        <div className="documents__row">
           <label>Description</label>
           <input
             name="description"
@@ -133,7 +133,7 @@ const DocumentForm = ({
             autoComplete="off"
           />
         </div>
-        <div className="documents-form-content-row">
+        <div className="documents__row">
           <label>Upload document</label>
           <input
             name="file"
@@ -143,10 +143,10 @@ const DocumentForm = ({
             accept=".jpeg, .jpg, .png, .gif, .tif, .pdf, .svg, .mp3, .aac, .aiff, .flac, .ogg, .wma, .wav, .mov, .mp4, .avi, .wmf, .flv, .doc, .docm, .docx, .txt, .csv, .xls, .xlsx, .ppt, .pptx"
           />
         </div>
-        <div className="documents-form-content-row">
+        <div className="documents__row">
           {!saveDisabled && <input type="submit" value="Save" />}
         </div>
-        <div className="documents-form-content-row">
+        <div className="documents__row">
           {isLoadingFile && (
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}

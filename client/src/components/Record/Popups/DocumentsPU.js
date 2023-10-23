@@ -52,15 +52,15 @@ const DocumentsPU = ({
     <>
       {!isLoading ? (
         errMsg ? (
-          <p className="documents-err">{errMsg}</p>
+          <p className="documents__err">{errMsg}</p>
         ) : (
           datas && (
             <>
-              <h1 className="documents-title">
+              <h1 className="documents__title">
                 Patient documents <i className="fa-regular fa-folder"></i>
               </h1>
-              {errMsgPost && <div className="documents-err">{errMsgPost}</div>}
-              <table className="documents-table">
+              {errMsgPost && <div className="documents__err">{errMsgPost}</div>}
+              <table className="documents__table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort("description")}>
@@ -145,7 +145,7 @@ const DocumentsPU = ({
                         ))}
                 </tbody>
               </table>
-              <div className="documents-btn-container">
+              <div className="documents__btn-container">
                 <button disabled={addVisible} onClick={handleAdd}>
                   Add document
                 </button>

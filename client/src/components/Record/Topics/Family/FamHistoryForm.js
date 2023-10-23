@@ -74,7 +74,7 @@ const FamHistoryForm = ({
   };
 
   return (
-    <tr className="famhistory-form">
+    <tr className="famhistory__form">
       <td>
         <input
           name="description"

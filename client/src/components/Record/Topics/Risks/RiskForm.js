@@ -59,7 +59,7 @@ const RiskForm = ({ editCounter, setAddVisible, patientId, setErrMsgPost }) => {
   };
 
   return (
-    <tr className="risk-form">
+    <tr className="risk__form">
       <td>
         <input
           type="text"

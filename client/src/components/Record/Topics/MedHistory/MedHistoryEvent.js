@@ -115,8 +115,8 @@ const MedHistoryEvent = ({
       <tr
         className={
           event.ongoing
-            ? "medhistory-event"
-            : "medhistory-event medhistory-event--notgoing"
+            ? "medhistory__event"
+            : "medhistory__event medhistory__event--notgoing"
         }
       >
         <td>
@@ -180,7 +180,7 @@ const MedHistoryEvent = ({
           <em>{toLocalDate(eventInfos.date_created)}</em>
         </td>
         <td>
-          <div className="medhistory-event-btn-container">
+          <div className="medhistory__event-btn-container">
             {!editVisible ? (
               <button onClick={handleEditClick}>Edit</button>
             ) : (

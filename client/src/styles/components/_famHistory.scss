@@ -1,11 +1,11 @@
 .famhistory{
-    &-title {
+    &__title {
         font-size: 1.2rem;
         margin-top: 60px;
         margin-bottom: 30px;
         text-align: center;
     }
-    &-err {
+    &__err {
         padding : 10px 20px;
         font-size: 0.9rem;
         width : 100%;
@@ -15,7 +15,7 @@
         border-radius: 4px;
         text-align: center;
     }
-    &-table {
+    &__table {
         table-layout: fixed;
         min-width:100%;
         border-collapse: collapse;
@@ -32,7 +32,7 @@
             }
         }
     }
-    &-event, &-form {
+    &__event, &__form {
         td {
             text-align: center;
             border: solid 1px $black;
@@ -46,12 +46,12 @@
             }
          
         }
-        &-btn-container {
-            display: flex;
-            justify-content: space-around;
-        }
     }
-    &-btn-container {
+    &__event-btn-container {
+        display: flex;
+        justify-content: space-around;
+    }
+    &__btn-container {
         display: flex;
         justify-content: space-between;
         width: 150px;

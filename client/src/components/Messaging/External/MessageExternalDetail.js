@@ -124,7 +124,7 @@ const MessageExternalDetail = ({
           }
         );
         socket.emit("message", {
-          route: "MESSAGES INBOX EXTERNAL",
+          route: " EXTERNAL",
           action: "update",
           content: {
             id: message.id,
@@ -183,6 +183,7 @@ const MessageExternalDetail = ({
         )} (${toLocalDateAndTimeWithSeconds(new Date(message.date_created))})`,
         date_created: Date.now(),
         created_by_id: user.id,
+        created_by_user_type: "staff",
       },
     ];
 
@@ -229,7 +230,7 @@ const MessageExternalDetail = ({
   const handleAddAllAttachments = async () => {
     try {
       for (const attachment of attachments) {
-        await postPatientRecord(
+        const response = await postPatientRecord(
           "/documents",
           user.id,
           auth.authToken,
@@ -238,10 +239,18 @@ const MessageExternalDetail = ({
             assigned_id: user.id,
             description: attachment.alias,
             file: attachment.file,
-          },
-          socket,
-          "DOCUMENTS"
+          }
         );
+        socket.emit("message", {
+          route: "DOCUMENTS",
+          action: "create",
+          content: { data: response.data },
+        });
+        socket.emit("message", {
+          route: "DOCMAILBOX",
+          action: "create",
+          content: { data: response.data },
+        });
       }
       toast.success("Attachments added successfully", { containerId: "A" });
     } catch (err) {

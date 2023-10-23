@@ -71,7 +71,7 @@ const ReminderForm = ({
   };
 
   return (
-    <tr className="reminders-form">
+    <tr className="reminders__form">
       <td>
         <select
           name="active"

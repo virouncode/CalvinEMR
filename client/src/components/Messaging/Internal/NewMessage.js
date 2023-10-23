@@ -151,7 +151,7 @@ const NewMessage = ({ setNewVisible }) => {
       socket.emit("message", {
         route: "MESSAGES INBOX",
         action: "create",
-        content: { data: { id: response.data.id, ...message } },
+        content: { data: response.data },
       });
       setNewVisible(false);
       toast.success("Message sent successfully", { containerId: "A" });
@@ -204,6 +204,7 @@ const NewMessage = ({ setNewVisible }) => {
               alias: file.name,
               date_created: Date.now(),
               created_by_id: user.id,
+              created_by_user_type: "staff",
             },
           ]); //meta, mime, name, path, size, type
           setIsLoadingFile(false);

@@ -185,11 +185,11 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
       {formDatas ? (
         <>
           <div className="demographics-card">
-            <div className="demographics-card-header">
+            <div className="demographics-card__header">
               <h1>
                 Patient demographics <i className="fa-regular fa-id-card"></i>
               </h1>
-              <div className="demographics-card-header-btns">
+              <div className="demographics-card__btns">
                 {!editVisible ? (
                   <button onClick={(e) => setEditVisible((v) => !v)}>
                     Edit
@@ -206,10 +206,10 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                 <button onClick={handleClose}>Close</button>
               </div>
             </div>
-            <form className="demographics-card-form">
-              <div className="demographics-card-form-content">
+            <form className="demographics-card__form">
+              <div className="demographics-card__content">
                 {errMsgPost && editVisible && (
-                  <p className="demographics-card-form-err">{errMsgPost}</p>
+                  <p className="demographics-card__err">{errMsgPost}</p>
                 )}
                 <p>
                   <label>First Name: </label>
@@ -597,7 +597,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                   )}
                 </p>
               </div>
-              <div className="demographics-card-form-img">
+              <div className="demographics-card__img">
                 {isLoadingFile ? (
                   <CircularProgress />
                 ) : formDatas.avatar ? (
@@ -624,7 +624,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
                 )}
               </div>
             </form>
-            <p className="demographics-card-sign">
+            <p className="demographics-card__sign">
               {patientInfos.updated_by_name ? (
                 <em>
                   Updated by{" "}

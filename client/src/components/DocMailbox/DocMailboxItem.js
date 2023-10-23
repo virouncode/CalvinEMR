@@ -71,9 +71,9 @@ const DocMailboxItem = ({
   };
 
   return (
-    <tr className="documents-item">
+    <tr className="documents__item">
       <td
-        className="documents-item-link"
+        className="documents__link"
         onClick={() => showDocument(item.file.url, item.file.mime)}
         style={{
           fontWeight: "bold",
@@ -86,7 +86,7 @@ const DocMailboxItem = ({
       <td>{item.file.type}</td>
       <td>
         <NavLink
-          className="documents-item-link"
+          className="documents__link"
           to={`/patient-record/${item.patient_id}`}
           target="_blank"
         >

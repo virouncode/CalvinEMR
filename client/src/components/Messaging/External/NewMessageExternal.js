@@ -83,7 +83,7 @@ const NewMessageExternal = ({ setNewVisible }) => {
       socket.emit("message", {
         route: "MESSAGES INBOX EXTERNAL",
         action: "create",
-        content: { data: { id: response.data.id, ...message } },
+        content: { data: response.data },
       });
       setNewVisible(false);
 
@@ -179,6 +179,7 @@ Powered by Calvin EMR`,
               alias: file.name,
               date_created: Date.now(),
               created_by_id: user.id,
+              created_by_user_type: "staff",
             },
           ]); //meta, mime, name, path, size, type
           setIsLoadingFile(false);

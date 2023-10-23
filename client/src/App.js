@@ -46,10 +46,11 @@ const App = () => {
         setUser({});
         setClinic({});
         setAuth({});
-        setSocket({});
+        setSocket(null);
         localStorage.removeItem("user");
         localStorage.removeItem("auth");
         localStorage.removeItem("clinic");
+        localStorage.removeItem("tabCounter");
         navigate("/");
       }
     };
