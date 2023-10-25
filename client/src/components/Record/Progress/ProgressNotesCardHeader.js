@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { toLocalDateAndTimeWithSeconds } from "../../../utils/formatDates";
 import { staffIdToTitleAndName } from "../../../utils/staffIdToTitleAndName";
@@ -22,11 +21,6 @@ const ProgressNotesCardHeader = ({
   handleTriangleProgressClick,
 }) => {
   const { clinic } = useAuth();
-  const navigate = useNavigate();
-
-  const handleBillClick = () => {
-    navigate(`/billing/${patientInfos.health_insurance_nbr}`);
-  };
 
   return (
     <div className="progress-notes__card-header">
@@ -85,7 +79,18 @@ const ProgressNotesCardHeader = ({
             {!editVisible ? (
               <>
                 <button onClick={handleEditClick}>Edit</button>
-                <button onClick={handleBillClick}>Bill</button>
+                <button>
+                  <a
+                    href={`/billing/${patientInfos.health_insurance_nbr}/${
+                      progressNote.date_updated ?? progressNote.date_created
+                    }`}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: "#FEFEFE" }}
+                  >
+                    Bill
+                  </a>
+                </button>
                 <button onClick={handleCalvinAIClick}>CalvinAI</button>
               </>
             ) : (

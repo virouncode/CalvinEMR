@@ -46,7 +46,6 @@ const App = () => {
         setUser({});
         setClinic({});
         setAuth({});
-        setSocket(null);
         localStorage.removeItem("user");
         localStorage.removeItem("auth");
         localStorage.removeItem("clinic");
@@ -109,7 +108,7 @@ const App = () => {
           <Route path="reference" element={<ReferencePage />} />
           <Route path="calvinai" element={<CalvinAIPage />} />
           <Route path="billing" element={<BillingPage />} />
-          <Route path="billing/:hin" element={<BillingPage />} />
+          <Route path="billing/:hin/:date" element={<BillingPage />} />
           <Route path="my-account" element={<MyAccountPage />} />
           <Route path="credentials" element={<CredentialsPage />} />
         </Route>

@@ -1,4 +1,5 @@
 .progress-notes {
+    background-color: $white;
     font-size: 0.85rem;
     border : solid 0.5px grey;
     border-radius: 2px;
@@ -45,7 +46,7 @@
         transition:0.3s;
         overflow-y: scroll;
         &--active {
-            max-height: 200vh;
+            max-height: 150vh;
         }
     }
     &__form {

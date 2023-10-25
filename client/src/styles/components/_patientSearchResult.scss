@@ -3,12 +3,12 @@
     table{    
         table-layout: fixed;
         // width: 100%;
+        background-color: $white;
         border-collapse: collapse;
         border:solid 1px $black;
         white-space: nowrap;
-    
         thead{
-            backGround-color:$blue;
+            background-color:$blue;
             th {
                 text-decoration: underline;
                 cursor:pointer;

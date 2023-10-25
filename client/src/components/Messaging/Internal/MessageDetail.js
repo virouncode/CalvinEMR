@@ -335,6 +335,7 @@ const MessageDetail = ({
                 <NavLink
                   to={`/patient-record/${patient.id}`}
                   className="message-detail__patient-link"
+                  target="_blank"
                 >
                   {patient.full_name}
                 </NavLink>

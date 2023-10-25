@@ -119,7 +119,6 @@ const EformsPU = ({
                   },
                 }
               );
-              console.log("response2 data", response2.data);
               const datasToPost = {
                 patient_id: patientId,
                 name: file.name,

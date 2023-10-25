@@ -14,6 +14,7 @@
         margin-top: 5px;
         overflow: hidden;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        background: $white;
     }
     &__options-title {
         @include childCenter;
@@ -21,7 +22,7 @@
         font-size : 0.85rem;
         height: 50px;
         color : #FEFEFE;
-        background : #42A6F5;
+        background : $blue2;
     }
     &__left-bar {   
         width : 95%;
@@ -86,6 +87,10 @@
         }
     }
     &__display { 
+        background:$white;
+        border: solid 1px $blue;
+        border-radius: 4px;
+        padding: 10px;
         //fullcalendar
         .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
             .fc-header-toolbar.fc-toolbar {
@@ -236,6 +241,9 @@
     &-innerContainer, &-rContainer,&-weekdays, &-days{
         width : 100%;
     }
+    &-weekdays, &-weekday {
+        background-color:$blue2 !important;
+    }
     &-day {
         font-size : 0.7rem !important;
         height: 10% !important;
@@ -268,6 +276,9 @@
         font-size : 0.7rem;
         height: 30px;
         line-height: 30px;
+    }
+    &-month, &-monthDropdown-months {
+        background-color:$blue2 !important;
     }
 }
 .dayContainer{

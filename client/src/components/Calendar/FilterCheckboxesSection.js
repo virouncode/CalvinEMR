@@ -42,7 +42,7 @@ const FilterCheckboxesSection = ({
             color={
               staff.id !== user.id
                 ? remainingStaff.find(({ id }) => id === staff.id)?.color
-                : "#41A7F5"
+                : "#6490D2"
             }
           />
         ))}

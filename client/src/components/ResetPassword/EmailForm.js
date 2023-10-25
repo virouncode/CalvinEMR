@@ -12,6 +12,7 @@ const EmailForm = ({
   emailInput,
 }) => {
   const handleTypeChange = (e) => {
+    setErrMsg("");
     setType(e.target.value);
   };
 

@@ -62,11 +62,8 @@ const LoginForm = () => {
           }
         );
         const authToken = response?.data?.authToken;
-        setAuth({ email, password, authToken });
-        localStorage.setItem(
-          "auth",
-          JSON.stringify({ email, password, authToken })
-        );
+        setAuth({ email, authToken });
+        localStorage.setItem("auth", JSON.stringify({ email, authToken }));
 
         //================ USER ===================//
         const response2 = await axiosXano.get(USERINFO_URL, {
@@ -192,11 +189,8 @@ const LoginForm = () => {
           }
         );
         const authToken = response?.data?.authToken;
-        setAuth({ email, password, authToken });
-        localStorage.setItem(
-          "auth",
-          JSON.stringify({ email, password, authToken })
-        );
+        setAuth({ email, authToken });
+        localStorage.setItem("auth", JSON.stringify({ email, authToken }));
 
         //================ USER ===================//
         const response2 = await axiosXanoPatient.get(USERINFO_URL, {
@@ -287,7 +281,7 @@ const LoginForm = () => {
   return (
     <div className="login-container">
       <div className="login-content">
-        <p className="login-title">Welcome to Calvin EMR !</p>
+        <p className="login-title">Welcome to Calvin EMR</p>
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="login-form-row-radio">
             <div className="login-form-row-radio-item">

@@ -246,16 +246,16 @@ const MedicationEvent = ({
         <td>
           <em>{toLocalDate(eventInfos.date_created)}</em>
         </td>
-        {user.title === "Doctor" && (
-          <td>
-            <div className="medications__event-btn-container">
-              {!editVisible ? (
-                <button onClick={handleEditClick}>Edit</button>
-              ) : (
-                <input type="submit" value="Save" onClick={handleSubmit} />
-              )}
-              <button onClick={handleDeleteClick}>Delete</button>
-              {presVisible ? (
+        <td>
+          <div className="medications__event-btn-container">
+            {!editVisible ? (
+              <button onClick={handleEditClick}>Edit</button>
+            ) : (
+              <input type="submit" value="Save" onClick={handleSubmit} />
+            )}
+            <button onClick={handleDeleteClick}>Delete</button>
+            {user.title === "Doctor" &&
+              (presVisible ? (
                 medsRx.find(({ id }) => id === event.id) ? (
                   <button
                     onClick={handleRemoveFromRxClick}
@@ -280,10 +280,9 @@ const MedicationEvent = ({
                 >
                   Add To RX
                 </button>
-              )}
-            </div>
-          </td>
-        )}
+              ))}
+          </div>
+        </td>
       </tr>
     )
   );

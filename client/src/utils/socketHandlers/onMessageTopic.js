@@ -102,7 +102,6 @@ export const onMessageTopic = (message, topic, datas, setDatas, patientId) => {
     message.route === "FAMILY DOCTORS/SPECIALISTS" ||
     message.route === "PHARMACIES"
   ) {
-    console.log(message.content);
     switch (message.action) {
       case "create":
         if (!message.content.data.patients.includes(patientId)) {

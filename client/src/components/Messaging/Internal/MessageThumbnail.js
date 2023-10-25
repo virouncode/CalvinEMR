@@ -165,6 +165,7 @@ const MessageThumbnail = ({
           <NavLink
             to={`/patient-record/${patient.id}`}
             className="message-thumbnail__patient-link"
+            target="_blank"
           >
             {patient.full_name}
           </NavLink>

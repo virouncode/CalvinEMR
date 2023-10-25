@@ -1,6 +1,6 @@
 import React from "react";
-import botLogo from "../../../../assets/img/botLogo.png";
 import userLogo from "../../../../assets/img/doctorLogo.png";
+import botLogo from "../../../../assets/img/logoCarre.png";
 
 const CalvinAIMessage = ({ role, message }) => {
   return (

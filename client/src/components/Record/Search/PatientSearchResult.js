@@ -9,9 +9,9 @@ const PatientSearchResult = ({ search, sortedPatientsInfos, handleSort }) => {
       <table>
         <thead>
           <tr>
+            <th onClick={() => handleSort("last_name")}>Last Name</th>
             <th onClick={() => handleSort("first_name")}>First Name</th>
             <th onClick={() => handleSort("middle_name")}>Middle Name</th>
-            <th onClick={() => handleSort("last_name")}>Last Name</th>
             <th onClick={() => handleSort("date_of_birth")}>Date of birth</th>
             <th onClick={() => handleSort("date_of_birth")}>Age</th>
             <th onClick={() => handleSort("email")}>Email</th>

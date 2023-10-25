@@ -1,4 +1,4 @@
-import "flatpickr/dist/themes/material_blue.css";
+// import "flatpickr/dist/themes/material_blue.css";
 import React from "react";
 import Flatpickr from "react-flatpickr";
 

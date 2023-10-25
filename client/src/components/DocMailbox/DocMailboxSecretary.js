@@ -6,6 +6,9 @@ const DocMailboxSecretary = () => {
   return (
     <>
       {errMsg && <p className="docmailbox__err">{errMsg}</p>}
+      <p className="docmailbox__instructions">
+        Add a document to a doctor’s inbox
+      </p>
       <DocMailboxFormSecretary errMsg={errMsg} setErrMsg={setErrMsg} />
     </>
   );

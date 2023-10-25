@@ -299,6 +299,7 @@ const MessageExternalDetail = ({
                 ? message.from_id
                 : message.to_id
             }`}
+            target="_blank"
             className="message-detail__patient-link"
           >
             {message.from_user_type === "patient"

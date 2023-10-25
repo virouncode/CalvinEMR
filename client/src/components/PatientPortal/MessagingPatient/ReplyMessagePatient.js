@@ -127,7 +127,6 @@ const ReplyMessagePatient = ({
             }
           );
           if (!response.data.type) response.data.type = "document";
-          console.log("userId", typeof user.id, user.id);
           setAttachments([
             ...attachments,
             {

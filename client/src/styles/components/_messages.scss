@@ -31,7 +31,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: $blue;
+    background: $grey;
     border-radius: 4px 4px 0 0;
     &__title {
         width: 10%;
@@ -71,14 +71,15 @@
         width: 100%;
         cursor: pointer;
         &:hover {
-            background: rgb(115, 248, 190);
+            background: $orange;
         }
         &--active {
             font-weight: bold;
-            background: rgb(115, 248, 190);
+            background: $orange;
         }
     }
     &__box {
+        background-color: $white;
         width: 90%;
         height: 100%; 
         overflow:scroll;

@@ -16,7 +16,8 @@ const BillingTableItem = ({ billing, setBillings, setErrMsg }) => {
   const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
   const [itemInfos, setItemInfos] = useState({
-    date: billing.date_created,
+    date: billing.date,
+    date_created: billing.date_created,
     provider_ohip_nbr:
       billing.provider_ohip_billing_nbr.ohip_billing_nbr.toString(),
     referrer_ohip_nbr: billing.referrer_ohip_billing_nbr.toString(),
@@ -29,7 +30,8 @@ const BillingTableItem = ({ billing, setBillings, setErrMsg }) => {
 
   const handleChange = (e) => {
     const name = e.target.name;
-    const value = e.target.value;
+    let value = e.target.value;
+    if (name === "date") value = Date.parse(new Date(value));
     setItemInfos({ ...itemInfos, [name]: value });
   };
 
@@ -100,7 +102,8 @@ const BillingTableItem = ({ billing, setBillings, setErrMsg }) => {
     }
     //Submission
     const datasToPut = {
-      date_created: itemInfos.date,
+      date: itemInfos.date,
+      date_created: Date.now(),
       provider_id: billing.provider_id,
       referrer_ohip_billing_nbr: parseInt(itemInfos.referrer_ohip_nbr),
       patient_id: clinic.patientsInfos.find(
@@ -131,12 +134,16 @@ const BillingTableItem = ({ billing, setBillings, setErrMsg }) => {
       ).data.id,
     };
     try {
-      await axiosXano.put(`/billings/${billing.id}`, datasToPut, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
+      const response = await axiosXano.put(
+        `/billings/${billing.id}`,
+        datasToPut,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.authToken}`,
+          },
+        }
+      );
       const feeSchedule = await axiosXano.get(
         `/ohip_fee_schedule/${datasToPut.billing_code_id}`,
         {
@@ -156,7 +163,7 @@ const BillingTableItem = ({ billing, setBillings, setErrMsg }) => {
         }
       );
       const datasToEmit = {
-        ...datasToPut,
+        ...response.data,
         provider_ohip_billing_nbr: {
           ohip_billing_nbr: clinic.staffInfos.find(
             ({ id }) => id === datasToPut.provider_id
@@ -231,7 +238,7 @@ const BillingTableItem = ({ billing, setBillings, setErrMsg }) => {
                 onChange={handleChange}
               />
             ) : (
-              toLocalDate(billing.date_created)
+              toLocalDate(billing.date)
             )}
           </td>
           <td>

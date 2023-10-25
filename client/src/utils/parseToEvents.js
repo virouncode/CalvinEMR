@@ -2,23 +2,23 @@ import { rooms } from "./rooms";
 var _ = require("lodash");
 
 const colorsPalette = [
-  { background: "#ffe119", text: "#21201e" },
+  { background: "#ffe119", text: "#495566" },
   { background: "#e6194b", text: "#FEFEFE" },
   { background: "#3cb44b", text: "#FEFEFE" },
   { background: "#f58231", text: "#FEFEFE" },
   { background: "#911eb4", text: "#FEFEFE" },
-  { background: "#42d4f4", text: "#21201e" },
+  { background: "#42d4f4", text: "#495566" },
   { background: "#f032e6", text: "#FEFEFE" },
-  { background: "#bfef45", text: "#21201e" },
-  { background: "#fabed4", text: "#21201e" },
+  { background: "#bfef45", text: "#495566" },
+  { background: "#fabed4", text: "#495566" },
   { background: "#469990", text: "#FEFEFE" },
-  { background: "#dcbeff", text: "#21201e" },
+  { background: "#dcbeff", text: "#495566" },
   { background: "#9a6324", text: "#FEFEFE" },
-  { background: "#fffac8", text: "#21201e" },
+  { background: "#fffac8", text: "#495566" },
   { background: "#800000", text: "#FEFEFE" },
-  { background: "#aaffc3", text: "#21201e" },
+  { background: "#aaffc3", text: "#495566" },
   { background: "#808000", text: "#FEFEFE" },
-  { background: "#ffd8b1", text: "#21201e" },
+  { background: "#ffd8b1", text: "#495566" },
   { background: "#000075", text: "#FEFEFE" },
   { background: "#808080", text: "#FEFEFE" },
 ];
@@ -59,7 +59,7 @@ export const parseToEvents = (
                 ].textColor,
                 isSecretary
               )
-          : parseToEvent(appointment, "#41A7F5", "#FEFEFE", isSecretary, userId) //blue
+          : parseToEvent(appointment, "#6490D2", "#FEFEFE", isSecretary, userId) //blue
     ),
     remainingStaffObjects,
   ];

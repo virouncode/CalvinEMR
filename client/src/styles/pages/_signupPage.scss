@@ -1,7 +1,6 @@
 .signup-section {
-    background: url("../../assets/img/splash.jpg") center/cover;
     width : 100%;
-    min-height : 100vh;
+    height : 80vh;
     display: flex;
     flex-direction: column;
     &__title {
@@ -9,6 +8,6 @@
         margin: 20px auto;
         text-align: center;
         font-weight: bold;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
 }

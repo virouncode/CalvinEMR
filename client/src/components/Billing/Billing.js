@@ -11,7 +11,7 @@ import BillingForm from "./BillingForm";
 import BillingTable from "./BillingTable";
 
 const Billing = () => {
-  const { hin } = useParams();
+  const { hin, date } = useParams();
   const { user, auth, socket } = useAuth();
   const [addVisible, setAddVisible] = useState(false);
   const [billings, setBillings] = useState(null);
@@ -28,10 +28,10 @@ const Billing = () => {
   });
 
   useEffect(() => {
-    if (hin) {
+    if (hin && date) {
       setAddVisible(true);
     }
-  }, [hin]);
+  }, [hin, date]);
 
   const handleAdd = () => {
     setAddVisible(true);
@@ -103,17 +103,14 @@ const Billing = () => {
         )}
       </div>
       {addVisible && (
-        <BillingForm
-          setAddVisible={setAddVisible}
-          setBillings={setBillings}
-          setErrMsg={setErrMsg}
-        />
+        <BillingForm setAddVisible={setAddVisible} setErrMsg={setErrMsg} />
       )}
       {billings ? (
         <>
           <BillingFilter
             filterDatas={filterDatas}
             setFilterDatas={setFilterDatas}
+            billings={billings}
           />
           <BillingTable
             billings={billings}

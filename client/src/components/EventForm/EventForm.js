@@ -118,9 +118,9 @@ const EventForm = ({
     currentEvent.current.setExtendedProp("host", value);
 
     if (value === user.id) {
-      currentEvent.current.setProp("color", "#41A7F5");
+      currentEvent.current.setProp("color", "#6490D2");
       currentEvent.current.setProp("textColor", "#FEFEFE");
-      setFormColor("#41A7F5");
+      setFormColor("#6490D2");
     } else {
       const host = remainingStaff.find(({ id }) => id === value);
       currentEvent.current.setProp("color", host.color);

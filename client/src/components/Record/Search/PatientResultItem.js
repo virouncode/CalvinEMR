@@ -6,8 +6,6 @@ import { getAge } from "../../../utils/getAge";
 const PatientResultItem = ({ patient }) => {
   return (
     <tr>
-      <td>{patient.first_name}</td>
-      <td>{patient.middle_name}</td>
       <td>
         <NavLink
           to={`/patient-record/${patient.id}`}
@@ -17,6 +15,8 @@ const PatientResultItem = ({ patient }) => {
           {patient.last_name}
         </NavLink>
       </td>
+      <td>{patient.first_name}</td>
+      <td>{patient.middle_name}</td>
       <td>{toLocalDate(patient.date_of_birth)}</td>
       <td>{getAge(toLocalDate(patient.date_of_birth))}</td>
       <td>{patient.email}</td>

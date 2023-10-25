@@ -49,13 +49,10 @@ const Calendar = ({ timelineVisible }) => {
     isSecretary(),
     user.id
   );
-  const [formColor, setFormColor] = useState("#41A7F5");
+  const [formColor, setFormColor] = useState("#6490D2");
 
   useEffect(() => {
     if (lastCurrentId.current) {
-      currentEvent.current = events.find(
-        ({ id }) => id === lastCurrentId.current
-      );
       currentEventElt.current = document.getElementsByClassName(
         `event-${lastCurrentId.current}`
       )[0];
@@ -340,7 +337,7 @@ const Calendar = ({ timelineVisible }) => {
             {event.allDay ? "All Day" : info.timeText}
             <span style={{ marginLeft: "10px" }}>
               <strong>
-                {event.extendedProps.reason.toUpperCase() ?? "APPOINTMENT"}
+                {event.extendedProps.reason?.toUpperCase() ?? "APPOINTMENT"}
               </strong>
             </span>
             {/* {guestsCaption && ( */}
@@ -403,7 +400,7 @@ const Calendar = ({ timelineVisible }) => {
             >
               {/* <strong>Reason: </strong> */}
               <strong>
-                {event.extendedProps.reason.toUpperCase() ?? "APPOINTMENT"}
+                {event.extendedProps.reason?.toUpperCase() ?? "APPOINTMENT"}
               </strong>
             </p>
             <i
@@ -497,7 +494,7 @@ const Calendar = ({ timelineVisible }) => {
         reason: "Appointment",
         status: "Scheduled",
       },
-      color: isSecretary() ? "#bfbfbf" : "#41A7F5",
+      color: isSecretary() ? "#bfbfbf" : "#6490D2",
       textColor: "#FEFEFE",
     };
 

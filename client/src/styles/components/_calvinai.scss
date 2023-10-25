@@ -64,15 +64,15 @@
         justify-content: flex-end;
         align-items: center;
         button {
-            color:#FEFEFE;
-            background-color: #3C5A76;
-            border: solid 1px $grey;
             font-size: 0.8rem;
             padding: 5px 10px;
-            &:hover {
-                background-color: #4c7193;
-            }
         }   
+    }
+    &__send-btn {
+        background-color: $blue;
+        &:hover {
+            background-color: $blue2;
+        }
     }
     &__input {
         height:15%;

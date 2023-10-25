@@ -10,7 +10,6 @@
         justify-content: space-between;
         background: rgba(0,0,0,0.8);
         z-index: 1000;
-
     }
     &-dialog {
         border: solid 2px $blue;
@@ -33,9 +32,13 @@
             background-color: $blue;
             padding: 10px;
             &-logo {
-                width:100px;
-                background: url(../../assets/img/logo.png) center/cover;
-                height: 40px;
+                img {
+                    width:120px;
+                    height:auto
+                }
+            }
+            h2 {
+                color:$white;
             }
         }
         &-btn-container {

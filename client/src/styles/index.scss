@@ -21,7 +21,6 @@
 @import "../../node_modules/@fortawesome/fontawesome-free/css/brands";
 @import "../../node_modules/@fortawesome/fontawesome-free/css/solid";
 @import "../../node_modules/@fortawesome/fontawesome-free/css/regular";
-@import "./components/loginHeader";
 @import "./components/header";
 @import "./components/carousel";
 @import "./components/footer";
@@ -87,7 +86,7 @@
 @import "./components/reference";
 @import "./components/missing";
 @import "./components/unauthorized";
-
+@import "flatpickr/dist/themes/material_blue.css";
 
 
 

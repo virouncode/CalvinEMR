@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { postPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
-import logo from "../../../assets/img/logo.png";
+import logo from "../../../assets/img/logoRect.png";
 import useAuth from "../../../hooks/useAuth";
 import {
   toLocalDate,

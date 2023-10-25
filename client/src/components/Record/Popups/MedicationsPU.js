@@ -92,11 +92,9 @@ const MedicationsPU = ({
                     <th onClick={() => handleSort("date_created")}>
                       Created On
                     </th>
-                    {user.title === "Doctor" && (
-                      <th style={{ textDecoration: "none", cursor: "default" }}>
-                        Action
-                      </th>
-                    )}
+                    <th style={{ textDecoration: "none", cursor: "default" }}>
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -184,14 +182,13 @@ const MedicationsPU = ({
                         ))}
                 </tbody>
               </table>
-              {user.title === "Doctor" && (
-                <div className="medications__btn-container">
-                  <button onClick={handleAdd} disabled={addVisible}>
-                    Add Medication To Profile
-                  </button>
-                  <button onClick={handleClose}>Close</button>
-                </div>
-              )}
+
+              <div className="medications__btn-container">
+                <button onClick={handleAdd} disabled={addVisible}>
+                  Add Medication To Profile
+                </button>
+                <button onClick={handleClose}>Close</button>
+              </div>
             </>
           )
         )

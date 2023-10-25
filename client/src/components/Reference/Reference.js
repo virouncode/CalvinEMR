@@ -114,7 +114,7 @@ const Reference = () => {
               target="_blank"
               rel="noreferrer"
             >
-              ComnnectingOntario Clinical Viewer
+              ConnectingOntario Clinical Viewer
             </a>
           </li>
           <li>
@@ -245,7 +245,7 @@ const Reference = () => {
           </li>
           <li>
             <a href="https://www.usmle.org/" target="_blank" rel="noreferrer">
-              US Medical Licensing Medical Examination
+              US Medical Licensing Examination
             </a>
           </li>
         </ul>

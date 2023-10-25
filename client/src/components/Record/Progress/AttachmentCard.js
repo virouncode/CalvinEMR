@@ -43,7 +43,7 @@ const AttachmentCard = ({
         content: { data: response.data },
       });
       toast.success("Saved successfully", { containerId: "A" });
-      navigate(0); //to refresh the patient record
+      // navigate(0); //to refresh the patient record
     } catch (err) {
       toast.error(`Error unable to save document: ${err.message}`, {
         containerId: "A",

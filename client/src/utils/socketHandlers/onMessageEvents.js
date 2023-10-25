@@ -69,7 +69,7 @@ export const onMessageEvents = (
               )
           : parseToEvent(
               message.content.data,
-              "#41A7F5",
+              "#6490D2",
               "#FEFEFE",
               isSecretary,
               userId
@@ -102,7 +102,7 @@ export const onMessageEvents = (
               )
           : parseToEvent(
               message.content.data,
-              "#41A7F5",
+              "#6490D2",
               "#FEFEFE",
               isSecretary,
               userId

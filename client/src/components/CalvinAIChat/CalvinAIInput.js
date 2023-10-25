@@ -31,7 +31,6 @@ const CalvinAIInput = ({
           variant="contained"
           color="primary"
           onClick={handleAskGPT}
-          style={{ backgroundColor: "#3C5A76" }}
         >
           <SendIcon />
         </Button>

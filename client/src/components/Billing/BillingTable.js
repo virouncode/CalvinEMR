@@ -35,10 +35,10 @@ const BillingTable = ({ billings, setBillings, setErrMsg, filterDatas }) => {
                 : null
             }
           >
-            Provider OHIP nbr
+            Provider OHIP#
           </th>
           <th onClick={() => handleSort("referrer_ohip_billing_nbr")}>
-            Referrer OHIP nbr
+            Referring MD OHIP#
           </th>
           <th onClick={() => handleSort("patient_id")}>Patient HIN</th>
           <th onClick={() => handleSort("diagnosis_id")}>Diagnosis code</th>

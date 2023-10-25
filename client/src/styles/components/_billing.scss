@@ -17,6 +17,7 @@
   }
 }
 .billing-form {
+  background-color: $white;
   width:80%;
   font-size: 0.85rem;
   margin: 20px auto;
@@ -54,6 +55,7 @@
 
 }
 .billing-filter {
+  background-color: $white;
   width:80%;
   margin: 20px auto;
   border: solid 1px $grey;
@@ -93,6 +95,7 @@
   }
 }
 .billing-table {
+  background-color: $white;
   table-layout:fixed;
   min-width:80%;
   margin:0 auto;

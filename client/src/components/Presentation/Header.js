@@ -3,13 +3,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
-  const { user, setUser, setAuth, setClinic, setSocket } = useAuth();
+  const { user, setUser, setAuth, setClinic } = useAuth();
   const navigate = useNavigate();
   const handleLogout = () => {
     setAuth({});
     setUser({});
     setClinic({});
-    setSocket(null);
     localStorage.removeItem("auth");
     localStorage.removeItem("user");
     localStorage.removeItem("clinic");
@@ -84,7 +83,7 @@ const Header = () => {
               }
               target="_blank"
             >
-              Documents Mailbox
+              Inbox
             </NavLink>
           </li>
           <li>

@@ -10,9 +10,9 @@ import FakeWindow from "../Presentation/FakeWindow";
 import DiagnosisSearch from "./DiagnosisSearch";
 import HinSearch from "./HinSearch";
 
-const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
+const BillingForm = ({ setAddVisible, setErrMsg }) => {
   const navigate = useNavigate();
-  const { hin } = useParams();
+  const { hin, date } = useParams();
   const { auth, user, clinic, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
     date: toLocalDate(Date.now()),
@@ -27,10 +27,14 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
 
   useEffect(() => {
     if (hin) {
-      setFormDatas({ ...formDatas, patient_hin: hin });
+      setFormDatas({
+        ...formDatas,
+        patient_hin: hin,
+        date: toLocalDate(new Date(parseInt(date)).toISOString()),
+      });
       navigate("/billing");
     }
-  }, [formDatas, hin, navigate]);
+  }, [date, formDatas, hin, navigate]);
 
   const handleChange = (e) => {
     setErrMsg("");
@@ -128,7 +132,8 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
         );
         const billing_code_id = response.data.id;
         const datasToPost = {
-          date_created: Date.parse(new Date(formDatas.date)),
+          date: Date.parse(new Date(formDatas.date)),
+          date_created: Date.now(),
           provider_id: user.id,
           referrer_ohip_billing_nbr: parseInt(formDatas.referrer_ohip_nbr),
           patient_id: clinic.patientsInfos.find(
@@ -222,7 +227,7 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
           />
         </div>
         <div className="billing-form__item">
-          <label htmlFor="">Provider OHIP nbr</label>
+          <label htmlFor="">Provider OHIP#</label>
           <input
             type="text"
             value={formDatas.provider_ohip_nbr.toString()}
@@ -232,7 +237,7 @@ const BillingForm = ({ setAddVisible, setBillings, setErrMsg }) => {
           />
         </div>
         <div className="billing-form__item">
-          <label htmlFor="">Referrer OHIP nbr</label>
+          <label htmlFor="">Referring MD OHIP#</label>
           <input
             type="text"
             value={formDatas.referrer_ohip_nbr}

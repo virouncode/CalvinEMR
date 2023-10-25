@@ -9,10 +9,10 @@ const DocMailboxPage = () => {
   return (
     <>
       <Helmet>
-        <title>Documents Mailbox</title>
+        <title>Inbox</title>
       </Helmet>
       <section className="docmailbox-section">
-        <h2 className="docmailbox-section__title">Documents Mailbox</h2>
+        <h2 className="docmailbox-section__title">Inbox</h2>
         {user.title === "Secretary" ? <DocMailboxSecretary /> : <DocMailbox />}
       </section>
     </>

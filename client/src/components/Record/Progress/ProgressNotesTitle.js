@@ -11,7 +11,7 @@ const ProgressNotesTitle = ({
 }) => {
   const handleTriangleClick = (e) => {
     e.target.classList.toggle("triangle--active");
-    contentRef.current.classList.toggle("progress-notes-content--active");
+    contentRef.current.classList.toggle("progress-notes__content--active");
     setSelectAllDisabled((d) => !d);
   };
 

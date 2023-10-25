@@ -2,13 +2,13 @@
     font-size: 0.8rem;
     width: 80%;
     margin: 60px auto;
-    border: 1px solid $blue;
+    border: 1px solid $grey;
     border-radius: 4px; 
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     &__header{
         display:flex;
         justify-content: space-between;
-        background: $blue;
+        background: $grey;
         padding : 10px;
         align-items: center;
         h1 {

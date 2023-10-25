@@ -1,13 +1,46 @@
 import React, { useRef, useState } from "react";
+import { CSVLink } from "react-csv";
+import { toLocalDate } from "../../utils/formatDates";
 // import axiosXano from "../../api/xano";
 // import useAuth from "../../hooks/useAuth";
 
-const BillingFilter = ({ filterDatas, setFilterDatas }) => {
+const BillingFilter = ({ filterDatas, setFilterDatas, billings }) => {
   // const { auth } = useAuth();
   // const [hinSearchVisible, setHinSearchVisible] = useState(false);
   // const [diagnosisSearchVisible, setDiagnosisSearchVisible] = useState(false);
   const initialFilterDatas = useRef(filterDatas);
   const [all, setAll] = useState(false);
+  const [exportFileName, setExportFileName] = useState("");
+
+  const filteredBillings = billings.filter(
+    (billing) =>
+      billing.date_created >= Date.parse(new Date(filterDatas.date_start)) &&
+      billing.date_created <= Date.parse(new Date(filterDatas.date_end))
+  );
+  const csvDatas = filteredBillings.map((filteredBilling) => {
+    return {
+      ...filteredBilling,
+      date: toLocalDate(filteredBilling.date),
+      billing_code: {
+        ...filteredBilling.billing_code,
+        provider_fee: filteredBilling.billing_code.provider_fee / 10000,
+        specialist_fee: filteredBilling.billing_code.specialist_fee / 10000,
+      },
+    };
+  });
+  const headers = [
+    { label: "Date", key: "date" },
+    {
+      label: "Provider OHIP#",
+      key: "provider_ohip_billing_nbr.ohip_billing_nbr",
+    },
+    { label: "Referring MD OHIP#", key: "referrer_ohip_billing_nbr" },
+    { label: "Patient HIN", key: "patient_hin.health_insurance_nbr" },
+    { label: "Diagnosis code", key: "diagnosis_code.code" },
+    { label: "Billing code", key: "billing_code.billing_code" },
+    { label: "Provider Fee($)", key: "billing_code.provider_fee" },
+    { label: "Specialist Fee($)", key: "billing_code.specialist_fee" },
+  ];
 
   const handleCheckAll = (e) => {
     if (e.target.checked) {
@@ -31,27 +64,7 @@ const BillingFilter = ({ filterDatas, setFilterDatas }) => {
     }
     setFilterDatas({ ...filterDatas, [name]: value });
   };
-  // const handleChange = (e) => {
-  //   const value = e.target.value;
-  //   const name = e.target.name;
-  //   setFilterDatas({ ...filterDatas, [name]: value });
-  // };
-  // const handleClickDiagnosis = async (e, code) => {
-  //   const diagnosisId = (
-  //     await axiosXano.get(`/diagnosis_codes_for_code?code=${code}`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${auth.authToken}`,
-  //       },
-  //     })
-  //   ).data.id;
-  //   setFilterDatas({ ...filterDatas, diagnosis: diagnosisId });
-  //   setDiagnosisSearchVisible(false);
-  // };
-  // const handleClickHin = (e, hin) => {
-  //   setFilterDatas({ ...filterDatas, hin });
-  //   setHinSearchVisible(false);
-  // };
+
   return (
     <div className="billing-filter">
       <div className="billing-filter__row">
@@ -84,6 +97,19 @@ const BillingFilter = ({ filterDatas, setFilterDatas }) => {
             onChange={handleCheckAll}
           />
           <label htmlFor="">All</label>
+        </div>
+        <div className="billing-filter__btn-container">
+          <button>
+            <CSVLink
+              data={csvDatas}
+              filename={`Billings_${filterDatas.date_start}_${filterDatas.date_end}`}
+              target="_blank"
+              headers={headers}
+              style={{ color: "#FEFEFE" }}
+            >
+              Export to CSV
+            </CSVLink>
+          </button>
         </div>
 
         {/* <div className="billing-filter-row-item">

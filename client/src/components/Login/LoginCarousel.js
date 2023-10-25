@@ -1,11 +1,11 @@
 import React from "react";
-import logo from "../../assets/img/logo.png";
+import logoLogin from "../../assets/img/logoLogin.png";
 
 const LoginCarousel = () => {
   return (
     <div className="login-carousel">
-      <img src={logo} alt="Calvin EMR logo" width="100%" />
-      <h1>Electronic Medical Records</h1>
+      <img src={logoLogin} alt="Calvin EMR logo" />
+      {/* <h1>Electronic Medical Records</h1> */}
     </div>
   );
 };

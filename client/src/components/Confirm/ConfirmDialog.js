@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import logo from "../../assets/img/logoRect.png";
 
 const ConfirmDialog = ({ title, content, onConfirm, onCancel }) => {
   useEffect(() => {
@@ -15,7 +16,9 @@ const ConfirmDialog = ({ title, content, onConfirm, onCancel }) => {
       <div className="confirm-container">
         <div className="confirm-dialog">
           <div className="confirm-dialog-header">
-            <div className="confirm-dialog-header-logo"></div>
+            <div className="confirm-dialog-header-logo">
+              <img src={logo} alt="calvin-EMR-logo" />
+            </div>
             <h2 style={{ fontSize: "1rem" }}>{title ?? "Confirmation"}</h2>
           </div>
           <p style={{ fontSize: "0.8rem", padding: "10px", margin: "0" }}>

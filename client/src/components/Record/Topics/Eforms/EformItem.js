@@ -35,7 +35,6 @@ const EformItem = ({ item, showDocument }) => {
 
   return (
     <tr className="eforms__item">
-      {console.log("file", item.file)}
       <td
         className="eforms__link"
         onClick={() => showDocument(item.file.url, item.file.mime)}

@@ -25,7 +25,6 @@ const VaccinesPU = ({
   const [editable, setEditable] = useState(true);
   const [editVisible, setEditVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
-  console.log("vaccines datas", datas);
 
   const handleChangeObs = (e) => {
     setErrMsgPost("");

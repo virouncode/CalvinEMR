@@ -8,7 +8,7 @@ import { firstLetterUpper } from "../../utils/firstLetterUpper";
 import DocMailboxPatients from "./DocMailboxPatients";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
-const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
+const DocMailboxForm = ({ setAddVisible, setErrMsg }) => {
   //HOOKS
   const { auth, user, socket } = useAuth();
   const [formDatas, setFormDatas] = useState({
@@ -27,6 +27,12 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
     let value = e.target.value;
     const name = e.target.name;
     setFormDatas({ ...formDatas, [name]: value });
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    setAddVisible(false);
+    setErrMsg("");
   };
 
   const isPatientChecked = (id) => {
@@ -164,8 +170,11 @@ const DocMailboxForm = ({ setAddVisible, setErrMsg, setDocuments }) => {
             <CircularProgress size="1rem" style={{ margin: "5px" }} />
           )}
         </div>
-        <div className="docmailbox__form-row">
+        <div className="docmailbox__form-btn-container">
           <input type="submit" value="Post" disabled={saveDisabled} />
+          <button type="button" onClick={handleCancel}>
+            Cancel
+          </button>
         </div>
       </form>
       <div className="docmailbox__form-preview">
