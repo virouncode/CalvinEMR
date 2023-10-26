@@ -122,7 +122,7 @@
       word-break: break-word;
     }
     input {
-        width: 80%;
+        width: 100%;
     }
     input[type="submit"] {
         width: auto;
@@ -131,6 +131,8 @@
         width: 100%;
     }
     &-btn-container {
+      display: flex;
+      justify-content: center;
       button {
         margin-left: 5px;
       }

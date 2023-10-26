@@ -59,6 +59,8 @@ const Reference = () => {
     }
   };
 
+  const handleEdit = async () => {};
+
   return (
     <div className="reference">
       <div className="reference__column">
@@ -387,6 +389,11 @@ const Reference = () => {
                   <a href={link.url} target="_blank" rel="noreferrer">
                     {link.name}
                   </a>
+                  <i
+                    className="fa-regular fa-pen-to-square"
+                    style={{ cursor: "pointer", marginLeft: "5px" }}
+                    onClick={handleEdit}
+                  ></i>
                   <i
                     className="fa-solid fa-trash"
                     style={{ cursor: "pointer", marginLeft: "5px" }}
