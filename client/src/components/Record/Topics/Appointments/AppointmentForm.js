@@ -388,7 +388,7 @@ const AppointmentForm = ({
         />
       </td>
       <td>
-        <div className="appointments__date-container">
+        <div className="appointments__event-date-container">
           <input
             type="date"
             value={formDatas.start !== null ? toLocalDate(formDatas.start) : ""}
@@ -408,7 +408,7 @@ const AppointmentForm = ({
         </div>
       </td>
       <td>
-        <div className="appointments__date-container">
+        <div className="appointments__event-date-container">
           <input
             type="date"
             value={formDatas.end !== null ? toLocalDate(formDatas.end) : ""}

@@ -28,7 +28,7 @@
             padding : 5px;
         }
         button {
-            margin : 0 5px;
+            margin-left : 5px;
         }
     }
     &__order {
@@ -104,6 +104,7 @@
 
     }
     &__card {
+        background-color: $white;
         border: solid 0.5px grey;
         margin:4px;
         border-radius: 4px;

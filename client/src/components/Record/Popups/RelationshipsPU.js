@@ -9,7 +9,6 @@ const RelationshipsPU = ({
   patientId,
   setPopUpVisible,
   datas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -68,7 +67,6 @@ const RelationshipsPU = ({
                       editCounter={editCounter}
                       setAddVisible={setAddVisible}
                       patientId={patientId}
-                      fetchRecord={fetchRecord}
                       setErrMsgPost={setErrMsgPost}
                     />
                   )}
@@ -76,7 +74,6 @@ const RelationshipsPU = ({
                     <RelationshipItem
                       item={item}
                       key={item.id}
-                      fetchRecord={fetchRecord}
                       editCounter={editCounter}
                       setErrMsgPost={setErrMsgPost}
                     />

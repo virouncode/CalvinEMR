@@ -82,6 +82,7 @@ const FamilyDoctorsList = ({
             <th onClick={() => handleSort("phone")}>Phone</th>
             <th onClick={() => handleSort("fax")}>Fax</th>
             <th onClick={() => handleSort("email")}>Email</th>
+            <th onClick={() => handleSort("ohip_billing_nbr")}>OHIP#</th>
             <th onClick={() => handleSort("created_by_name")}>Created By</th>
             <th onClick={() => handleSort("date_created")}>Created On</th>
             <th style={{ textDecoration: "none", cursor: "default" }}>

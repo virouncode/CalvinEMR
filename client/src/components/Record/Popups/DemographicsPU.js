@@ -1,5 +1,5 @@
 import { CircularProgress } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { putPatientRecord } from "../../../api/fetchRecords";
 import axiosXano from "../../../api/xano";
@@ -19,16 +19,17 @@ import PsychosList from "../../Lists/PsychosList";
 import USTechsList from "../../Lists/USTechsList";
 const BASE_URL = "https://xsjk-1rpe-2jnw.n7c.xano.io";
 
-const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
+const DemographicsPU = ({ patientInfos, setPopUpVisible }) => {
   //get the avatar with a fetch
 
   //============================= STATES ==============================//
   const [editVisible, setEditVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
-  const [formDatas, setFormDatas] = useState(patientInfos);
-  const datas = useRef({});
-  const { auth, user, clinic, setClinic, socket } = useAuth();
+  const [formDatas, setFormDatas] = useState(null);
+  const { auth, user, clinic, socket } = useAuth();
   const [isLoadingFile, setIsLoadingFile] = useState(false);
+
+  useEffect(() => setFormDatas(patientInfos), [patientInfos]);
 
   const handleChange = (e) => {
     let value = e.target.value;
@@ -108,16 +109,7 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Formatting
-    setFormDatas({
-      ...formDatas,
-      first_name: firstLetterUpper(formDatas.first_name),
-      middle_name: firstLetterUpper(formDatas.middle_name),
-      last_name: firstLetterUpper(formDatas.last_name),
-      address: firstLetterUpper(formDatas.address),
-      province_state: firstLetterUpper(formDatas.province_state),
-      city: firstLetterUpper(formDatas.city),
-    });
-    datas.current = {
+    const datasToPut = {
       ...formDatas,
       first_name: firstLetterUpper(formDatas.first_name),
       middle_name: firstLetterUpper(formDatas.middle_name),
@@ -126,19 +118,18 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
       province_state: firstLetterUpper(formDatas.province_state),
       city: firstLetterUpper(formDatas.city),
     };
-    datas.current.middle_name !== ""
-      ? (datas.current.full_name =
-          datas.current.first_name +
+    datasToPut.middle_name !== ""
+      ? (datasToPut.full_name =
+          datasToPut.first_name +
           " " +
-          datas.current.middle_name +
+          datasToPut.middle_name +
           " " +
-          datas.current.last_name)
-      : (datas.current.full_name =
-          datas.current.first_name + " " + datas.current.last_name);
-
+          datasToPut.last_name)
+      : (datasToPut.full_name =
+          datasToPut.first_name + " " + datasToPut.last_name);
     //Validation
     try {
-      await demographicsSchema.validate(datas.current);
+      await demographicsSchema.validate(datasToPut);
     } catch (err) {
       setErrMsgPost(err.message);
       return;
@@ -151,24 +142,37 @@ const DemographicsPU = ({ patientInfos, setPatientInfos, setPopUpVisible }) => {
         patientInfos.id,
         user.id,
         auth.authToken,
-        datas.current,
-        socket,
-        "DEMOGRAPHICS"
+        datasToPut
       );
+      socket.emit("message", {
+        route: "PATIENTS",
+        action: "update",
+        content: { id: datasToPut.id, data: datasToPut },
+      });
       setEditVisible(false);
 
-      //update patientsInfos
-      const response2 = await axiosXano.get("/patients", {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      setClinic({ ...clinic, patientsInfos: response2.data });
-      localStorage.setItem(
-        "clinic",
-        JSON.stringify({ ...clinic, patientsInfos: response2.data })
-      );
+      // //update patientsInfos
+      // const response2 = await axiosXano.get("/patients", {
+      //   headers: {
+      //     Authorization: `Bearer ${auth.authToken}`,
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+      // setClinic({
+      //   ...clinic,
+      //   patientsInfos: response2.data.sort((a, b) =>
+      //     a.last_name.localeCompare(b.last_name)
+      //   ),
+      // });
+      // localStorage.setItem(
+      //   "clinic",
+      //   JSON.stringify({
+      //     ...clinic,
+      //     patientsInfos: response2.data.sort((a, b) =>
+      //       a.last_name.localeCompare(b.last_name)
+      //     ),
+      //   })
+      // );
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
       toast.error(

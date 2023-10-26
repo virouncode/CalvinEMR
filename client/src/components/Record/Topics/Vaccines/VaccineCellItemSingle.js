@@ -15,7 +15,6 @@ const VaccineCellItemSingle = ({
   rangeStart,
   rangeEnd,
   datas,
-  fetchRecord,
   editable,
   setEditable,
   setErrMsgPost,
@@ -64,8 +63,6 @@ const VaccineCellItemSingle = ({
             socket,
             "VACCINES"
           );
-          const abortController = new AbortController();
-          fetchRecord(abortController);
           toast.success("Saved successfully", { containerId: "B" });
         } catch (err) {
           toast.error(`Error unable to save vaccine: ${err.message}`, {
@@ -108,7 +105,6 @@ const VaccineCellItemSingle = ({
           setFormVisible={setFormVisible}
           setEditable={setEditable}
           datas={datas}
-          fetchRecord={fetchRecord}
           scrollPosition={scrollPosition}
           name={name}
           age={age}

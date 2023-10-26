@@ -8,7 +8,7 @@ const WeekPicker = ({
   rangeEnd,
 }) => {
   return (
-    <div className="new-appointments-content-weekpicker">
+    <div className="new-appointments__content-weekpicker">
       <button
         onClick={handleClickPrevious}
         disabled={

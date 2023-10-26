@@ -98,7 +98,7 @@ const DocumentItem = ({ item, showDocument, setErrMsgPost }) => {
       <td>
         <em>{toLocalDate(item.date_created)}</em>
       </td>
-      <td>
+      <td className="documents__item-btn-container">
         {!item.acknowledged && item.assigned_id === user.id && (
           <button onClick={handleAcknowledge}>Acknowledge</button>
         )}

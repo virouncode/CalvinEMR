@@ -1,6 +1,8 @@
 //Librairies
 import React from "react";
+import useAuth from "../../hooks/useAuth";
 import { categoryToTitle } from "../../utils/categoryToTitle";
+import { staffIdToTitleAndName } from "../../utils/staffIdToTitleAndName";
 
 const FilterStaffItem = ({
   staff,
@@ -9,6 +11,7 @@ const FilterStaffItem = ({
   handleCheck,
   color,
 }) => {
+  const { clinic } = useAuth();
   return (
     <li>
       <input
@@ -21,8 +24,7 @@ const FilterStaffItem = ({
         style={{ accentColor: color }}
       />
       <label htmlFor={staff.id}>
-        {categoryToTitle(category).toLowerCase() === "doctor" ? "Dr. " : null}
-        {staff.full_name}
+        {staffIdToTitleAndName(clinic.staffInfos, staff.id, true)}
       </label>
     </li>
   );

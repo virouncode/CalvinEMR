@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-widgets/scss/styles.scss";
 import {
   deletePatientRecord,
+  postPatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import axiosXano from "../../../../api/xano";
@@ -16,15 +17,14 @@ import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import PatientsSelect from "../../../Lists/PatientsSelect";
 import RelationshipList from "../../../Lists/RelationshipList";
 
-const RelationshipItem = ({
-  item,
-  fetchRecord,
-  editCounter,
-  setErrMsgPost,
-}) => {
+const RelationshipItem = ({ item, editCounter, setErrMsgPost }) => {
   const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [itemInfos, setItemInfos] = useState(item);
+  const [itemInfos, setItemInfos] = useState(null);
+
+  useEffect(() => {
+    setItemInfos(item);
+  }, [item]);
 
   const handleChange = (e) => {
     setErrMsgPost("");
@@ -60,6 +60,8 @@ const RelationshipItem = ({
         )
       ).data[0].id;
 
+      console.log(inverseRelationToDeleteId);
+
       await axiosXano.delete(`/relationships/${inverseRelationToDeleteId}`, {
         headers: {
           "Content-Type": "application/json",
@@ -88,19 +90,17 @@ const RelationshipItem = ({
         gender
       );
       inverseRelationToPost.relation_id = itemInfos.patient_id;
-      inverseRelationToPost.created_by_id = user.id;
-      inverseRelationToPost.date_created = Date.now();
 
       if (inverseRelationToPost.relationship !== "Undefined") {
-        await axiosXano.post("/relationships", inverseRelationToPost, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-        });
+        await postPatientRecord(
+          "/relationships",
+          user.id,
+          auth.authToken,
+          inverseRelationToPost,
+          socket,
+          "RELATIONSHIPS"
+        );
       }
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

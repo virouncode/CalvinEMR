@@ -5,30 +5,40 @@ export const onMessageClinic = (message, clinic, setClinic) => {
       case "create":
         setClinic({
           ...clinic,
-          patientsInfos: [...clinic.patientsInfos, message.content.data],
-        });
-        localStorage.setItem(
-          "clinic",
-          JSON.stringify({
-            ...clinic,
-            patientsInfos: [...clinic.patientsInfos, message.content.data],
-          })
-        );
-        break;
-      case "update":
-        setClinic({
-          ...clinic,
-          patientsInfos: clinic.patientsInfos.map((patient) =>
-            patient.id === message.content.id ? message.content.data : patient
+          patientsInfos: [...clinic.patientsInfos, message.content.data].sort(
+            (a, b) => a.last_name.localeCompare(b.last_name)
           ),
         });
         localStorage.setItem(
           "clinic",
           JSON.stringify({
             ...clinic,
-            patientsInfos: clinic.patientsInfos.map((patient) =>
-              patient.id === message.content.id ? message.content.data : patient
+            patientsInfos: [...clinic.patientsInfos, message.content.data].sort(
+              (a, b) => a.last_name.localeCompare(b.last_name)
             ),
+          })
+        );
+        break;
+      case "update":
+        setClinic({
+          ...clinic,
+          patientsInfos: clinic.patientsInfos
+            .map((patient) =>
+              patient.id === message.content.id ? message.content.data : patient
+            )
+            .sort((a, b) => a.last_name.localeCompare(b.last_name)),
+        });
+        localStorage.setItem(
+          "clinic",
+          JSON.stringify({
+            ...clinic,
+            patientsInfos: clinic.patientsInfos
+              .map((patient) =>
+                patient.id === message.content.id
+                  ? message.content.data
+                  : patient
+              )
+              .sort((a, b) => a.last_name.localeCompare(b.last_name)),
           })
         );
         break;
@@ -40,30 +50,38 @@ export const onMessageClinic = (message, clinic, setClinic) => {
       case "create":
         setClinic({
           ...clinic,
-          staffInfos: [...clinic.staffInfos, message.content.data],
-        });
-        localStorage.setItem(
-          "clinic",
-          JSON.stringify({
-            ...clinic,
-            staffInfos: [...clinic.staffInfos, message.content.data],
-          })
-        );
-        break;
-      case "update":
-        setClinic({
-          ...clinic,
-          staffInfos: clinic.staffInfos.map((staff) =>
-            staff.id === message.content.id ? message.content.data : staff
+          staffInfos: [...clinic.staffInfos, message.content.data].sort(
+            (a, b) => a.last_name.localeCompare(b.last_name)
           ),
         });
         localStorage.setItem(
           "clinic",
           JSON.stringify({
             ...clinic,
-            staffInfos: clinic.staffInfos.map((staff) =>
-              staff.id === message.content.id ? message.content.data : staff
+            staffInfos: [...clinic.staffInfos, message.content.data].sort(
+              (a, b) => a.last_name.localeCompare(b.last_name)
             ),
+          })
+        );
+        break;
+      case "update":
+        setClinic({
+          ...clinic,
+          staffInfos: clinic.staffInfos
+            .map((staff) =>
+              staff.id === message.content.id ? message.content.data : staff
+            )
+            .sort((a, b) => a.last_name.localeCompare(b.last_name)),
+        });
+        localStorage.setItem(
+          "clinic",
+          JSON.stringify({
+            ...clinic,
+            staffInfos: clinic.staffInfos
+              .map((staff) =>
+                staff.id === message.content.id ? message.content.data : staff
+              )
+              .sort((a, b) => a.last_name.localeCompare(b.last_name)),
           })
         );
         break;

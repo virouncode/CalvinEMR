@@ -35,10 +35,11 @@
 
     }
     &__btn-container {
-        display: flex;
-        justify-content: space-between;
-        width: 150px;
-        margin: 20px auto 0;
+        margin-top: 20px;
+        text-align: center;
+        button {
+            margin-left: 5px;
+        }
     }
 }
 .pregnancies-event, .pregnancies-form {
@@ -62,6 +63,9 @@
     }
     &__btn-container {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+        button {
+            margin-left: 5px;
+        }
     }
 }

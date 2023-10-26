@@ -21,7 +21,6 @@ const ProgressNotesToolBar = ({
   setAllBodiesVisible,
   order,
   setOrder,
-  fetchRecord,
 }) => {
   //HOOKS
   const { auth, user, setUser } = useAuth();

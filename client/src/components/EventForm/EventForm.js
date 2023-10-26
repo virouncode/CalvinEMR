@@ -521,15 +521,24 @@ const EventForm = ({
             selectedStatus={tempFormDatas.status}
           />
         </div>
-        <div className="event-form__row">
-          <input type="submit" value="Save" />
-          <button onClick={handleCancel}>Cancel</button>
-          <button
-            onClick={handleInvitation}
-            disabled={!staffGuestsInfos.length && !patientsGuestsInfos.length}
-          >
-            Send invitation
-          </button>
+        <div className="event-form__btns">
+          {isSecretary() ||
+          currentEvent.current.extendedProps.host === user.id ? (
+            <>
+              <input type="submit" value="Save" />
+              <button onClick={handleCancel}>Cancel</button>
+              <button
+                onClick={handleInvitation}
+                disabled={
+                  !staffGuestsInfos.length && !patientsGuestsInfos.length
+                }
+              >
+                Send invitation
+              </button>
+            </>
+          ) : (
+            <button onClick={handleCancel}>Close</button>
+          )}
         </div>
       </form>
     ) : (

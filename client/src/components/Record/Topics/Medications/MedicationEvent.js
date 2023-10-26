@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   deletePatientRecord,
@@ -12,7 +12,6 @@ import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
 const MedicationEvent = ({
   event,
-  fetchRecord,
   editCounter,
   setErrMsgPost,
   presVisible,
@@ -23,7 +22,11 @@ const MedicationEvent = ({
   //HOOKS
   const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [eventInfos, setEventInfos] = useState(event);
+  const [eventInfos, setEventInfos] = useState(null);
+
+  useEffect(() => {
+    setEventInfos(event);
+  }, [event]);
 
   //HANDLERS
   const handleDeleteClick = async (e) => {
@@ -86,8 +89,6 @@ const MedicationEvent = ({
         socket,
         "MEDICATIONS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

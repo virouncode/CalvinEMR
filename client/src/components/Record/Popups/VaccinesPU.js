@@ -14,7 +14,6 @@ import VaccineItem from "../Topics/Vaccines/VaccineItem";
 const VaccinesPU = ({
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
   setPopUpVisible,
@@ -96,7 +95,6 @@ const VaccinesPU = ({
                       type={vaccine.type}
                       description={vaccine.description}
                       datas={datas}
-                      fetchRecord={fetchRecord}
                       patientInfos={patientInfos}
                       setEditable={setEditable}
                       editable={editable}

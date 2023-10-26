@@ -24,13 +24,13 @@ const AppointmentSlotItem = ({
   };
   const isAppointmentSelected = (id) => appointmentSelected.id === id;
   return (
-    <div key={appointment.id} className="new-appointments-content-item">
+    <div key={appointment.id} className="new-appointments__content-item">
       <input
         type="checkbox"
         checked={isAppointmentSelected(appointment.id)}
         onChange={handleCheck}
       />
-      <div className="new-appointments-content-item-date">
+      <div className="new-appointments__content-item-date">
         <p>
           {new Date(appointment.start).toLocaleString("en-CA", optionsDate)}
         </p>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   deletePatientRecord,
@@ -12,11 +12,15 @@ import { pregnancySchema } from "../../../../validation/pregnancyValidation";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 import PregnanciesList from "../../../Lists/PregnanciesList";
 
-const PregnancyEvent = ({ event, fetchRecord, editCounter, setErrMsgPost }) => {
+const PregnancyEvent = ({ event, editCounter, setErrMsgPost }) => {
   //HOOKS
   const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [eventInfos, setEventInfos] = useState(event);
+  const [eventInfos, setEventInfos] = useState(null);
+
+  useEffect(() => {
+    setEventInfos(event);
+  }, [event]);
 
   //HANDLERS
   const handleChange = (e) => {

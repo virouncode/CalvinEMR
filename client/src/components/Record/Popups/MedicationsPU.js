@@ -15,12 +15,11 @@ const MedicationsPU = ({
   patientInfos,
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
   //HOOKS
-  const { user, clinic } = useAuth();
+  const { clinic } = useAuth();
   const editCounter = useRef(0);
   const [addVisible, setAddVisible] = useState(false);
   const [errMsgPost, setErrMsgPost] = useState("");
@@ -110,7 +109,6 @@ const MedicationsPU = ({
                           <MedicationEvent
                             event={medication}
                             key={medication.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             presVisible={presVisible}
                             setPresVisible={setPresVisible}
@@ -130,7 +128,6 @@ const MedicationsPU = ({
                           <MedicationEvent
                             event={medication}
                             key={medication.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                             presVisible={presVisible}
@@ -151,7 +148,6 @@ const MedicationsPU = ({
                           <MedicationEvent
                             event={medication}
                             key={medication.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                             presVisible={presVisible}
@@ -171,7 +167,6 @@ const MedicationsPU = ({
                           <MedicationEvent
                             event={medication}
                             key={medication.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                             presVisible={presVisible}
@@ -197,7 +192,6 @@ const MedicationsPU = ({
       )}
       {addVisible && (
         <MedicationForm
-          fetchRecord={fetchRecord}
           patientId={patientId}
           setAddVisible={setAddVisible}
           editCounter={editCounter}

@@ -1,5 +1,5 @@
 .patient-account {
-    &-container {
+    &__container {
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         border: solid 2px $blue;
         border-radius: 4px;
@@ -8,7 +8,7 @@
         width : 75%;
         margin:0 auto;
     }
-    &-confirm {
+    &__confirm {
         padding : 10px 20px;
         width : 70%;
         font-size: 0.9rem;
@@ -18,7 +18,7 @@
         color: forestgreen;
         background-color: rgba(34, 139, 34, 0.4);
     }
-    &-err {
+    &__err {
         padding : 10px 20px;
         font-size: 0.9rem;
         width : 70%;
@@ -29,16 +29,14 @@
         text-align: center;
         margin:0 auto 20px;
     }
-    &-btns {
-        width : 50%;
-        margin:20px auto 0;
-        display: flex;
-        justify-content: center;
+    &__btns {
+        margin-top:20px;
+        text-align: center;
         button {
-            margin-left: 10px;
+            margin-left: 5px;
         }
     }
-    &-form {
+    &__form {
         font-size: 0.85rem;
         &-content {
             display: grid;

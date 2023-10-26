@@ -10,7 +10,6 @@ const AllergiesPU = ({
   setPopUpVisible,
   datas,
   setDatas,
-  fetchRecord,
   errMsg,
   isLoading,
 }) => {
@@ -80,7 +79,6 @@ const AllergiesPU = ({
                       editCounter={editCounter}
                       setAddVisible={setAddVisible}
                       patientId={patientId}
-                      fetchRecord={fetchRecord}
                       setErrMsgPost={setErrMsgPost}
                       setDatas={setDatas}
                       datas={datas}
@@ -97,7 +95,6 @@ const AllergiesPU = ({
                           <AllergyItem
                             item={allergy}
                             key={allergy.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -112,7 +109,6 @@ const AllergiesPU = ({
                           <AllergyItem
                             item={allergy}
                             key={allergy.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />

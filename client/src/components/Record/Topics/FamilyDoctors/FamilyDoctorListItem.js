@@ -18,6 +18,7 @@ const FamilyDoctorListItem = ({ item, handleAddItemClick }) => {
       <td>{item.phone}</td>
       <td>{item.fax}</td>
       <td>{item.email}</td>
+      <td>{item.ohip_billing_nbr}</td>
       <td>
         <em>
           {staffIdToTitleAndName(clinic.staffInfos, item.created_by_id, true)}

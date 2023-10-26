@@ -46,10 +46,9 @@
   }
   &__btns {
     margin-top: 20px;
-    display: flex;
-    justify-content: center;
+    text-align: center;
     button {
-      margin-left: 10px;
+      margin-left: 5px;
     }
   }
 
@@ -69,7 +68,6 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    width:65%;
     font-style: 0.8rem;
   }
   &__item {
@@ -92,6 +90,10 @@
     input[type="checkbox"]{
       margin-right: 5px;
     }
+  }
+  &__btn-container {
+    width : 50%;
+    text-align: end;
   }
 }
 .billing-table {
@@ -129,8 +131,9 @@
         width: 100%;
     }
     &-btn-container {
-        display: flex;
-        justify-content: space-around;
+      button {
+        margin-left: 5px;
+      }
     }
   }
 }

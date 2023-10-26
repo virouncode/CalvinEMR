@@ -230,7 +230,7 @@ Cellphone: ${user.demographics.cell_phone}`,
 
   return (
     <div className="new-appointments">
-      <div className="new-appointments-title">Request a new appointment</div>
+      <div className="new-appointments__title">Request a new appointment</div>
       {!assignedStaff.length ? (
         <p>
           You don't seem to have any assigned practician, please contact the
@@ -245,7 +245,7 @@ Cellphone: ${user.demographics.cell_phone}`,
         />
       )}
       {practicianSelectedId && (
-        <p className="new-appointments-disclaimer">
+        <p className="new-appointments__disclaimer">
           These time slots are automatically generated, if you want other time
           slots please call the clinic
         </p>
@@ -270,7 +270,7 @@ Cellphone: ${user.demographics.cell_phone}`,
             rangeEnd={rangeEnd}
           />
 
-          <div className="new-appointments-submit">
+          <div className="new-appointments__submit">
             <button
               onClick={handleSubmit}
               disabled={_.isEmpty(appointmentSelected)}
@@ -281,7 +281,7 @@ Cellphone: ${user.demographics.cell_phone}`,
         </>
       )}
       {requestSent && (
-        <p className="new-appointments-confirm">
+        <p className="new-appointments__confirm">
           Your request has been sent,{" "}
           <strong>
             Please wait for a secretary to confirm your appointment with{" "}

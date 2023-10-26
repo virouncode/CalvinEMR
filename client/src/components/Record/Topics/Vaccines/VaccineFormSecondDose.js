@@ -7,11 +7,9 @@ import { toLocalDate } from "../../../../utils/formatDates";
 const VaccineFormSecondDose = ({
   setFormVisible,
   setEditable,
-  scrollPosition,
   name,
   age,
   datas,
-  fetchRecord,
 }) => {
   //HOOKS
   const { auth, user, socket } = useAuth();
@@ -51,8 +49,6 @@ const VaccineFormSecondDose = ({
         socket,
         "VACCINES"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       setFormVisible(false);
       setEditable(true);
       toast.success("Saved successfully", { containerId: "B" });

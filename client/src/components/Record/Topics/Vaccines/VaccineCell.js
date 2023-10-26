@@ -15,7 +15,6 @@ const VaccineCell = ({
   editable,
   setEditable,
   datas,
-  fetchRecord,
   setErrMsgPost,
 }) => {
   return vaccineInfos ? (
@@ -35,7 +34,6 @@ const VaccineCell = ({
               .rangeEnd
           }
           datas={datas}
-          fetchRecord={fetchRecord}
           editable={editable}
           setEditable={setEditable}
           setErrMsgPost={setErrMsgPost}
@@ -49,7 +47,6 @@ const VaccineCell = ({
           vaccineInfos={vaccineInfos}
           patientInfos={patientInfos}
           datas={datas}
-          fetchRecord={fetchRecord}
           editable={editable}
           setEditable={setEditable}
           setErrMsgPost={setErrMsgPost}
@@ -60,7 +57,6 @@ const VaccineCell = ({
           name={name}
           vaccineInfos={vaccineInfos}
           datas={datas}
-          fetchRecord={fetchRecord}
           editable={editable}
           setEditable={setEditable}
           setErrMsgPost={setErrMsgPost}

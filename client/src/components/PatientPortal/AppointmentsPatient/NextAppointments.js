@@ -110,16 +110,13 @@ Cellphone: ${user.demographics.cell_phone}`,
   };
 
   return (
-    <div className="patient-next-appointments">
-      <div className="patient-next-appointments-title">Next Appointments</div>
-      <div className="patient-next-appointments-content">
+    <div className="appointments-patient">
+      <div className="appointments-patient__title">Next Appointments</div>
+      <div className="appointments-patient__content">
         {nextAppointments ? (
           nextAppointments.length ? (
             nextAppointments.map((appointment) => (
-              <div
-                key={appointment.id}
-                className="patient-next-appointments-content-item"
-              >
+              <div key={appointment.id} className="appointments-patient__item">
                 <input
                   type="checkbox"
                   checked={isAppointmentSelected(appointment.id)}
@@ -127,7 +124,7 @@ Cellphone: ${user.demographics.cell_phone}`,
                   id={appointment.id}
                 />
                 {!appointment.all_day ? (
-                  <div className="patient-next-appointments-content-item-date">
+                  <div className="appointments-patient__date">
                     <p>
                       {new Date(appointment.start).toLocaleString(
                         "en-CA",
@@ -172,7 +169,7 @@ Cellphone: ${user.demographics.cell_phone}`,
           <CircularProgress />
         )}
       </div>
-      <div className="patient-next-appointments-btn">
+      <div className="appointments-patient__btn">
         <button
           onClick={handleDeleteAppointment}
           disabled={!appointmentSelectedId}

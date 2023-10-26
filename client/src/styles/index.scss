@@ -70,7 +70,6 @@
 @import "./components/eforms";
 @import "./components/accountPatient";
 @import "./components/availability";
-@import "./components/pastAppointments";
 @import "./components/newAppointments";
 @import "./components/docmailbox";
 @import "./components/reset";
@@ -86,6 +85,8 @@
 @import "./components/reference";
 @import "./components/missing";
 @import "./components/unauthorized";
+@import "./components/appointmentsPatient";
+@import "./components/refohipSearch";
 @import "flatpickr/dist/themes/material_blue.css";
 
 

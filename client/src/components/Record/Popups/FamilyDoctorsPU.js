@@ -10,10 +10,8 @@ import FamilyDoctorsList from "../Topics/FamilyDoctors/FamilyDoctorsList";
 const FamilyDoctorsPU = ({
   patientId,
   setPopUpVisible,
-  patientInfos,
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -109,6 +107,9 @@ const FamilyDoctorsPU = ({
                     <th onClick={() => handleSort("phone")}>Phone</th>
                     <th onClick={() => handleSort("fax")}>Fax</th>
                     <th onClick={() => handleSort("email")}>Email</th>
+                    <th onClick={() => handleSort("ohip_billing_nbr")}>
+                      OHIP#
+                    </th>
                     <th onClick={() => handleSort("created_by_id")}>
                       Created By
                     </th>
@@ -132,7 +133,6 @@ const FamilyDoctorsPU = ({
                           <FamilyDoctorItem
                             item={item}
                             key={item.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             patientId={patientId}
                             setErrMsgPost={setErrMsgPost}
@@ -148,7 +148,6 @@ const FamilyDoctorsPU = ({
                           <FamilyDoctorItem
                             item={item}
                             key={item.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             patientId={patientId}
                             setErrMsgPost={setErrMsgPost}

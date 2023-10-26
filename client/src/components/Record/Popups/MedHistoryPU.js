@@ -10,7 +10,6 @@ const MedHistoryPU = ({
   setPopUpVisible,
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -87,7 +86,6 @@ const MedHistoryPU = ({
                       editCounter={editCounter}
                       setAddVisible={setAddVisible}
                       patientId={patientId}
-                      fetchRecord={fetchRecord}
                       setErrMsgPost={setErrMsgPost}
                     />
                   )}
@@ -103,7 +101,6 @@ const MedHistoryPU = ({
                           <MedHistoryEvent
                             event={event}
                             key={event.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -119,7 +116,6 @@ const MedHistoryPU = ({
                           <MedHistoryEvent
                             event={event}
                             key={event.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -136,7 +132,6 @@ const MedHistoryPU = ({
                           <MedHistoryEvent
                             event={event}
                             key={event.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -152,7 +147,6 @@ const MedHistoryPU = ({
                           <MedHistoryEvent
                             event={event}
                             key={event.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />

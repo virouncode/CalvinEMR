@@ -26,7 +26,7 @@
             border: solid 1px $black;
         }
         th {
-            min-width: 80px;
+            min-width: 120px;
             padding: 2px 5px;
             border: solid 1px $black;
             text-decoration: underline;
@@ -42,17 +42,24 @@
             input {
                 width:100%;
             }
+            input[type="submit"] {
+                width:auto;
+            }
         }
     }
     &__event-btn-container {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+        button {
+            margin-left: 5px;
+        }
     }
     &__btn-container {
-        display: flex;
-        justify-content: space-between;
-        width:190px;
-        margin: 20px auto 0;
+        button {
+            margin-left: 5px;
+        }
+        margin-top: 20px;
+        text-align: center;
     }
     
 }

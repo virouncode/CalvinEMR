@@ -1,24 +1,22 @@
 .new-appointments {
+    background-color: $white;
     width:100%;
     border: solid 1px $grey;
     border-radius:4px;
     padding : 10px;
     font-size: 0.85rem;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    &-title {
+    &__title {
         font-size: 0.9rem;
         margin-bottom: 10px;
         border-bottom: solid 0.5px $grey;
         font-weight: bold;
     }
-    .assigned-practicians-list{
-        margin-bottom: 20px;
-    }
-    &-disclaimer {
+    &__disclaimer {
         font-style: italic;
         margin-bottom: 20px;
     }
-    &-content{
+    &__content{
         height:25vh;
         overflow:scroll;
         &-item {
@@ -55,11 +53,11 @@
         }
 
     }
-    &-submit {
+    &__submit {
         text-align: center;
         margin-top: 20px;
     }
-    &-confirm {
+    &__confirm {
         padding : 10px 20px;
         width : 30%;
         font-size: 0.9rem;
@@ -68,5 +66,8 @@
         text-align: center;
         color: forestgreen;
         background-color: rgba(34, 139, 34, 0.4);
+    }
+    .assigned-practicians-list{
+        margin-bottom: 20px;
     }
 }

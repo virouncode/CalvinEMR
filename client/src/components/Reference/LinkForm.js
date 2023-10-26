@@ -41,10 +41,20 @@ const LinkForm = ({ setAddVisible, setMyLinks }) => {
           "Content-Type": "application/json",
         },
       });
-      setClinic({ ...clinic, staffInfos: response2.data });
+      setClinic({
+        ...clinic,
+        staffInfos: response2.data.sort((a, b) =>
+          a.last_name.localeCompare(b.last_name)
+        ),
+      });
       localStorage.setItem(
         "clinic",
-        JSON.stringify({ ...clinic, staffInfos: response2.data })
+        JSON.stringify({
+          ...clinic,
+          staffInfos: response2.data.sort((a, b) =>
+            a.last_name.localeCompare(b.last_name)
+          ),
+        })
       );
       toast.success("Saved successfully", { containerId: "A" });
     } catch (err) {

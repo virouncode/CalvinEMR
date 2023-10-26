@@ -17,9 +17,11 @@
         }
     }
     &__btns {
-        display: flex;
-        justify-content: space-between;
+        text-align: center;
         width: 18%;
+        button {
+            margin-left: 5px;
+        }
     }
     &__form {
         margin:10px;

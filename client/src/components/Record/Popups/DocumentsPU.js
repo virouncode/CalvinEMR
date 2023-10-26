@@ -11,7 +11,6 @@ const DocumentsPU = ({
   setPopUpVisible,
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -92,7 +91,6 @@ const DocumentsPU = ({
                             <DocumentItem
                               item={document}
                               key={document.id}
-                              fetchRecord={fetchRecord}
                               showDocument={showDocument}
                               setErrMsgPost={setErrMsgPost}
                             />
@@ -107,7 +105,6 @@ const DocumentsPU = ({
                             <DocumentItem
                               item={document}
                               key={document.id}
-                              fetchRecord={fetchRecord}
                               showDocument={showDocument}
                               setErrMsgPost={setErrMsgPost}
                             />
@@ -123,7 +120,6 @@ const DocumentsPU = ({
                           <DocumentItem
                             item={document}
                             key={document.id}
-                            fetchRecord={fetchRecord}
                             showDocument={showDocument}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -138,7 +134,6 @@ const DocumentsPU = ({
                           <DocumentItem
                             item={document}
                             key={document.id}
-                            fetchRecord={fetchRecord}
                             showDocument={showDocument}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -154,7 +149,6 @@ const DocumentsPU = ({
               {addVisible && (
                 <DocumentForm
                   patientId={patientId}
-                  fetchRecord={fetchRecord}
                   setAddVisible={setAddVisible}
                   editCounter={editCounter}
                   setErrMsgPost={setErrMsgPost}

@@ -45,12 +45,15 @@
     }
     &__link {
         cursor:pointer;
-        color: blue;
+        color: $darkblue;
         text-decoration: underline;
     }
     &__item-btn-container {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+        button {
+            margin-left: 5px;
+        }
     }
     &__form {
         margin-top: 15px;
@@ -70,10 +73,11 @@
         }
     }
     &__btn-container {
-        display: flex;
-        justify-content: space-between;
-        width:150px;
-        margin: 20px auto 0;
+        text-align: center;
+        margin-top: 20px;
+        button {
+            margin-left: 5px;
+        }
     }
 }
 

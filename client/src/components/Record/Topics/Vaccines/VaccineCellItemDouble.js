@@ -15,7 +15,6 @@ const VaccineCellItemDouble = ({
   vaccineInfos,
   patientInfos,
   datas,
-  fetchRecord,
   editable,
   setEditable,
   setErrMsgPost,
@@ -78,8 +77,6 @@ const VaccineCellItemDouble = ({
             socket,
             "VACCINES"
           );
-          const abortController = new AbortController();
-          fetchRecord(abortController);
           toast.success("Saved successfully", { containerId: "B" });
         } catch (err) {
           toast.error(`Error unable to save vaccine: ${err.message}`, {
@@ -124,8 +121,6 @@ const VaccineCellItemDouble = ({
             socket,
             "VACCINES"
           );
-          const abortController = new AbortController();
-          fetchRecord(abortController);
           toast.success("Saved successfully", { containerId: "B" });
         } catch (err) {
           toast.error(`Error unable to save vaccine: ${err.message}`, {
@@ -208,7 +203,6 @@ const VaccineCellItemDouble = ({
             setEditable={setEditable}
             scrollPosition={scrollPosition}
             datas={datas}
-            fetchRecord={fetchRecord}
             name={name}
             age={age}
           />
@@ -332,7 +326,6 @@ const VaccineCellItemDouble = ({
             setEditable={setEditable}
             scrollPosition={scrollPosition}
             datas={datas}
-            fetchRecord={fetchRecord}
             name={name}
             age={age}
           />

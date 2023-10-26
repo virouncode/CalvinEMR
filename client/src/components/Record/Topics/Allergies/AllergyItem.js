@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   deletePatientRecord,
@@ -15,7 +15,11 @@ const AllergyItem = ({ item, editCounter, setErrMsgPost }) => {
   //HOOKS
   const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [itemInfos, setItemInfos] = useState(item);
+  const [itemInfos, setItemInfos] = useState(null);
+
+  useEffect(() => {
+    setItemInfos(item);
+  }, [item]);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -54,8 +58,6 @@ const AllergyItem = ({ item, editCounter, setErrMsgPost }) => {
         socket,
         "ALLERGIES"
       );
-      // const abortController = new AbortController();
-      // fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

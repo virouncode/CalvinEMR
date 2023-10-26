@@ -69,13 +69,11 @@ const SocHistoryForm = ({ setPopUpVisible, patientId }) => {
   };
   return (
     <div className="sochistory-card">
-      <div className="sochistory-card-header">
+      <div className="sochistory-card__header">
         <h1>Patient social history</h1>
       </div>
-      <form className="sochistory-card-form">
-        {errMsgPost && (
-          <div className="sochistory-card-form-err">{errMsgPost}</div>
-        )}
+      <form className="sochistory-form">
+        {errMsgPost && <div className="sochistory-form__err">{errMsgPost}</div>}
         <p>
           <label>Occupations: </label>
           <input
@@ -157,7 +155,7 @@ const SocHistoryForm = ({ setPopUpVisible, patientId }) => {
             autoComplete="off"
           />
         </p>
-        <p className="sochistory-card-form-btns">
+        <p className="sochistory-card__btns">
           <button onClick={handleSubmit}>Save</button>
           <button onClick={handleClose}>Close</button>
         </p>

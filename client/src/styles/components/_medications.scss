@@ -53,13 +53,17 @@
     }
     &__event-btn-container {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
+        button {
+            margin-left: 5px;
+        }
     }
     &__btn-container {
-        display: flex;
-        justify-content: space-between;
-        width: 200px;
-        margin: 20px auto 0;
+        button {
+            margin-left: 5px;
+        }
+        text-align: center;
+        margin-top: 20px;
     }
 }
 .medications-form {
@@ -88,10 +92,15 @@
             width: 55%;
         }
     }
-    &__link {
-        text-decoration: underline;
-        font-size: 0.85rem;
+    &__links {
+        h3 {
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
         width: 45%;
+        li {
+            text-decoration: underline;
+        }
     }
 }
 

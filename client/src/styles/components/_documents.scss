@@ -39,10 +39,15 @@
             padding: 2px 5px;
             word-break: break-word;
         }
+        &-btn-container {
+            button {
+                margin-left: 5px;
+            }
+        }
     }
     &__link {
         cursor:pointer;
-        color: blue;
+        color: $darkblue;
         text-decoration: underline;
     }
     &__form {
@@ -71,10 +76,11 @@
         }
     }
     &__btn-container {
-        display: flex;
-        justify-content: space-between;
-        width:170px;
-        margin: 20px auto 0;
+        button {
+            margin-left: 5px;
+        }
+        text-align: center;
+        margin-top: 20px;
     }
     
 }

@@ -16,7 +16,10 @@ const FamilyDoctorItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
   const [itemInfos, setItemInfos] = useState(null);
 
   useEffect(() => {
-    setItemInfos(item);
+    setItemInfos({
+      ...item,
+      ohip_billing_nbr: item.ohip_billing_nbr.toString(),
+    });
   }, [item]);
 
   //HANDLERS
@@ -30,15 +33,6 @@ const FamilyDoctorItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Formatting
-    setItemInfos({
-      ...itemInfos,
-      name: firstLetterUpper(itemInfos.name),
-      speciality: firstLetterUpper(itemInfos.speciality),
-      address: firstLetterUpper(itemInfos.address),
-      province_state: firstLetterUpper(itemInfos.province_state),
-      city: firstLetterUpper(itemInfos.city),
-      email: itemInfos.email.toLowerCase(),
-    });
     const formDatas = {
       ...itemInfos,
       name: firstLetterUpper(itemInfos.name),
@@ -55,6 +49,20 @@ const FamilyDoctorItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
       setErrMsgPost(err.message);
       return;
     }
+    if (itemInfos.ohip_billing_nbr.length !== 6) {
+      setErrMsgPost("OHIP billing nbr field must be 6-digits");
+      return;
+    }
+    formDatas.ohip_billing_nbr = parseInt(formDatas.ohip_billing_nbr);
+    setItemInfos({
+      ...itemInfos,
+      name: firstLetterUpper(itemInfos.name),
+      speciality: firstLetterUpper(itemInfos.speciality),
+      address: firstLetterUpper(itemInfos.address),
+      province_state: firstLetterUpper(itemInfos.province_state),
+      city: firstLetterUpper(itemInfos.city),
+      email: itemInfos.email.toLowerCase(),
+    });
 
     if (
       await confirmAlert({
@@ -123,7 +131,7 @@ const FamilyDoctorItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
   };
   return (
     itemInfos && (
-      <tr className="doctors-list__item">
+      <tr className="doctors__item">
         <td>{itemInfos.name}</td>
         <td>
           {editVisible ? (
@@ -251,6 +259,19 @@ const FamilyDoctorItem = ({ patientId, item, editCounter, setErrMsgPost }) => {
             />
           ) : (
             itemInfos.email
+          )}
+        </td>
+        <td>
+          {editVisible ? (
+            <input
+              name="ohip_billing_nbr"
+              type="text"
+              value={itemInfos.ohip_billing_nbr}
+              onChange={handleChange}
+              autoComplete="off"
+            />
+          ) : (
+            itemInfos.ohip_billing_nbr
           )}
         </td>
         <td>

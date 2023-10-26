@@ -12,7 +12,6 @@ const PharmaciesPU = ({
   setPopUpVisible,
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -129,7 +128,6 @@ const PharmaciesPU = ({
                           <PharmacyItem
                             item={item}
                             key={item.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             patientId={patientId}
                             setErrMsgPost={setErrMsgPost}
@@ -145,7 +143,6 @@ const PharmaciesPU = ({
                           <PharmacyItem
                             item={item}
                             key={item.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             patientId={patientId}
                             setErrMsgPost={setErrMsgPost}

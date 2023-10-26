@@ -10,7 +10,6 @@ const PregnanciesPU = ({
   setPopUpVisible,
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -90,7 +89,6 @@ const PregnanciesPU = ({
                       editCounter={editCounter}
                       setAddVisible={setAddVisible}
                       patientId={patientId}
-                      fetchRecord={fetchRecord}
                       setErrMsgPost={setErrMsgPost}
                     />
                   )}
@@ -105,7 +103,6 @@ const PregnanciesPU = ({
                           <PregnancyEvent
                             event={pregnancy}
                             key={pregnancy.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -120,7 +117,6 @@ const PregnanciesPU = ({
                           <PregnancyEvent
                             event={pregnancy}
                             key={pregnancy.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   deletePatientRecord,
@@ -11,16 +11,15 @@ import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { medHistorySchema } from "../../../../validation/medHistoryValidation";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
-const MedHistoryEvent = ({
-  event,
-  fetchRecord,
-  editCounter,
-  setErrMsgPost,
-}) => {
+const MedHistoryEvent = ({ event, editCounter, setErrMsgPost }) => {
   //HOOKS
   const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [eventInfos, setEventInfos] = useState(event);
+  const [eventInfos, setEventInfos] = useState(null);
+
+  useEffect(() => {
+    setEventInfos(event);
+  }, [event]);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -66,8 +65,6 @@ const MedHistoryEvent = ({
         socket,
         "MEDICAL HISTORY"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

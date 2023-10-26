@@ -11,7 +11,6 @@ const VaccineFormFirstDose = ({
   name,
   age,
   datas,
-  fetchRecord,
 }) => {
   //HOOKS
   const { auth, user, socket } = useAuth();
@@ -51,8 +50,6 @@ const VaccineFormFirstDose = ({
         socket,
         "VACCINES"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       setFormVisible(false);
       setEditable(true);
       toast.success("Saved successfully", { containerId: "B" });

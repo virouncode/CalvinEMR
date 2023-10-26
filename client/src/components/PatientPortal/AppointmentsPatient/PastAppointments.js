@@ -19,18 +19,15 @@ const PastAppointments = ({ pastAppointments }) => {
   };
 
   return (
-    <div className="patient-past-appointments">
-      <div className="patient-past-appointments-title">Past Appointments</div>
-      <div className="patient-past-appointments-content">
+    <div className="appointments-patient appointments-patient--past">
+      <div className="appointments-patient__title">Past Appointments</div>
+      <div className="appointments-patient__content">
         {pastAppointments ? (
           pastAppointments.length ? (
             pastAppointments.map((appointment) => (
-              <div
-                key={appointment.id}
-                className="patient-past-appointments-content-item"
-              >
+              <div key={appointment.id} className="appointments-patient__item">
                 {!appointment.all_day ? (
-                  <div className="patient-past-appointments-content-item-date">
+                  <div className="appointments-patient__date">
                     <p>
                       {new Date(appointment.start).toLocaleString(
                         "en-CA",

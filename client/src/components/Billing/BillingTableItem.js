@@ -333,7 +333,7 @@ const BillingTableItem = ({ billing, setBillings, setErrMsg }) => {
           </td>
           {user.title !== "Secretary" && (
             <td>
-              <div className="billing-table__btn-container">
+              <div className="billing-table__item-btn-container">
                 {!editVisible ? (
                   <button onClick={handleEditClick}>Edit</button>
                 ) : (

@@ -11,7 +11,6 @@ const AppointmentsPU = ({
   patientInfos,
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -89,7 +88,6 @@ const AppointmentsPU = ({
                   {addVisible && (
                     <AppointmentForm
                       patientId={patientId}
-                      fetchRecord={fetchRecord}
                       editCounter={editCounter}
                       patientInfos={patientInfos}
                       setAddVisible={setAddVisible}
@@ -107,7 +105,6 @@ const AppointmentsPU = ({
                           <AppointmentEvent
                             event={appointment}
                             key={appointment.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -122,7 +119,6 @@ const AppointmentsPU = ({
                           <AppointmentEvent
                             event={appointment}
                             key={appointment.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />

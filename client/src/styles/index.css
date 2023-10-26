@@ -379,7 +379,7 @@ select:focus {
 
 .patient-record-section {
   width: 100%;
-  min-height: 100vh;
+  height: 200vh;
 }
 .patient-record-section__title {
   font-size: 1.2rem;
@@ -11250,9 +11250,6 @@ readers do not read off random characters that represent icons */
   border-radius: 4px;
   padding: 10px;
 }
-.event-form__row button, .event-form__row input[type=submit] {
-  margin-right: 5px;
-}
 .event-form__row--guest {
   flex-direction: column;
 }
@@ -11263,6 +11260,13 @@ readers do not read off random characters that represent icons */
 .event-form__row--radio p {
   padding: 0;
   font-weight: bold;
+}
+.event-form__btns {
+  text-align: center;
+  pointer-events: all;
+}
+.event-form__btns button, .event-form__btns input[type=submit] {
+  margin-right: 5px;
 }
 .event-form__radio-container {
   display: flex;
@@ -11387,11 +11391,10 @@ readers do not read off random characters that represent icons */
   margin-right: 5px;
 }
 .invitation__btns {
-  border: solid 1px #cecdcd;
-  border-radius: 4px;
-  padding: 10px;
+  text-align: center;
+  pointer-events: all;
 }
-.invitation__btns button {
+.invitation__btns button, .invitation__btns input[type=submit] {
   margin-right: 5px;
 }
 
@@ -11617,7 +11620,7 @@ readers do not read off random characters that represent icons */
 .patient-record__fold {
   display: block;
   padding: 5px 10px;
-  margin: 0 auto 5px;
+  margin: 0 auto 10px;
 }
 .patient-record__menu {
   display: flex;
@@ -11661,7 +11664,7 @@ readers do not read off random characters that represent icons */
   padding: 5px;
 }
 .progress-notes__toolbar button {
-  margin: 0 5px;
+  margin-left: 5px;
 }
 .progress-notes__order {
   display: flex;
@@ -11734,6 +11737,7 @@ readers do not read off random characters that represent icons */
   margin: 0 5px;
 }
 .progress-notes__card {
+  background-color: #FEFEFE;
   border: solid 0.5px grey;
   margin: 4px;
   border-radius: 4px;
@@ -11917,7 +11921,7 @@ readers do not read off random characters that represent icons */
   font-size: 0.8rem;
 }
 .topic-content__link {
-  color: blue;
+  color: #327AE6;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -11994,9 +11998,11 @@ readers do not read off random characters that represent icons */
   font-weight: bold;
 }
 .demographics-card__btns {
-  display: flex;
-  justify-content: space-between;
+  text-align: center;
   width: 18%;
+}
+.demographics-card__btns button {
+  margin-left: 5px;
 }
 .demographics-card__form {
   margin: 10px;
@@ -12100,13 +12106,17 @@ readers do not read off random characters that represent icons */
 }
 .medhistory__event-btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+.medhistory__event-btn-container button {
+  margin-left: 5px;
 }
 .medhistory__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 150px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.medhistory__btn-container button {
+  margin-left: 5px;
 }
 
 .famhistory__title {
@@ -12156,13 +12166,17 @@ readers do not read off random characters that represent icons */
 }
 .famhistory__event-btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+.famhistory__event-btn-container button {
+  margin-left: 5px;
 }
 .famhistory__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 150px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.famhistory__btn-container button {
+  margin-left: 5px;
 }
 
 .sochistory-card {
@@ -12185,8 +12199,7 @@ readers do not read off random characters that represent icons */
   font-weight: bold;
 }
 .sochistory-card__btns {
-  display: flex;
-  justify-content: space-between;
+  text-align: center;
 }
 .sochistory-card__btns button {
   margin-left: 5px;
@@ -12267,15 +12280,15 @@ readers do not read off random characters that represent icons */
 .risk__item td input[type=submit], .risk__form td input[type=submit] {
   width: auto;
 }
-.risk__item-btn-container {
-  display: flex;
-  justify-content: space-around;
+.risk__item-btn-container button {
+  margin-left: 5px;
 }
 .risk__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 150px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.risk__btn-container button {
+  margin-left: 5px;
 }
 
 .medications__title {
@@ -12328,13 +12341,17 @@ readers do not read off random characters that represent icons */
 }
 .medications__event-btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+.medications__event-btn-container button {
+  margin-left: 5px;
 }
 .medications__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 200px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.medications__btn-container button {
+  margin-left: 5px;
 }
 
 .medications-form__container {
@@ -12362,10 +12379,15 @@ readers do not read off random characters that represent icons */
 .medications-form__row input {
   width: 55%;
 }
-.medications-form__link {
-  text-decoration: underline;
-  font-size: 0.85rem;
+.medications-form__links {
   width: 45%;
+}
+.medications-form__links h3 {
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+.medications-form__links li {
+  text-decoration: underline;
 }
 
 .medications-search {
@@ -12435,13 +12457,16 @@ readers do not read off random characters that represent icons */
 }
 .pharmacies__item-btn-container {
   display: flex;
-  justify-content: space-around;
+}
+.pharmacies__item-btn-container button {
+  margin-left: 5px;
 }
 .pharmacies__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 240px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.pharmacies__btn-container button {
+  margin-left: 5px;
 }
 
 .pharmacies-list__title {
@@ -12529,13 +12554,17 @@ readers do not read off random characters that represent icons */
 }
 .doctors__item-btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+.doctors__item-btn-container button {
+  margin-left: 5px;
 }
 .doctors__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 220px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.doctors__btn-container button {
+  margin-left: 5px;
 }
 
 .doctors-list__title {
@@ -12604,7 +12633,7 @@ readers do not read off random characters that represent icons */
   border: solid 1px #495566;
 }
 .measurements__table th {
-  min-width: 80px;
+  min-width: 120px;
   padding: 2px 5px;
   border: solid 1px #495566;
   text-decoration: underline;
@@ -12619,15 +12648,22 @@ readers do not read off random characters that represent icons */
 .measurements__event td input, .measurements__form td input {
   width: 100%;
 }
+.measurements__event td input[type=submit], .measurements__form td input[type=submit] {
+  width: auto;
+}
 .measurements__event-btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+.measurements__event-btn-container button {
+  margin-left: 5px;
 }
 .measurements__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 190px;
-  margin: 20px auto 0;
+  margin-top: 20px;
+  text-align: center;
+}
+.measurements__btn-container button {
+  margin-left: 5px;
 }
 
 .reminders__title {
@@ -12680,13 +12716,17 @@ readers do not read off random characters that represent icons */
 }
 .reminders__item-btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+.reminders__item-btn-container button {
+  margin-left: 5px;
 }
 .reminders__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 170px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.reminders__btn-container button {
+  margin-left: 5px;
 }
 
 .pregnancies__title {
@@ -12723,10 +12763,11 @@ readers do not read off random characters that represent icons */
   cursor: pointer;
 }
 .pregnancies__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 150px;
-  margin: 20px auto 0;
+  margin-top: 20px;
+  text-align: center;
+}
+.pregnancies__btn-container button {
+  margin-left: 5px;
 }
 
 .pregnancies-event td, .pregnancies-form td {
@@ -12749,7 +12790,10 @@ readers do not read off random characters that represent icons */
 }
 .pregnancies-event__btn-container, .pregnancies-form__btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+.pregnancies-event__btn-container button, .pregnancies-form__btn-container button {
+  margin-left: 5px;
 }
 
 .allergies__title {
@@ -12797,15 +12841,19 @@ readers do not read off random characters that represent icons */
 .allergies__item input[type=submit], .allergies__form input[type=submit] {
   width: auto;
 }
-.allergies__item__btn-container, .allergies__form__btn-container {
+.allergies__item-btn-container, .allergies__form-btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+.allergies__item-btn-container button, .allergies__form-btn-container button {
+  margin-left: 5px;
 }
 .allergies__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 170px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.allergies__btn-container button {
+  margin-left: 5px;
 }
 
 .concerns__title {
@@ -12853,11 +12901,19 @@ readers do not read off random characters that represent icons */
 .concerns__item td input[type=submit], .concerns__form td input[type=submit] {
   width: auto;
 }
-.concerns__btn-container {
+.concerns__item-btn-container, .concerns__form-btn-container {
   display: flex;
-  justify-content: space-between;
-  width: 170px;
-  margin: 20px auto 0;
+  justify-content: center;
+}
+.concerns__item-btn-container button, .concerns__form-btn-container button {
+  margin-left: 5px;
+}
+.concerns__btn-container {
+  text-align: center;
+  margin-top: 20px;
+}
+.concerns__btn-container button {
+  margin-left: 5px;
 }
 
 .documents__title {
@@ -12899,9 +12955,12 @@ readers do not read off random characters that represent icons */
   padding: 2px 5px;
   word-break: break-word;
 }
+.documents__item-btn-container button {
+  margin-left: 5px;
+}
 .documents__link {
   cursor: pointer;
-  color: blue;
+  color: #327AE6;
   text-decoration: underline;
 }
 .documents__form {
@@ -12930,10 +12989,11 @@ readers do not read off random characters that represent icons */
   width: auto;
 }
 .documents__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 170px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.documents__btn-container button {
+  margin-left: 5px;
 }
 
 .appointments__title {
@@ -12989,13 +13049,16 @@ readers do not read off random characters that represent icons */
 }
 .appointments__event-btn-container {
   display: flex;
-  justify-content: space-around;
+}
+.appointments__event-btn-container button {
+  margin-left: 5px;
 }
 .appointments__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 200px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.appointments__btn-container button {
+  margin-left: 5px;
 }
 
 .vaccines__err {
@@ -13134,8 +13197,7 @@ readers do not read off random characters that represent icons */
   position: absolute;
   top: 25%;
   left: 50%;
-  transform: translateY(-50%);
-  margin-left: -200px;
+  transform: translate(-50%, -50%);
   background: #FEFEFE;
   overflow: hidden;
 }
@@ -13463,13 +13525,11 @@ readers do not read off random characters that represent icons */
   margin-bottom: 10px;
 }
 .myaccount-section__btns {
-  width: 50%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
+  text-align: center;
+  margin-top: 20px;
 }
 .myaccount-section__btns button {
-  margin-left: 10px;
+  margin-left: 5px;
 }
 .myaccount-section__form {
   font-size: 0.85rem;
@@ -13576,7 +13636,7 @@ readers do not read off random characters that represent icons */
   justify-content: flex-end;
 }
 .messages-toolbar__btns button {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .messages-content {
@@ -13760,7 +13820,7 @@ readers do not read off random characters that represent icons */
   padding: 20px;
 }
 .message-detail__btns button {
-  margin-right: 10px;
+  margin-left: 5px;
 }
 
 .messages-print__container {
@@ -13961,7 +14021,7 @@ readers do not read off random characters that represent icons */
   align-items: center;
 }
 .new-message__btns button {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 .new-message__patients {
   width: 24%;
@@ -14038,7 +14098,7 @@ readers do not read off random characters that represent icons */
   align-items: center;
 }
 .reply-message__btns button {
-  margin-right: 10px;
+  margin-left: 5px;
 }
 .reply-message__attach {
   border-bottom: solid 0.3px grey;
@@ -14128,7 +14188,7 @@ readers do not read off random characters that represent icons */
   align-items: center;
 }
 .forward-message__btns button {
-  margin-right: 10px;
+  margin-left: 5px;
 }
 .forward-message__attach {
   border-bottom: solid 0.3px grey;
@@ -14274,10 +14334,11 @@ readers do not read off random characters that represent icons */
   cursor: pointer;
 }
 .relationships__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 150px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.relationships__btn-container button {
+  margin-left: 5px;
 }
 
 .relationships-item td, .relationships-form td {
@@ -14302,7 +14363,10 @@ readers do not read off random characters that represent icons */
 }
 .relationships-item__btn-container, .relationships-form__btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+.relationships-item__btn-container button, .relationships-form__btn-container button {
+  margin-left: 5px;
 }
 
 .verify-pwd {
@@ -14434,12 +14498,15 @@ readers do not read off random characters that represent icons */
 }
 .eforms__link {
   cursor: pointer;
-  color: blue;
+  color: #327AE6;
   text-decoration: underline;
 }
 .eforms__item-btn-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+.eforms__item-btn-container button {
+  margin-left: 5px;
 }
 .eforms__form {
   margin-top: 15px;
@@ -14459,13 +14526,14 @@ readers do not read off random characters that represent icons */
   margin-top: 5px;
 }
 .eforms__btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 150px;
-  margin: 20px auto 0;
+  text-align: center;
+  margin-top: 20px;
+}
+.eforms__btn-container button {
+  margin-left: 5px;
 }
 
-.patient-account-container {
+.patient-account__container {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border: solid 2px #9CB9E4;
   border-radius: 4px;
@@ -14474,7 +14542,7 @@ readers do not read off random characters that represent icons */
   width: 75%;
   margin: 0 auto;
 }
-.patient-account-confirm {
+.patient-account__confirm {
   padding: 10px 20px;
   width: 70%;
   font-size: 0.9rem;
@@ -14484,7 +14552,7 @@ readers do not read off random characters that represent icons */
   color: forestgreen;
   background-color: rgba(34, 139, 34, 0.4);
 }
-.patient-account-err {
+.patient-account__err {
   padding: 10px 20px;
   font-size: 0.9rem;
   width: 70%;
@@ -14495,24 +14563,22 @@ readers do not read off random characters that represent icons */
   text-align: center;
   margin: 0 auto 20px;
 }
-.patient-account-btns {
-  width: 50%;
-  margin: 20px auto 0;
-  display: flex;
-  justify-content: center;
+.patient-account__btns {
+  margin-top: 20px;
+  text-align: center;
 }
-.patient-account-btns button {
-  margin-left: 10px;
+.patient-account__btns button {
+  margin-left: 5px;
 }
-.patient-account-form {
+.patient-account__form {
   font-size: 0.85rem;
 }
-.patient-account-form-content {
+.patient-account__form-content {
   display: grid;
   grid-template-columns: 17% 35% 35%;
   justify-content: space-between;
 }
-.patient-account-form-content-column-img {
+.patient-account__form-content-column-img {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -14520,24 +14586,24 @@ readers do not read off random characters that represent icons */
   overflow: hidden;
   margin-right: 10px;
 }
-.patient-account-form-content-column-img img {
+.patient-account__form-content-column-img img {
   align-self: flex-start;
   height: 90%;
   width: auto;
 }
-.patient-account-form-content-column-img input[type=file]::-webkit-file-upload-button {
+.patient-account__form-content-column-img input[type=file]::-webkit-file-upload-button {
   cursor: pointer;
 }
-.patient-account-form-content-row {
+.patient-account__form-content-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
-.patient-account-form-content label {
+.patient-account__form-content label {
   font-size: 0.85rem;
   font-weight: bold;
 }
-.patient-account-form-content input, .patient-account-form-content select {
+.patient-account__form-content input, .patient-account__form-content select {
   width: 200px;
 }
 
@@ -14624,62 +14690,11 @@ readers do not read off random characters that represent icons */
   margin-top: 10px;
 }
 .availability__btns button {
-  margin-left: 10px;
-}
-
-.patient-past-appointments {
-  margin-bottom: 10px;
-}
-
-.patient-past-appointments, .patient-next-appointments {
-  width: 100%;
-  border: solid 1px #cecdcd;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 0.85rem;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
-.patient-past-appointments-title, .patient-next-appointments-title {
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-  border-bottom: solid 0.5px #cecdcd;
-  font-weight: bold;
-}
-.patient-past-appointments-content, .patient-next-appointments-content {
-  height: 30vh;
-  overflow: scroll;
-}
-.patient-past-appointments-content-item, .patient-next-appointments-content-item {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.patient-past-appointments-content-item p, .patient-next-appointments-content-item p {
-  font-size: 0.85rem;
-  width: 25%;
-}
-.patient-past-appointments-content-item-date, .patient-next-appointments-content-item-date {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 50%;
-}
-.patient-past-appointments-content-item-date p, .patient-next-appointments-content-item-date p {
-  padding: 0;
-  font-size: 0.85rem;
-  width: 50%;
-}
-.patient-past-appointments-content input[type=checkbox], .patient-next-appointments-content input[type=checkbox] {
-  margin-right: 10px;
-}
-
-.patient-next-appointments-btn {
-  margin-top: 10px;
-  text-align: center;
+  margin-left: 5px;
 }
 
 .new-appointments {
+  background-color: #FEFEFE;
   width: 100%;
   border: solid 1px #cecdcd;
   border-radius: 4px;
@@ -14687,59 +14702,56 @@ readers do not read off random characters that represent icons */
   font-size: 0.85rem;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
-.new-appointments-title {
+.new-appointments__title {
   font-size: 0.9rem;
   margin-bottom: 10px;
   border-bottom: solid 0.5px #cecdcd;
   font-weight: bold;
 }
-.new-appointments .assigned-practicians-list {
-  margin-bottom: 20px;
-}
-.new-appointments-disclaimer {
+.new-appointments__disclaimer {
   font-style: italic;
   margin-bottom: 20px;
 }
-.new-appointments-content {
+.new-appointments__content {
   height: 25vh;
   overflow: scroll;
 }
-.new-appointments-content-item {
+.new-appointments__content-item {
   width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
-.new-appointments-content-item input[type=checkbox] {
+.new-appointments__content-item input[type=checkbox] {
   margin-right: 10px;
 }
-.new-appointments-content-item p {
+.new-appointments__content-item p {
   font-size: 0.85rem;
   width: 25%;
 }
-.new-appointments-content-item-date {
+.new-appointments__content-item-date {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 50%;
 }
-.new-appointments-content-item-date p {
+.new-appointments__content-item-date p {
   padding: 0;
   font-size: 0.85rem;
   width: 50%;
 }
-.new-appointments-content-weekpicker {
+.new-appointments__content-weekpicker {
   text-align: center;
   margin-top: 10px;
 }
-.new-appointments-content-weekpicker label {
+.new-appointments__content-weekpicker label {
   padding: 10px;
 }
-.new-appointments-submit {
+.new-appointments__submit {
   text-align: center;
   margin-top: 20px;
 }
-.new-appointments-confirm {
+.new-appointments__confirm {
   padding: 10px 20px;
   width: 30%;
   font-size: 0.9rem;
@@ -14748,6 +14760,9 @@ readers do not read off random characters that represent icons */
   text-align: center;
   color: forestgreen;
   background-color: rgba(34, 139, 34, 0.4);
+}
+.new-appointments .assigned-practicians-list {
+  margin-bottom: 20px;
 }
 
 .docmailbox__err {
@@ -14867,11 +14882,12 @@ readers do not read off random characters that represent icons */
 }
 .docmailbox__patient-item-link {
   cursor: pointer;
-  color: blue;
+  color: #327AE6;
   text-decoration: underline;
 }
 
 .practicians-forward {
+  background: #FEFEFE;
   border: solid 1px #cecdcd;
   border-radius: 4px;
   width: 70%;
@@ -15286,7 +15302,7 @@ readers do not read off random characters that represent icons */
   width: 4em;
   height: 1em;
   padding: 10px;
-  background: #3C5A76;
+  background: #9CB9E4;
   border-radius: 20px;
   display: flex;
   justify-content: space-around;
@@ -15507,11 +15523,10 @@ readers do not read off random characters that represent icons */
 }
 .billing-form__btns {
   margin-top: 20px;
-  display: flex;
-  justify-content: center;
+  text-align: center;
 }
 .billing-form__btns button {
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .billing-filter {
@@ -15530,7 +15545,6 @@ readers do not read off random characters that represent icons */
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 65%;
   font-style: 0.8rem;
 }
 .billing-filter__item {
@@ -15553,6 +15567,10 @@ readers do not read off random characters that represent icons */
 }
 .billing-filter__item input[type=checkbox] {
   margin-right: 5px;
+}
+.billing-filter__btn-container {
+  width: 50%;
+  text-align: end;
 }
 
 .billing-table {
@@ -15589,9 +15607,8 @@ readers do not read off random characters that represent icons */
 .billing-table__item input[type=date] {
   width: 100%;
 }
-.billing-table__item-btn-container {
-  display: flex;
-  justify-content: space-around;
+.billing-table__item-btn-container button {
+  margin-left: 5px;
 }
 
 .diagnosis-search {
@@ -15603,23 +15620,23 @@ readers do not read off random characters that represent icons */
   margin-right: 10px;
 }
 
-.daignosis-results {
+.diagnosis-results {
   padding: 20px;
 }
-.daignosis-results__item {
+.diagnosis-results__item {
   cursor: pointer;
   display: flex;
   justify-content: flex-start;
 }
-.daignosis-results__item:hover {
+.diagnosis-results__item:hover {
   text-decoration: underline;
 }
-.daignosis-results__code {
+.diagnosis-results__code {
   font-weight: bold;
   display: inline-block;
   width: 6%;
 }
-.daignosis-results__name {
+.diagnosis-results__name {
   width: 94%;
 }
 
@@ -15635,12 +15652,12 @@ readers do not read off random characters that represent icons */
 .hin-results {
   padding: 20px;
 }
-.hin-results_item {
+.hin-results__item {
   cursor: pointer;
   display: flex;
   justify-content: flex-start;
 }
-.hin-results_item:hover {
+.hin-results__item:hover {
   text-decoration: underline;
 }
 .hin-results__code {
@@ -15749,4 +15766,84 @@ readers do not read off random characters that represent icons */
 }
 .unauthorized-container-link {
   text-decoration: underline;
+}
+
+.appointments-patient {
+  background-color: #FEFEFE;
+  width: 100%;
+  border: solid 1px #cecdcd;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 0.85rem;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.appointments-patient--past {
+  margin-bottom: 10px;
+}
+.appointments-patient__title {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  border-bottom: solid 0.5px #cecdcd;
+  font-weight: bold;
+}
+.appointments-patient__content {
+  height: 30vh;
+  overflow: scroll;
+}
+.appointments-patient__item {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.appointments-patient__item p {
+  font-size: 0.85rem;
+  width: 25%;
+}
+.appointments-patient__date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+}
+.appointments-patient__date p {
+  padding: 0;
+  font-size: 0.85rem;
+  width: 50%;
+}
+.appointments-patient__date input[type=checkbox] {
+  margin-right: 10px;
+}
+.appointments-patient__btn {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.refohip-search {
+  margin-top: 50px;
+  padding: 0 10px;
+}
+.refohip-search label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.refohip-results {
+  padding: 20px;
+}
+.refohip-results__item {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+}
+.refohip-results__item:hover {
+  text-decoration: underline;
+}
+.refohip-results__code {
+  font-weight: bold;
+  display: inline-block;
+  width: 20%;
+}
+.refohip-results__name {
+  width: 80%;
 }/*# sourceMappingURL=index.css.map */

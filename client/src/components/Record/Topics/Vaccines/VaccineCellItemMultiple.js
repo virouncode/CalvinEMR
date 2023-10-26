@@ -8,7 +8,6 @@ const VaccineCellItemMultiple = ({
   name,
   vaccineInfos,
   datas,
-  fetchRecord,
   editable,
   setEditable,
   setErrMsgPost,
@@ -86,7 +85,6 @@ const VaccineCellItemMultiple = ({
           name={name}
           age={age}
           datas={datas}
-          fetchRecord={fetchRecord}
           setErrMsgPost={setErrMsgPost}
         />
       )}

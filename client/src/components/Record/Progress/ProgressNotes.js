@@ -73,7 +73,6 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
         setAllBodiesVisible={setAllBodiesVisible}
         order={order}
         setOrder={setOrder}
-        fetchRecord={fetchRecord}
       />
       {popUpVisible && (
         <NewWindow
@@ -141,7 +140,6 @@ const ProgressNotes = ({ patientInfos, allContentsVisible, patientId }) => {
                   progressNote={progressNote}
                   progressNotes={progressNotes}
                   setProgressNotes={setProgressNotes}
-                  fetchRecord={fetchRecord}
                   order={order}
                   patientId={patientId}
                   key={progressNote.id}

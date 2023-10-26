@@ -49,13 +49,16 @@
     }
     &__item-btn-container {
         display: flex;
-        justify-content: space-around;
+        button {
+            margin-left: 5px;
+        }
     } 
     &__btn-container {
-        display: flex;
-        justify-content: space-between;
-        width: 240px;
-        margin: 20px auto 0;
+        button {
+            margin-left: 5px;
+        }
+        text-align: center;
+        margin-top: 20px;
     }
 }    
 .pharmacies-list {

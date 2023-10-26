@@ -121,16 +121,16 @@ const AccountPatientForm = () => {
   };
 
   return (
-    <div className="patient-account-container">
-      {errMsg && <p className="patient-account-err">{errMsg}</p>}
+    <div className="patient-account__container">
+      {errMsg && <p className="patient-account__err">{errMsg}</p>}
       {successMsg && (
-        <p className="patient-account-confirm">Infos changed successfully</p>
+        <p className="patient-account__confirm">Infos changed successfully</p>
       )}
       {tempFormDatas && (
-        <form className="patient-account-form">
-          <div className="patient-account-form-content">
-            <div className="patient-account-form-content-column">
-              <div className="patient-account-form-content-column-img">
+        <form className="patient-account__form">
+          <div className="patient-account__form-content">
+            <div className="patient-account__form-content-column">
+              <div className="patient-account__form-content-column-img">
                 {tempFormDatas.avatar ? (
                   <img
                     src={`${BASE_URL}${tempFormDatas.avatar.path}`}
@@ -144,28 +144,28 @@ const AccountPatientForm = () => {
                 )}
               </div>
             </div>
-            <div className="patient-account-form-content-column">
-              <div className="patient-account-form-content-row">
+            <div className="patient-account__form-content-column">
+              <div className="patient-account__form-content-row">
                 <label>First Name*: </label>
                 {tempFormDatas.first_name}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Middle Name: </label>
                 {tempFormDatas.middle_name}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Last Name*: </label>
                 {tempFormDatas.last_name}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Email*: </label>
                 {tempFormDatas.email}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Gender at birth*: </label>
                 {tempFormDatas.gender_at_birth}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Gender identification*: </label>
                 {editVisible ? (
                   <select
@@ -181,29 +181,29 @@ const AccountPatientForm = () => {
                   tempFormDatas.gender_identification
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Chart Nbr: </label>
                 {tempFormDatas.chart_nbr}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Health Insurance Nbr: </label>
                 {tempFormDatas.health_insurance_nbr}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Health Card Expiry: </label>
                 {tempFormDatas.health_card_expiry !== null
                   ? toLocalDate(tempFormDatas.health_card_expiry)
                   : ""}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Date of birth*: </label>
                 {toLocalDate(tempFormDatas.date_of_birth)}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Age: </label>
                 {getAge(toLocalDate(tempFormDatas.date_of_birth))}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Cell Phone*: </label>
                 {editVisible ? (
                   <input
@@ -218,7 +218,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.cell_phone
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Home Phone: </label>
                 {editVisible ? (
                   <input
@@ -233,7 +233,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.home_phone
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Preferred Phone*: </label>
                 {editVisible ? (
                   <input
@@ -249,8 +249,8 @@ const AccountPatientForm = () => {
                 )}
               </div>
             </div>
-            <div className="patient-account-form-content-column">
-              <div className="patient-account-form-content-row">
+            <div className="patient-account__form-content-column">
+              <div className="patient-account__form-content-row">
                 <label>Address*: </label>
                 {editVisible ? (
                   <input
@@ -265,7 +265,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.address
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Postal Code*: </label>
                 {editVisible ? (
                   <input
@@ -280,7 +280,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.postal_code
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Province/State: </label>
                 {editVisible ? (
                   <input
@@ -295,7 +295,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.province_state
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>City*: </label>
                 {editVisible ? (
                   <input
@@ -310,7 +310,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.city
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Country*: </label>
                 {editVisible ? (
                   <CountriesList
@@ -323,7 +323,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.country
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Assigned MD: </label>
                 {editVisible ? (
                   <DoctorsList
@@ -341,7 +341,7 @@ const AccountPatientForm = () => {
                   )
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Assigned Resident: </label>
                 {editVisible ? (
                   <DoctorsList
@@ -355,7 +355,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.assigned_resident_name?.full_name
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Assigned Nurse: </label>
                 {editVisible ? (
                   <NursesList
@@ -369,7 +369,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.assigned_nurse_name?.full_name
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Assigned Midwife: </label>
                 {editVisible ? (
                   <NursesList
@@ -383,7 +383,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.assigned_midwife_name?.full_name
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Assigned Ultrasound Tech: </label>
                 {editVisible ? (
                   <USTechsList
@@ -397,7 +397,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.assigned_us_tech_name?.full_name
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Assigned Physiotherapist: </label>
                 {editVisible ? (
                   <PhysiosList
@@ -411,7 +411,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.assigned_physio_name?.full_name
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Assigned Psychologist: </label>
                 {editVisible ? (
                   <PsychosList
@@ -425,7 +425,7 @@ const AccountPatientForm = () => {
                   tempFormDatas.assigned_psycho_name?.full_name
                 )}
               </div>
-              <div className="patient-account-form-content-row">
+              <div className="patient-account__form-content-row">
                 <label>Assigned Nutritionist: </label>
                 {editVisible ? (
                   <NutritionistsList
@@ -440,7 +440,7 @@ const AccountPatientForm = () => {
                 )}
               </div>
               {editVisible && (
-                <div className="patient-account-form-content-row">
+                <div className="patient-account__form-content-row">
                   <em>
                     If you want to change further informations please ask a
                     staff member
@@ -451,7 +451,7 @@ const AccountPatientForm = () => {
           </div>
         </form>
       )}
-      <div className="patient-account-btns">
+      <div className="patient-account__btns">
         {editVisible ? (
           <>
             <button onClick={handleSave}>Save</button>

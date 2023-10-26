@@ -10,7 +10,6 @@ const VaccineFormMultiple = ({
   name,
   age,
   datas,
-  fetchRecord,
   setErrMsgPost,
 }) => {
   //HOOKS
@@ -68,8 +67,6 @@ const VaccineFormMultiple = ({
         socket,
         "VACCINES"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       setFormVisible(false);
       setEditable(true);
       toast.success("Saved successfully", { containerId: "B" });

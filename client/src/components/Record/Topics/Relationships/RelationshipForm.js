@@ -14,7 +14,6 @@ const RelationshipForm = ({
   editCounter,
   setAddVisible,
   patientId,
-  fetchRecord,
   setErrMsgPost,
 }) => {
   const { auth, user, clinic, socket } = useAuth();
@@ -78,8 +77,6 @@ const RelationshipForm = ({
           "RELATIONSHIPS"
         );
       }
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       editCounter.current -= 1;
       setAddVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

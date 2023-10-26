@@ -89,6 +89,7 @@ export const putPatientRecord = async (
   topic = null,
   abortController = null
 ) => {
+  console.log(datas);
   if (
     tableName === "/patients" ||
     (tableName === "/progress_notes" && datas.version_nbr !== 1)
@@ -101,7 +102,7 @@ export const putPatientRecord = async (
     datas.date_created = Date.now();
   }
   try {
-    await axiosXano.put(`${tableName}/${recordId}`, datas, {
+    const response = await axiosXano.put(`${tableName}/${recordId}`, datas, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
@@ -122,6 +123,7 @@ export const putPatientRecord = async (
         });
       }
     }
+    return response;
   } catch (err) {
     if (err.name !== "CanceledError") throw err;
   }

@@ -9,7 +9,7 @@ import NextAppointments from "./NextAppointments";
 import PastAppointments from "./PastAppointments";
 
 const PatientAppointments = () => {
-  const { user, auth, clinic, socket } = useAuth();
+  const { user, auth, socket } = useAuth();
   const [appointments, setAppointments] = useState(null);
 
   useEffect(() => {

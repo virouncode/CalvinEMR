@@ -148,7 +148,9 @@ const LoginForm = () => {
             "Content-Type": "application/json",
           },
         });
-        const staffInfos = response6.data;
+        const staffInfos = response6.data.sort((a, b) =>
+          a.last_name.localeCompare(b.last_name)
+        );
 
         const response7 = await axiosXano.get("/patients", {
           headers: {
@@ -156,7 +158,9 @@ const LoginForm = () => {
             "Content-Type": "application/json",
           },
         });
-        const patientsInfos = response7.data;
+        const patientsInfos = response7.data.sort((a, b) =>
+          a.last_name.localeCompare(b.last_name)
+        );
         setClinic({ staffInfos, patientsInfos });
         localStorage.setItem(
           "clinic",
@@ -245,7 +249,9 @@ const LoginForm = () => {
             "Content-Type": "application/json",
           },
         });
-        const staffInfos = response4.data;
+        const staffInfos = response4.data.sort((a, b) =>
+          a.last_name.localeCompare(b.last_name)
+        );
 
         const response5 = await axiosXanoPatient.get("/patients", {
           headers: {
@@ -253,7 +259,9 @@ const LoginForm = () => {
             "Content-Type": "application/json",
           },
         });
-        const patientsInfos = response5.data;
+        const patientsInfos = response5.data.sort((a, b) =>
+          a.last_name.localeCompare(b.last_name)
+        );
         setClinic({ staffInfos, patientsInfos });
         localStorage.setItem(
           "clinic",

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   deletePatientRecord,
+  postPatientRecord,
   putPatientRecord,
 } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
@@ -18,16 +19,15 @@ import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { measurementSchema } from "../../../../validation/measurementValidation";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
-const MeasurementEvent = ({
-  event,
-  fetchRecord,
-  editCounter,
-  setErrMsgPost,
-}) => {
+const MeasurementEvent = ({ event, editCounter, setErrMsgPost }) => {
   //HOOKS
   const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [eventInfos, setEventInfos] = useState(event);
+  const [eventInfos, setEventInfos] = useState(null);
+
+  useEffect(() => {
+    setEventInfos(event);
+  }, [event]);
 
   //HANDLERS
   const handleEditClick = (e) => {
@@ -92,8 +92,6 @@ const MeasurementEvent = ({
         socket,
         "MEASUREMENTS"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
@@ -199,6 +197,44 @@ const MeasurementEvent = ({
         setEventInfos({ ...eventInfos, [name]: value });
         break;
       }
+    }
+  };
+
+  const handleAddToProgressNotes = async () => {
+    const progressNote = {
+      patient_id: event.patient_id,
+      object: "Measurements",
+      body: `Patient Measurements
+      
+      Height(cm): ${eventInfos.height_cm}
+      Height(feet): ${eventInfos.height_feet}
+      Weight(kg): ${eventInfos.weight_kg}
+      Weight(lbs): ${eventInfos.weight_lbs}
+      Waist Circumference(cm): ${eventInfos.waist_circumference}
+      Body Mass Index(kg/m2): ${eventInfos.body_mass_index}
+      Body Surface Area(m2): ${eventInfos.body_surface_area}
+      Systolic(mmHg): ${eventInfos.blood_pressure_systolic}
+      Diastolic(mmHg): ${eventInfos.blood_pressure_diastolic}`,
+      version_nbr: 1,
+      attachments_ids: [],
+    };
+    try {
+      await postPatientRecord(
+        "/progress_notes",
+        user.id,
+        auth.authToken,
+        progressNote,
+        socket,
+        "PROGRESS NOTES"
+      );
+      toast.success("Measurements successfully added to progress notes", {
+        containerId: "B",
+      });
+    } catch (err) {
+      toast.success(
+        `Unable to add measurements to progress notes: ${err.message}`,
+        { containerId: "B" }
+      );
     }
   };
 
@@ -340,6 +376,9 @@ const MeasurementEvent = ({
               <input type="submit" value="Save" onClick={handleSubmit} />
             )}
             <button onClick={handleDeleteClick}>Delete</button>
+            <button onClick={handleAddToProgressNotes}>
+              Add to progress notes
+            </button>
           </div>
         </td>
       </tr>

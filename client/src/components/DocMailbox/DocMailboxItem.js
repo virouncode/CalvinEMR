@@ -75,10 +75,6 @@ const DocMailboxItem = ({
       <td
         className="documents__link"
         onClick={() => showDocument(item.file.url, item.file.mime)}
-        style={{
-          fontWeight: "bold",
-          color: "blue",
-        }}
       >
         {item.description}
       </td>
@@ -102,7 +98,7 @@ const DocMailboxItem = ({
       <td>
         <em>{toLocalDate(item.date_created)}</em>
       </td>
-      <td>
+      <td className="documents__item-btn-container">
         <button onClick={handleAcknowledge}>Acknowledge</button>
         <button onClick={handleForward} disabled={forwardVisible}>
           Forward

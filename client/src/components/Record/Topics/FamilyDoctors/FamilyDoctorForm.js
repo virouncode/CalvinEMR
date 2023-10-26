@@ -30,6 +30,7 @@ const FamilyDoctorForm = ({
     phone: "",
     fax: "",
     email: "",
+    ohip_billing_nbr: "",
   });
   //HANDLERS
   const handleChange = (e) => {
@@ -50,12 +51,17 @@ const FamilyDoctorForm = ({
       province_state: firstLetterUpper(formDatas.province_state),
       city: firstLetterUpper(formDatas.city),
       email: formDatas.email.toLowerCase(),
+      ohip_billing_nbr: parseInt(formDatas.ohip_billing_nbr),
     };
     //Validation
     try {
       await doctorSchema.validate(datasToPost);
     } catch (err) {
       setErrMsgPost(err.message);
+      return;
+    }
+    if (formDatas.ohip_billing_nbr.length !== 6) {
+      setErrMsgPost("OHIP billing nbr field must be 6-digits");
       return;
     }
     //Submission
@@ -168,8 +174,17 @@ const FamilyDoctorForm = ({
       <td>
         <input
           name="email"
-          type="text"
+          type="email"
           value={formDatas.email}
+          onChange={handleChange}
+          autoComplete="off"
+        />
+      </td>
+      <td>
+        <input
+          name="ohip_billing_nbr"
+          type="text"
+          value={formDatas.ohip_billing_nbr}
           onChange={handleChange}
           autoComplete="off"
         />

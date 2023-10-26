@@ -17,7 +17,6 @@ const EformsPU = ({
   setPopUpVisible,
   datas,
   setDatas,
-  fetchRecord,
   errMsg,
   isLoading,
 }) => {
@@ -188,11 +187,7 @@ const EformsPU = ({
                             .localeCompare(b[columnToSort]?.toString())
                         )
                         .map((eform) => (
-                          <EformItem
-                            item={eform}
-                            key={eform.id}
-                            fetchRecord={fetchRecord}
-                          />
+                          <EformItem item={eform} key={eform.id} />
                         ))
                     : datas
                         .sort((a, b) =>
@@ -204,7 +199,6 @@ const EformsPU = ({
                           <EformItem
                             item={eform}
                             key={eform.id}
-                            fetchRecord={fetchRecord}
                             showDocument={showDocument}
                           />
                         ))}
@@ -223,7 +217,6 @@ const EformsPU = ({
                   setAddVisible={setAddVisible}
                   patientId={patientId}
                   patientInfos={patientInfos}
-                  fetchRecord={fetchRecord}
                   handleAddToRecord={handleAddToRecord}
                   isLoadingFile={isLoadingFile}
                 />

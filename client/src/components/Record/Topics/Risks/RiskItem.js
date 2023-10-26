@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   deletePatientRecord,
@@ -11,11 +11,15 @@ import { staffIdToTitleAndName } from "../../../../utils/staffIdToTitleAndName";
 import { riskSchema } from "../../../../validation/riskValidation";
 import { confirmAlert } from "../../../Confirm/ConfirmGlobal";
 
-const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
+const RiskItem = ({ item, editCounter, setErrMsgPost }) => {
   //HOOKS
   const { auth, user, clinic, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [itemInfos, setItemInfos] = useState(item);
+  const [itemInfos, setItemInfos] = useState(null);
+
+  useEffect(() => {
+    setItemInfos(item);
+  }, [item]);
 
   //HANDLERS
   const handleChange = (e) => {
@@ -54,8 +58,6 @@ const RiskItem = ({ item, fetchRecord, editCounter, setErrMsgPost }) => {
         socket,
         "RISK FACTORS/PREVENTION"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       editCounter.current -= 1;
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });

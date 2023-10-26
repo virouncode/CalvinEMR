@@ -10,7 +10,6 @@ const ConcernsPU = ({
   setPopUpVisible,
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -81,7 +80,6 @@ const ConcernsPU = ({
                       editCounter={editCounter}
                       setAddVisible={setAddVisible}
                       patientId={patientId}
-                      fetchRecord={fetchRecord}
                       setErrMsgPost={setErrMsgPost}
                     />
                   )}
@@ -96,7 +94,6 @@ const ConcernsPU = ({
                           <ConcernItem
                             item={concern}
                             key={concern.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -112,7 +109,6 @@ const ConcernsPU = ({
                             item={concern}
                             key={concern.id}
                             setDatas={setDatas}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />

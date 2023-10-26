@@ -9,6 +9,7 @@ import { billingFormSchema } from "../../validation/billingValidation";
 import FakeWindow from "../Presentation/FakeWindow";
 import DiagnosisSearch from "./DiagnosisSearch";
 import HinSearch from "./HinSearch";
+import ReferringOHIPSearch from "./ReferringOHIPSearch";
 
 const BillingForm = ({ setAddVisible, setErrMsg }) => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const BillingForm = ({ setAddVisible, setErrMsg }) => {
   });
   const [diagnosisSearchVisible, setDiagnosisSearchVisible] = useState(false);
   const [hinSearchVisible, setHinSearchVisible] = useState(false);
+  const [refOHIPSearchVisible, setRefOHIPSearchVisible] = useState(false);
 
   useEffect(() => {
     if (hin) {
@@ -53,6 +55,10 @@ const BillingForm = ({ setAddVisible, setErrMsg }) => {
   const handleClickHin = (e, hin) => {
     setFormDatas({ ...formDatas, patient_hin: hin });
     setHinSearchVisible(false);
+  };
+  const handleClickRefOHIP = (e, ohip) => {
+    setFormDatas({ ...formDatas, referrer_ohip_nbr: ohip.toString() });
+    setRefOHIPSearchVisible(false);
   };
   const handleCancel = () => {
     setErrMsg("");
@@ -236,7 +242,7 @@ const BillingForm = ({ setAddVisible, setErrMsg }) => {
             style={{ textAlign: "end" }}
           />
         </div>
-        <div className="billing-form__item">
+        <div className="billing-form__item" style={{ position: "relative" }}>
           <label htmlFor="">Referring MD OHIP#</label>
           <input
             type="text"
@@ -246,10 +252,15 @@ const BillingForm = ({ setAddVisible, setErrMsg }) => {
             autoComplete="off"
             autoFocus
           />
+          <i
+            style={{ cursor: "pointer", position: "absolute", right: "5px" }}
+            className="fa-solid fa-magnifying-glass"
+            onClick={() => setRefOHIPSearchVisible(true)}
+          ></i>
         </div>
       </div>
       <div className="billing-form__row">
-        <div className="billing-form__item">
+        <div className="billing-form__item" style={{ position: "relative" }}>
           <label htmlFor="">Patient HIN</label>
           <input
             type="text"
@@ -259,12 +270,12 @@ const BillingForm = ({ setAddVisible, setErrMsg }) => {
             autoComplete="off"
           />
           <i
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", position: "absolute", right: "5px" }}
             className="fa-solid fa-magnifying-glass"
             onClick={() => setHinSearchVisible(true)}
           ></i>
         </div>
-        <div className="billing-form__item">
+        <div className="billing-form__item" style={{ position: "relative" }}>
           <label htmlFor="">Diagnosis code</label>
           <input
             type="text"
@@ -274,7 +285,7 @@ const BillingForm = ({ setAddVisible, setErrMsg }) => {
             autoComplete="off"
           />
           <i
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", position: "absolute", right: "5px" }}
             className="fa-solid fa-magnifying-glass"
             onClick={() => setDiagnosisSearchVisible(true)}
           ></i>
@@ -323,6 +334,19 @@ const BillingForm = ({ setAddVisible, setErrMsg }) => {
           setPopUpVisible={setDiagnosisSearchVisible}
         >
           <DiagnosisSearch handleClickDiagnosis={handleClickDiagnosis} />
+        </FakeWindow>
+      )}
+      {refOHIPSearchVisible && (
+        <FakeWindow
+          title="REFERRING MD OHIP# SEARCH"
+          width={800}
+          height={600}
+          x={(window.innerWidth - 800) / 2}
+          y={(window.innerHeight - 600) / 2}
+          color="#94bae8"
+          setPopUpVisible={setRefOHIPSearchVisible}
+        >
+          <ReferringOHIPSearch handleClickRefOHIP={handleClickRefOHIP} />
         </FakeWindow>
       )}
     </form>

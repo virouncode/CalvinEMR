@@ -10,7 +10,6 @@ const RiskPU = ({
   setPopUpVisible,
   datas,
   setDatas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -83,7 +82,6 @@ const RiskPU = ({
                       editCounter={editCounter}
                       setAddVisible={setAddVisible}
                       patientId={patientId}
-                      fetchRecord={fetchRecord}
                       setErrMsgPost={setErrMsgPost}
                     />
                   )}
@@ -98,7 +96,6 @@ const RiskPU = ({
                           <RiskItem
                             item={risk}
                             key={risk.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />
@@ -113,7 +110,6 @@ const RiskPU = ({
                           <RiskItem
                             item={risk}
                             key={risk.id}
-                            fetchRecord={fetchRecord}
                             editCounter={editCounter}
                             setErrMsgPost={setErrMsgPost}
                           />

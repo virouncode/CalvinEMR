@@ -10,7 +10,6 @@ const VaccineItem = ({
   type,
   description,
   datas,
-  fetchRecord,
   patientInfos,
   setEditable,
   editable,
@@ -41,7 +40,6 @@ const VaccineItem = ({
                 editable={editable}
                 setEditable={setEditable}
                 datas={datas}
-                fetchRecord={fetchRecord}
                 setErrMsgPost={setErrMsgPost}
               />
             ))
@@ -62,7 +60,6 @@ const VaccineItem = ({
                   editable={editable}
                   setEditable={setEditable}
                   datas={datas}
-                  fetchRecord={fetchRecord}
                   setErrMsgPost={setErrMsgPost}
                 />
               ))
@@ -81,7 +78,6 @@ const VaccineItem = ({
                 editable={editable}
                 setEditable={setEditable}
                 datas={datas}
-                fetchRecord={fetchRecord}
                 setErrMsgPost={setErrMsgPost}
               />
             ))}

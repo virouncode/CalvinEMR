@@ -27,7 +27,7 @@ const AppointmentEvent = ({ event, editCounter, setErrMsgPost }) => {
   //HOOKS
   const { auth, clinic, user, socket } = useAuth();
   const [editVisible, setEditVisible] = useState(false);
-  const [eventInfos, setEventInfos] = useState(event);
+  const [eventInfos, setEventInfos] = useState(null);
   const [availableRooms, setAvailableRooms] = useState([]);
   const previousStartDate = useRef(toLocalDate(event.start));
   const previousEndDate = useRef(toLocalDate(event.end));
@@ -46,6 +46,10 @@ const AppointmentEvent = ({ event, editCounter, setErrMsgPost }) => {
   const startAMPMInput = useRef(null);
   const endAMPMInput = useRef(null);
   const minEndDate = useRef(toLocalDate(event.start));
+
+  useEffect(() => {
+    setEventInfos(event);
+  }, [event]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -571,7 +575,7 @@ const AppointmentEvent = ({ event, editCounter, setErrMsgPost }) => {
         <td>
           {(isSecretary() || user.id === eventInfos.host_id) &&
             (!editVisible ? (
-              <div className="appointments-event__btn-container">
+              <div className="appointments__event-btn-container">
                 <button onClick={handleEditClick}>Edit</button>
                 <button onClick={handleDeleteClick}>Delete</button>
               </div>

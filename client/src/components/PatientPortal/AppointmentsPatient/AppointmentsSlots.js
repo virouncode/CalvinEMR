@@ -26,7 +26,7 @@ const AppointmentsSlots = ({
   return (
     availability &&
     appointmentsInRange && (
-      <div className="new-appointments-content">
+      <div className="new-appointments__content">
         {appointmentsOptions ? (
           appointmentsOptions.length ? (
             appointmentsOptions.map((appointment) => (

@@ -42,8 +42,8 @@ const PatientHeader = () => {
               to="patient/appointments"
               className={(nav) =>
                 nav.isActive
-                  ? "header__link--patient header__link--active"
-                  : "header__link--patient"
+                  ? "header__link header__link--patient header__link--active"
+                  : "header__link header__link--patient"
               }
             >
               Appointments
@@ -54,8 +54,8 @@ const PatientHeader = () => {
               to="patient/my-account"
               className={(nav) =>
                 nav.isActive
-                  ? "header__link--patient header__link--active"
-                  : "header__link--patient"
+                  ? "header__link header__link--patient header__link--active"
+                  : "header__link header__link--patient"
               }
             >
               My Account
@@ -67,8 +67,8 @@ const PatientHeader = () => {
               onClick={handleLogout}
               className={(nav) =>
                 nav.isActive
-                  ? "header__link--patient header__link--active"
-                  : "header__link--patient"
+                  ? "header__link header__link--patient header__link--active"
+                  : "header__link header__link--patient"
               }
             >
               Log out

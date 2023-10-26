@@ -21,7 +21,7 @@ const DocumentsContent = ({ showDocument, datas, isLoading, errMsg }) => {
                   }
                   style={{
                     textDecoration: "underline",
-                    color: "blue",
+                    color: "#327AE6",
                     cursor: "pointer",
                     fontWeight: "bold",
                   }}

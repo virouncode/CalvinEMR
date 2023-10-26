@@ -48,13 +48,17 @@
     }
     &__item-btn-container{
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+        button {
+            margin-left: 5px;
+        }
     }
     &__btn-container {
-        display: flex;
-        justify-content: space-between;
-        width: 220px;
-        margin: 20px auto 0;
+        button {
+            margin-left: 5px;
+        }
+        text-align: center;
+        margin-top: 20px;
     }
 }
     

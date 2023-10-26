@@ -4,15 +4,7 @@ import { putPatientRecord } from "../../../../api/fetchRecords";
 import useAuth from "../../../../hooks/useAuth";
 import { toLocalDate } from "../../../../utils/formatDates";
 
-const VaccineForm = ({
-  setFormVisible,
-  setEditable,
-  scrollPosition,
-  name,
-  age,
-  datas,
-  fetchRecord,
-}) => {
+const VaccineForm = ({ setFormVisible, setEditable, name, age, datas }) => {
   //HOOKS
   const { auth, user, socket } = useAuth();
   const [formDatas, setFormDatas] = useState(datas);
@@ -51,8 +43,6 @@ const VaccineForm = ({
         socket,
         "VACCINES"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       setFormVisible(false);
       setEditable(true);
       toast.success("Saved successfully", { containerId: "B" });

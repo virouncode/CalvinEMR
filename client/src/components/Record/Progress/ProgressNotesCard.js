@@ -201,8 +201,6 @@ const ProgressNotesCard = ({
           "PROGRESS NOTES"
         );
         setEditVisible(false);
-        // const abortController = new AbortController();
-        // fetchRecord(abortController, order);
         const versionsResults = (
           await getPatientRecord(
             "/progress_notes_log",
@@ -360,7 +358,7 @@ const ProgressNotesCard = ({
           height={window.innerHeight}
           x={(window.innerWidth - 1000) / 2}
           y={0}
-          color="#3C5A76"
+          color="#9CB9E4"
           setPopUpVisible={setPopUpVisible}
         >
           <CalvinAI

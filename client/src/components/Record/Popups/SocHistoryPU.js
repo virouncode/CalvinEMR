@@ -13,7 +13,6 @@ const SocHistoryPU = ({
   patientId,
   setPopUpVisible,
   datas,
-  fetchRecord,
   isLoading,
   errMsg,
 }) => {
@@ -109,8 +108,6 @@ const SocHistoryPU = ({
         socket,
         "SOCIAL HISTORY"
       );
-      const abortController = new AbortController();
-      fetchRecord(abortController);
       setEditVisible(false);
       toast.success("Saved successfully", { containerId: "B" });
     } catch (err) {
@@ -288,7 +285,6 @@ const SocHistoryPU = ({
           </>
         ) : (
           <SocHistoryForm
-            fetchRecord={fetchRecord}
             setPopUpVisible={setPopUpVisible}
             patientId={patientId}
           />
